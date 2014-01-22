@@ -6,14 +6,15 @@
 define(
     ["core/utils"],
     function (utils) {
-    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num, tit) {
+    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num) {
     		$cap.html("");
             if (fmt === "" || fmt === "%t") {
-            	$cap.append($("<span class='" + label + "-title'/>").text(tit));
+            	$cap.wrapInner($("<span class='" + label + "-title'/>"));
             	return num;
             }
             var $num = $("<span class='" + label + "no'/>");
             var $cur = $cap;
+            var $title = $cap.clone().wrapInner("<span class='" + label + "'></span>");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
             //console.log("fmt=\"" + adjfmt + "\"");
@@ -27,7 +28,7 @@ define(
             	case "#": $cur.append(doc.createTextNode(num[0])); break;
             	case "c": $cur.append(doc.createTextNode(chapter)); break;
             	case "1": if (num[1] != chapter) num = [1, chapter]; break;
-            	case "t": $cur.append($("<span class='"+label+"-title'/>").text(tit)); break;
+            	case "t": $cur.append($title); break;
             	default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
             	}
             	$cur.append(doc.createTextNode(s.substr(1)));
@@ -56,15 +57,16 @@ define(
 	          		$("table", $sec).each(function () {
 						var $tbl = $(this)
 						,   $cap = $tbl.find("caption")
-						,   tit = $cap.text()
-						,   id = $tbl.makeID("tbl", tit);
+						,   id = $tbl.makeID("tbl", $cap.text());
 						if ($cap.length) {
 							// if caption exists, add Table # and class
-							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num, tit);
+							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
 							tblMap[id] = $cap.contents().clone();
+                            var $totCap = $cap.clone();
+                            $totCap.find("a").renameElement("span").removeattr("href");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
-									.append($cap.contents().clone())
+									.append($totCap.contents())
 									.end());
 						}
 					});

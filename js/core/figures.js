@@ -89,9 +89,11 @@ define(
 						// set proper caption title
 						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
 						figMap[id] = $cap.contents().clone();
+                        var $tofCap = $cap.clone();
+                        $tofCap.find(a).renameElement("span").removeAttr("href");
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
-                                .append($cap.contents().clone())
+                                .append($tofCap.contents())
                                 .end());
 					});
 				}
