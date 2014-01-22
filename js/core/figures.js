@@ -9,37 +9,37 @@
 define(
     ["core/utils"],
     function (utils) {
-    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num) {
+        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
             $cap.html("");
             if (fmt === "" || fmt === "%t" || fmt === "%") {
-            	$cap.wrapInner($("<span class='" + label + "-title'/>"));
-            	return num;
+                $cap.wrapInner($("<span class='" + label + "-title'/>"));
+                return num;
             }
             var $num = $("<span class='" + label + "no'/>");
             var $cur = $cap;
             var $title = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-    		//console.log("fmt=\"" + adjfmt + "\"");
-    		for (var i = 0; i < sfmt.length; i++) {
-            	var s = sfmt[i];
-            	switch (s.substr(0,1)) {
-            	case " ": break;
-            	case "(": $cur = $num; break;
-            	case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
-            	case "\\":$cur.append(doc.createTextNode("%")); break;
-            	case "#": $cur.append(doc.createTextNode(num[0])); break;
-            	case "c": $cur.append(doc.createTextNode(chapter)); break;
-            	case "1": if (num[1] != chapter) num = [1, chapter]; break;
-            	case "t": $cur.append($title); break;
-            	default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
-            	}
-            	$cur.append(doc.createTextNode(s.substr(1)));
-            	//console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+            //console.log("fmt=\"" + adjfmt + "\"");
+            for (var i = 0; i < sfmt.length; i++) {
+                var s = sfmt[i];
+                switch (s.substr(0,1)) {
+                    case " ": break;
+                    case "(": $cur = $num; break;
+                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "\\":$cur.append(doc.createTextNode("%")); break;
+                    case "#": $cur.append(doc.createTextNode(num[0])); break;
+                    case "c": $cur.append(doc.createTextNode(chapter)); break;
+                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "t": $cur.append($title); break;
+                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                }
+                $cur.append(doc.createTextNode(s.substr(1)));
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
             }
-    		num[0]++;
+            num[0]++;
             return num;
-    	};
+        };
 
         return {
             run:    function (conf, doc, cb, msg) {
