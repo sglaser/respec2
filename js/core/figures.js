@@ -17,7 +17,7 @@ define(
             }
             var $num = $("<span class='" + label + "no'/>");
             var $cur = $cap;
-            var $tit = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
+            var $title = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
     		//console.log("fmt=\"" + adjfmt + "\"");
@@ -31,7 +31,7 @@ define(
             	case "#": $cur.append(doc.createTextNode(num[0])); break;
             	case "c": $cur.append(doc.createTextNode(chapter)); break;
             	case "1": if (num[1] != chapter) num = [1, chapter]; break;
-            	case "t": $cur.append($tit); break;
+            	case "t": $cur.append($title); break;
             	default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
             	}
             	$cur.append(doc.createTextNode(s.substr(1)));
