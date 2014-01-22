@@ -49,6 +49,7 @@ define([
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
+        ,   "core/regpict"
         ],
         function (domReady, runner, ui) {
             var args = Array.prototype.slice.call(arguments);
