@@ -9,14 +9,15 @@
 define(
     ["core/utils"],
     function (utils) {
-    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num, tit) {
+    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num) {
             $cap.html("");
             if (fmt === "" || fmt === "%t" || fmt === "%") {
-            	$cap.append($("<span class='" + label + "-title'/>").text(tit));
+            	$cap.wrapInner($("<span class='" + label + "-title'/>"));
             	return num;
             }
             var $num = $("<span class='" + label + "no'/>");
             var $cur = $cap;
+            var $tit = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
     		//console.log("fmt=\"" + adjfmt + "\"");
@@ -30,7 +31,7 @@ define(
             	case "#": $cur.append(doc.createTextNode(num[0])); break;
             	case "c": $cur.append(doc.createTextNode(chapter)); break;
             	case "1": if (num[1] != chapter) num = [1, chapter]; break;
-            	case "t": $cur.append($("<span class='"+label+"-title'/>").text(tit)); break;
+            	case "t": $cur.append($tit); break;
             	default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
             	}
             	$cur.append(doc.createTextNode(s.substr(1)));
@@ -82,12 +83,11 @@ define(
                     $("figure", $sec).each(function () {
 						var $fig = $(this)
 						,   $cap = $fig.find("figcaption")
-						,   tit = $cap.text()
-						,   id = $fig.makeID("fig", tit);
+						,   id = $fig.makeID("fig", $cap.text());
 						if (!$cap.length) msg.pub("warn", "A <figure> should contain a <figcaption>.");
                     
 						// set proper caption title
-						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num, tit);
+						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
 						figMap[id] = $cap.contents().clone();
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
