@@ -1,7 +1,7 @@
-/* ReSpec 3.2.7 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.8 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec. */
-respecVersion = '3.2.7';
+respecVersion = '3.2.8';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
@@ -3795,7 +3795,7 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please refer to the <a href="{{errata}}"><strong>errata</strong></a> for this document, which may include some normative corrections.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
+define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
 
 define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication.\n          Other documents may supersede this document. A list of current W3C publications and the\n          latest revision of this technical report can be found in the <a\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\n          http://www.w3.org/TR/.</em>\n        </p>\n        {{{sotdCustomParagraph}}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            All comments are welcome.\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
 
@@ -3983,10 +3983,10 @@ define(
             ,   base:           "Document"
             ,   finding:        "TAG Finding"
             ,   "draft-finding": "Draft TAG Finding"
-            ,   "CG-DRAFT":     "Draft Community Group Specification"
-            ,   "CG-FINAL":     "Final Community Group Specification"
-            ,   "BG-DRAFT":     "Draft Business Group Specification"
-            ,   "BG-FINAL":     "Final Business Group Specification"
+            ,   "CG-DRAFT":     "Draft Community Group Report"
+            ,   "CG-FINAL":     "Final Community Group Report"
+            ,   "BG-DRAFT":     "Draft Business Group Report"
+            ,   "BG-FINAL":     "Final Business Group Report"
             }
         ,   status2long:    {
                 "FPWD-NOTE":    "First Public Working Group Note"
@@ -4103,6 +4103,8 @@ define(
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
                 conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
                 conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
+                if (conf.isRec && !conf.errata)
+                    msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");
                 conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependW3C = !conf.isUnofficial;
@@ -4684,51 +4686,6 @@ define(
 );
 define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
 
-
-// Module core/highlight
-// Does syntax highlighting to all pre and code that have a class of "highlight"
-
-// A potential improvement would be to call cb() immediately and benefit from the asynchronous
-// ability of prettyPrint() (but only call msg.pub() in the callback to remain accurate as to
-// the end of processing)
-
-define(
-    'core/highlight',["text!core/css/highlight.css"],
-    function (css) {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/highlight");
-                
-                // fix old classes
-                var oldies = "sh_css sh_html sh_javascript sh_javascript_dom sh_xml".split(" ");
-                for (var i = 0, n = oldies.length; i < n; i++) {
-                    var old = oldies[i];
-                    $("." + old).each(function () {
-                        $(this).removeClass(old).addClass("highlight");
-                        msg.pub("warn", "Old highlighting class '" + old + "', use 'highlight' instead.");
-                    });
-                }
-                
-                // prettify
-                var $highs = $("pre.highlight, code.highlight")
-                ,   done = function () {
-                        msg.pub("end", "core/highlight");
-                        cb();
-                    }
-                ;
-                if ($highs.length) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
-                    $highs.addClass("prettyprint");
-                    prettyPrint(done);
-                }
-                else {
-                    done();
-                }
-            }
-        };
-    }
-);
-
 // Copyright (C) 2006 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -4784,42 +4741,69 @@ define(
  */
 
 // JSLint declarations
-/*global console, document, navigator, setTimeout, window */
+/*global console, document, navigator, setTimeout, window, define */
+
+/** @define {boolean} */
+var IN_GLOBAL_SCOPE = true;
 
 /**
  * Split {@code prettyPrint} into multiple timeouts so as not to interfere with
  * UI events.
  * If set to {@code false}, {@code prettyPrint()} is synchronous.
  */
-window.PR_SHOULD_USE_CONTINUATION = true;
+window['PR_SHOULD_USE_CONTINUATION'] = true;
+
+/**
+ * Pretty print a chunk of code.
+ * @param {string} sourceCodeHtml The HTML to pretty print.
+ * @param {string} opt_langExtension The language name to use.
+ *     Typically, a filename extension like 'cpp' or 'java'.
+ * @param {number|boolean} opt_numberLines True to number lines,
+ *     or the 1-indexed number of the first line in sourceCodeHtml.
+ * @return {string} code as html, but prettier
+ */
+var prettyPrintOne;
+/**
+ * Find all the {@code <pre>} and {@code <code>} tags in the DOM with
+ * {@code class=prettyprint} and prettify them.
+ *
+ * @param {Function} opt_whenDone called when prettifying is done.
+ * @param {HTMLElement|HTMLDocument} opt_root an element or document
+ *   containing all the elements to pretty print.
+ *   Defaults to {@code document.body}.
+ */
+var prettyPrint;
+
 
 (function () {
+  var win = window;
   // Keyword lists for various languages.
   // We use things that coerce to strings to make them compact when minified
   // and to defeat aggressive optimizers that fold large string constants.
   var FLOW_CONTROL_KEYWORDS = ["break,continue,do,else,for,if,return,while"];
-  var C_KEYWORDS = [FLOW_CONTROL_KEYWORDS,"auto,case,char,const,default," +
-      "double,enum,extern,float,goto,int,long,register,short,signed,sizeof," +
-      "static,struct,switch,typedef,union,unsigned,void,volatile"];
+  var C_KEYWORDS = [FLOW_CONTROL_KEYWORDS,"auto,case,char,const,default," + 
+      "double,enum,extern,float,goto,inline,int,long,register,short,signed," +
+      "sizeof,static,struct,switch,typedef,union,unsigned,void,volatile"];
   var COMMON_KEYWORDS = [C_KEYWORDS,"catch,class,delete,false,import," +
       "new,operator,private,protected,public,this,throw,true,try,typeof"];
   var CPP_KEYWORDS = [COMMON_KEYWORDS,"alignof,align_union,asm,axiom,bool," +
-      "concept,concept_map,const_cast,constexpr,decltype," +
-      "dynamic_cast,explicit,export,friend,inline,late_check," +
-      "mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast," +
-      "template,typeid,typename,using,virtual,where"];
+      "concept,concept_map,const_cast,constexpr,decltype,delegate," +
+      "dynamic_cast,explicit,export,friend,generic,late_check," +
+      "mutable,namespace,nullptr,property,reinterpret_cast,static_assert," +
+      "static_cast,template,typeid,typename,using,virtual,where"];
   var JAVA_KEYWORDS = [COMMON_KEYWORDS,
-      "abstract,boolean,byte,extends,final,finally,implements,import," +
-      "instanceof,null,native,package,strictfp,super,synchronized,throws," +
-      "transient"];
-  var CSHARP_KEYWORDS = [JAVA_KEYWORDS,
-      "as,base,by,checked,decimal,delegate,descending,dynamic,event," +
-      "fixed,foreach,from,group,implicit,in,interface,internal,into,is,lock," +
-      "object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed," +
-      "stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var"];
+      "abstract,assert,boolean,byte,extends,final,finally,implements,import," +
+      "instanceof,interface,null,native,package,strictfp,super,synchronized," +
+      "throws,transient"];
+  var CSHARP_KEYWORDS = [COMMON_KEYWORDS,
+      "abstract,as,base,bool,by,byte,checked,decimal,delegate,descending," +
+      "dynamic,event,finally,fixed,foreach,from,group,implicit,in,interface," +
+      "internal,into,is,let,lock,null,object,out,override,orderby,params," +
+      "partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong," +
+      "unchecked,unsafe,ushort,var,virtual,where"];
   var COFFEE_KEYWORDS = "all,and,by,catch,class,else,extends,false,finally," +
       "for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then," +
-      "true,try,unless,until,when,while,yes";
+      "throw,true,try,unless,until,when,while,yes";
   var JSCRIPT_KEYWORDS = [COMMON_KEYWORDS,
       "debugger,eval,export,function,get,null,set,undefined,var,with," +
       "Infinity,NaN"];
@@ -4834,12 +4818,15 @@ window.PR_SHOULD_USE_CONTINUATION = true;
       "def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo," +
       "rescue,retry,self,super,then,true,undef,unless,until,when,yield," +
       "BEGIN,END"];
+   var RUST_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "as,assert,const,copy,drop," +
+      "enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv," +
+      "pub,pure,ref,self,static,struct,true,trait,type,unsafe,use"];
   var SH_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "case,done,elif,esac,eval,fi," +
       "function,in,local,set,then,until"];
   var ALL_KEYWORDS = [
-      CPP_KEYWORDS, CSHARP_KEYWORDS, JSCRIPT_KEYWORDS, PERL_KEYWORDS +
+      CPP_KEYWORDS, CSHARP_KEYWORDS, JSCRIPT_KEYWORDS, PERL_KEYWORDS,
       PYTHON_KEYWORDS, RUBY_KEYWORDS, SH_KEYWORDS];
-  var C_TYPES = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/;
+  var C_TYPES = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/;
 
   // token style names.  correspond to css classes
   /**
@@ -4873,7 +4860,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
    */
   var PR_PUNCTUATION = 'pun';
   /**
-   * token style for a punctuation string.
+   * token style for plain text.
    * @const
    */
   var PR_PLAIN = 'pln';
@@ -4911,35 +4898,34 @@ window.PR_SHOULD_USE_CONTINUATION = true;
    */
   var PR_NOCODE = 'nocode';
 
-
-
-/**
- * A set of tokens that can precede a regular expression literal in
- * javascript
- * http://web.archive.org/web/20070717142515/http://www.mozilla.org/js/language/js20/rationale/syntax.html
- * has the full list, but I've removed ones that might be problematic when
- * seen in languages that don't support regular expression literals.
- *
- * <p>Specifically, I've removed any keywords that can't precede a regexp
- * literal in a syntactically legal javascript program, and I've removed the
- * "in" keyword since it's not a keyword in many languages, and might be used
- * as a count of inches.
- *
- * <p>The link a above does not accurately describe EcmaScript rules since
- * it fails to distinguish between (a=++/b/i) and (a++/b/i) but it works
- * very well in practice.
- *
- * @private
- * @const
- */
-var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&&=|&=|\\(|\\*|\\*=|\\+=|\\,|\\-=|\\->|\\/|\\/=|:|::|\\;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\@|\\[|\\^|\\^=|\\^\\^|\\^\\^=|\\{|\\||\\|=|\\|\\||\\|\\|=|\\~|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*';
-
-// CAVEAT: this does not properly handle the case where a regular
-// expression immediately follows another since a regular expression may
-// have flags for case-sensitivity and the like.  Having regexp tokens
-// adjacent is not valid in any language I'm aware of, so I'm punting.
-// TODO: maybe style special characters inside a regexp as punctuation.
-
+  
+  
+  /**
+   * A set of tokens that can precede a regular expression literal in
+   * javascript
+   * http://web.archive.org/web/20070717142515/http://www.mozilla.org/js/language/js20/rationale/syntax.html
+   * has the full list, but I've removed ones that might be problematic when
+   * seen in languages that don't support regular expression literals.
+   *
+   * <p>Specifically, I've removed any keywords that can't precede a regexp
+   * literal in a syntactically legal javascript program, and I've removed the
+   * "in" keyword since it's not a keyword in many languages, and might be used
+   * as a count of inches.
+   *
+   * <p>The link above does not accurately describe EcmaScript rules since
+   * it fails to distinguish between (a=++/b/i) and (a++/b/i) but it works
+   * very well in practice.
+   *
+   * @private
+   * @const
+   */
+  var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*';
+  
+  // CAVEAT: this does not properly handle the case where a regular
+  // expression immediately follows another since a regular expression may
+  // have flags for case-sensitivity and the like.  Having regexp tokens
+  // adjacent is not valid in any language I'm aware of, so I'm punting.
+  // TODO: maybe style special characters inside a regexp as punctuation.
 
   /**
    * Given a group of {@link RegExp}s, returns a {@code RegExp} that globally
@@ -4951,7 +4937,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
    */
   function combinePrefixPatterns(regexs) {
     var capturedGroupIndex = 0;
-
+  
     var needToFoldCase = false;
     var ignoreCase = false;
     for (var i = 0, n = regexs.length; i < n; ++i) {
@@ -4965,7 +4951,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         break;
       }
     }
-
+  
     var escapeCharToCodeUnit = {
       'b': 8,
       't': 9,
@@ -4974,7 +4960,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       'f': 0xc,
       'r': 0xd
     };
-
+  
     function decodeEscape(charsetPart) {
       var cc0 = charsetPart.charCodeAt(0);
       if (cc0 !== 92 /* \\ */) {
@@ -4992,18 +4978,16 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         return charsetPart.charCodeAt(1);
       }
     }
-
+  
     function encodeEscape(charCode) {
       if (charCode < 0x20) {
         return (charCode < 0x10 ? '\\x0' : '\\x') + charCode.toString(16);
       }
       var ch = String.fromCharCode(charCode);
-      if (ch === '\\' || ch === '-' || ch === '[' || ch === ']') {
-        ch = '\\' + ch;
-      }
-      return ch;
+      return (ch === '\\' || ch === '-' || ch === ']' || ch === '^')
+          ? "\\" + ch : ch;
     }
-
+  
     function caseFoldCharset(charSet) {
       var charsetParts = charSet.substring(1, charSet.length - 1).match(
           new RegExp(
@@ -5015,13 +4999,16 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
               + '|-'
               + '|[^-\\\\]',
               'g'));
-      var groups = [];
       var ranges = [];
       var inverse = charsetParts[0] === '^';
+  
+      var out = ['['];
+      if (inverse) { out.push('^'); }
+  
       for (var i = inverse ? 1 : 0, n = charsetParts.length; i < n; ++i) {
         var p = charsetParts[i];
         if (/\\[bdsw]/i.test(p)) {  // Don't muck with named groups.
-          groups.push(p);
+          out.push(p);
         } else {
           var start = decodeEscape(p);
           var end;
@@ -5046,12 +5033,12 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           }
         }
       }
-
+  
       // [[1, 10], [3, 4], [8, 12], [14, 14], [16, 16], [17, 17]]
       // -> [[1, 12], [14, 14], [16, 17]]
       ranges.sort(function (a, b) { return (a[0] - b[0]) || (b[1]  - a[1]); });
       var consolidatedRanges = [];
-      var lastRange = [NaN, NaN];
+      var lastRange = [];
       for (var i = 0; i < ranges.length; ++i) {
         var range = ranges[i];
         if (range[0] <= lastRange[1] + 1) {
@@ -5060,10 +5047,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           consolidatedRanges.push(lastRange = range);
         }
       }
-
-      var out = ['['];
-      if (inverse) { out.push('^'); }
-      out.push.apply(out, groups);
+  
       for (var i = 0; i < consolidatedRanges.length; ++i) {
         var range = consolidatedRanges[i];
         out.push(encodeEscape(range[0]));
@@ -5075,7 +5059,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       out.push(']');
       return out.join('');
     }
-
+  
     function allowAnywhereFoldCaseAndRenumberGroups(regex) {
       // Split into character sets, escape sequences, punctuation strings
       // like ('(', '(?:', ')', '^'), and runs of characters that do not
@@ -5089,17 +5073,17 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
               + '|\\\\[0-9]+'  // a back-reference or octal escape
               + '|\\\\[^ux0-9]'  // other escape sequence
               + '|\\(\\?[:!=]'  // start of a non-capturing group
-              + '|[\\(\\)\\^]'  // start/emd of a group, or line start
+              + '|[\\(\\)\\^]'  // start/end of a group, or line start
               + '|[^\\x5B\\x5C\\(\\)\\^]+'  // run of other characters
               + ')',
               'g'));
       var n = parts.length;
-
+  
       // Maps captured group numbers to the number they will occupy in
       // the output or to -1 if that has not been determined, or to
       // undefined if they need not be capturing in the output.
       var capturedGroups = [];
-
+  
       // Walk over and identify back references to build the capturedGroups
       // mapping.
       for (var i = 0, groupIndex = 0; i < n; ++i) {
@@ -5109,12 +5093,19 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           ++groupIndex;
         } else if ('\\' === p.charAt(0)) {
           var decimalValue = +p.substring(1);
-          if (decimalValue && decimalValue <= groupIndex) {
-            capturedGroups[decimalValue] = -1;
+          if (decimalValue) {
+            if (decimalValue <= groupIndex) {
+              capturedGroups[decimalValue] = -1;
+            } else {
+              // Replace with an unambiguous escape sequence so that
+              // an octal escape sequence does not turn into a backreference
+              // to a capturing group from an earlier regex.
+              parts[i] = encodeEscape(decimalValue);
+            }
           }
         }
       }
-
+  
       // Renumber groups and reduce capturing groups to non-capturing groups
       // where possible.
       for (var i = 1; i < capturedGroups.length; ++i) {
@@ -5126,23 +5117,23 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         var p = parts[i];
         if (p === '(') {
           ++groupIndex;
-          if (capturedGroups[groupIndex] === undefined) {
+          if (!capturedGroups[groupIndex]) {
             parts[i] = '(?:';
           }
         } else if ('\\' === p.charAt(0)) {
           var decimalValue = +p.substring(1);
           if (decimalValue && decimalValue <= groupIndex) {
-            parts[i] = '\\' + capturedGroups[groupIndex];
+            parts[i] = '\\' + capturedGroups[decimalValue];
           }
         }
       }
-
+  
       // Remove any prefix anchors so that the output will match anywhere.
       // ^^ really does mean an anchored match though.
-      for (var i = 0, groupIndex = 0; i < n; ++i) {
+      for (var i = 0; i < n; ++i) {
         if ('^' === parts[i] && '^' !== parts[i + 1]) { parts[i] = ''; }
       }
-
+  
       // Expand letters to groups to handle mixing of case-sensitive and
       // case-insensitive patterns if necessary.
       if (regex.ignoreCase && needToFoldCase) {
@@ -5162,10 +5153,10 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           }
         }
       }
-
+  
       return parts.join('');
     }
-
+  
     var rewritten = [];
     for (var i = 0, n = regexs.length; i < n; ++i) {
       var regex = regexs[i];
@@ -5173,10 +5164,9 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       rewritten.push(
           '(?:' + allowAnywhereFoldCaseAndRenumberGroups(regex) + ')');
     }
-
+  
     return new RegExp(rewritten.join('|'), ignoreCase ? 'gi' : 'g');
   }
-
 
   /**
    * Split markup into a string of source code and an array mapping ranges in
@@ -5201,8 +5191,8 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
    * <pre>
    * {
    *   sourceCode: "print 'Hello '\n  + 'World';",
-   *   //                 1         2
-   *   //       012345678901234 5678901234567
+   *   //                     1          2
+   *   //           012345678901234 5678901234567
    *   spans: [0, #1, 6, #2, 14, #3, 15, #4]
    * }
    * </pre>
@@ -5219,68 +5209,55 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
    * </p>
    *
    * @param {Node} node an HTML DOM subtree containing source-code.
+   * @param {boolean} isPreformatted true if white-space in text nodes should
+   *    be considered significant.
    * @return {Object} source code and the text nodes in which they occur.
    */
-  function extractSourceSpans(node) {
+  function extractSourceSpans(node, isPreformatted) {
     var nocode = /(?:^|\s)nocode(?:\s|$)/;
-
+  
     var chunks = [];
     var length = 0;
     var spans = [];
     var k = 0;
-
-    var whitespace;
-    if (node.currentStyle) {
-      whitespace = node.currentStyle.whiteSpace;
-    }
-    // XXX
-    //  it is important to note that what is below is a fix for ReSpec
-    else if (document.defaultView.getComputedStyle && document.defaultView.getComputedStyle(node, null)) {
-      whitespace = document.defaultView.getComputedStyle(node, null)
-          .getPropertyValue('white-space');
-    }
-    var isPreformatted = whitespace && 'pre' === whitespace.substring(0, 3);
-
+  
     function walk(node) {
-      switch (node.nodeType) {
-        case 1:  // Element
-          if (nocode.test(node.className)) { return; }
-          for (var child = node.firstChild; child; child = child.nextSibling) {
-            walk(child);
+      var type = node.nodeType;
+      if (type == 1) {  // Element
+        if (nocode.test(node.className)) { return; }
+        for (var child = node.firstChild; child; child = child.nextSibling) {
+          walk(child);
+        }
+        var nodeName = node.nodeName.toLowerCase();
+        if ('br' === nodeName || 'li' === nodeName) {
+          chunks[k] = '\n';
+          spans[k << 1] = length++;
+          spans[(k++ << 1) | 1] = node;
+        }
+      } else if (type == 3 || type == 4) {  // Text
+        var text = node.nodeValue;
+        if (text.length) {
+          if (!isPreformatted) {
+            text = text.replace(/[ \t\r\n]+/g, ' ');
+          } else {
+            text = text.replace(/\r\n?/g, '\n');  // Normalize newlines.
           }
-          var nodeName = node.nodeName;
-          if ('BR' === nodeName || 'LI' === nodeName) {
-            chunks[k] = '\n';
-            spans[k << 1] = length++;
-            spans[(k++ << 1) | 1] = node;
-          }
-          break;
-        case 3: case 4:  // Text
-          var text = node.nodeValue;
-          if (text.length) {
-            if (!isPreformatted) {
-              text = text.replace(/[ \t\r\n]+/g, ' ');
-            } else {
-              text = text.replace(/\r\n?/g, '\n');  // Normalize newlines.
-            }
-            // TODO: handle tabs here?
-            chunks[k] = text;
-            spans[k << 1] = length;
-            length += text.length;
-            spans[(k++ << 1) | 1] = node;
-          }
-          break;
+          // TODO: handle tabs here?
+          chunks[k] = text;
+          spans[k << 1] = length;
+          length += text.length;
+          spans[(k++ << 1) | 1] = node;
+        }
       }
     }
-
+  
     walk(node);
-
+  
     return {
       sourceCode: chunks.join('').replace(/\n$/, ''),
       spans: spans
     };
   }
-
 
   /**
    * Apply the given language handler to sourceCode and add the resulting
@@ -5535,7 +5512,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
     if (options['verbatimStrings']) {
       // verbatim-string-literal production from the C# grammar.  See issue 93.
       fallthroughStylePatterns.push(
-          [PR_STRING, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null]); //"
+          [PR_STRING, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null]);
     }
     var hc = options['hashComments'];
     if (hc) {
@@ -5546,12 +5523,13 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         } else {
           // Stop C preprocessor declarations at an unclosed open comment
           shortcutStylePatterns.push(
-              [PR_COMMENT, /^#(?:(?:define|elif|else|endif|error|ifdef|include|ifndef|line|pragma|undef|warning)\b|[^\r\n]*)/,
+              [PR_COMMENT, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/,
                null, '#']);
         }
+        // #include <stdio.h>
         fallthroughStylePatterns.push(
             [PR_STRING,
-             /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h|[a-z]\w*)>/,
+             /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/,
              null]);
       } else {
         shortcutStylePatterns.push([PR_COMMENT, /^#[^\r\n]*/, null, '#']);
@@ -5562,7 +5540,18 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       fallthroughStylePatterns.push(
           [PR_COMMENT, /^\/\*[\s\S]*?(?:\*\/|$)/, null]);
     }
-    if (options['regexLiterals']) {
+    var regexLiterals = options['regexLiterals'];
+    if (regexLiterals) {
+      /**
+       * @const
+       */
+      var regexExcls = regexLiterals > 1
+        ? ''  // Multiline regex literals
+        : '\n\r';
+      /**
+       * @const
+       */
+      var regexAny = regexExcls ? '.' : '[\\S\\s]';
       /**
        * @const
        */
@@ -5570,18 +5559,19 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           // A regular expression literal starts with a slash that is
           // not followed by * or / so that it is not confused with
           // comments.
-          '/(?=[^/*])'
+          '/(?=[^/*' + regexExcls + '])'
           // and then contains any number of raw characters,
-          + '(?:[^/\\x5B\\x5C]'
+          + '(?:[^/\\x5B\\x5C' + regexExcls + ']'
           // escape sequences (\x5C),
-          +    '|\\x5C[\\s\\S]'
+          +    '|\\x5C' + regexAny
           // or non-nesting character sets (\x5B\x5D);
-          +    '|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+'
+          +    '|\\x5B(?:[^\\x5C\\x5D' + regexExcls + ']'
+          +             '|\\x5C' + regexAny + ')*(?:\\x5D|$))+'
           // finally closed by a /.
           + '/');
       fallthroughStylePatterns.push(
           ['lang-regex',
-           new RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + REGEX_LITERAL + ')')
+           RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + REGEX_LITERAL + ')')
            ]);
     }
 
@@ -5599,6 +5589,48 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
     }
 
     shortcutStylePatterns.push([PR_PLAIN,       /^\s+/, null, ' \r\n\t\xA0']);
+
+    var punctuation =
+      // The Bash man page says
+
+      // A word is a sequence of characters considered as a single
+      // unit by GRUB. Words are separated by metacharacters,
+      // which are the following plus space, tab, and newline: { }
+      // | & $ ; < >
+      // ...
+      
+      // A word beginning with # causes that word and all remaining
+      // characters on that line to be ignored.
+
+      // which means that only a '#' after /(?:^|[{}|&$;<>\s])/ starts a
+      // comment but empirically
+      // $ echo {#}
+      // {#}
+      // $ echo \$#
+      // $#
+      // $ echo }#
+      // }#
+
+      // so /(?:^|[|&;<>\s])/ is more appropriate.
+
+      // http://gcc.gnu.org/onlinedocs/gcc-2.95.3/cpp_1.html#SEC3
+      // suggests that this definition is compatible with a
+      // default mode that tries to use a single token definition
+      // to recognize both bash/python style comments and C
+      // preprocessor directives.
+
+      // This definition of punctuation does not include # in the list of
+      // follow-on exclusions, so # will not be broken before if preceeded
+      // by a punctuation character.  We could try to exclude # after
+      // [|&;<>] but that doesn't seem to cause many major problems.
+      // If that does turn out to be a problem, we should change the below
+      // when hc is truthy to include # in the run of punctuation characters
+      // only when not followint [|&;<>].
+      '^.[^\\s\\w.$@\'"`/\\\\]*';
+    if (options['regexLiterals']) {
+      punctuation += '(?!\s*\/)';
+    }
+
     fallthroughStylePatterns.push(
         // TODO(mikesamuel): recognize non-latin letters and numerals in idents
         [PR_LITERAL,     /^@[a-z_$][a-z_$@0-9]*/i, null],
@@ -5617,9 +5649,10 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
              // with an optional modifier like UL for unsigned long
              + '[a-z]*', 'i'),
          null, '0123456789'],
-        // Don't treat escaped quotes in bash as starting strings.  See issue 144.
+        // Don't treat escaped quotes in bash as starting strings.
+        // See issue 144.
         [PR_PLAIN,       /^\\[\s\S]?/, null],
-        [PR_PUNCTUATION, /^.[^\s\w\.$@\'\"\`\/\#\\]*/, null]); // '
+        [PR_PUNCTUATION, new RegExp(punctuation), null]);
 
     return createSimpleLexer(shortcutStylePatterns, fallthroughStylePatterns);
   }
@@ -5640,72 +5673,58 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
    *     HTMLOListElement, and each line is moved into a separate list item.
    *     This requires cloning elements, so the input might not have unique
    *     IDs after numbering.
+   * @param {boolean} isPreformatted true iff white-space in text nodes should
+   *     be treated as significant.
    */
-  function numberLines(node, opt_startLineNum) {
+  function numberLines(node, opt_startLineNum, isPreformatted) {
     var nocode = /(?:^|\s)nocode(?:\s|$)/;
     var lineBreak = /\r\n?|\n/;
-
+  
     var document = node.ownerDocument;
-
-    var whitespace;
-    if (node.currentStyle) {
-      whitespace = node.currentStyle.whiteSpace;
-    } else if (window.getComputedStyle) {
-      whitespace = document.defaultView.getComputedStyle(node, null)
-          .getPropertyValue('white-space');
-    }
-    // If it's preformatted, then we need to split lines on line breaks
-    // in addition to <BR>s.
-    var isPreformatted = whitespace && 'pre' === whitespace.substring(0, 3);
-
-    var li = document.createElement('LI');
+  
+    var li = document.createElement('li');
     while (node.firstChild) {
       li.appendChild(node.firstChild);
     }
     // An array of lines.  We split below, so this is initialized to one
     // un-split line.
     var listItems = [li];
-
+  
     function walk(node) {
-      switch (node.nodeType) {
-        case 1:  // Element
-          if (nocode.test(node.className)) { break; }
-          if ('BR' === node.nodeName) {
-            breakAfter(node);
-            // Discard the <BR> since it is now flush against a </LI>.
-            if (node.parentNode) {
-              node.parentNode.removeChild(node);
-            }
-          } else {
-            for (var child = node.firstChild; child; child = child.nextSibling) {
-              walk(child);
-            }
+      var type = node.nodeType;
+      if (type == 1 && !nocode.test(node.className)) {  // Element
+        if ('br' === node.nodeName) {
+          breakAfter(node);
+          // Discard the <BR> since it is now flush against a </LI>.
+          if (node.parentNode) {
+            node.parentNode.removeChild(node);
           }
-          break;
-        case 3: case 4:  // Text
-          if (isPreformatted) {
-            var text = node.nodeValue;
-            var match = text.match(lineBreak);
-            if (match) {
-              var firstLine = text.substring(0, match.index);
-              node.nodeValue = firstLine;
-              var tail = text.substring(match.index + match[0].length);
-              if (tail) {
-                var parent = node.parentNode;
-                parent.insertBefore(
-                    document.createTextNode(tail), node.nextSibling);
-              }
-              breakAfter(node);
-              if (!firstLine) {
-                // Don't leave blank text nodes in the DOM.
-                node.parentNode.removeChild(node);
-              }
-            }
+        } else {
+          for (var child = node.firstChild; child; child = child.nextSibling) {
+            walk(child);
           }
-          break;
+        }
+      } else if ((type == 3 || type == 4) && isPreformatted) {  // Text
+        var text = node.nodeValue;
+        var match = text.match(lineBreak);
+        if (match) {
+          var firstLine = text.substring(0, match.index);
+          node.nodeValue = firstLine;
+          var tail = text.substring(match.index + match[0].length);
+          if (tail) {
+            var parent = node.parentNode;
+            parent.insertBefore(
+              document.createTextNode(tail), node.nextSibling);
+          }
+          breakAfter(node);
+          if (!firstLine) {
+            // Don't leave blank text nodes in the DOM.
+            node.parentNode.removeChild(node);
+          }
+        }
       }
     }
-
+  
     // Split a line after the given node.
     function breakAfter(lineEndNode) {
       // If there's nothing to the right, then we can skip ending the line
@@ -5715,7 +5734,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         lineEndNode = lineEndNode.parentNode;
         if (!lineEndNode) { return; }
       }
-
+  
       function breakLeftOf(limit, copy) {
         // Clone shallowly if this node needs to be on both sides of the break.
         var rightSide = copy ? limit.cloneNode(false) : limit;
@@ -5737,9 +5756,9 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         }
         return rightSide;
       }
-
+  
       var copiedListItem = breakLeftOf(lineEndNode.nextSibling, 0);
-
+  
       // Walk the parent chain until we reach an unattached LI.
       for (var parent;
            // Check nodeType since IE invents document fragments.
@@ -5749,20 +5768,20 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       // Put it on the list of lines for later processing.
       listItems.push(copiedListItem);
     }
-
+  
     // Split lines while there are lines left to split.
     for (var i = 0;  // Number of lines that have been split so far.
          i < listItems.length;  // length updated by breakAfter calls.
          ++i) {
       walk(listItems[i]);
     }
-
+  
     // Make sure numeric indices show correctly.
     if (opt_startLineNum === (opt_startLineNum|0)) {
       listItems[0].setAttribute('value', opt_startLineNum);
     }
-
-    var ol = document.createElement('OL');
+  
+    var ol = document.createElement('ol');
     ol.className = 'linenums';
     var offset = Math.max(0, ((opt_startLineNum - 1 /* zero index */)) | 0) || 0;
     for (var i = 0, n = listItems.length; i < n; ++i) {
@@ -5776,15 +5795,15 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       }
       ol.appendChild(li);
     }
-
+  
     node.appendChild(ol);
   }
-
   /**
    * Breaks {@code job.sourceCode} around style boundaries in
    * {@code job.decorations} and modifies {@code job.sourceNode} in place.
    * @param {Object} job like <pre>{
    *    sourceCode: {string} source as plain text,
+   *    sourceNode: {HTMLElement} the element containing the source,
    *    spans: {Array.<number|Node>} alternating span start indices into source
    *       and the text node or element (e.g. {@code <BR>}) corresponding to that
    *       span.
@@ -5794,25 +5813,26 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
    * @private
    */
   function recombineTagsAndDecorations(job) {
-    var isIE = /\bMSIE\b/.test(navigator.userAgent);
+    var isIE8OrEarlier = /\bMSIE\s(\d+)/.exec(navigator.userAgent);
+    isIE8OrEarlier = isIE8OrEarlier && +isIE8OrEarlier[1] <= 8;
     var newlineRe = /\n/g;
-
+  
     var source = job.sourceCode;
     var sourceLength = source.length;
     // Index into source after the last code-unit recombined.
     var sourceIndex = 0;
-
+  
     var spans = job.spans;
     var nSpans = spans.length;
     // Index into spans after the last span which ends at or before sourceIndex.
     var spanIndex = 0;
-
+  
     var decorations = job.decorations;
     var nDecorations = decorations.length;
     // Index into decorations after the last decoration which ends at or before
     // sourceIndex.
     var decorationIndex = 0;
-
+  
     // Remove all zero-length decorations.
     decorations[nDecorations] = sourceLength;
     var decPos, i;
@@ -5825,7 +5845,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       }
     }
     nDecorations = decPos;
-
+  
     // Simplify decorations.
     for (i = decPos = 0; i < nDecorations;) {
       var startPos = decorations[i];
@@ -5839,56 +5859,68 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       decorations[decPos++] = startDec;
       i = end;
     }
-
+  
     nDecorations = decorations.length = decPos;
-
-    var decoration = null;
-    while (spanIndex < nSpans) {
-      var spanStart = spans[spanIndex];
-      var spanEnd = spans[spanIndex + 2] || sourceLength;
-
-      var decStart = decorations[decorationIndex];
-      var decEnd = decorations[decorationIndex + 2] || sourceLength;
-
-      var end = Math.min(spanEnd, decEnd);
-
-      var textNode = spans[spanIndex + 1];
-      var styledText;
-      if (textNode.nodeType !== 1  // Don't muck with <BR>s or <LI>s
-          // Don't introduce spans around empty text nodes.
-          && (styledText = source.substring(sourceIndex, end))) {
-        // This may seem bizarre, and it is.  Emitting LF on IE causes the
-        // code to display with spaces instead of line breaks.
-        // Emitting Windows standard issue linebreaks (CRLF) causes a blank
-        // space to appear at the beginning of every line but the first.
-        // Emitting an old Mac OS 9 line separator makes everything spiffy.
-        if (isIE) { styledText = styledText.replace(newlineRe, '\r'); }
-        textNode.nodeValue = styledText;
-        var document = textNode.ownerDocument;
-        var span = document.createElement('SPAN');
-        span.className = decorations[decorationIndex + 1];
-        var parentNode = textNode.parentNode;
-        parentNode.replaceChild(span, textNode);
-        span.appendChild(textNode);
-        if (sourceIndex < spanEnd) {  // Split off a text node.
-          spans[spanIndex + 1] = textNode
-              // TODO: Possibly optimize by using '' if there's no flicker.
-              = document.createTextNode(source.substring(end, spanEnd));
-          parentNode.insertBefore(textNode, span.nextSibling);
+  
+    var sourceNode = job.sourceNode;
+    var oldDisplay;
+    if (sourceNode) {
+      oldDisplay = sourceNode.style.display;
+      sourceNode.style.display = 'none';
+    }
+    try {
+      var decoration = null;
+      while (spanIndex < nSpans) {
+        var spanStart = spans[spanIndex];
+        var spanEnd = spans[spanIndex + 2] || sourceLength;
+  
+        var decEnd = decorations[decorationIndex + 2] || sourceLength;
+  
+        var end = Math.min(spanEnd, decEnd);
+  
+        var textNode = spans[spanIndex + 1];
+        var styledText;
+        if (textNode.nodeType !== 1  // Don't muck with <BR>s or <LI>s
+            // Don't introduce spans around empty text nodes.
+            && (styledText = source.substring(sourceIndex, end))) {
+          // This may seem bizarre, and it is.  Emitting LF on IE causes the
+          // code to display with spaces instead of line breaks.
+          // Emitting Windows standard issue linebreaks (CRLF) causes a blank
+          // space to appear at the beginning of every line but the first.
+          // Emitting an old Mac OS 9 line separator makes everything spiffy.
+          if (isIE8OrEarlier) {
+            styledText = styledText.replace(newlineRe, '\r');
+          }
+          textNode.nodeValue = styledText;
+          var document = textNode.ownerDocument;
+          var span = document.createElement('span');
+          span.className = decorations[decorationIndex + 1];
+          var parentNode = textNode.parentNode;
+          parentNode.replaceChild(span, textNode);
+          span.appendChild(textNode);
+          if (sourceIndex < spanEnd) {  // Split off a text node.
+            spans[spanIndex + 1] = textNode
+                // TODO: Possibly optimize by using '' if there's no flicker.
+                = document.createTextNode(source.substring(end, spanEnd));
+            parentNode.insertBefore(textNode, span.nextSibling);
+          }
+        }
+  
+        sourceIndex = end;
+  
+        if (sourceIndex >= spanEnd) {
+          spanIndex += 2;
+        }
+        if (sourceIndex >= decEnd) {
+          decorationIndex += 2;
         }
       }
-
-      sourceIndex = end;
-
-      if (sourceIndex >= spanEnd) {
-        spanIndex += 2;
-      }
-      if (sourceIndex >= decEnd) {
-        decorationIndex += 2;
+    } finally {
+      if (sourceNode) {
+        sourceNode.style.display = oldDisplay;
       }
     }
   }
-
 
   /** Maps language-specific file extensions to handlers. */
   var langHandlerRegistry = {};
@@ -5913,7 +5945,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       var ext = fileExtensions[i];
       if (!langHandlerRegistry.hasOwnProperty(ext)) {
         langHandlerRegistry[ext] = handler;
-      } else if (window['console']) {
+      } else if (win['console']) {
         console['warn']('cannot override language handler %s', ext);
       }
     }
@@ -5951,24 +5983,24 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
   registerLangHandler(
       createSimpleLexer(
           [
-           [PR_PLAIN,        /^[\s]+/, null, ' \t\r\n'],    //
-           [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\''] // "
+           [PR_PLAIN,        /^[\s]+/, null, ' \t\r\n'],
+           [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
            ],
           [
            [PR_TAG,          /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i],
            [PR_ATTRIB_NAME,  /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],
-           ['lang-uq.val',   /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/], // '
-           [PR_PUNCTUATION,  /^[=<>\/]+/], //
-           ['lang-js',       /^on\w+\s*=\s*\"([^\"]+)\"/i], // "
-           ['lang-js',       /^on\w+\s*=\s*\'([^\']+)\'/i], // '
-           ['lang-js',       /^on\w+\s*=\s*([^\"\'>\s]+)/i],    // "
-           ['lang-css',      /^style\s*=\s*\"([^\"]+)\"/i], // "
-           ['lang-css',      /^style\s*=\s*\'([^\']+)\'/i], // '
-           ['lang-css',      /^style\s*=\s*([^\"\'>\s]+)/i] // "
+           ['lang-uq.val',   /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/],
+           [PR_PUNCTUATION,  /^[=<>\/]+/],
+           ['lang-js',       /^on\w+\s*=\s*\"([^\"]+)\"/i],
+           ['lang-js',       /^on\w+\s*=\s*\'([^\']+)\'/i],
+           ['lang-js',       /^on\w+\s*=\s*([^\"\'>\s]+)/i],
+           ['lang-css',      /^style\s*=\s*\"([^\"]+)\"/i],
+           ['lang-css',      /^style\s*=\s*\'([^\']+)\'/i],
+           ['lang-css',      /^style\s*=\s*([^\"\'>\s]+)/i]
            ]),
       ['in.tag']);
   registerLangHandler(
-      createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);  //
+      createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);
   registerLangHandler(sourceDecorator({
           'keywords': CPP_KEYWORDS,
           'hashComments': true,
@@ -5993,30 +6025,30 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           'keywords': SH_KEYWORDS,
           'hashComments': true,
           'multiLineStrings': true
-        }), ['bsh', 'csh', 'sh']);
+        }), ['bash', 'bsh', 'csh', 'sh']);
   registerLangHandler(sourceDecorator({
           'keywords': PYTHON_KEYWORDS,
           'hashComments': true,
           'multiLineStrings': true,
           'tripleQuotedStrings': true
-        }), ['cv', 'py']);
+        }), ['cv', 'py', 'python']);
   registerLangHandler(sourceDecorator({
           'keywords': PERL_KEYWORDS,
           'hashComments': true,
           'multiLineStrings': true,
-          'regexLiterals': true
+          'regexLiterals': 2  // multiline regex literals
         }), ['perl', 'pl', 'pm']);
   registerLangHandler(sourceDecorator({
           'keywords': RUBY_KEYWORDS,
           'hashComments': true,
           'multiLineStrings': true,
           'regexLiterals': true
-        }), ['rb']);
+        }), ['rb', 'ruby']);
   registerLangHandler(sourceDecorator({
           'keywords': JSCRIPT_KEYWORDS,
           'cStyleComments': true,
           'regexLiterals': true
-        }), ['js']);
+        }), ['javascript', 'js']);
   registerLangHandler(sourceDecorator({
           'keywords': COFFEE_KEYWORDS,
           'hashComments': 3,  // ### style block comments
@@ -6025,14 +6057,20 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
           'tripleQuotedStrings': true,
           'regexLiterals': true
         }), ['coffee']);
-  registerLangHandler(createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']); //
+  registerLangHandler(sourceDecorator({
+          'keywords': RUST_KEYWORDS,
+          'cStyleComments': true,
+          'multilineStrings': true
+        }), ['rc', 'rs', 'rust']);
+  registerLangHandler(
+      createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']);
 
   function applyDecorator(job) {
     var opt_langExtension = job.langExtension;
 
     try {
       // Extract tags, and convert the source code to plain text.
-      var sourceAndSpans = extractSourceSpans(job.sourceNode);
+      var sourceAndSpans = extractSourceSpans(job.sourceNode, job.pre);
       /** Plain text. @type {string} */
       var source = sourceAndSpans.sourceCode;
       job.sourceCode = source;
@@ -6046,40 +6084,58 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       // modifying the sourceNode in place.
       recombineTagsAndDecorations(job);
     } catch (e) {
-      if ('console' in window) {
-        console['log'](e && e['stack'] ? e['stack'] : e);
+      if (win['console']) {
+        console['log'](e && e['stack'] || e);
       }
     }
   }
 
   /**
+   * Pretty print a chunk of code.
    * @param sourceCodeHtml {string} The HTML to pretty print.
    * @param opt_langExtension {string} The language name to use.
    *     Typically, a filename extension like 'cpp' or 'java'.
    * @param opt_numberLines {number|boolean} True to number lines,
    *     or the 1-indexed number of the first line in sourceCodeHtml.
    */
-  function prettyPrintOne(sourceCodeHtml, opt_langExtension, opt_numberLines) {
-    var container = document.createElement('PRE');
+  function $prettyPrintOne(sourceCodeHtml, opt_langExtension, opt_numberLines) {
+    var container = document.createElement('div');
     // This could cause images to load and onload listeners to fire.
     // E.g. <img onerror="alert(1337)" src="nosuchimage.png">.
     // We assume that the inner HTML is from a trusted source.
-    container.innerHTML = sourceCodeHtml;
+    // The pre-tag is required for IE8 which strips newlines from innerHTML
+    // when it is injected into a <pre> tag.
+    // http://stackoverflow.com/questions/451486/pre-tag-loses-line-breaks-when-setting-innerhtml-in-ie
+    // http://stackoverflow.com/questions/195363/inserting-a-newline-into-a-pre-tag-ie-javascript
+    container.innerHTML = '<pre>' + sourceCodeHtml + '</pre>';
+    container = container.firstChild;
     if (opt_numberLines) {
-      numberLines(container, opt_numberLines);
+      numberLines(container, opt_numberLines, true);
     }
 
     var job = {
       langExtension: opt_langExtension,
       numberLines: opt_numberLines,
-      sourceNode: container
+      sourceNode: container,
+      pre: 1
     };
     applyDecorator(job);
     return container.innerHTML;
   }
 
-  function prettyPrint(opt_whenDone) {
-    function byTagName(tn) { return document.getElementsByTagName(tn); }
+   /**
+    * Find all the {@code <pre>} and {@code <code>} tags in the DOM with
+    * {@code class=prettyprint} and prettify them.
+    *
+    * @param {Function} opt_whenDone called when prettifying is done.
+    * @param {HTMLElement|HTMLDocument} opt_root an element or document
+    *   containing all the elements to pretty print.
+    *   Defaults to {@code document.body}.
+    */
+  function $prettyPrint(opt_whenDone, opt_root) {
+    var root = opt_root || document.body;
+    var doc = root.ownerDocument || document;
+    function byTagName(tn) { return root.getElementsByTagName(tn); }
     // fetch a list of nodes to rewrite
     var codeSegments = [byTagName('pre'), byTagName('code'), byTagName('xmp')];
     var elements = [];
@@ -6102,59 +6158,124 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
 
     var langExtensionRe = /\blang(?:uage)?-([\w.]+)(?!\S)/;
     var prettyPrintRe = /\bprettyprint\b/;
+    var prettyPrintedRe = /\bprettyprinted\b/;
+    var preformattedTagNameRe = /pre|xmp/i;
+    var codeRe = /^code$/i;
+    var preCodeXmpRe = /^(?:pre|code|xmp)$/i;
+    var EMPTY = {};
 
     function doWork() {
-      var endTime = (window['PR_SHOULD_USE_CONTINUATION'] ?
+      var endTime = (win['PR_SHOULD_USE_CONTINUATION'] ?
                      clock['now']() + 250 /* ms */ :
                      Infinity);
       for (; k < elements.length && clock['now']() < endTime; k++) {
         var cs = elements[k];
-        var className = cs.className;
-        if (className.indexOf('prettyprint') >= 0) {
-          // If the classes includes a language extensions, use it.
-          // Language extensions can be specified like
-          //     <pre class="prettyprint lang-cpp">
-          // the language extension "cpp" is used to find a language handler as
-          // passed to PR.registerLangHandler.
-          // HTML5 recommends that a language be specified using "language-"
-          // as the prefix instead.  Google Code Prettify supports both.
-          // http://dev.w3.org/html5/spec-author-view/the-code-element.html
-          var langExtension = className.match(langExtensionRe);
-          // Support <pre class="prettyprint"><code class="language-c">
-          var wrapper;
-          if (!langExtension && (wrapper = childContentWrapper(cs))
-              && "CODE" === wrapper.tagName) {
-            langExtension = wrapper.className.match(langExtensionRe);
-          }
 
-          if (langExtension) {
-            langExtension = langExtension[1];
+        // Look for a preceding comment like
+        // <?prettify lang="..." linenums="..."?>
+        var attrs = EMPTY;
+        {
+          for (var preceder = cs; (preceder = preceder.previousSibling);) {
+            var nt = preceder.nodeType;
+            // <?foo?> is parsed by HTML 5 to a comment node (8)
+            // like <!--?foo?-->, but in XML is a processing instruction
+            var value = (nt === 7 || nt === 8) && preceder.nodeValue;
+            if (value
+                ? !/^\??prettify\b/.test(value)
+                : (nt !== 3 || /\S/.test(preceder.nodeValue))) {
+              // Skip over white-space text nodes but not others.
+              break;
+            }
+            if (value) {
+              attrs = {};
+              value.replace(
+                  /\b(\w+)=([\w:.%+-]+)/g,
+                function (_, name, value) { attrs[name] = value; });
+              break;
+            }
           }
+        }
+
+        var className = cs.className;
+        if ((attrs !== EMPTY || prettyPrintRe.test(className))
+            // Don't redo this if we've already done it.
+            // This allows recalling pretty print to just prettyprint elements
+            // that have been added to the page since last call.
+            && !prettyPrintedRe.test(className)) {
 
           // make sure this is not nested in an already prettified element
           var nested = false;
           for (var p = cs.parentNode; p; p = p.parentNode) {
-            if ((p.tagName === 'pre' || p.tagName === 'code' ||
-                 p.tagName === 'xmp') &&
-                p.className && p.className.indexOf('prettyprint') >= 0) {
+            var tn = p.tagName;
+            if (preCodeXmpRe.test(tn)
+                && p.className && prettyPrintRe.test(p.className)) {
               nested = true;
               break;
             }
           }
           if (!nested) {
+            // Mark done.  If we fail to prettyprint for whatever reason,
+            // we shouldn't try again.
+            cs.className += ' prettyprinted';
+
+            // If the classes includes a language extensions, use it.
+            // Language extensions can be specified like
+            //     <pre class="prettyprint lang-cpp">
+            // the language extension "cpp" is used to find a language handler
+            // as passed to PR.registerLangHandler.
+            // HTML5 recommends that a language be specified using "language-"
+            // as the prefix instead.  Google Code Prettify supports both.
+            // http://dev.w3.org/html5/spec-author-view/the-code-element.html
+            var langExtension = attrs['lang'];
+            if (!langExtension) {
+              langExtension = className.match(langExtensionRe);
+              // Support <pre class="prettyprint"><code class="language-c">
+              var wrapper;
+              if (!langExtension && (wrapper = childContentWrapper(cs))
+                  && codeRe.test(wrapper.tagName)) {
+                langExtension = wrapper.className.match(langExtensionRe);
+              }
+
+              if (langExtension) { langExtension = langExtension[1]; }
+            }
+
+            var preformatted;
+            if (preformattedTagNameRe.test(cs.tagName)) {
+              preformatted = 1;
+            } else {
+              var currentStyle = cs['currentStyle'];
+              var defaultView = doc.defaultView;
+              var whitespace = (
+                  currentStyle
+                  ? currentStyle['whiteSpace']
+                  : (defaultView
+                     && defaultView.getComputedStyle)
+                  ? defaultView.getComputedStyle(cs, null)
+                  .getPropertyValue('white-space')
+                  : 0);
+              preformatted = whitespace
+                  && 'pre' === whitespace.substring(0, 3);
+            }
+
             // Look for a class like linenums or linenums:<n> where <n> is the
             // 1-indexed number of the first line.
-            var lineNums = cs.className.match(/\blinenums\b(?::(\d+))?/);
-            lineNums = lineNums
-                  ? lineNums[1] && lineNums[1].length ? +lineNums[1] : true
-                  : false;
-            if (lineNums) { numberLines(cs, lineNums); }
+            var lineNums = attrs['linenums'];
+            if (!(lineNums = lineNums === 'true' || +lineNums)) {
+              lineNums = className.match(/\blinenums\b(?::(\d+))?/);
+              lineNums =
+                lineNums
+                ? lineNums[1] && lineNums[1].length
+                  ? +lineNums[1] : true
+                : false;
+            }
+            if (lineNums) { numberLines(cs, lineNums, preformatted); }
 
             // do the pretty printing
             prettyPrintingJob = {
               langExtension: langExtension,
               sourceNode: cs,
-              numberLines: lineNums
+              numberLines: lineNums,
+              pre: preformatted
             };
             applyDecorator(prettyPrintingJob);
           }
@@ -6163,7 +6284,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       if (k < elements.length) {
         // finish up in a continuation
         setTimeout(doWork, 250);
-      } else if (opt_whenDone) {
+      } else if ('function' === typeof opt_whenDone) {
         opt_whenDone();
       }
     }
@@ -6171,26 +6292,11 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
     doWork();
   }
 
-   /**
-    * Find all the {@code <pre>} and {@code <code>} tags in the DOM with
-    * {@code class=prettyprint} and prettify them.
-    *
-    * @param {Function?} opt_whenDone if specified, called when the last entry
-    *     has been finished.
-    */
-  window['prettyPrintOne'] = prettyPrintOne;
-   /**
-    * Pretty print a chunk of code.
-    *
-    * @param {string} sourceCodeHtml code as html
-    * @return {string} code as html, but prettier
-    */
-  window['prettyPrint'] = prettyPrint;
-   /**
-    * Contains functions for creating and registering new language handlers.
-    * @type {Object}
-    */
-  window['PR'] = {
+  /**
+   * Contains functions for creating and registering new language handlers.
+   * @type {Object}
+   */
+  var PR = win['PR'] = {
         'createSimpleLexer': createSimpleLexer,
         'registerLangHandler': registerLangHandler,
         'sourceDecorator': sourceDecorator,
@@ -6206,9 +6312,82 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         'PR_SOURCE': PR_SOURCE,
         'PR_STRING': PR_STRING,
         'PR_TAG': PR_TAG,
-        'PR_TYPE': PR_TYPE
+        'PR_TYPE': PR_TYPE,
+        'prettyPrintOne':
+           IN_GLOBAL_SCOPE
+             ? (win['prettyPrintOne'] = $prettyPrintOne)
+             : (prettyPrintOne = $prettyPrintOne),
+        'prettyPrint': prettyPrint =
+           IN_GLOBAL_SCOPE
+             ? (win['prettyPrint'] = $prettyPrint)
+             : (prettyPrint = $prettyPrint)
       };
+
+  // Make PR available via the Asynchronous Module Definition (AMD) API.
+  // Per https://github.com/amdjs/amdjs-api/wiki/AMD:
+  // The Asynchronous Module Definition (AMD) API specifies a
+  // mechanism for defining modules such that the module and its
+  // dependencies can be asynchronously loaded.
+  // ...
+  // To allow a clear indicator that a global define function (as
+  // needed for script src browser loading) conforms to the AMD API,
+  // any global define function SHOULD have a property called "amd"
+  // whose value is an object. This helps avoid conflict with any
+  // other existing JavaScript code that could have defined a define()
+  // function that does not conform to the AMD API.
+  if (typeof define === "function" && define['amd']) {
+    define("google-code-prettify", [], function () {
+      return PR; 
+    });
+  }
 })();
+
+
+// Module core/highlight
+// Does syntax highlighting to all pre and code that have a class of "highlight"
+
+// A potential improvement would be to call cb() immediately and benefit from the asynchronous
+// ability of prettyPrint() (but only call msg.pub() in the callback to remain accurate as to
+// the end of processing)
+
+define(
+    'core/highlight',["text!core/css/highlight.css", "google-code-prettify"],
+    function (css, PR) {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/highlight");
+                
+                // fix old classes
+                var oldies = "sh_css sh_html sh_javascript sh_javascript_dom sh_xml".split(" ");
+                for (var i = 0, n = oldies.length; i < n; i++) {
+                    var old = oldies[i];
+                    $("." + old).each(function () {
+                        $(this).removeClass(old).addClass("highlight");
+                        msg.pub("warn", "Old highlighting class '" + old + "', use 'highlight' instead.");
+                    });
+                }
+                
+                // prettify
+                var $highs = $("pre.highlight, code.highlight")
+                ,   done = function () {
+                        msg.pub("end", "core/highlight");
+                        cb();
+                    }
+                ;
+                if ($highs.length) {
+                    if (!conf.noHighlightCSS) {
+                        $(doc).find("head link").first().before($("<style/>").text(css));
+                    }
+                    $highs.addClass("prettyprint");
+                    PR.prettyPrint(done);
+                }
+                else {
+                    done();
+                }
+            }
+        };
+    }
+);
 
 define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
@@ -8357,8 +8536,9 @@ define(
                                       .append(isIntro ? "" : $span.clone())
                                       .append($kidsHolder.contents());
                     var $item = $("<li class='tocline'/>").append($a);
-                    $ul.append($item);
-                    if (conf.maxTocLevel && level >= conf.maxTocLevel) continue;
+                    if (conf.maxTocLevel == 0 || level <= conf.maxTocLevel) {
+                    	$ul.append($item);
+                    }
                     current.push(0);
                     var $sub = makeTOCAtLevel($sec, doc, current, level + 1, conf);
                     if ($sub) $item.append($sub);
