@@ -1,6 +1,7 @@
-/* ReSpec 3.1.66 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.7 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec. */
+respecVersion = '3.2.7';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
@@ -272,38 +273,501 @@ define(
                 // the first in the plugs is going to be us
                 plugs.shift();
 
-                // the base URL is used by some modules
-                var $scripts = $("script"),
-                    baseUrl = "";
-                $scripts.each(function (i, s) {
-                    var src = s.getAttribute("src");
-                    if (!src || !$(s).hasClass("remove")) return;
-                    if (/\/js\//.test(src)) baseUrl = src.replace(/\/js\/.*/, "\/js\/");
-                });
-                respecConfig.respecBase = baseUrl;
-                respecConfig.scheme = (respecConfig.scheme) ? respecConfig.scheme : location.protocol.replace(":", "").toLowerCase();
-                respecConfig.httpScheme = (respecConfig.scheme === "https") ? "https" : "http";
-                
                 var pipeline;
                 pipeline = function () {
                     if (!plugs.length) {
                         if (respecConfig.postProcess) {
-                            for (var i = 0; i < respecConfig.postProcess.length; i++) respecConfig.postProcess[i].apply(this);
+                            for (var i = 0; i < respecConfig.postProcess.length; i++) {
+                                try { respecConfig.postProcess[i].apply(this); }
+                                catch (e) { respecEvents.pub("error", e); }
+                            }
                         }
-                        if (respecConfig.afterEnd) respecConfig.afterEnd.apply(window, Array.prototype.slice.call(arguments));
+                        if (respecConfig.afterEnd) {
+                            try { respecConfig.afterEnd.apply(window, Array.prototype.slice.call(arguments)); }
+                            catch (e) { respecEvents.pub("error", e); }
+                        }
                         respecEvents.pub("end", "core/base-runner");
                         return;
                     }
                     var plug = plugs.shift();
-                    if (plug.run) plug.run.call(plug, respecConfig, document, pipeline, respecEvents);
+                    if (plug.run) {
+                        try { plug.run.call(plug, respecConfig, document, pipeline, respecEvents); }
+                        catch (e) {
+                            respecEvents.pub("error", e);
+                            respecEvents.pub("end", "unknown/with-error");
+                            pipeline();
+                        }
+                    }
                     else pipeline();
                 };
                 if (respecConfig.preProcess) {
-                    for (var i = 0; i < respecConfig.preProcess.length; i++) respecConfig.preProcess[i].apply(this);
+                    for (var i = 0; i < respecConfig.preProcess.length; i++) {
+                        try { respecConfig.preProcess[i].apply(this); }
+                        catch (e) { respecEvents.pub("error", e); }
+                    }
                 }
                 pipeline();
             }
         };
+    }
+);
+
+/**
+ * http://www.openjs.com/scripts/events/keyboard_shortcuts/
+ * Version : 2.01.B
+ * By Binny V A
+ * License : BSD
+ */
+shortcut = {
+	'all_shortcuts':{},//All the shortcuts are stored in this array
+	'add': function(shortcut_combination,callback,opt) {
+		//Provide a set of default options
+		var default_options = {
+			'type':'keydown',
+			'propagate':false,
+			'disable_in_input':false,
+			'target':document,
+			'keycode':false
+		}
+		if(!opt) opt = default_options;
+		else {
+			for(var dfo in default_options) {
+				if(typeof opt[dfo] == 'undefined') opt[dfo] = default_options[dfo];
+			}
+		}
+
+		var ele = opt.target;
+		if(typeof opt.target == 'string') ele = document.getElementById(opt.target);
+		var ths = this;
+		shortcut_combination = shortcut_combination.toLowerCase();
+
+		//The function to be called at keypress
+		var func = function(e) {
+			e = e || window.event;
+			
+			if(opt['disable_in_input']) { //Don't enable shortcut keys in Input, Textarea fields
+				var element;
+				if(e.target) element=e.target;
+				else if(e.srcElement) element=e.srcElement;
+				if(element.nodeType==3) element=element.parentNode;
+
+				if(element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') return;
+			}
+	
+			//Find Which key is pressed
+			if (e.keyCode) code = e.keyCode;
+			else if (e.which) code = e.which;
+			var character = String.fromCharCode(code).toLowerCase();
+			
+			if(code == 188) character=","; //If the user presses , when the type is onkeydown
+			if(code == 190) character="."; //If the user presses , when the type is onkeydown
+
+			var keys = shortcut_combination.split("+");
+			//Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
+			var kp = 0;
+			
+			//Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
+			var shift_nums = {
+				"`":"~",
+				"1":"!",
+				"2":"@",
+				"3":"#",
+				"4":"$",
+				"5":"%",
+				"6":"^",
+				"7":"&",
+				"8":"*",
+				"9":"(",
+				"0":")",
+				"-":"_",
+				"=":"+",
+				";":":",
+				"'":"\"",
+				",":"<",
+				".":">",
+				"/":"?",
+				"\\":"|"
+			}
+			//Special Keys - and their codes
+			var special_keys = {
+				'esc':27,
+				'escape':27,
+				'tab':9,
+				'space':32,
+				'return':13,
+				'enter':13,
+				'backspace':8,
+	
+				'scrolllock':145,
+				'scroll_lock':145,
+				'scroll':145,
+				'capslock':20,
+				'caps_lock':20,
+				'caps':20,
+				'numlock':144,
+				'num_lock':144,
+				'num':144,
+				
+				'pause':19,
+				'break':19,
+				
+				'insert':45,
+				'home':36,
+				'delete':46,
+				'end':35,
+				
+				'pageup':33,
+				'page_up':33,
+				'pu':33,
+	
+				'pagedown':34,
+				'page_down':34,
+				'pd':34,
+	
+				'left':37,
+				'up':38,
+				'right':39,
+				'down':40,
+	
+				'f1':112,
+				'f2':113,
+				'f3':114,
+				'f4':115,
+				'f5':116,
+				'f6':117,
+				'f7':118,
+				'f8':119,
+				'f9':120,
+				'f10':121,
+				'f11':122,
+				'f12':123
+			}
+	
+			var modifiers = { 
+				shift: { wanted:false, pressed:false},
+				ctrl : { wanted:false, pressed:false},
+				alt  : { wanted:false, pressed:false},
+				meta : { wanted:false, pressed:false}	//Meta is Mac specific
+			};
+                        
+			if(e.ctrlKey)	modifiers.ctrl.pressed = true;
+			if(e.shiftKey)	modifiers.shift.pressed = true;
+			if(e.altKey)	modifiers.alt.pressed = true;
+			if(e.metaKey)   modifiers.meta.pressed = true;
+                        
+			for(var i=0; k=keys[i],i<keys.length; i++) {
+				//Modifiers
+				if(k == 'ctrl' || k == 'control') {
+					kp++;
+					modifiers.ctrl.wanted = true;
+
+				} else if(k == 'shift') {
+					kp++;
+					modifiers.shift.wanted = true;
+
+				} else if(k == 'alt') {
+					kp++;
+					modifiers.alt.wanted = true;
+				} else if(k == 'meta') {
+					kp++;
+					modifiers.meta.wanted = true;
+				} else if(k.length > 1) { //If it is a special key
+					if(special_keys[k] == code) kp++;
+					
+				} else if(opt['keycode']) {
+					if(opt['keycode'] == code) kp++;
+
+				} else { //The special keys did not match
+					if(character == k) kp++;
+					else {
+						if(shift_nums[character] && e.shiftKey) { //Stupid Shift key bug created by using lowercase
+							character = shift_nums[character]; 
+							if(character == k) kp++;
+						}
+					}
+				}
+			}
+			
+			if(kp == keys.length && 
+						modifiers.ctrl.pressed == modifiers.ctrl.wanted &&
+						modifiers.shift.pressed == modifiers.shift.wanted &&
+						modifiers.alt.pressed == modifiers.alt.wanted &&
+						modifiers.meta.pressed == modifiers.meta.wanted) {
+				callback(e);
+	
+				if(!opt['propagate']) { //Stop the event
+					//e.cancelBubble is supported by IE - this will kill the bubbling process.
+					e.cancelBubble = true;
+					e.returnValue = false;
+	
+					//e.stopPropagation works in Firefox.
+					if (e.stopPropagation) {
+						e.stopPropagation();
+						e.preventDefault();
+					}
+					return false;
+				}
+			}
+		}
+		this.all_shortcuts[shortcut_combination] = {
+			'callback':func, 
+			'target':ele, 
+			'event': opt['type']
+		};
+		//Attach the function with the event
+		if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
+		else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
+		else ele['on'+opt['type']] = func;
+	},
+
+	//Remove the shortcut - just specify the shortcut and I will remove the binding
+    // 'remove':function(shortcut_combination) {
+    //  shortcut_combination = shortcut_combination.toLowerCase();
+    //  var binding = this.all_shortcuts[shortcut_combination];
+    //  delete(this.all_shortcuts[shortcut_combination])
+    //  if(!binding) return;
+    //  var type = binding['event'];
+    //  var ele = binding['target'];
+    //  var callback = binding['callback'];
+    // 
+    //  if(ele.detachEvent) ele.detachEvent('on'+type, callback);
+    //  else if(ele.removeEventListener) ele.removeEventListener(type, callback, false);
+    //  else ele['on'+type] = false;
+    // }
+};
+define("shortcut", (function (global) {
+    return function () {
+        var ret, fn;
+        return ret || global.shortcut;
+    };
+}(this)));
+
+/*global respecEvents */
+
+// Module core/ui
+// Handles the ReSpec UI
+
+// XXX TODO
+//  - look at other UI things to add
+//      - list issues
+//      - lint: validator, link checker, check WebIDL, ID references
+//      - save to GitHub
+//  - make a release candidate that people can test
+//  - once we have something decent, merge, ship as 3.2.0
+
+define(
+    'core/ui',["jquery", "shortcut"],
+    function ($, shortcut) {
+        var $menu = $("<div></div>")
+                        .css({
+                            background:     "#fff"
+                        ,   border:         "1px solid #000"
+                        ,   width:          "200px"
+                        ,   display:        "none"
+                        ,   textAlign:      "left"
+                        ,   marginTop:      "5px"
+                        ,   marginRight:    "5px"
+                        })
+                        ;
+        var $modal
+        ,   $overlay
+        ,   errors = []
+        ,   warnings = []
+        ,   buttons = {}
+        ,   $respecButton
+        ,   errWarn = function (msg, arr, butName, bg, title) {
+                arr.push(msg);
+                if (!buttons[butName]) {
+                    buttons[butName] = $("<button></button>")
+                                            .css({
+                                                background:     bg
+                                            ,   color:          "#fff"
+                                            ,   fontWeight:     "bold"
+                                            ,   border:         "none"
+                                            ,   borderRadius:   "5px"
+                                            ,   marginLeft:     "5px"
+                                            })
+                                            .insertAfter($respecButton)
+                                            .click(function () {
+                                                var $ul = $("<ol></ol>");
+                                                for (var i = 0, n = arr.length; i < n; i++) {
+                                                    var err = arr[i];
+                                                    if (err instanceof Error) {
+                                                        $("<li><span></span> <a>\u229e</a><pre></pre></li>")
+                                                            .appendTo($ul)
+                                                            .find("span")
+                                                                .text("[" + err.name + "] " + err.message)
+                                                            .end()
+                                                            .find("a")
+                                                                .css({
+                                                                    fontSize:   "1.1em"
+                                                                ,   color:      "#999"
+                                                                ,   cursor:     "pointer"
+                                                                })
+                                                                .click(function () {
+                                                                    var $a = $(this)
+                                                                    ,   state = $a.text()
+                                                                    ,   $pre = $a.parent().find("pre");
+                                                                    if (state === "\u229e") {
+                                                                        $a.text("\u229f");
+                                                                        $pre.show();
+                                                                    }
+                                                                    else {
+                                                                        $a.text("\u229e");
+                                                                        $pre.hide();
+                                                                    }
+                                                                })
+                                                            .end()
+                                                            .find("pre")
+                                                                .text(err.stack)
+                                                                .css({
+                                                                    marginLeft: "0"
+                                                                ,   maxWidth:   "100%"
+                                                                ,   overflowY:  "hidden"
+                                                                ,   overflowX:  "scroll"
+                                                                })
+                                                                .hide()
+                                                            .end();
+                                                    }
+                                                    else {
+                                                        $("<li></li>").text(err).appendTo($ul);
+                                                    }
+                                                }
+                                                ui.freshModal(title, $ul);
+                                            })
+                                            ;
+                }
+                buttons[butName].text(arr.length);
+            }
+        ;
+        var conf, doc, msg;
+        var ui = {
+            run:    function (_conf, _doc, cb, _msg) {
+                conf = _conf, doc = _doc, msg = _msg;
+                msg.pub("start", "core/ui");
+                var $div = $("<div id='respec-ui' class='removeOnSave'></div>", doc)
+                                .css({
+                                    position:   "fixed"
+                                ,   top:        "20px"
+                                ,   right:      "20px"
+                                ,   width:      "202px"
+                                ,   textAlign:  "right"
+                                })
+                                .appendTo($("body", doc))
+                                ;
+                $respecButton = $("<button>ReSpec</button>")
+                                    .css({
+                                        background:     "#fff"
+                                    ,   fontWeight:     "bold"
+                                    ,   border:         "1px solid #ccc"
+                                    ,   borderRadius:   "5px"
+                                    })
+                                    .click(function () {
+                                        $menu.toggle();
+                                    })
+                                    .appendTo($div)
+                                    ;
+                $menu.appendTo($div);
+                shortcut.add("Esc", function () {
+                    ui.closeModal();
+                });
+                shortcut.add("Ctrl+Alt+Shift+E", function () {
+                    if (buttons.error) buttons.error.click();
+                });
+                shortcut.add("Ctrl+Alt+Shift+W", function () {
+                    if (buttons.warning) buttons.warning.click();
+                });
+                msg.pub("end", "core/ui");
+                cb();
+            }
+        ,   addCommand: function (label, module, keyShort) {
+                var handler = function () {
+                    $menu.hide();
+                    require([module], function (mod) {
+                        mod.show(ui, conf, doc, msg);
+                    });
+                };
+                $("<button></button>")
+                    .css({
+                        background:     "#fff"
+                    ,   border:         "none"
+                    ,   borderBottom:   "1px solid #ccc"
+                    ,   width:          "100%"
+                    ,   textAlign:      "left"
+                    ,   fontSize:       "inherit"
+                    })
+                    .text(label)
+                    .click(handler)
+                    .appendTo($menu)
+                    ;
+                    if (keyShort) shortcut.add(keyShort, handler);
+            }
+        ,   error:  function (msg) {
+                errWarn(msg, errors, "error", "#c00", "Errors");
+            }
+        ,   warning:  function (msg) {
+                errWarn(msg, warnings, "warning", "#f60", "Warnings");
+            }
+        ,   closeModal: function () {
+                if ($overlay) $overlay.fadeOut(200, function () { $overlay.remove(); $overlay = null; });
+                if (!$modal) return;
+                $modal.remove();
+                $modal = null;
+            }
+        ,   freshModal: function (title, content) {
+                if ($modal) $modal.remove();
+                if ($overlay) $overlay.remove();
+                var width = 500;
+                $overlay = $("<div id='respec-overlay' class='removeOnSave'></div>").hide();
+                $modal = $("<div id='respec-modal' class='removeOnSave'><h3></h3><div class='inside'></div></div>").hide();
+                $modal.find("h3").text(title);
+                $modal.find(".inside").append(content);
+                $("body")
+                    .append($overlay)
+                    .append($modal);
+                $overlay
+                    .click(this.closeModal)
+                    .css({
+                        display:    "block"
+                    ,   opacity:    0
+                    ,   position:   "fixed"
+                    ,   zIndex:     10000
+                    ,   top:        "0px"
+                    ,   left:       "0px"
+                    ,   height:     "100%"
+                    ,   width:      "100%"
+                    ,   background: "#000"
+                    })
+                    .fadeTo(200, 0.5)
+                    ;
+                $modal
+                    .css({
+                        display:        "block"
+                    ,   position:       "fixed"
+                    ,   opacity:        0
+                    ,   zIndex:         11000
+                    ,   left:           "50%"
+                    ,   marginLeft:     -(width/2) + "px"
+                    ,   top:            "100px"
+                    ,   background:     "#fff"
+                    ,   border:         "5px solid #666"
+                    ,   borderRadius:   "5px"
+                    ,   width:          width + "px"
+                    ,   padding:        "0 20px 20px 20px"
+                    ,   maxHeight:      ($(window).height() - 150) + "px"
+                    ,   overflowY:      "auto"
+                    })
+                    .fadeTo(200, 1)
+                    ;
+            }
+        };
+        if (window.respecEvents) respecEvents.sub("error", function (details) {
+            ui.error(details);
+        });
+        if (window.respecEvents) respecEvents.sub("warn", function (details) {
+            ui.warning(details);
+        });
+        return ui;
     }
 );
 
@@ -361,10 +825,10 @@ define(
         return {
             run:    function (config, doc, cb, msg) {
                 msg.pub("start", "core/default-root-attr");
-                var root = $(doc.documentElement);
-                if (!root.attr("lang")) {
-                    root.attr("lang", "en");
-                    if (!root.attr("dir")) root.attr("dir", "ltr");
+                var $root = $(doc.documentElement);
+                if (!$root.attr("lang")) {
+                    $root.attr("lang", "en");
+                    if (!$root.attr("dir")) $root.attr("dir", "ltr");
                 }
                 msg.pub("end", "core/default-root-attr");
                 cb();
@@ -1156,34 +1620,35 @@ if (typeof module !== 'undefined') {
 }());
 define("core/marked", function(){});
 
+/*global marked*/
 // Module core/markdown
 // Handles the optional markdown processing.
-// 
+//
 // Markdown support is optional. It is enabled by setting the `format`
 // property of the configuration object to "markdown."
-// 
-// We use marked for parsing Markkdown.
-// 
+//
+// We use marked for parsing Markdown.
+//
 // Note that the content of SECTION elements, and elements with a
 // class name of "note", "issue" or "req" are also parsed.
-// 
+//
 // The HTML created by the Markdown parser is turned into a nested
-// structure of SECTION elements, following the strucutre given by 
+// structure of SECTION elements, following the strucutre given by
 // the headings. For example, the following markup:
-// 
+//
 //     Title
 //     -----
-//     
+//
 //     ### Subtitle ###
-//     
+//
 //     Here's some text.
-//     
+//
 //     ### Another subtitle ###
-//     
+//
 //     More text.
-// 
+//
 // will be transformed into:
-// 
+//
 //     <section>
 //       <h2>Title</h2>
 //       <section>
@@ -1214,7 +1679,7 @@ define(
             ;
 
             function findPosition(header) {
-                return parseInt(header.tagName.charAt(1));
+                return parseInt(header.tagName.charAt(1), 10);
             }
 
             function findParent(position) {
@@ -1301,10 +1766,10 @@ define(
                 // <div>
                 //     This is a title
                 //     ---------------
-                //     
+                //
                 //     And this more text.
                 // </div
-                // 
+                //
                 // Gets turned into:
                 // <div>
                 //     <h2>This is a title</h2>
@@ -1315,7 +1780,7 @@ define(
                 // <div>
                 //     <pre><code>This is a title
                 // ---------------
-                // 
+                //
                 // And this more text.</code></pre>
                 // </div
 
@@ -1329,7 +1794,7 @@ define(
                     for (var i = 0, length = match.length; i < length; i++) {
                         current = match[i].length - 2;
                         if (typeof min == 'undefined' || min > current) {
-                            min = current
+                            min = current;
                         }
                     }
 
@@ -1420,9 +1885,14 @@ define(
                     //
                     // this.processIssuesNotesAndReqs(doc);
                     this.processSections(doc);
+                    // the processing done here blows away the ReSpec UI (or rather, the elements
+                    // that it needs to reference). So we save a reference to the original element
+                    // and re-inject it later
+                    var $rsUI = $("#respec-ui");
                     var fragment = this.structure(this.processBody(doc), doc);
                     doc.body.innerHTML = '';
-                    doc.body.appendChild(fragment)
+                    doc.body.appendChild(fragment);
+                    if ($rsUI.length) $("#respec-ui").replaceWith($rsUI);
                 }
                 msg.pub("end", "core/markdown");
                 cb();
@@ -1443,7 +1913,7 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    color:              #900;\n}\n\nh1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a {\n    text-decoration:    none;\n}\n\na .secno, a .figno {\n    color:  #000;\n}\n\nul.tof, ol.tof {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #005a9c;\n}\n\n.simple th {\n    background: #005a9c;\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #f0f6ff;\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n';});
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    color:              #900;\n}\n\nh1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a {\n    text-decoration:    none;\n}\n\na .secno, a .figno {\n    color:  #000;\n}\n\nul.tof, ol.tof {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #005a9c;\n}\n\n.simple th {\n    background: #005a9c;\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #f0f6ff;\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -1464,6 +1934,9 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/style");
+                if (conf.extraCSS) {
+                    msg.pub("warn", "The 'extraCSS' configuration property is now deprecated.");
+                }
                 if (!conf.noReSpecCSS) {
                     $("<style/>").appendTo($("head", $(doc)))
                                  .text(css);
@@ -1484,7 +1957,7 @@ define(
 define(
     'core/utils',["jquery"],
     function ($) {
-        // --- JQUERY EXTRAS ------------------------------------------------------------------------------
+        // --- JQUERY EXTRAS -----------------------------------------------------------------------
         // Applies to any jQuery object containing elements, changes their name to the one give, and
         // return a jQuery object containing the new elements
         $.fn.renameElement = function (name) {
@@ -1562,6 +2035,11 @@ define(
                 msg.pub("start", "core/utils");
                 msg.pub("end", "core/utils");
                 cb();
+            }
+
+            // --- RESPEC STUFF -------------------------------------------------------------------------------
+        ,   removeReSpec:   function (doc) {
+                $(".remove, script[data-requiremodule]", doc).remove();
             }
 
             // --- STRING HELPERS -----------------------------------------------------------------------------
@@ -1653,6 +2131,18 @@ define(
                 $.each(styles, function (i, css) {
                     $('head', doc).append($("<link/>").attr({ rel: 'stylesheet', href: css }));
                 });
+            }
+
+            // --- APPENDIX NUMBERING --------------------------------------------------------------------------
+            // take a a number and return the corresponding Appendix String. 0 means 'A', ... 25 means 'Z, 26
+            // means 'AA', 26**26-1 means 'ZZ, 26**26 means 'AAA', etc.
+        ,   appendixMap: function(n) {
+        	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                if (n < alphabet.length) {
+                	return alphabet.charAt(n);
+                } else {
+                	return this.appendixMap(floor(n/alphabet.length)) + alphabet.charAt(mod(n,alphabet.length));
+                }
             }
 
             // --- TRANSFORMATIONS ------------------------------------------------------------------------------
@@ -3305,9 +3795,9 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please refer to the <a href="{{errata}}"><strong>errata</strong></a> for this document, which may include some normative corrections.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a> rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
+define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please refer to the <a href="{{errata}}"><strong>errata</strong></a> for this document, which may include some normative corrections.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
 
-define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{#if sotdCustomParagraph}}\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p style=\'color: red\'>\n          ReSpec does not support automated SotD generation for TAG findings, please specify one using a \n          <code>&lt;section></code> element with ID=sotd.\n        </p>\n      {{/if}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It has no\n          official standing of any kind and does not represent consensus of the W3C Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication. Other\n          documents may supersede this document. A list of current W3C publications and the latest revision\n          of this technical report can be found in the <a href=\'http://www.w3.org/TR/\'>W3C technical reports\n          index</a> at http://www.w3.org/TR/.</em>\n        </p>\n        {{{sotdCustomParagraph}}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#if isPR}}\n          {{else}}\n          If you wish to make comments regarding this document, please send them to \n          <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n          (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n          <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n          with <code>{{subjectPrefix}}</code> at the start of your email\'s subject.{{/if}}.\n          {{/if}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed\n            to be stable and to encourage implementation by the developer community. This\n            Candidate Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited\n              to review the document and send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}.\n              Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review period that ended {{humanLCEnd}}.\n            </p>\n            {{#if implementationReportURI}}\n              <p>\n                Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n                report</a>.\n              </p>\n            {{/if}}\n          {{else}}\n            All comments are welcome.</p>\n          {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C Membership.\n            This is a draft document and may be updated, replaced or obsoleted by other documents at \n            any time. It is inappropriate to cite this document as other than work in progress.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this document has satisfied the\n            relevant technical requirements and is sufficiently stable to advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            {{#if doRDFa}} \n                <a id="sotd_patent" about=\'\' rel=\'w3p:patentRules\' href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent Policy</a>.\n            {{else}}\n                <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent Policy</a>.\n            {{/if}}\n          {{/unless}}\n          {{#if recNotExpected}}The group does not expect this document to become a W3C Recommendation.{{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes instructions for \n            disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential Claim(s)</a> must disclose the\n            information in accordance with <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n\n');});
+define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication.\n          Other documents may supersede this document. A list of current W3C publications and the\n          latest revision of this technical report can be found in the <a\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\n          http://www.w3.org/TR/.</em>\n        </p>\n        {{{sotdCustomParagraph}}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            All comments are welcome.\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
 
 define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{longStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#if thisVersion}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    {{/if}}\n    {{#if latestVersion}}\n      <dt>Latest published version:</dt>\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\n    {{/if}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if prevVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#unless isCGFinal}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/unless}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n  </dl>\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats: \n      {{else}}\n        This document is also available in this non-normative format: \n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  <p class=\'copyright\'>\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n    the Contributors to the {{title}} Specification, published by the\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\n    {{#if isCGFinal}}\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\n    {{else}}\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\n    {{/if}}\n  </p>\n  <hr/>\n</div>\n');});
 
@@ -3398,7 +3888,6 @@ define(
     ,"tmpl!w3c/templates/cgbg-sotd.html"
     ],
     function (hb, utils, headersTmpl, sotdTmpl, cgbgHeadersTmpl, cgbgSotdTmpl) {
-        // XXX RDFa support is untested
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
             var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "";
@@ -3518,7 +4007,9 @@ define(
                 }
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "w3c";
-                conf.isCCBY = conf.license === "cc-by";
+                // NOTE: this is currently only available to the HTML WG
+                // this check will be relaxed later
+                conf.isCCBY = conf.license === "cc-by" && conf.wgPatentURI === "http://www.w3.org/2004/01/pp-impl/40318/status";
                 conf.isCGBG = $.inArray(conf.specStatus, this.cgbg) >= 0;
                 conf.isCGFinal = conf.isCGBG && /G-FINAL$/.test(conf.specStatus);
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
@@ -3680,6 +4171,14 @@ define(
                     msg.pub("error", "IG-NOTEs must link to charter's disclosure section using charterDisclosureURI");
                 $(conf.isCGBG ? cgbgSotdTmpl(conf) : sotdTmpl(conf)).insertAfter($("#abstract"));
 
+                if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
+                    msg.pub("error", "CR, PR, and REC documents need to have an implementationReportURI defined.");
+                }
+                if (conf.isTagFinding && !conf.sotdCustomParagraph) {
+                    msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
+                                     "please specify one using a <code><section></code> element with ID=sotd.");
+                }
+
                 msg.pub("end", "w3c/headers");
                 cb();
             }
@@ -3702,6 +4201,15 @@ define(
                 if ($abs.find("p").length === 0) $abs.contents().wrapAll($("<p></p>"));
                 $abs.prepend("<h2>Abstract</h2>");
                 $abs.addClass("introductory");
+                if (this.doRDFa !== false) {
+                    var rel = "dcterms:abstract"
+                    ,   ref = $abs.attr("property");
+                    if (ref) rel = ref + " " + rel;
+                    $abs.attr({
+                        "property": rel
+                    ,   "datatype": ""
+                    });
+                }
                 msg.pub("end", "w3c/abstract");
                 cb();
             }
@@ -3755,7 +4263,13 @@ define(
                     var $n = $(node);
                     var flist = $n.attr('data-transform');
                     $n.removeAttr('data-transform') ;
-                    var content = utils.runTransforms($n.html(), flist);
+                    var content;
+                    try {
+                        content = utils.runTransforms($n.html(), flist);
+                    }
+                    catch (e) {
+                        msg.pub("error", e);
+                    }
                     if (content) $n.html(content);
                 });
                 msg.pub("end", "w3c/data-transform");
@@ -3769,7 +4283,7 @@ define(
     expr: true
 */
 
-// Module w3c/data-include
+// Module core/data-include
 // Support for the data-include attribute. Causes external content to be included inside an
 // element that has data-include='some URI'. There is also a data-oninclude attribute that
 // features a white space separated list of global methods that will be called with the
@@ -4134,10 +4648,10 @@ define(
                     ,   title = "Req. " + i
                     ;
                     msg.pub("req", {
-                      type: "req",
-                      number: i,
-                      content: $req.html(),
-                      title: title
+                        type: "req",
+                        number: i,
+                        content: $req.html(),
+                        title: title
                     });
                     $req.prepend("<a href='#" + $req.attr("id") + "'>" + title + "</a>: ");
                 });
@@ -4153,9 +4667,11 @@ define(
                     id = href.substring(1);
                     $req = $("#" + id);
                     if ($req.length) {
-                      txt = $req.find("> a").text();
-                    } else {
-                      txt = "Req. not found '" + id + "'";
+                        txt = $req.find("> a").text();
+                    }
+                    else {
+                        txt = "Req. not found '" + id + "'";
+                        msg.pub("error", "Requirement not found in a.reqRef: " + id);
                     }
                     $ref.text(txt);
                 });
@@ -4189,6 +4705,7 @@ define(
                     var old = oldies[i];
                     $("." + old).each(function () {
                         $(this).removeClass(old).addClass("highlight");
+                        msg.pub("warn", "Old highlighting class '" + old + "', use 'highlight' instead.");
                     });
                 }
                 
@@ -5724,7 +6241,8 @@ define(
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     if ($("#bp-summary")) $("#bp-summary").append($content.contents());
                 }
-                else {
+                else if ($("#bp-summary").length) {
+                    msg.pub("warn", "Using best practices summary (#bp-summary) but no best practices found.");
                     $("#bp-summary").remove();
                 }
 
@@ -5744,12 +6262,45 @@ define(
 // to be found as well as normalise the titles of figures.
 
 define(
-    'core/figures',[],
-    function () {
+    'core/figures',["core/utils"],
+    function (utils) {
+        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
+            $cap.html("");
+            if (fmt === "" || fmt === "%t" || fmt === "%") {
+                $cap.wrapInner($("<span class='" + label + "-title'/>"));
+                return num;
+            }
+            var $num = $("<span class='" + label + "no'/>");
+            var $cur = $cap;
+            var $title = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
+            var adjfmt = " " + fmt.replace(/%%/g, "%\\");
+            var sfmt = adjfmt.split("%");
+            //console.log("fmt=\"" + adjfmt + "\"");
+            for (var i = 0; i < sfmt.length; i++) {
+                var s = sfmt[i];
+                switch (s.substr(0,1)) {
+                    case " ": break;
+                    case "(": $cur = $num; break;
+                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "\\":$cur.append(doc.createTextNode("%")); break;
+                    case "#": $cur.append(doc.createTextNode(num[0])); break;
+                    case "c": $cur.append(doc.createTextNode(chapter)); break;
+                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "t": $cur.append($title); break;
+                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                }
+                $cur.append(doc.createTextNode(s.substr(1)));
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+            }
+            num[0]++;
+            return num;
+        };
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
-
+                if (!conf.figFmt) conf.figFmt = "Fig. %(%#%) %t"; //"%1Figure %(%c-%#%): %t";
+                
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
                     var $figure = $(figure)
@@ -5762,36 +6313,45 @@ define(
                     
                     // change old syntax to something HTML5 compatible
                     if ($figure.is("div")) {
+                        msg.pub("warn", "You are using the deprecated div.figure syntax; please switch to <figure>.");
                         $figure.append($caption);
                         $figure.renameElement("figure");
                     }
                     else {
+                        msg.pub("warn", "You are using the deprecated img.figure syntax; please switch to <figure>.");
                         $figure.wrap("<figure></figure>");
                         $figure.parent().append($caption);
                     }
                 });
                 
-                // process all figures
-                var figMap = {}, tof = [], num = 0;
-                $("figure").each(function () {
-                    var $fig = $(this)
-                    ,   $cap = $fig.find("figcaption")
-                    ,   tit = $cap.text()
-                    ,   id = $fig.makeID("fig", tit);
+                // for each top level section, process all figures in that section
+                var figMap = {}, tof = [], num = [1, 1], appendixMode = false, lastNonAppendix = -1000;
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
+				for (var i = 0; i < $secs.length; i++) {
+					var $sec = $($secs[i], doc);
+                    if ($sec.hasClass("appendix") && !appendixMode) {
+                        lastNonAppendix = i;
+                        appendixMode = true;
+                    }
+                    var chapter = i + 1;
+                    if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
+                    $("figure", $sec).each(function () {
+						var $fig = $(this)
+						,   $cap = $fig.find("figcaption")
+						,   id = $fig.makeID("fig", $cap.text());
+						if (!$cap.length) msg.pub("warn", "A <figure> should contain a <figcaption>.");
                     
-                    // set proper caption title
-                    num++;
-                    $cap.html("")
-                        .append(doc.createTextNode("Fig. "))
-                        .append($("<span class='figno'>" + num + "</span>"))
-                        .append(doc.createTextNode(" "))
-                        .append($("<span class='fig-title'/>").text(tit));
-                    figMap[id] = $cap.contents().clone();
-                    tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
-                                .find(".tocxref")
-                                    .append($cap.contents().clone())
+						// set proper caption title
+						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
+						figMap[id] = $cap.contents().clone();
+                        var $tofCap = $cap.clone();
+                        $tofCap.find("a").renameElement("span").removeAttr("href");
+						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
+								.find(".tocxref")
+                                .append($tofCap.contents())
                                 .end());
-                });
+					});
+				}
 
                 // Update all anchors with empty content that reference a figure ID
                 $("a[href]", doc).each(function () {
@@ -5832,699 +6392,334 @@ define(
     }
 );
 
-// these options are there for the XPath emulation code, which uses them
-// they can be dropped when it is (same for global Document)
-/*jshint
-    bitwise: false,
-    boss:   true
-*/
-/*global berjon, respecEvent, shortcut, respecConfig, Document */
 
-// RESPEC
-var sn;
-(function () {
-    window.setBerjonBiblio = function(payload) {
-        berjon.biblio = payload;
-    };
-    if (typeof berjon === 'undefined') window.berjon = {};
-    function _errEl () {
-        var id = "respec-err";
-        var err = document.getElementById(id);
-        if (err) return err.firstElementChild.nextElementSibling;
-        err = sn.element("div",
-                            { id: id,
-                              style: "position: fixed; width: 350px; top: 10px; right: 10px; border: 3px double #f00; background: #fff",
-                              "class": "removeOnSave" },
-                            document.body);
+// Module core/table
+// Handles tables in the document. This enables enable the generation of a Table of Tables wherever there is a #tot element
+// to be found as well as normalise the titles of tables.
 
-        var hide = sn.element("p", {
-            style: "float: right; margin: 2px; text-decoration: none"
-        }, err);
-
-        sn.text('[', hide);
-
-        var a = sn.element("a", { href: "#" }, hide, 'x');
-
-        a.onclick = function() {
-            document.getElementById(id).style.display = 'none';
-            return false;
+define(
+    'core/tables',["core/utils"],
+    function (utils) {
+        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
+            $cap.html("");
+            if (fmt === "" || fmt === "%t") {
+                $cap.wrapInner($("<span class='" + label + "-title'/>"));
+                return num;
+            }
+            var $num = $("<span class='" + label + "no'/>");
+            var $cur = $cap;
+            var $title = $cap.clone().wrapInner("<span class='" + label + "'></span>");
+            var adjfmt = " " + fmt.replace(/%%/g, "%\\");
+            var sfmt = adjfmt.split("%");
+            //console.log("fmt=\"" + adjfmt + "\"");
+            for (var i = 0; i < sfmt.length; i++) {
+                var s = sfmt[i];
+                switch (s.substr(0,1)) {
+                    case " ": break;
+                    case "(": $cur = $num; break;
+                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "\\":$cur.append(doc.createTextNode("%")); break;
+                    case "#": $cur.append(doc.createTextNode(num[0])); break;
+                    case "c": $cur.append(doc.createTextNode(chapter)); break;
+                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "t": $cur.append($title); break;
+                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                }
+                $cur.append(doc.createTextNode(s.substr(1)));
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+            }
+            num[0]++;
+            return num;
         };
+        return {
+            run:        function (conf, doc, cb, msg) {
+                msg.pub("start", "core/tables");
+                if (!conf.tblFmt) conf.tblFmt = "";//Table %(%1%c-%#%): %t";
+                //conf.tblFmt = "";
 
-        sn.text(']', hide);
-
-        return sn.element("ul", { style: "clear: both"}, err);
-    }
-    function error (str) {
-        if (window.respecEvent) respecEvent.pub("error", str);
-        sn.element("li", { style: "color: #c00" }, _errEl(), str);
-    }
-    function warning (str) {
-        if (window.respecEvent) respecEvent.pub("warn", str);
-        sn.element("li", { style: "color: #666" }, _errEl(), str);
-    }
-    berjon.respec = function () {};
-    berjon.respec.prototype = {
-        loadAndRun:    function (conf, doc, cb, msg) {
-            var count = 0;
-            var base = this.findBase();
-            var deps = [base + "js/simple-node.js", base + "js/shortcut.js"];
-            var obj = this;
-
-            function callback() {
-                if (count <= 0) {
-                    sn = new berjon.simpleNode({
-                        "":     "http://www.w3.org/1999/xhtml",
-                        "x":    "http://www.w3.org/1999/xhtml"
-                    }, document);
-                    obj.run(conf, doc, cb, msg);
+                // process all tables
+                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;;
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
+				for (var i = 0; i < $secs.length; i++) {
+					var $sec = $($secs[i], doc);
+			        if ($sec.hasClass("appendix") && !appendixMode) {
+	                        lastNonAppendix = i;
+	                        appendixMode = true;
+	                }
+	                var chapter = i + 1;
+	                if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
+                    $("table", $sec).each(function () {
+						var $tbl = $(this)
+						,   $cap = $tbl.find("caption")
+						,   id = $tbl.makeID("tbl", $cap.text());
+						if ($cap.length) {
+							// if caption exists, add Table # and class
+							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
+							tblMap[id] = $cap.contents().clone();
+                            var $totCap = $cap.clone();
+                            $totCap.find("a").renameElement("span").removeattr("href");
+							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
+									.find(".tocxref")
+									.append($totCap.contents())
+									.end());
+						}
+					});
                 }
-            }
 
-            function loadHandler() {
-                count--;
-                callback();
-            }
-
-            var src, refs = this.getRefKeys(conf);
-            refs = refs.normativeReferences.concat(refs.informativeReferences).concat(this.findLocalAliases(conf));
-            if (refs.length) {
-                count++;
-                src = conf.httpScheme + "://specref.jit.su/bibrefs?callback=setBerjonBiblio&refs=" + refs.join(',');
-                this.loadScript(src, loadHandler);
-            }
-
-            // the fact that we hand-load is temporary, and will be fully replaced by RequireJS
-            // in the meantime, we need to avoid loading these if we are using the built (bundled)
-            // version. So we do some basic detection and decline to load.
-            if (!berjon.simpleNode) {
-                for (var i = 0; i < deps.length; i++) {
-                    count++;
-                    this.loadScript(deps[i], loadHandler);
-                }
-            }
-
-            callback();
-        },
-        findLocalAliases: function(conf) {
-            var res = [];
-            if (conf.localBiblio) {
-                for (var k in conf.localBiblio) {
-                    if (typeof conf.localBiblio[k].aliasOf !== 'undefined') {
-                        res.push(conf.localBiblio[k].aliasOf);
+                // Update all anchors with empty content that reference a table ID
+                $("a[href]", doc).each(function () {
+                    var $a = $(this)
+                    ,   id = $a.attr("href");
+                    if (! id) return;
+                    id = id.substring(1);
+                    if (tblMap[id]) {
+                        $a.addClass("tbl-ref");
+                        if ($a.html() === "") $a.append(tblMap[id]);
                     }
-                }
-            }
-            return res;
-        },
-        findBase: function() {
-            var scripts = document.querySelectorAll("script[src]");
-            // XXX clean this up
-            var base = "", src;
-            for (var i = 0; i < scripts.length; i++) {
-                src = scripts[i].src;
-                if (/\/js\/require.*\.js$/.test(src)) {
-                    base = src.replace(/js\/require.*\.js$/, "");
-                }
-            }
-            // base = respecConfig.respecBase;
-            return base;
-        },
-
-        loadScript: function(src, cb) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = src;
-            script.setAttribute("class", "remove");
-            script.onload = cb;
-            document.getElementsByTagName('head')[0].appendChild(script);
-        },
-
-        run:    function (conf, doc, cb, msg) {
-            try {
-                this.extractConfig();
-                this.overrideBiblio(conf);
-                this.bibref(conf, doc, cb, msg);
-
-                if (this.doRDFa) this.makeRDFa();
-
-                // shortcuts
-                var obj = this;
-                shortcut.add("Ctrl+Shift+Alt+S", function () { obj.showSaveOptions(); });
-                shortcut.add("Esc", function () { obj.hideSaveOptions(); });
-            }
-            catch (e) {
-                msg.pub("error", "Processing error: " + e);
-            }
-            msg.pub("end", "w3c/legacy");
-            cb();
-        },
-
-        overrideBiblio:     function (conf) {
-            if (conf.localBiblio) {
-                for (var k in conf.localBiblio) berjon.biblio[k] = conf.localBiblio[k];
-            }
-        },
-
-        makeRDFa:  function () {
-            var abs = document.getElementById("abstract");
-            if (abs) {
-                var rel = 'dcterms:abstract' ;
-                var ref = abs.getAttribute('property') ;
-                if (ref) {
-                    rel = ref + ' ' + rel ;
-                }
-                abs.setAttribute('property', rel) ;
-                abs.setAttribute('datatype', '') ;
-            }
-            // annotate sections with Section data
-            var secs = document.querySelectorAll("section");
-            for (var i = 0; i < secs.length; i++) {
-                // if the section has an id, use that.  if not, look at the first child for an id
-                var about = '' ;
-                // the first child should be a header - that's what we will annotate
-                var fc = secs[i].firstElementChild;
-                var ref = secs[i].getAttribute('id') ;
-                if ( ref ) {
-                    about = '#' + ref ;
-                } else {
-                    if (fc) {
-                        ref = fc.getAttribute('id') ;
-                        if (ref) {
-                            about = '#' + ref;
+                });
+                
+                // Create a Table of Tables if a section with id 'tot' exists.
+                var $tot = $("#tot", doc);
+                if (tot.length && $tot.length) {
+                    // if it has a parent section, don't touch it
+                    // if it has a class of appendix or introductory, don't touch it
+                    // if all the preceding section siblings are introductory, make it introductory
+                    // if there is a preceding section sibling which is an appendix, make it appendix
+                    if (! $tot.hasClass("appendix") && ! $tot.hasClass("introductory") && ! $tot.parents("section").length) {
+                        if ($tot.prevAll("section.introductory").length == $tot.prevAll("section").length) {
+                            $tot.addClass("introductory");
+                        } else if ($tot.prevAll("appendix").length) {
+                            $tot.addClass("appendix");
                         }
                     }
+                    $tot.append($("<h2>Table of Tables</h2>"));
+                    $tot.append($("<ul class='tof'/>"));
+                    var $ul = $tot.find("ul");
+                    while (tot.length) $ul.append(tot.shift());
                 }
-                if (about !== '') {
-                    secs[i].setAttribute('typeof', 'bibo:Chapter') ;
-                    secs[i].setAttribute('resource', about) ;
-                    secs[i].setAttribute('rel', "bibo:chapter" ) ;
-                }
+                msg.pub("end", "core/tables");
+                cb();
             }
-        },
-
-        saveMenu: null,
-        showSaveOptions:    function () {
-            var obj = this;
-            this.saveMenu = sn.element("div",
-                            { style: "position: fixed; width: 400px; top: 10px; padding: 1em; border: 5px solid #90b8de; background: #fff" },
-                            document.body);
-            sn.element("h4", {}, this.saveMenu, "Save Options");
-            var butH = sn.element("button", {}, this.saveMenu, "Save as HTML");
-            butH.onclick = function () { obj.hideSaveOptions(); obj.toHTML(); };
-            var butS = sn.element("button", {}, this.saveMenu, "Save as HTML (Source)");
-            butS.onclick = function () { obj.hideSaveOptions(); obj.toHTMLSource(); };
-            var butS = sn.element("button", {}, this.saveMenu, "Save as XHTML 1");
-            butS.onclick = function () { obj.hideSaveOptions(); obj.toXHTML(1); };
-            var butS = sn.element("button", {}, this.saveMenu, "Save as XHTML 1 (Source)");
-            butS.onclick = function () { obj.hideSaveOptions(); obj.toXHTMLSource(1); };
-            var butS = sn.element("button", {}, this.saveMenu, "Save as XHTML 5");
-            butS.onclick = function () { obj.hideSaveOptions(); obj.toXHTML(5); };
-            var butS = sn.element("button", {}, this.saveMenu, "Save as XHTML 5 (Source)");
-            butS.onclick = function () { obj.hideSaveOptions(); obj.toXHTMLSource(5); };
-            if (this.diffTool && (this.previousDiffURI || this.previousURI) ) {
-                var butD = sn.element("button", {}, this.saveMenu, "Diffmark");
-                butD.onclick = function () { obj.hideSaveOptions(); obj.toDiffHTML(); };
-            }
-
-        },
-
-        hideSaveOptions:    function () {
-            if (!this.saveMenu) return;
-            this.saveMenu.parentNode.removeChild(this.saveMenu);
-        },
-
-        toString:    function () {
-            var str = "<!DOCTYPE html";
-            var dt = document.doctype;
-            if (dt && dt.publicId) {
-                str += " PUBLIC '" + dt.publicId + "' '" + dt.systemId + "'";
-            }
-            str += ">\n";
-            str += "<html";
-            var ats = document.documentElement.attributes;
-            var prefixAtr = '' ;
-
-            for (var i = 0; i < ats.length; i++) {
-                var an = ats[i].name;
-                if (an == "xmlns" || an == "xml:lang") continue;
-                if (an == "prefix") {
-                    prefixAtr = ats[i].value;
-                    continue;
-                }
-                str += " " + an + "=\"" + this._esc(ats[i].value) + "\"";
-            }
-
-            str += ">\n";
-            var cmt = document.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
-            $("head").append(cmt);
-            str += document.documentElement.innerHTML;
-            str += "</html>";
-            return str;
-        },
-
-        toXML:        function (mode) {
-            if (mode != 5) {
-                // not doing xhtml5 so rip out the html5 stuff
-                $.each("section figcaption figure".split(" "), function (i, item) {
-                    $(item).renameElement("div").addClass(item);
-                });
-                $("time").renameElement("span").addClass("time").removeAttr('datetime');
-                $("[role]").removeAttr('role') ;
-                $("[aria-level]").removeAttr('aria-level') ;
-                $("style:not([type])").attr("type", "text/css");
-                $("script:not([type])").attr("type", "text/javascript");
-            }
-            var str = "<?xml version='1.0' encoding='UTF-8'?>\n<!DOCTYPE html";
-            var dt = document.doctype;
-            if (dt && dt.publicId) {
-                str += " PUBLIC '" + dt.publicId + "' '" + dt.systemId + "'";
-            }
-            else if (mode != 5) {
-                if (this.doRDFa) {
-                    if (this.doRDFa == "1.1") {
-                        // use the standard RDFa 1.1 doctype
-                        str += " PUBLIC '-//W3C//DTD XHTML+RDFa 1.1//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd'";
-                    } else {
-                        // use the standard RDFa doctype
-                        str += " PUBLIC '-//W3C//DTD XHTML+RDFa 1.0//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd'";
-                    }
-                } else {
-                    str += " PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'";
-                }
-            }
-            str += ">\n";
-            str += "<html";
-            var ats = document.documentElement.attributes;
-            var prefixAtr = '' ;
-
-            var hasxmlns = false;
-            for (var i = 0; i < ats.length; i++) {
-                var an = ats[i].name;
-                if (an == "lang") continue;
-                if (an == "xmlns") hasxmlns = true;
-                str += " " + an + "=\"" + this._esc(ats[i].value) + "\"";
-            }
-            if (!hasxmlns) str += ' xmlns="http://www.w3.org/1999/xhtml"';
-            str += ">\n";
-            // walk the entire DOM tree grabbing nodes and emitting them - possibly modifying them
-            // if they need the funny closing tag
-            var pRef = this ;
-            var selfClosing = {};
-            "br img input area base basefont col isindex link meta param hr".split(" ").forEach(function (n) {
-                selfClosing[n] = true;
-            });
-            var noEsc = [false];
-            if (mode == 5) {
-                var cmt = document.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
-                $("head", document).append(cmt);
-            }
-            var dumpNode = function (node) {
-                var out = '';
-                // if the node is the document node.. process the children
-                if ( node.nodeType == 9 || ( node.nodeType == 1 && node.nodeName.toLowerCase() == 'html' ) ) {
-                    for (var i = 0; i < node.childNodes.length; i++) out += dumpNode(node.childNodes[i]) ;
-                }
-                // element
-                else if (1 === node.nodeType) {
-                    var ename = node.nodeName.toLowerCase() ;
-                    out += '<' + ename ;
-                    for (var i = 0; i < node.attributes.length; i++) {
-                        var atn = node.attributes[i];
-                        if (/^\d+$/.test(atn.name)) continue;
-                        out += " " + atn.name + "=\"" + pRef._esc(atn.value) + "\"";
-                    }
-                    if (selfClosing[ename]) {
-                        out += ' />';
-                    }
-                    else {
-                        out += '>';
-                        // XXX removing this, as it does not seem correct at all
-                        // if ( ename == 'pre' ) {
-                        //     out += "\n" + node.innerHTML;
-                        // }
-                        // else {
-                            // console.log("NAME: " + ename);
-                            noEsc.push(ename === "style" || ename === "script");
-                            // console.log(noEsc);
-                            for (var i = 0; i < node.childNodes.length; i++) out += dumpNode(node.childNodes[i]);
-                            noEsc.pop();
-                        // }
-                        out += '</' + ename + '>';
-                    }
-                }
-                // comments
-                else if (8 === node.nodeType) {
-                    out += "\n<!--" + node.nodeValue + "-->\n";
-                }
-                // text or cdata
-                else if (3 === node.nodeType || 4 === node.nodeType) {
-                    // console.log("TEXT: " + noEsc[noEsc.length - 1]);
-                    out += noEsc[noEsc.length - 1] ? node.nodeValue : pRef._esc(node.nodeValue);
-                }
-                // we don't handle other types for the time being
-                else {
-                    warning("Cannot handle serialising nodes of type: " + node.nodeType);
-                }
-                return out;
-            };
-            str += dumpNode(document.documentElement) ;
-            str += "</html>";
-            return str;
-        },
-
-        toDiffHTML:  function () {
-            // create a diff marked version against the previousURI
-            // strategy - open a window in which there is a form with the
-            // data needed for diff marking - submit the form so that the response populates
-            // page with the diff marked version
-            var base = window.location.href;
-            base = base.replace(/\/[^\/]*$/, "/");
-            var str = "<!DOCTYPE html>\n";
-            str += "<html";
-            var ats = document.documentElement.attributes;
-            for (var i = 0; i < ats.length; i++) {
-                str += " " + ats[i].name + "=\"" + this._esc(ats[i].value) + "\"";
-            }
-            str += ">\n";
-            str += "<head><title>diff form</title></head>\n";
-            str += "<body><form name='form' method='POST' action='" + this.diffTool + "'>\n";
-            str += "<input type='hidden' name='base' value='" + base + "'>\n";
-            if (this.previousDiffURI) {
-                str += "<input type='hidden' name='oldfile' value='" + this.previousDiffURI + "'>\n";
-            } else {
-                str += "<input type='hidden' name='oldfile' value='" + this.previousURI + "'>\n";
-            }
-            str += '<input type="hidden" name="newcontent" value="' + this._esc(this.toString()) + '">\n';
-            str += '<p>Please wait...</p>';
-            str += "</form></body></html>\n";
+        };
+    }
+);
 
 
-            var x = window.open() ;
-            x.document.write(str) ;
-            x.document.close() ;
-            x.document.form.submit() ;
-        },
+// Module core/biblio
+// Handles bibliographic references
+// Configuration:
+//  - localBiblio: override or supplement the official biblio with your own.
 
-        toHTML:    function () {
-            var x = window.open();
-            x.document.write(this.toString());
-            x.document.close();
-        },
-
-        toHTMLSource:    function () {
-            var x = window.open();
-            x.document.write("<pre>" + this._esc(this.toString()) + "</pre>");
-            x.document.close();
-        },
-
-        toXHTML:    function (mode) {
-            var x = window.open();
-            x.document.write(this.toXML(mode)) ;
-            x.document.close();
-        },
-
-        toXHTMLSource:    function (mode) {
-            var x = window.open();
-            x.document.write("<pre>" + this._esc(this.toXML(mode)) + "</pre>");
-            x.document.close();
-        },
-
-        // --- METADATA -------------------------------------------------------
-        extractConfig:    function () {
-            var cfg = respecConfig || {};
-            if (!cfg.diffTool) cfg.diffTool = 'http://www5.aptest.com/standards/htmldiff/htmldiff.pl';
-            // note this change - the default is now to inject RDFa 1.1.  You can override it by
-            // setting RDFa to false
-            if (cfg.doRDFa === undefined) cfg.doRDFa = "1.1";
-            for (var k in cfg) {
-                if (cfg.hasOwnProperty(k)) this[k] = cfg[k];
-            }
-        },
-
-        getRefKeys:    function (conf) {
+define(
+    'core/biblio',[],
+    function () {
+        var getRefKeys = function (conf) {
             var informs = conf.informativeReferences
             ,   norms = conf.normativeReferences
             ,   del = []
+            ,   getKeys = function (obj) {
+                    var res = [];
+                    for (var k in obj) res.push(k);
+                    return res;
+                }
             ;
-
-            function getKeys(obj) {
-                var res = [];
-                for (var k in obj) res.push(k);
-                return res;
-            }
-
             for (var k in informs) if (norms[k]) del.push(k);
             for (var i = 0; i < del.length; i++) delete informs[del[i]];
-
             return {
                 informativeReferences: getKeys(informs),
                 normativeReferences: getKeys(norms)
             };
-        },
-
-        // --- INLINE PROCESSING ----------------------------------------------------------------------------------
-        bibref:    function (conf, doc, cb, msg) {
+        };
+        var REF_STATUSES = {
+            "NOTE":     "W3C Note"
+        ,   "WG-NOTE":  "W3C Working Group Note"
+        ,   "ED":       "W3C Editor's Draft"
+        ,   "FPWD":     "W3C First Public Working Draft"
+        ,   "WD":       "W3C Working Draft"
+        ,   "LCWD":     "W3C Last Call Working Draft"
+        ,   "CR":       "W3C Candidate Recommendation"
+        ,   "PR":       "W3C Proposed Recommendation"
+        ,   "PER":      "W3C Proposed Edited Recommendation"
+        ,   "REC":      "W3C Recommendation"
+        };
+        var stringifyRef = function(ref) {
+            if (typeof ref === "string") return ref;
+            var output = "";
+            if (ref.authors && ref.authors.length) {
+                output += ref.authors.join("; ");
+                if (ref.etAl) output += " et al";
+                output += ". ";
+            }
+            output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
+            if (ref.date) output += ref.date + ". ";
+            if (ref.status) output += (REF_STATUSES[ref.status] || ref.status) + ". ";
+            output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
+            return output;
+        };
+        var bibref = function (conf, msg) {
             // this is in fact the bibref processing portion
             var badrefs = {}
-            ,   badrefcount = 0
-            ,   refs = this.getRefKeys(conf)
+            ,   refs = getRefKeys(conf)
             ,   informs = refs.informativeReferences
             ,   norms = refs.normativeReferences
             ,   aliases = {}
             ;
 
-            if (!informs.length && !norms.length && !this.refNote) return;
-            var refsec = sn.element("section", { id: "references", "class": "appendix" }, document.body);
-            sn.element("h2", {}, refsec, "References");
-            if (this.refNote) {
-                var refnote = sn.element("p", {}, refsec);
-                refnote.innerHTML = this.refNote;
-            }
+            if (!informs.length && !norms.length && !conf.refNote) return;
+            var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
+            if (conf.refNote) $("<p></p>").html(conf.refNote).appendTo($refsec);
 
             var types = ["Normative", "Informative"];
             for (var i = 0; i < types.length; i++) {
-                var type = types[i];
-                var refs = (type == "Normative") ? norms : informs;
+                var type = types[i]
+                ,   refs = (type == "Normative") ? norms : informs;
                 if (!refs.length) continue;
-                var sec = sn.element("section", {}, refsec);
-                sn.makeID(sec, null, type + " references");
-                sn.element("h3", {}, sec, type + " references");
+                var $sec = $("<section><h3></h3></section>")
+                                .appendTo($refsec)
+                                .find("h3")
+                                    .text(type + " references")
+                                .end()
+                                ;
+                $sec.makeID(null, type + " references");
                 refs.sort();
-                var dl = sn.element("dl", { "class": "bibliography" }, sec);
-                if (this.doRDFa) {
-                    dl.setAttribute('about', '') ;
-                }
+                var $dl = $("<dl class='bibliography'></dl>").appendTo($sec);
+                if (conf.doRDFa !== false) $dl.attr("about", "");
                 for (var j = 0; j < refs.length; j++) {
                     var ref = refs[j];
-                    sn.element("dt", { id: "bib-" + ref }, dl, "[" + ref + "]");
-                    var dd = sn.element("dd", {}, dl);
-                    if (this.doRDFa) {
-                        if (type == 'Normative') {
-                            dd.setAttribute('rel','dcterms:requires');
-                        } else {
-                            dd.setAttribute('rel','dcterms:references');
-                        }
+                    $("<dt></dt>")
+                        .attr({ id:"bib-" + ref })
+                        .text("[" + ref + "]")
+                        .appendTo($dl)
+                        ;
+                    var $dd = $("<dd></dd>").appendTo($dl);
+                    if (this.doRDFa !== false) {
+                        if (type === "Normative") $dd.attr("rel", "dcterms:requires");
+                        else $dd.attr("rel", "dcterms:references");
                     }
-
-                    var refcontent = berjon.biblio[ref],
-                        circular = {},
-                        key = ref;
+                    var refcontent = conf.biblio[ref]
+                    ,   circular = {}
+                    ,   key = ref;
                     circular[ref] = true;
                     while (refcontent && refcontent.aliasOf) {
                         if (circular[refcontent.aliasOf]) {
                             refcontent = null;
-                            error("Circular reference in biblio DB between [" + ref + "] and [" + key + "].");
-                        } else {
+                            msg.pub("error", "Circular reference in biblio DB between [" + ref + "] and [" + key + "].");
+                        }
+                        else {
                             key = refcontent.aliasOf;
-                            refcontent = berjon.biblio[key];
+                            refcontent = conf.biblio[key];
                             circular[key] = true;
                         }
                     }
                     aliases[key] = aliases[key] || [];
                     if (aliases[key].indexOf(ref) < 0) aliases[key].push(ref);
-
                     if (refcontent) {
-                        dd.innerHTML = this.stringifyRef(refcontent) + "\n";
-                    } else {
+                        $dd.html(stringifyRef(refcontent) + "\n");
+                    }
+                    else {
                         if (!badrefs[ref]) badrefs[ref] = 0;
                         badrefs[ref]++;
-                        badrefcount++;
-                        dd.innerHTML = "<em>Reference not found.</em>\n";
+                        $dd.html("<em style='color: #f00'>Reference not found.</em>\n");
                     }
                 }
             }
             for (var k in aliases) {
                 if (aliases[k].length > 1) {
-                    warning("[" + k + "] is referenced in " + aliases[k].length + " ways (" + aliases[k].join(", ") + "). This causes duplicate entries in the reference section.");
+                    msg.pub("warn", "[" + k + "] is referenced in " + aliases[k].length + " ways (" + aliases[k].join(", ") + "). This causes duplicate entries in the reference section.");
                 }
             }
-
-            if(badrefcount > 0) {
-                error("Got " + badrefcount + " tokens looking like a reference, not in biblio DB: ");
-                for (var item in badrefs) {
-                    if (badrefs.hasOwnProperty(item)) error("Bad ref: " + item + ", count = " + badrefs[item]);
-                }
+            for (var item in badrefs) {
+                if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
             }
-
-        },
-
-        stringifyRef: function(ref) {
-            if(typeof ref == 'string') return ref;
-            var output = '';
-            if(ref.authors && ref.authors.length) {
-                output += ref.authors.join('; ');
-                if(ref.etAl) output += ' et al';
-                output += '. ';
-            }
-            output += '<a href="' + ref.href + '"><cite>' + ref.title + '</cite></a>. ';
-            if(ref.date) output += ref.date + '. ';
-            if(ref.status) output += this.getRefStatus(ref.status) + '. ';
-            output += 'URL: <a href="' + ref.href + '">' + ref.href + '</a>';
-            return output;
-        },
-
-        getRefStatus: function(status) {
-            return this.REF_STATUSES[status] || status;
-        },
-
-        REF_STATUSES: {
-            "NOTE": "W3C Note",
-            "WG-NOTE": "W3C Working Group Note",
-            "ED": "W3C Editor's Draft",
-            "FPWD": "W3C First Public Working Draft",
-            "WD": "W3C Working Draft",
-            "LCWD": "W3C Last Call Working Draft",
-            "CR": "W3C Candidate Recommendation",
-            "PR": "W3C Proposed Recommendation",
-            "PER": "W3C Proposed Edited Recommendation",
-            "REC": "W3C Recommendation"
-        },
-
-        // --- HELPERS --------------------------------------------------------------------------------------------
-        _esc:    function (s) {
-            s = s.replace(/&/g,'&amp;');
-            s = s.replace(/>/g,'&gt;');
-            s = s.replace(/"/g,'&quot;');
-            s = s.replace(/</g,'&lt;');
-            return s;
-        }
-    };
-}());
-// EORESPEC
-
-// XPATH
-// ReSpec XPath substitute JS workaround for UA's without DOM L3 XPath support
-// By Travis Leithead (travil AT microsoft dotcom)
-// (select APIs and behaviors specifically for ReSpec's usage of DOM L3 XPath; no more an no less)
-// For IE, requires v.9+
-(function () {
-    if (!document.evaluate) {
-        //////////////////////////////////////
-        // interface XPathResult
-        //////////////////////////////////////
-        // Augments a generic JS Array to appear to be an XPathResult (thus allowing [] notation to work)
-        window.XPathResult = function (list) {
-            list.snapshotLength = list.length;
-            list.snapshotItem = function (index) { return this[index]; };
-            return list;
         };
-        window.XPathResult.prototype.ORDERED_NODE_SNAPSHOT_TYPE = 7;
-        window.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE = 7;
-
-        //////////////////////////////////////
-        // interface XPathEvaluator
-        //////////////////////////////////////
-        // Not exposed to the window (not needed)
-        var XPathEvaluator = function (assignee) {
-            var findElementsContainingContextNode = function (element, contextNode) {
-                var allUpList = document.querySelectorAll(element);
-                var resultSet = [];
-                for (var i = 0, len = allUpList.length; i < len; i++) {
-                    if (allUpList[i].compareDocumentPosition(contextNode) & 16)
-                        resultSet.push(allUpList[i]);
-                }
-                return resultSet;
-            };
-            var allTextCache = null;
-            var buildTextCacheUnderBody = function () {
-                if (allTextCache == null) {
-                    var iter = document.createNodeIterator(document.body, 4, function () { return 1; }, false);
-                    allTextCache = [];
-                    var n;
-                    while (n = iter.nextNode()) {
-                        allTextCache.push(n);
+        
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/biblio");
+                var refs = getRefKeys(conf)
+                ,   localAliases = []
+                ,   finish = function () {
+                        msg.pub("end", "core/biblio");
+                        cb();
+                    }
+                ;
+                if (conf.localBiblio) {
+                    for (var k in conf.localBiblio) {
+                        if (typeof conf.localBiblio[k].aliasOf !== "undefined") {
+                            localAliases.push(conf.localBiblio[k].aliasOf);
+                        }
                     }
                 }
-                // Note: no cache invalidation for dynamic updates...
-            };
-            var getAllTextNodesUnderContext = function (contextNode) {
-                buildTextCacheUnderBody();
-                var candidates = [];
-                for (var i = 0, len = allTextCache.length; i < len; i++) {
-                    if (allTextCache[i].compareDocumentPosition(contextNode) & 8)
-                        candidates.push(allTextCache[i]);
+                refs = refs.normativeReferences
+                                .concat(refs.informativeReferences)
+                                .concat(localAliases);
+                if (refs.length) {
+                    var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                    $.ajax({
+                        dataType:   "json"
+                    ,   url:        url
+                    ,   success:    function (data) {
+                            conf.biblio = data || {};
+                            // override biblio data
+                            if (conf.localBiblio) {
+                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                            }
+                            bibref(conf, msg);
+                            finish();
+                        }
+                    ,   error:      function (xhr, status, error) {
+                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                            finish();
+                        }
+                    });
                 }
-                return candidates;
-            };
-            var findAncestorsOfContextNode = function (element, contextNode) {
-                var allUpList = document.querySelectorAll(element);
-                var candidates = [];
-                for (var i = 0, len = allUpList.length; i < len; i++) {
-                    if (allUpList[i].compareDocumentPosition(contextNode) & 16)
-                        candidates.push(allUpList[i]);
-                }
-                return candidates;
-            };
-            var findSpecificChildrenOfContextNode = function (contextNode, selector) { // element.querySelectorAll(":scope > "+elementType)
-                var allUpList = contextNode.querySelectorAll(selector);
-                // Limit to children only...
-                var candidates = [];
-                for (var i = 0, len = allUpList.length; i < len; i++) {
-                    if (allUpList[i].parentNode == contextNode)
-                        candidates.push(allUpList[i]);
-                }
-                return candidates;
-            };
-            assignee.evaluate = function (xPathExpression, contextNode, resolverCallback, type, result) {
-                // "ancestor::x:section|ancestor::section", sec
-                if (xPathExpression == "ancestor::x:section|ancestor::section") // e.g., "section :scope" (but matching section)
-                    return XPathResult(findElementsContainingContextNode("section", contextNode));
-                else if (xPathExpression == "./x:section|./section") // e.g., ":scope > section"
-                    return XPathResult(findSpecificChildrenOfContextNode(contextNode, "section"));
-                else if (xPathExpression == "./x:section[not(@class='introductory')]|./section[not(@class='introductory')]") // e.g., ":scope > section:not([class='introductory'])"
-                    return XPathResult(findSpecificChildrenOfContextNode(contextNode, "section:not([class='introductory'])"));
-                else if (xPathExpression == ".//text()") // Not possible via Selectors API. Note that ":contains("...") can be used to find particular element containers of text
-                    return XPathResult(getAllTextNodesUnderContext(contextNode));
-                else if ((xPathExpression == "ancestor::abbr") || (xPathExpression == "ancestor::acronym")) // e.g., "abbr :scope, acronym :scope" (but match the element, not the scope)
-                    return XPathResult(findAncestorsOfContextNode((xPathExpression == "ancestor::abbr") ? "abbr" : "acronym", contextNode));
-                else if (xPathExpression == "./dt") // e.g., ":scope > dt"
-                    return XPathResult(findSpecificChildrenOfContextNode(contextNode, "dt"));
-                else if (xPathExpression == "dl[@class='parameters']")
-                    return XPathResult(contextNode.querySelectorAll("dl[class='parameters']"));
-                else if (xPathExpression == "*[@class='exception']")
-                    return XPathResult(contextNode.querySelectorAll("[class='exception']"));
-                else // Anything else (not supported)
-                    return XPathResult([]);
-            };
+                else finish();
+            }
         };
-        // Document implements XPathExpression
-        if (window.Document) {
-            XPathEvaluator(Document.prototype);
-        }
-        else // no prototype hierarchy support (or Document doesn't exist)
-            XPathEvaluator(window.document);
     }
-}());
-// EOXPATH
+);
 
-define('w3c/legacy',[], function () {
-    return {
-        run:    function (conf, doc, cb, msg) {
-            msg.pub("start", "w3c/legacy");
-            (new berjon.respec()).loadAndRun(conf, doc, cb, msg);
-        }
-    };
-});
+
+// Module core/rdfa
+// Support for RDFa is spread to multiple places in the code, including templates, as needed by
+// the HTML being generated in various places. This is for parts that don't fit anywhere in
+// particular
+
+define(
+    'core/rdfa',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/rdfa");
+                if (conf.doRDFa !== false) {
+                    $("section").each(function () {
+                        var $sec = $(this)
+                        ,   about = ""
+                        ,   $fc = $sec.children("*").first()
+                        ,   ref = $sec.attr("id")
+                        ;
+                        if (ref) {
+                            about = "#" + "ref";
+                        }
+                        else if ($fc.length) {
+                            ref = $fc.attr("id");
+                            if (ref) about = "#" + "ref";
+                        }
+                        if (about !== "") {
+                            $sec.attr({
+                                "typeof":   "bibo:Chapter"
+                            ,   resource:   about
+                            ,   rel:        "bibo:Chapter"
+                            });
+                        }
+                    });
+                }
+                msg.pub("end", "core/rdfa");
+                cb();
+            }
+        };
+    }
+);
 
 define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
 
@@ -6564,7 +6759,7 @@ define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb
 
 define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
 
-/*global sn, Handlebars */
+/*global Handlebars, simpleNode */
 
 // Module core/webidl-oldschool
 //  Transforms specific markup into the complex old school rendering for API information.
@@ -6573,6 +6768,7 @@ define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb
 //  - It could be useful to report parsed IDL items as events
 //  - don't use generated content in the CSS!
 
+var sn;
 define(
     'core/webidl-oldschool',[
         "handlebars"
@@ -6609,9 +6805,10 @@ define(
                     if (obj.extendedAttributes) {
                         ret += idn(indent) + "[<span class='extAttr'>" + obj.extendedAttributes + "</span>" +
                                (typeof ctor === 'string' && ctor.length ? ",\n" + ctor : "") + "]" + (nl ? "\n" : " ");
-                    } else if (typeof ctor === 'string' && ctor.length) {
-			ret += idn(indent) + "[" + ctor + "]" + (nl ? "\n" : " ");
-		    }
+                    }
+                    else if (typeof ctor === 'string' && ctor.length) {
+                        ret += idn(indent) + "[" + ctor + "]" + (nl ? "\n" : " ");
+                    }
                     return new Handlebars.SafeString(ret);
                 });
                 Handlebars.registerHelper("param", function (obj, children) {
@@ -6648,14 +6845,6 @@ define(
             }
         ,   norm = function (str) {
                 return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
-            }
-        ,   sanitiseID = function (id) {
-                id = id.split(/[^\-.0-9a-zA-Z_]/).join("-");
-                id = id.replace(/^\-+/g, "");
-                id = id.replace(/\-+$/, "");
-                if (id.length > 0 && /^[^a-z]/.test(id)) id = "x" + id;
-                if (id.length === 0) id = "generatedID";
-                return id;
             }
         ,   arrsq = function (obj) {
                 var str = "";
@@ -6981,7 +7170,7 @@ define(
                 // MEMBER
                 obj.type = "member";
                 this.setID(obj, str);
-                obj.refId = sanitiseID(obj.id); // override with different ID type
+                obj.refId = sn.sanitiseID(obj.id); // override with different ID type
                 return obj;
             },
 
@@ -7257,13 +7446,13 @@ define(
                     if (obj.description && obj.description.text()) cnt = [obj.description];
                     else {
                         // yuck -- should use a single model...
-                        var tdt = sn.element("span", { "class": "idlTypedefType" }, null);
-                        tdt.innerHTML = datatype(obj.datatype);
+                        var $tdt = sn.element("span", { "class": "idlTypedefType" }, null);
+                        $tdt.html(datatype(obj.datatype));
                         cnt = [ sn.text("Throughout this specification, the identifier "),
                                 sn.element("span", { "class": "idlTypedefID" }, null, obj.unescapedId),
                                 sn.text(" is used to refer to the "),
                                 sn.text(obj.array ? (obj.arrayCount > 1 ? obj.arrayCount + "-" : "") + "array of " : ""),
-                                tdt,
+                                $tdt,
                                 sn.text(obj.nullable ? " (nullable)" : ""),
                                 sn.text(" type.")];
                     }
@@ -7476,7 +7665,7 @@ define(
                                     : sn.idThatDoesNotExist(curLnk + it.refId);
                                 var dt = sn.element("dt", { id: id }, dl);
                                 sn.element("code", {}, dt, it.unescapedId);
-                                if (it.isStatic) dt.appendChild(this.doc.createTextNode(", static"));
+                                if (it.isStatic) dt.append(this.doc.createTextNode(", static"));
                                 var desc = sn.element("dd", {}, dl, [it.description]);
                                 if (type == "method" || type == "constructor") {
                                     if (it.params.length) {
@@ -7489,11 +7678,12 @@ define(
                                             sn.element("td", { "class": "prmName" }, tr, prm.id);
                                             var tyTD = sn.element("td", { "class": "prmType" }, tr);
                                             var code = sn.element("code", {}, tyTD);
-                                            code.innerHTML = datatype(prm.datatype);
-                                            if (prm.array) code.innerHTML += arrsq(prm);
+                                            var codeHTML = datatype(prm.datatype);
+                                            if (prm.array) codeHTML += arrsq(prm);
                                             if (prm.defaultValue) {
-                                                code.innerHTML += " = " + prm.defaultValue;
+                                                codeHTML += " = " + prm.defaultValue;
                                             }
+                                            code.html(codeHTML);
                                             if (prm.nullable) sn.element("td", { "class": "prmNullTrue" }, tr, $("<span role='img' aria-label='True'>\u2714</span>"));
                                             else              sn.element("td", { "class": "prmNullFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
                                             if (prm.optional) sn.element("td", { "class": "prmOptTrue" }, tr,  $("<span role='img' aria-label='True'>\u2714</span>"));
@@ -7515,7 +7705,7 @@ define(
                                             sn.element("td", { "class": "excName" }, tr, [sn.element("a", {}, null, exc.id)]);
                                             var dtd = sn.element("td", { "class": "excDesc" }, tr);
                                             if (exc.type == "simple") {
-                                                $(dtd).append(exc.description);
+                                                dtd.append(exc.description);
                                             }
                                             else {
                                                 var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
@@ -7536,9 +7726,10 @@ define(
                                         var reDiv = sn.element("div", {}, desc);
                                         sn.element("em", {}, reDiv, "Return type: ");
                                         var code = sn.element("code", {}, reDiv);
-                                        code.innerHTML = datatype(it.datatype);
-                                        if (it.array) code.innerHTML += arrsq(it);
+                                        var codeHTML = datatype(it.datatype);
+                                        if (it.array) codeHTML += arrsq(it);
                                         if (it.nullable) sn.text(", nullable", reDiv);
+                                        code.html(codeHTML);
                                     }
                                 }
                                 else if (type == "attribute") {
@@ -7573,7 +7764,7 @@ define(
                                             });
                                             var dtd = sn.element("td", { "class": "excDesc" }, tr);
                                             if (exc.type == "simple") {
-                                                dtd.appendChild(exc.description);
+                                                dtd.append(exc.description);
                                             }
                                             else {
                                                 var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
@@ -7662,7 +7853,7 @@ define(
                     params.push(prm.datatype + (prm.array ? "Array" : "") + "-" + prm.id);
                 }
                 id += params.join("-");
-                return sanitiseID(id);
+                return sn.sanitiseID(id);
             },
 
             mergeWebIDL:    function (obj) {
@@ -7954,6 +8145,7 @@ define(
                 msg.pub("start", "core/webidl");
                 if (!conf.noIDLSorting) conf.noIDLSorting = false;
                 if (!conf.noIDLSectionTitle) conf.noIDLSectionTitle = false;
+                sn = new simpleNode(document);
                 var $idl = $(".idl", doc)
                 ,   finish = function () {
                         msg.pub("end", "core/webidl");
@@ -7987,6 +8179,54 @@ define(
     }
 );
 
+window.simpleNode = function (doc) {
+    this.doc = doc ? doc : document;
+};
+window.simpleNode.prototype = {
+
+    // --- NODE CREATION ---
+    element:    function (name, attr, parent, content) {
+        var $el = $(this.doc.createElement(name));
+        $el.attr(attr || {});
+        if (parent) $(parent).append($el);
+        if (content) {
+            if (content instanceof jQuery) $el.append(content);
+            else if (content instanceof Array) for (var i = 0; i < content.length; i++) $el.append(content[i]);
+            else this.text(content, $el);
+        }
+        return $el;
+    },
+    
+    text:    function (txt, parent) {
+        var tn = this.doc.createTextNode(txt);
+        if (parent) $(parent).append(tn);
+        return tn;
+    },
+    
+    documentFragment:    function () {
+        return this.doc.createDocumentFragment();
+    },
+    
+    // --- ID MANAGEMENT ---
+    sanitiseID:    function (id) {
+        id = id.split(/[^\-.0-9a-zA-Z_]/).join("-");
+        id = id.replace(/^-+/g, "");
+        id = id.replace(/-+$/, "");
+        if (id.length > 0 && /^[^a-z]/.test(id)) id = "x" + id;
+        if (id.length === 0) id = "generatedID";
+        return id;
+    },
+    
+    idThatDoesNotExist:    function (id) {
+        var inc = 1;
+        if (this.doc.getElementById(id)) {
+            while (this.doc.getElementById(id + "-" + inc)) inc++;
+            id = id + "-" + inc;
+        }
+        return id;
+    }
+};
+
 
 // Module core/dfn
 // Handles the processing and linking of <dfn> and <a> elements.
@@ -8009,6 +8249,13 @@ define(
                     var title = $ant.dfnTitle();
                     if (conf.definitionMap[title] && !(conf.definitionMap[title] instanceof Function)) {
                         $ant.attr("href", "#" + conf.definitionMap[title]).addClass("internalDFN");
+                    }
+                    else {
+                        // ignore WebIDL
+                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
+                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                        }
+                        $ant.replaceWith($ant.contents());
                     }
                 });
                 msg.pub("end", "core/dfn");
@@ -8036,7 +8283,7 @@ define(
                     var depth = $(this).parents("section").length + 1;
                     if (depth > 6) depth = 6;
                     var h = "h" + depth;
-                    if (this.localName.toLowerCase() != h) $(this).renameElement(h);
+                    if (this.localName.toLowerCase() !== h) $(this).renameElement(h);
                 });
                 msg.pub("end", "core/fix-headers");
                 cb();
@@ -8049,8 +8296,6 @@ define(
 // Module core/structure
 //  Handles producing the ToC and numbering sections across the document.
 
-// LIMITATION:
-//  At this point we don't support having more than 26 appendices.
 // CONFIGURATION:
 //  - noTOC: if set to true, no TOC is generated and sections are not numbered
 //  - tocIntroductory: if set to true, the introductory material is listed in the TOC
@@ -8058,8 +8303,8 @@ define(
 //  - maxTocLevel: only generate a TOC so many levels deep
 
 define(
-    'core/structure',[],
-    function () {
+    'core/structure',["core/utils"],
+    function (utils) {
         var i18n = {
                     en: { toc: "Table of Contents" },
                     fr: { toc: "Sommaire" }
@@ -8067,7 +8312,6 @@ define(
         ,   secMap = {}
         ,   appendixMode = false
         ,   lastNonAppendix = 0
-        ,   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         ,   makeTOCAtLevel = function ($parent, doc, current, level, conf) {
                 var $secs = $parent.children(conf.tocIntroductory ? "section" : "section:not(.introductory)");
 
@@ -8094,7 +8338,7 @@ define(
                         lastNonAppendix = current[0];
                         appendixMode = true;
                     }
-                    if (appendixMode) secnos[0] = alphabet.charAt(current[0] - lastNonAppendix);
+                    if (appendixMode) secnos[0] = utils.appendixMap(current[0] - lastNonAppendix);
                     var secno = secnos.join(".")
                     ,   isTopLevel = secnos.length == 1;
                     if (isTopLevel) {
@@ -8184,7 +8428,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/informative");
-                $("section.informative").find("h2:first, h3:first, h4:first, h5:first, h6:first")
+                $("section.informative").find("> h2:first, > h3:first, > h4:first, > h5:first, > h6:first")
                                         .after("<p><em>This section is non-normative.</em></p>");
                 msg.pub("end", "core/informative");
                 cb();
@@ -8243,18 +8487,36 @@ define(
                         $item.attr('id', $item.prop('tagName').toLowerCase() + '_' + resourceID) ;
                     }
                 });
-                // ensure head section is labelled
+                // ensure head section is labeled
                 $('body', doc).attr('role', 'document') ;
                 $('body', doc).attr('id', 'respecDocument') ;
                 $('div.head', doc).attr('role', 'contentinfo') ;
                 $('div.head', doc).attr('id', 'respecHeader') ;
                 if (!conf.noTOC) {
-                    // ensure toc is labelled
+                    // ensure toc is labeled
                     var toc = $('section#toc', doc)
                                   .find("ul:first");
                     toc.attr('role', 'directory') ;
                     if (!toc.attr("id")) {
                         toc.attr('id', 'respecContents') ;
+                    }
+                }
+		// ensure Table of Figures (tof) is labeled
+                var tof = $('section#tof', doc)
+                               .find("ul:first");
+                if (tof.length > 0) {
+		    tof.attr('role', 'directory') ;
+                    if (!tof.attr("id")) {
+                        tof.attr('id', 'respecFigures') ;
+                    }
+                }
+                // ensure Table of Tables (tot) is labeled
+                var tot = $('section#tot', doc)
+                    	       .find("ul:first");
+                if (tot.length > 0) {
+		    tot.attr('role', 'directory') ;
+                    if (!tot.attr("id")) {
+                        tot.attr('id', 'respecTables') ;
                     }
                 }
                 // mark issues and notes with heading
@@ -8282,19 +8544,38 @@ define(
 );
 
 
+// Module core/shiv
+// Injects the HTML5 shiv conditional comment
+
+define(
+    'core/shiv',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/shiv");
+                var cmt = doc.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
+                $("head").append(cmt);
+                msg.pub("end", "core/shiv");
+                cb();
+            }
+        };
+    }
+);
+
+
 // Module core/remove-respec
 // Removes all ReSpec artefacts right before processing ends
 
 define(
-    'core/remove-respec',[],
-    function () {
+    'core/remove-respec',["core/utils"],
+    function (utils) {
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/remove-respec");
                 // it is likely that some asynch operations won't have completed at that moment
                 // if they happen to need the artefacts, we could change this to be hooked into
                 // the base-runner to run right before end-all
-                $(".remove, script[data-requiremodule]", doc).remove();
+                utils.removeReSpec(doc);
                 msg.pub("end", "core/remove-respec");
                 cb();
             }
@@ -8333,12 +8614,248 @@ define(
     }
 );
 
+// Module core/regpict
+// Handles register pictures in the document. This encompasses two primary operations. One is
+// extracting register information from a variety of table styles. The other is inventing an
+// svg diagram that represents the fields in the table.
+define(
+    'core/regpict',["core/utils"],
+    function (utils) {
+
+        var defaultWidth = 32;
+        var defaultUnused = "RsvdP";
+        var cellWidth = 16;
+        var cellHeight = 32;
+        var cellInternalHeight = 8;
+        var cellTop = 16;
+        var log_ul = $("#log");
+        var validAttr = /^(rw|ro|rw1c|hwinit|ros|rws|rw1cs|rsvp|rsvz)$/i;
+
+        function remove_all_regpict() {
+            $("div.regpict").remove();
+        }
+
+        function add_all_regpict() {
+            $("div.register").each(add_regpict);
+        }
+
+        function replace_all_regpict() {
+            remove_all_regpict();
+            add_all_regpict();
+        }
+
+        function add_regpict() {
+            var width = (this.dataset && this.dataset.width) || defaultWidth;
+            var unused = (this.dataset && this.dataset.unused) || defaultUnused;
+            var fields = [];
+
+            $("table tbody", this).first().children().each(function () {
+                var td = $(this).children();
+                if (td.length >= 3) {
+                    var bits = td.eq(0).text();
+                    var desc = td.eq(1);
+                    var attr = td.eq(2).text().toLowerCase();
+                    var lsb, msb, match;
+                    if ((match = /^(\d+):(\d+)$/.exec(bits)) !== null) {
+                        msb = +match[1];
+                        lsb = +match[2];
+                        if (lsb > msb) {
+                            msb = +match[2];
+                            lsb = +match[1];
+                        }
+                    } else if ((match = /^(\d+)$/.exec(bits)) !== null) {
+                        msb = lsb = +match[1];
+                    } else {
+                        msb = lsb = -1;
+                    }
+                    var fieldName = $("code:first", desc);
+                    if (fieldName.length === 0) {
+                        fieldName = /^\s*(\w+)/.exec(desc.text())[1];
+                    } else {
+                        fieldName = fieldName.first().text();
+                    }
+                    if (!validAttr.test(attr)) {
+                        attr = "other";
+                    }
+                    fields.push({
+                        "msb": msb,
+                        "lsb": lsb,
+                        "name": fieldName,
+                        "attr": attr,
+                        "unused": false
+                    });
+                }
+            });
+            var bitarray = [];
+            bitarray[width] = 1000;
+            for (var i = 0; i < width; i++) {
+                bitarray[i] = -1;
+            }
+            fields.forEach(function (item, index) {
+                for (var i = item.lsb; i <= item.msb; i++) {
+                    bitarray[i] = index;
+                }
+            });
+            var lsb = -1;
+            for (var i = 0; i <= width; ++i) {
+                if (lsb >= 0 && bitarray[i] >= 0) {
+                    fields.push({
+                        "msb": i - 1,
+                        "lsb": lsb,
+                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R",
+                        "attr": unused.toLowerCase(),
+                        "unused": true
+                    });
+                    lsb = -1;
+                }
+                if (lsb < 0 && bitarray[i] < 0) {
+                    lsb = i;
+                }
+            }
+            $(this).data("regpict", {
+                "fields": fields
+            });
+            var svgdiv_string = "<div class='regpict'/>";
+            $(this).prepend(svgdiv_string);
+            $("div.regpict", this).svg(draw_regpict);
+        }
+
+        function draw_regpict(svg) {
+            var fields = $(this).parent().data("regpict").fields;
+            var width = 0;
+            for (var i = 0; i < fields.length; i++) {
+                var msb = fields[i].msb + 1;
+                width = width <= msb ? msb : width;
+            }
+
+            function leftOf(i) {
+                return cellWidth * (width - i - 0.5);
+            }
+
+            function rightOf(i) {
+                return cellWidth * (width - i + 0.5);
+            }
+
+            function middleOf(i) {
+                return cellWidth * (width - i);
+            }
+            var g = svg.group();
+            var p = svg.createPath();
+            for (var i = 0; i < fields.length; i++) {
+                var f = fields[i];
+                var text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+                    svg.createText().string(f.lsb), {
+                        class_: "regBitNum"
+                    });
+                if (f.lsb != f.msb) {
+                    svg.text(g, middleOf(f.msb), cellTop - 4,
+                        svg.createText().string(f.msb), {
+                            class_: "regBitNum"
+                        });
+                }
+                p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
+            }
+            p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
+            var nextBitLine = cellTop + cellHeight + 20; //76;
+            var bitLineCount = 0;
+            svg.path(g, p, {
+                class_: "regBitNumLine"
+            });
+            for (var b = 0; b < width; b++) {
+                for (var i = 0; i < fields.length; i++) {
+                    var f = fields[i];
+                    if (b == f.lsb) {
+                        g = svg.group();
+                        svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
+                            0, 0, {
+                                class_: "regFieldBox regFieldBox" + f.attr
+                            });
+                        for (var j = f.lsb + 1; j <= f.msb; j++) {
+                            svg.line(g,
+                                rightOf(j), cellTop + cellHeight - cellInternalHeight,
+                                rightOf(j), cellTop + cellHeight, {
+                                    class_: "regFieldBoxInternal" +
+                                        " regFieldBoxInternal" + f.attr
+                                });
+                        }
+                        var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                            svg.createText().string(f.name), {
+                                class_: "regFieldName" +
+                                    " regFieldName" + f.attr +
+                                    " regFieldNameInternal" +
+                                    " regFieldNameInternal" + f.attr
+                            });
+                        if ((text.clientWidth + 2 > rightOf(f.lsb) - leftOf(f.msb)) || (text.clientHeight + 2 > cellHeight - cellInternalHeight)) {
+                            svg.change(text, {
+                                x: rightOf(-0.5),
+                                y: nextBitLine,
+                                class_: "regFieldName" +
+                                    " regFieldName" + f.attr +
+                                    " regFieldName" + (bitLineCount < 2 ? "0" : "1")
+                            });
+                            p = svg.createPath();
+                            p.move(leftOf(f.msb), cellTop + cellHeight)
+                                .line((f.msb - f.lsb + 1) * cellWidth / 2, 4, true)
+                                .line(rightOf(f.lsb), cellTop + cellHeight)
+                                .move((f.lsb - f.msb - 1) * cellWidth / 2, 4, true)
+                                .vert(nextBitLine - text.clientHeight / 4)
+                                .horiz(rightOf(-0.4));
+                            svg.path(g, p, {
+                                class_: "regBitBracket" +
+                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1")
+                            });
+                            nextBitLine += text.clientHeight + 2;
+                            bitLineCount = (bitLineCount + 1) % 4;
+                        }
+                    }
+                }
+            }
+            svg.configure({
+                height: "" + nextBitLine
+            });
+        }
+
+        function log(str) {
+            if (str == undefined)
+                log_ul.append("<li class='log'>undefined</li>");
+            else
+                log_ul.append("<li class='log'>" + str.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + "</li>");
+        }
+        return {
+            run: function (conf, doc, cb, msg) {
+                msg.pub("start", "core/regpict");
+                $(".register", doc).each(function (index) {
+                    msg.pub("warn", "core/regpict: found register index=" + index + " contents=" + this.outerHTML);
+                });
+                msg.pub("end", "core/regpict");
+                cb();
+            }
+        };
+    }
+);
+/*global respecVersion */
+
+// this is only set in a build, not at all in the dev environment
+var requireConfig = {
+    shim:   {
+        "shortcut": {
+            exports:    "shortcut"
+        }
+    }
+};
+if ("respecVersion" in window && respecVersion) {
+    requireConfig.paths = {
+        "ui":   "https://raw.github.com/darobin/respec/gh-pages/js/ui"
+    };
+}
+require.config(requireConfig);
+
 define('profile-w3c-common',[
             "domReady"
         ,   "core/base-runner"
+        ,   "core/ui"
         ,   "core/override-configuration"
         ,   "core/default-root-attr"
-        // ,   "core/local-biblio"
         ,   "core/markdown"
         ,   "core/style"
         ,   "w3c/style"
@@ -8354,7 +8871,9 @@ define('profile-w3c-common',[
         ,   "core/highlight"
         ,   "core/best-practices"
         ,   "core/figures"
-        ,   "w3c/legacy"
+        ,   "core/tables"
+        ,   "core/biblio"
+        ,   "core/rdfa"
         ,   "core/webidl-oldschool"
         ,   "core/dfn"
         ,   "core/fix-headers"
@@ -8362,452 +8881,19 @@ define('profile-w3c-common',[
         ,   "w3c/informative"
         ,   "core/id-headers"
         ,   "w3c/aria"
+        ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
+        ,   "core/regpict"
         ],
-        function (domReady, runner) {
-            var args = Array.prototype.slice.call(arguments)
-            ,   hasRun = false;
+        function (domReady, runner, ui) {
+            var args = Array.prototype.slice.call(arguments);
             domReady(function () {
-                hasRun = true;
+                ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");
+                ui.addCommand("About ReSpec", "ui/about-respec", "Ctrl+Shift+Alt+A");
                 runner.runAll(args);
             });
-            // the below can trigger a run, assuming a way of starting this paused
-            // window.addEventListener("message", function (ev) {
-            //     console.log("message", ev.data);
-            //     if (hasRun) return;
-            //     if (ev.data && ev.data.topic == "run") {
-            //         hasRun = true;
-            //         runner.runAll(args);
-            //     }
-            // }, false);
         }
 );
-
-/*global berjon*/
-
-// ------------------------------------------------------------------------------------------ //
-//  simple-node.js -- simplified elements creations (based on XML::SimpleNode)
-//  Robin Berjon, <robin at berjon dot org>
-//  v0.01 - 2009-07-29
-// ------------------------------------------------------------------------------------------ //
-
-
-if (typeof(berjon) == "undefined") window.berjon = {};
-berjon.simpleNode = function (ns, doc) {
-    // XXX need to default the xml prefix
-    if (!ns) ns = {};
-    if (!doc) doc = document;
-    this.ns = ns;
-    this.doc = doc;
-};
-berjon.calls = {};
-berjon.simpleNode.prototype = {
-
-    // --- NODE CREATION ---
-    element:    function (name, attr, parent, content) {
-        if (!attr) attr = {};
-        var nmSt = this._nameToQName(name, false);
-        var el = this.doc.createElementNS(nmSt.ns, name);
-        for (var k in attr) this._setAttr(el, k, attr[k]);
-        if (parent) parent.appendChild(el);
-        if (content) {
-            if (content instanceof jQuery) $(el).append(content);
-            else if (content instanceof Array) for (var i = 0; i < content.length; i++) $(el).append(content[i]);
-            else this.text(content, el);
-        }
-        return el;
-    },
-    
-    text:    function (txt, parent) {
-        var tn = this.doc.createTextNode(txt);
-        if (parent) parent.appendChild(tn);
-        return tn;
-    },
-    
-    comment:    function (txt, parent) {
-        var cmt = this.doc.createComment(txt);
-        if (parent) parent.appendChild(cmt);
-        return cmt;
-    },
-    
-    pi:    function (target, data, parent) {
-        var pi = this.doc.createProcessingInstruction(target, data);
-        if (parent) parent.appendChild(pi);
-        return pi;
-    },
-    
-    documentFragment:    function (parent, content) {
-        var df = this.doc.createDocumentFragment();
-        if (content) {
-            if (content instanceof Array) for (var i = 0; i < content.length; i++) df.appendChild(content[i]);
-            else this.text(content, df);
-        }
-        if (parent) parent.appendChild(df);
-        return df;
-    },
-    
-    // --- FINDING STUFF ---
-    findNodes:    function (xpath, context) {
-        if (!context) context = this.doc;
-        var ns = this.ns;
-        var snap = this.doc.evaluate(xpath,
-                                     context,
-                                     function (pfx) { return ns[pfx] || null; },
-                                     XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-                                     null);
-        var res = [];
-        for (var i = 0; i < snap.snapshotLength; i++) res.push(snap.snapshotItem(i));
-        return res;
-    },
-    
-    // --- MANIPULATION ---
-    copyChildren:   function (from, to) {
-        while (from.childNodes.length) to.appendChild(from.firstChild);
-    },
-    
-    copyAttr:   function (from, to) {
-        for (var i = 0; i < from.attributes.length; i++) {
-            var at = from.attributes[i];
-            to.setAttributeNS(at.namespaceURI, at.name, at.value);
-        }
-    },
-    
-    renameEl:   function (el, name) {
-        // we remove, copy, then insert instead of just replacing because it's a *lot*
-        // faster if the copyChildren operation is done while the node is not being displayed
-        var folSib = el.nextSibling;
-        var par = el.parentNode;
-        if (par) par.removeChild(el);
-        var newEl = this.element(name);
-        this.copyAttr(el, newEl);
-        this.copyChildren(el, newEl);
-        // if (el.parentNode) el.parentNode.replaceChild(newEl, el);
-        if (par) par.insertBefore(newEl, folSib);
-        return newEl;
-    },
-    
-    // --- ID MANAGEMENT ---
-    makeID: function (el, pfx, txt) {
-        if (el.hasAttribute("id")) return el.getAttribute("id");
-        var id = "";
-        if (!txt) {
-            if (el.hasAttribute("title")) txt = el.getAttribute("title");
-            else                          txt = el.textContent;
-        }
-        txt = txt.replace(/^\s+/, "");
-        txt = txt.replace(/\s+$/, "");
-        id += txt;
-        id = id.toLowerCase();
-        if (id.length === 0) id = "generatedID";
-        id = this.sanitiseID(id);
-        if (pfx) id = pfx + "-" + id;
-        id = this.idThatDoesNotExist(id);
-        el.setAttribute("id", id);
-        return id;
-    },
-    
-    sanitiseID:    function (id) {
-        id = id.split(/[^\-.0-9a-zA-Z_]/).join("-");
-        id = id.replace(/^-+/g, "");
-        id = id.replace(/-+$/, "");
-        if (id.length > 0 && /^[^a-z]/.test(id)) id = "x" + id;
-        if (id.length === 0) id = "generatedID";
-        return id;
-    },
-    
-    idCache: {},
-    idThatDoesNotExist:    function (id) {
-        var inc = 1;
-        if (this.doc.getElementById(id) || this.idCache[id]) {
-            while (this.doc.getElementById(id + "-" + inc) || this.idCache[id + "-" + inc]) inc++;
-            id = id + "-" + inc;
-        }
-        // XXX disable caching for now
-        // this.idCache[id] = true;
-        return id;
-    },
-    
-    // --- CLASS HANDLING ---
-    hasClass:    function (el, cl) {
-        return this.listClasses(el).indexOf(cl) >= 0;
-    },
-    
-    addClass:    function (el, cl) {
-        var ls = this.listClasses(el);
-        if (ls.indexOf(cl) >= 0) return;
-        ls.push(cl);
-        this.setClassList(el, ls);
-    },
-    
-    removeClass:    function (el, cl) {
-        var ls = this.listClasses(el);
-        var idx = ls.indexOf(cl);
-        if (idx < 0) return;
-        ls.splice(idx, 1);
-        this.setClassList(el, ls);
-    },
-    
-    listClasses:    function (el) {
-        if (el.hasAttribute("class")) {
-            return el.getAttribute("class").split(/\s+/);
-        }
-        else return [];
-    },
-    
-    setClassList:    function (el, ls) {
-        el.setAttribute("class", ls.join(" "));
-    },
-    
-    // --- HELPERS ---
-    _nameToQName:    function (name, isAttr) {
-        var matches = /^(.+):(.+)$/.exec(name);
-        var pfx, ns, ln;
-        if (matches) {
-            pfx = matches[1];
-            ln = matches[2];
-            if (!this.ns[pfx]) throw "No namespace declared for prefix '" + pfx + "'";
-            ns = this.ns[pfx];
-        }
-        else {
-            if (isAttr) ns = null;
-            else        ns = this.ns[""];
-            ln = name;
-        }
-        return { ns: ns, ln: ln };
-    },
-    
-    _setAttr:    function (el, name, value) {
-        var nmSt = this._nameToQName(name, true);
-        el.setAttributeNS(nmSt.ns, nmSt.ln, value);
-    }
-};
-
-define("simpleNode", function(){});
-
-/**
- * http://www.openjs.com/scripts/events/keyboard_shortcuts/
- * Version : 2.01.B
- * By Binny V A
- * License : BSD
- */
-shortcut = {
-	'all_shortcuts':{},//All the shortcuts are stored in this array
-	'add': function(shortcut_combination,callback,opt) {
-		//Provide a set of default options
-		var default_options = {
-			'type':'keydown',
-			'propagate':false,
-			'disable_in_input':false,
-			'target':document,
-			'keycode':false
-		}
-		if(!opt) opt = default_options;
-		else {
-			for(var dfo in default_options) {
-				if(typeof opt[dfo] == 'undefined') opt[dfo] = default_options[dfo];
-			}
-		}
-
-		var ele = opt.target;
-		if(typeof opt.target == 'string') ele = document.getElementById(opt.target);
-		var ths = this;
-		shortcut_combination = shortcut_combination.toLowerCase();
-
-		//The function to be called at keypress
-		var func = function(e) {
-			e = e || window.event;
-			
-			if(opt['disable_in_input']) { //Don't enable shortcut keys in Input, Textarea fields
-				var element;
-				if(e.target) element=e.target;
-				else if(e.srcElement) element=e.srcElement;
-				if(element.nodeType==3) element=element.parentNode;
-
-				if(element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') return;
-			}
-	
-			//Find Which key is pressed
-			if (e.keyCode) code = e.keyCode;
-			else if (e.which) code = e.which;
-			var character = String.fromCharCode(code).toLowerCase();
-			
-			if(code == 188) character=","; //If the user presses , when the type is onkeydown
-			if(code == 190) character="."; //If the user presses , when the type is onkeydown
-
-			var keys = shortcut_combination.split("+");
-			//Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
-			var kp = 0;
-			
-			//Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
-			var shift_nums = {
-				"`":"~",
-				"1":"!",
-				"2":"@",
-				"3":"#",
-				"4":"$",
-				"5":"%",
-				"6":"^",
-				"7":"&",
-				"8":"*",
-				"9":"(",
-				"0":")",
-				"-":"_",
-				"=":"+",
-				";":":",
-				"'":"\"",
-				",":"<",
-				".":">",
-				"/":"?",
-				"\\":"|"
-			}
-			//Special Keys - and their codes
-			var special_keys = {
-				'esc':27,
-				'escape':27,
-				'tab':9,
-				'space':32,
-				'return':13,
-				'enter':13,
-				'backspace':8,
-	
-				'scrolllock':145,
-				'scroll_lock':145,
-				'scroll':145,
-				'capslock':20,
-				'caps_lock':20,
-				'caps':20,
-				'numlock':144,
-				'num_lock':144,
-				'num':144,
-				
-				'pause':19,
-				'break':19,
-				
-				'insert':45,
-				'home':36,
-				'delete':46,
-				'end':35,
-				
-				'pageup':33,
-				'page_up':33,
-				'pu':33,
-	
-				'pagedown':34,
-				'page_down':34,
-				'pd':34,
-	
-				'left':37,
-				'up':38,
-				'right':39,
-				'down':40,
-	
-				'f1':112,
-				'f2':113,
-				'f3':114,
-				'f4':115,
-				'f5':116,
-				'f6':117,
-				'f7':118,
-				'f8':119,
-				'f9':120,
-				'f10':121,
-				'f11':122,
-				'f12':123
-			}
-	
-			var modifiers = { 
-				shift: { wanted:false, pressed:false},
-				ctrl : { wanted:false, pressed:false},
-				alt  : { wanted:false, pressed:false},
-				meta : { wanted:false, pressed:false}	//Meta is Mac specific
-			};
-                        
-			if(e.ctrlKey)	modifiers.ctrl.pressed = true;
-			if(e.shiftKey)	modifiers.shift.pressed = true;
-			if(e.altKey)	modifiers.alt.pressed = true;
-			if(e.metaKey)   modifiers.meta.pressed = true;
-                        
-			for(var i=0; k=keys[i],i<keys.length; i++) {
-				//Modifiers
-				if(k == 'ctrl' || k == 'control') {
-					kp++;
-					modifiers.ctrl.wanted = true;
-
-				} else if(k == 'shift') {
-					kp++;
-					modifiers.shift.wanted = true;
-
-				} else if(k == 'alt') {
-					kp++;
-					modifiers.alt.wanted = true;
-				} else if(k == 'meta') {
-					kp++;
-					modifiers.meta.wanted = true;
-				} else if(k.length > 1) { //If it is a special key
-					if(special_keys[k] == code) kp++;
-					
-				} else if(opt['keycode']) {
-					if(opt['keycode'] == code) kp++;
-
-				} else { //The special keys did not match
-					if(character == k) kp++;
-					else {
-						if(shift_nums[character] && e.shiftKey) { //Stupid Shift key bug created by using lowercase
-							character = shift_nums[character]; 
-							if(character == k) kp++;
-						}
-					}
-				}
-			}
-			
-			if(kp == keys.length && 
-						modifiers.ctrl.pressed == modifiers.ctrl.wanted &&
-						modifiers.shift.pressed == modifiers.shift.wanted &&
-						modifiers.alt.pressed == modifiers.alt.wanted &&
-						modifiers.meta.pressed == modifiers.meta.wanted) {
-				callback(e);
-	
-				if(!opt['propagate']) { //Stop the event
-					//e.cancelBubble is supported by IE - this will kill the bubbling process.
-					e.cancelBubble = true;
-					e.returnValue = false;
-	
-					//e.stopPropagation works in Firefox.
-					if (e.stopPropagation) {
-						e.stopPropagation();
-						e.preventDefault();
-					}
-					return false;
-				}
-			}
-		}
-		this.all_shortcuts[shortcut_combination] = {
-			'callback':func, 
-			'target':ele, 
-			'event': opt['type']
-		};
-		//Attach the function with the event
-		if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
-		else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
-		else ele['on'+opt['type']] = func;
-	},
-
-	//Remove the shortcut - just specify the shortcut and I will remove the binding
-	'remove':function(shortcut_combination) {
-		shortcut_combination = shortcut_combination.toLowerCase();
-		var binding = this.all_shortcuts[shortcut_combination];
-		delete(this.all_shortcuts[shortcut_combination])
-		if(!binding) return;
-		var type = binding['event'];
-		var ele = binding['target'];
-		var callback = binding['callback'];
-
-		if(ele.detachEvent) ele.detachEvent('on'+type, callback);
-		else if(ele.removeEventListener) ele.removeEventListener(type, callback, false);
-		else ele['on'+type] = false;
-	}
-};
-define("shortcut", function(){});
 
 require(['profile-w3c-common']);

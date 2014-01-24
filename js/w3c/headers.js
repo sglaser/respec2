@@ -178,10 +178,10 @@ define(
             ,   base:           "Document"
             ,   finding:        "TAG Finding"
             ,   "draft-finding": "Draft TAG Finding"
-            ,   "CG-DRAFT":     "Draft Community Group Specification"
-            ,   "CG-FINAL":     "Final Community Group Specification"
-            ,   "BG-DRAFT":     "Draft Business Group Specification"
-            ,   "BG-FINAL":     "Final Business Group Specification"
+            ,   "CG-DRAFT":     "Draft Community Group Report"
+            ,   "CG-FINAL":     "Final Community Group Report"
+            ,   "BG-DRAFT":     "Draft Business Group Report"
+            ,   "BG-FINAL":     "Final Business Group Report"
             }
         ,   status2long:    {
                 "FPWD-NOTE":    "First Public Working Group Note"
@@ -298,6 +298,8 @@ define(
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
                 conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
                 conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
+                if (conf.isRec && !conf.errata)
+                    msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");
                 conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependW3C = !conf.isUnofficial;
