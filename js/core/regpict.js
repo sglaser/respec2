@@ -3,19 +3,19 @@
 // extracting register information from a variety of table styles. The other is inventing an
 // svg diagram that represents the fields in the table.
 define(
-    ["core/utils"],
+    ["core/utils",
+     "jquery-svg/jquery.svg.js"],
     function (utils) {
 
-        var defaultWidth = 32;
+        /*var defaultWidth = 32;
         var defaultUnused = "RsvdP";
         var cellWidth = 16;
         var cellHeight = 32;
         var cellInternalHeight = 8;
         var cellTop = 16;
-        var log_ul = $("#log");
-        var validAttr = /^(rw|ro|rw1c|hwinit|ros|rws|rw1cs|rsvp|rsvz)$/i;
+        var validAttr = /^(rw|ro|rw1c|rw1s|hwinit|rws|ros|rw1cs|rw1ss|reserved|rsvd|rsvp|rsvz|zero|one|other)$/i;*/
 
-        function remove_all_regpict() {
+        /*function remove_all_regpict() {
             $("div.regpict").remove();
         }
 
@@ -102,15 +102,61 @@ define(
             var svgdiv_string = "<div class='regpict'/>";
             $(this).prepend(svgdiv_string);
             $("div.regpict", this).svg(draw_regpict);
+        }*/
+        
+        function pget(obj, prop, def) {
+            if ((obj !== null) && prop in obj)
+                return obj[prop];
+            else
+                return def;
         }
 
-        function draw_regpict(svg) {
-            var fields = $(this).parent().data("regpict").fields;
-            var width = 0;
-            for (var i = 0; i < fields.length; i++) {
-                var msb = fields[i].msb + 1;
-                width = width <= msb ? msb : width;
+        function draw_regpict(svg, reg) {
+            var width               = Number(pget(reg, "width", 32));
+            var unused              = String(pget(reg, "unused", "RsvdP"));
+            var defaultAttr         = String(pget(reg, "defaultAttr", "other"));
+            var cellWidth           = Number(pget(reg, "cellWidth", 16));
+            var cellHeight          = Number(pget(reg, "cellHeight", 32));
+            var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+            var cellTop             = Number(pget(reg, "cellTop", 16));
+            var fields              = pget(reg, "fields", [ ]); // default to empty register
+            if (! Array.isArray(fields)) fields = [ ];
+            console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop);
+            console.log("draw_regpict: fields=" + fields.toString());
+            
+            var bitarray = [];
+            bitarray[width] = 1000; // marker above MSB
+            for (var i = 0; i < width; i++) {
+                bitarray[i] = -1;
             }
+            fields.forEach(function (item, index) {
+                if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
+                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;lsb
+                if (!("unused" in item)) item.unused = false;
+                if (!("attr" in item)) item.attr = defaultAttr;
+                if (!("name" in item)) item.name = "UNSPECIFIED NAME";
+                console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+                for (var i = item.lsb; i <= item.msb; i++) {
+                    bitarray[i] = index;
+                }
+            });
+            var lsb = -1;
+            for (var i = 0; i <= width; ++i) {
+                if (lsb >= 0 && bitarray[i] >= 0) {
+                    fields.push({
+                        "msb": i - 1,
+                        "lsb": lsb,
+                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R",
+                        "attr": unused.toLowerCase(),
+                        "unused": true
+                    });
+                    lsb = -1;
+                }
+                if (lsb < 0 && bitarray[i] < 0) {
+                    lsb = i;
+                }
+            }
+            
 
             function leftOf(i) {
                 return cellWidth * (width - i - 0.5);
@@ -123,6 +169,7 @@ define(
             function middleOf(i) {
                 return cellWidth * (width - i);
             }
+            
             var g = svg.group();
             var p = svg.createPath();
             for (var i = 0; i < fields.length; i++) {
@@ -199,15 +246,33 @@ define(
             });
         }
 
-        function log(str) {
-            if (str == undefined)
-                log_ul.append("<li class='log'>undefined</li>");
-            else
-                log_ul.append("<li class='log'>" + str.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + "</li>");
-        }
         return {
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
+                $("figure.register", doc).each(function (index) {
+                    var json = null;
+                    $("div.json", this).each(function (index) {
+                        json = $.parseJSON(this.textContent);
+                    });
+                    // TODO extract register JSON from other sources (e.g. adjacent table)
+                    if (json == null) {
+                        msg.pub("warn", "core/regpict: no register definition");
+                    }
+                    // invent a div to hold the svg, if necessary
+                    var $divsvg = $("div.svg", this);
+                    if ($divsvg.length == 0) {
+                        var $cap = $("figcaption", this);
+                        if ($cap.length > 0) {
+                            console.log("inserting div.svg before <figcaption>");
+                            $cap.before('<div class="svg"></div>');
+                        } else {
+                            console.log("inserting div.svg at end of <figure>");
+                            $(this).append('<div class="svg"></div>');
+                        }
+                        $divsvg=$("div.svg", this);
+                    }
+                    if (json !== null) { $divsvg.first().svg(function(svg) { draw_regpict(svg, json); }); }
+                });
                 msg.pub("end", "core/regpict");
                 cb();
             }
