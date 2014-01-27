@@ -18,7 +18,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/issues-notes");
-                var $ins = $(".issue, .note");
+                var $ins = $(".issue, .note .impnote");
                 if ($ins.length) {
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
