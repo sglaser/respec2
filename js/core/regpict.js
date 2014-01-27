@@ -118,10 +118,11 @@ define(
             var cellWidth           = Number(pget(reg, "cellWidth", 16));
             var cellHeight          = Number(pget(reg, "cellHeight", 32));
             var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+            var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var fields              = pget(reg, "fields", [ ]); // default to empty register
             if (! Array.isArray(fields)) fields = [ ];
-            console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop);
+            console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             console.log("draw_regpict: fields=" + fields.toString());
             
             var bitarray = [];
@@ -226,14 +227,19 @@ define(
                             });
                             p = svg.createPath();
                             p.move(leftOf(f.msb), cellTop + cellHeight)
-                                .line((f.msb - f.lsb + 1) * cellWidth / 2, 4, true)
-                                .line(rightOf(f.lsb), cellTop + cellHeight)
-                                .move((f.lsb - f.msb - 1) * cellWidth / 2, 4, true)
-                                .vert(nextBitLine - text.clientHeight / 4)
-                                .horiz(rightOf(-0.4));
+                             .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
+                             .line(rightOf(f.lsb), cellTop + cellHeight);
                             svg.path(g, p, {
                                 class_: "regBitBracket" +
                                     " regBitBracket" + (bitLineCount < 2 ? "0" : "1")
+                            });  
+                            p = svg.createPath();
+                            p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
+                             .vert(nextBitLine - text.clientHeight / 4)
+                             .horiz(rightOf(-0.4));
+                            svg.path(g, p, {
+                                class_: "regBitLine" +
+                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1")
                             });
                             nextBitLine += text.clientHeight + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
@@ -251,8 +257,9 @@ define(
                 msg.pub("start", "core/regpict");
                 $("figure.register", doc).each(function (index) {
                     var json = null;
-                    $("div.json", this).each(function (index) {
+                    $("pre.json,div.json", this).each(function (index) {
                         json = $.parseJSON(this.textContent);
+                        $(this).hide();
                     });
                     // TODO extract register JSON from other sources (e.g. adjacent table)
                     if (json == null) {

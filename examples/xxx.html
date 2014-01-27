@@ -13,7 +13,7 @@
       var respecConfig = {
               specStatus:   "ED"
           ,   shortName:    "basics"
-          ,   editors:      [{ name: "Robin Berjon", url: "http://berjon.com/" }]
+          ,   editors:      [{ name: "Steve Glaser"}]
           ,   wg:           "ReSpec Hackin' Gang"
           ,   wgURI:        "http://darobin.github.com/respec"
           ,   wgPublicList: "none"
@@ -30,31 +30,31 @@
 
 text.regBitNum {
 	text-anchor: middle;
-	fill: green;
+	fill: grey;
 	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
 	font-size: 8pt;
 }
 
 path.regBitNumLine {
-	stroke: green;
+	stroke: grey;
 	stroke-width: 1px;
 }
 
 rect.regFieldBox {
-	fill: lightsteelblue;
-	stroke: green;
-	stroke-width: 2px;
+	fill: white;
+	stroke: black;
+	stroke-width: 1.5px;
 }
 
 rect.regFieldBoxrsvdp,
 rect.regFieldBoxrsvdz,
 rect.regFieldBoxReserved,
 rect.regFieldRsvd {
-	fill: lightgrey;
+	fill: white;
 }
 
 line.regFieldBoxInternal {
-	stroke: steelblue;
+	stroke: black;
 }
 
 line.regFieldBoxInternalrsvdp,
@@ -66,8 +66,8 @@ text.regFieldNameInternal {
 	text-anchor: middle;
 }
 
-rect.regFieldNameInternalrsvdp,
-rect.regFieldNameInternalrsvdz {
+text.regFieldNameInternalrsvdp,
+text.regFieldNameInternalrsvdz {
 	fill: grey;
 }
 
@@ -76,16 +76,24 @@ text.regFieldName {
 	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
 }
 
+path.regBitLine1,
 path.regBitBracket1 {
 	fill: none;
 	stroke: black;
 	stroke-width: 1px;
 }
 
-path.regBitBracket0 {
+path.regBitLine0 {
 	fill: none;
-	stroke: steelblue;
-	stroke-width: 2.5px;
+	stroke: green;
+    stroke-dasharray: 4,2;
+	stroke-width: 1px;
+}
+
+path.regBitBracket0 {
+    fill: none;
+    stroke: green;
+    stroke-width: 1px;
 }
 
 svg.regpict {
@@ -96,7 +104,13 @@ svg.regpict {
 	color: red;
 	font-weight: bold;
 }
-    figure div.json { color: rgb(0,90,156); display: inherit; }
+
+figure div.json,
+figure pre.json {
+    color: rgb(0,90,156);
+    display: inherit;
+}
+    
     
 </style>
   </head>
@@ -125,17 +139,33 @@ svg.regpict {
     <section>
     <h2>Register Figure</h2>
     <figure id="figure1" class="register">
-        <div class="json">
-            {
-            "width" : 32,
-            "fields": [{"msb":  4,
-                        "lsb":  0,
-                        "name": "field0_4",
-                        "attr": "ro"},
-            {"msb": 7, "lsb":6, "name":"Very long name that will never fit"}]
-            }
-        </div>
-<!--        <div class="svg"></div>-->
+        <pre class="json">
+            { "width" : 32,
+              "fields": [
+                {   "msb": 4,
+                    "lsb": 0,
+                    "name": "field0_4",
+                    "attr": "ro"
+                }, {
+                    "msb": 7,
+                    "lsb":6, "name":"Very long name that will never fit"
+                }, {
+                    "msb": 9,
+                    "name": "bit9"
+                }, {
+                    "lsb": 10,
+                    "name": "bit10"
+                }, {
+                    "lsb": 11,
+                    "name": "bit11"
+                }, {
+                    "lsb": 12,
+                    "name": "bit12"
+                }, {
+                    "lsb": 13,
+                    "name": "bit13"
+                } ] }
+        </pre>
         <figcaption>Graph for XXX Example (
             <a href="figure1.svg">SVG version</a>)</figcaption>
     </figure>
@@ -146,6 +176,7 @@ svg.regpict {
             >deep</a> stuff</span></h2>
       <p> Something MUST happen. </p>
       <p class="issue" title="A real problem"> This is a problem </p>
+      <p class="issue atrisk" title="A REAL problem"> This is a problem </p>
       <p class="note" title="About this"> Just a note </p>
       <p> Problems. <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
