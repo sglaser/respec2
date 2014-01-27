@@ -204,7 +204,7 @@ shortcut = {
 		if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
 		else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
 		else ele['on'+opt['type']] = func;
-	},
+	}
 
 	//Remove the shortcut - just specify the shortcut and I will remove the binding
     // 'remove':function(shortcut_combination) {
