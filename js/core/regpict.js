@@ -132,7 +132,7 @@ define(
             }
             fields.forEach(function (item, index) {
                 if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
-                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;lsb
+                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;
                 if (!("unused" in item)) item.unused = false;
                 if (!("attr" in item)) item.attr = defaultAttr;
                 if (!("name" in item)) item.name = "UNSPECIFIED NAME";
@@ -262,12 +262,12 @@ define(
                         $(this).hide();
                     });
                     // TODO extract register JSON from other sources (e.g. adjacent table)
-                    if (json == null) {
+                    if (json === null) {
                         msg.pub("warn", "core/regpict: no register definition");
                     }
                     // invent a div to hold the svg, if necessary
                     var $divsvg = $("div.svg", this);
-                    if ($divsvg.length == 0) {
+                    if ($divsvg.length === 0) {
                         var $cap = $("figcaption", this);
                         if ($cap.length > 0) {
                             console.log("inserting div.svg before <figcaption>");
