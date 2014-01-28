@@ -125,11 +125,7 @@ define(
             console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             console.log("draw_regpict: fields=" + fields.toString());
             
-            var bitarray = [];
-            bitarray[width] = 1000; // marker above MSB
-            for (var i = 0; i < width; i++) {
-                bitarray[i] = -1;
-            }
+            // sanitize field array to avoid subsequent problems
             fields.forEach(function (item, index) {
                 if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
                 if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;
@@ -137,36 +133,54 @@ define(
                 if (!("attr" in item)) item.attr = defaultAttr;
                 if (!("name" in item)) item.name = "UNSPECIFIED NAME";
                 console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+            
+            });
+            
+            var bitarray = [];  // Array indexed by bit # in register range 0:width
+                                // field[bitarray[N]] contains bit N
+                                // bitarray[N] == -1 for unused bits
+                                // bitarray[N] == 1000 for first bit outside register width
+            
+            bitarray[width] = 1000;
+            for (var i = 0; i < width; i++) {
+                bitarray[i] = -1;
+            }
+            fields.forEach(function (item, index) {
                 for (var i = item.lsb; i <= item.msb; i++) {
                     bitarray[i] = index;
                 }
             });
-            var lsb = -1;
+            
+            var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
             for (var i = 0; i <= width; ++i) {
                 if (lsb >= 0 && bitarray[i] >= 0) {
+                    // first "used" bit after stretch of unused bits, invent an "unused" field
                     fields.push({
                         "msb": i - 1,
                         "lsb": lsb,
-                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R",
-                        "attr": unused.toLowerCase(),
+                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
+                        "attr": unused.toLowerCase(),   // attribute is name
                         "unused": true
                     });
                     lsb = -1;
                 }
                 if (lsb < 0 && bitarray[i] < 0) {
+                    // starting a string of unused bits
                     lsb = i;
                 }
             }
             
-
+            // x position of left edge of bit i
             function leftOf(i) {
                 return cellWidth * (width - i - 0.5);
             }
 
+            // x position of right edge of bit i
             function rightOf(i) {
                 return cellWidth * (width - i + 0.5);
             }
 
+            // x position of middle of bit i
             function middleOf(i) {
                 return cellWidth * (width - i);
             }
