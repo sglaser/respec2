@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en" prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head>
+    <meta charset="utf-8" />
+    <title>Basic ReSpec Evolution Example</title>
+    
+<!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
+
+    
+<!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script> -->
+
+    
+<!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
+
+    
+    
+<!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
+
+    
+<!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
+
+    
+<style type="text/css">
+
+text.regBitNum {
+	text-anchor: middle;
+	fill: grey;
+	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+path.regBitNumLine {
+	stroke: grey;
+	stroke-width: 1px;
+}
+
+rect.regFieldBox {
+	fill: white;
+	stroke: black;
+	stroke-width: 1.5px;
+}
+
+rect.regFieldBoxrsvdp,
+rect.regFieldBoxrsvdz,
+rect.regFieldBoxReserved,
+rect.regFieldRsvd {
+	fill: white;
+}
+
+line.regFieldBoxInternal {
+	stroke: black;
+}
+
+line.regFieldBoxInternalrsvdp,
+line.regFieldBoxInternalrsvdz {
+	stroke: grey;
+}
+
+text.regFieldNameInternal {
+	text-anchor: middle;
+}
+
+text.regFieldNameInternalrsvdp,
+text.regFieldNameInternalrsvdz {
+	fill: grey;
+}
+
+text.regFieldName {
+	font-size: 11pt;
+	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+}
+
+path.regBitLine1,
+path.regBitBracket1 {
+	fill: none;
+	stroke: black;
+	stroke-width: 1px;
+}
+
+path.regBitLine0 {
+	fill: none;
+	stroke: green;
+    stroke-dasharray: 4,2;
+	stroke-width: 1px;
+}
+
+path.regBitBracket0 {
+    fill: none;
+    stroke: green;
+    stroke-width: 1px;
+}
+
+svg.regpict {
+	color: green;
+}
+
+.svg_error {
+	color: red;
+	font-weight: bold;
+}
+
+figure div.json,
+figure pre.json {
+    color: rgb(0,90,156);
+    display: inherit;
+}
+    
+    
+</style>
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.issue-title span, div.note-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child { margin-top: 0 }
+.issue, .note {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+
+</style><style>/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+a.idlEnumItem {
+    color:  #000;
+    border-bottom:  1px dotted #ccc;
+    text-decoration: none;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType, .idlCallbackType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlCtor*/
+.idlCtorName {
+    color:  #ff4500;
+}
+.idlCtorName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName, .idlDefaultValue {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlSectionComment*/
+.idlSectionComment {
+    color: gray;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.constructors dt code {
+    background:  #cfc;
+}
+
+.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-family:    initial;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED" />
+<!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+  <body class="h-entry" style="" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p>
+    
+      <a href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/Icons/w3c_home" alt="W3C" /></a>
+    
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Basic ReSpec Evolution Example</h1>
+  
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-01-29T07:25:04.000Z" id="w3c-editor-s-draft-28-january-2014"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-01-28">28 January 2014</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://darobin.github.com/respec">http://darobin.github.com/respec</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/basics/">http://www.w3.org/TR/basics/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="http://darobin.github.com/respec">http://darobin.github.com/respec</a></dd>
+    
+    
+    
+    
+      
+    
+    
+    
+    <dt>Editor:</dt>
+    <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Steve Glaser</span></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2014
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+    
+  
+  <hr />
+</div>
+    <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2>
+      <p> This is just a very basic document. [<cite><a class="bibref" href="#bib-REX">REX</a></cite>] Yeah for memes [<cite><a class="bibref" href="#bib-MEMES">MEMES</a></cite>].
+        [<cite><a class="bibref" href="#bib-DOM4">DOM4</a></cite>], [<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>], [[WHATEVER]] </p>
+      <p> [<cite><a class="bibref" href="#bib-NO-EXIST">NO-EXIST</a></cite>] </p>
+    </section><section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
+  
+    
+      
+        <p>
+          <em>This section describes the status of this document at the time of its publication.
+          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
+          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+          http://www.w3.org/TR/.</em>
+        </p>
+        
+      <p> CUSTOM PARAGRAPH </p>
+    
+        <p>
+          This document was published by the <a href="http://darobin.github.com/respec">ReSpec Hackin' Gang</a> as an Editor's Draft.
+          
+          
+            If you wish to make comments regarding this document, please send them to 
+            <a href="mailto:none@w3.org">none@w3.org</a> 
+            (<a href="mailto:none-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/none/">archives</a>).
+          
+          
+          
+          
+            All comments are welcome.
+          
+        </p>
+        
+        
+          <p>
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other
+            documents at any time. It is inappropriate to cite this document as other than work in
+            progress.
+          </p>
+        
+        
+        <p>
+          
+            This document was produced by a group operating under the 
+            <a id="sotd_patent" about="" rel="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>.
+          
+          
+          
+            
+              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="XXX" rel="disclosure">public list of any patent
+              disclosures</a> 
+            
+            made in connection with the deliverables of the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual knowledge of a patent
+            which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+          
+        </p>
+        
+      
+    
+  
+</section><section id="toc"><h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2><ul class="toc" role="directory" id="respecContents"><li class="tocline"><a href="#informative-section" class="tocxref"><span class="secno">1. </span>Informative section</a><ul class="toc"><li class="tocline"><a href="#inner-section" class="tocxref"><span class="secno">1.1 </span>Inner section</a></li><li class="tocline"><a href="#other-inner-section" class="tocxref"><span class="secno">1.2 </span>Other inner section</a></li></ul></li><li class="tocline"><a href="#register-figure" class="tocxref"><span class="secno">2. </span>Register Figure</a></li><li class="tocline"><a href="#name-clashes-after-and-deep-stuff" class="tocxref"><span class="secno">3. </span>Name <span class="formerLink">clashes</span> after <span>and <span class="formerLink">deep</span> stuff</span></a></li><li class="tocline"><a href="#clash-here" class="tocxref"><span class="secno">4. </span>Clash here</a><ul class="toc"><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">4.1 </span>Methods</a></li></ul></li><li class="tocline"><a href="#type-unions" class="tocxref"><span class="secno">5. </span>Type Unions</a><ul class="toc"><li class="tocline"><a href="#two" class="tocxref"><span class="secno">5.1 </span>Two</a><ul class="toc"><li class="tocline"><a href="#methods-1" class="tocxref"><span class="secno">5.1.1 </span>Methods</a></li></ul></li></ul></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></section>
+    
+    <section id="tof" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_tof">Table of Figures</h2><ul class="tof" role="directory" id="respecFigures"><li class="tofline"><a class="tocxref" href="#figure1">Fig. <span class="figno">1</span> <figcaption><span class="fig-title"></span></figcaption></a></li></ul></section>
+      <section class="informative" id="informative-section">
+      
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_informative-section"><span class="secno">1. </span>Informative section</h2><p><em>This section is non-normative.</em></p>
+      <p>blah</p>
+      <section id="inner-section">
+        <h3 aria-level="2" role="heading" id="h3_inner-section"><span class="secno">1.1 </span>Inner section</h3>
+        <p>blahblah</p>
+      </section>
+      <section id="other-inner-section">
+        <h3 aria-level="2" role="heading" id="h3_other-inner-section"><span class="secno">1.2 </span>Other inner section</h3>
+        <p>blahblah</p>
+      </section>
+    </section>
+    <section id="register-figure">
+    
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_register-figure"><span class="secno">2. </span>Register Figure</h2>
+    <figure id="figure1" class="register">
+        <pre class="json" style="display: none;">            { &quot;width&quot; : 32,
+              &quot;fields&quot;: [
+                {   &quot;msb&quot;: 4,
+                    &quot;lsb&quot;: 0,
+                    &quot;name&quot;: &quot;field0_4&quot;,
+                    &quot;attr&quot;: &quot;ro&quot;
+                }, {
+                    &quot;msb&quot;: 7,
+                    &quot;lsb&quot;:6, &quot;name&quot;:&quot;Very long name that will never fit&quot;
+                }, {
+                    &quot;msb&quot;: 9,
+                    &quot;name&quot;: &quot;bit9&quot;
+                }, {
+                    &quot;lsb&quot;: 10,
+                    &quot;name&quot;: &quot;bit10&quot;
+                }, {
+                    &quot;lsb&quot;: 11,
+                    &quot;name&quot;: &quot;bit11&quot;
+                }, {
+                    &quot;lsb&quot;: 12,
+                    &quot;name&quot;: &quot;bit12&quot;
+                }, {
+                    &quot;lsb&quot;: 13,
+                    &quot;name&quot;: &quot;bit13&quot;
+                } ] }
+        </pre>
+        <div class="svg hasSVG"><svg version="1.1" width="982" height="188"><g><text x="512" y="12" class="regBitNum">0</text><text x="448" y="12" class="regBitNum">4</text><text x="416" y="12" class="regBitNum">6</text><text x="400" y="12" class="regBitNum">7</text><text x="368" y="12" class="regBitNum">9</text><text x="352" y="12" class="regBitNum">10</text><text x="336" y="12" class="regBitNum">11</text><text x="320" y="12" class="regBitNum">12</text><text x="304" y="12" class="regBitNum">13</text><text x="432" y="12" class="regBitNum">5</text><text x="384" y="12" class="regBitNum">8</text><text x="288" y="12" class="regBitNum">14</text><text x="16" y="12" class="regBitNum">31</text><path d="M520,3l0,16M424,3l0,16M376,3l0,16M360,3l0,16M344,3l0,16M328,3l0,16M312,3l0,16M440,3l0,16M392,3l0,16M296,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine"></path></g><g><rect x="440" y="16" width="80" height="32" class="regFieldBox regFieldBoxro"></rect><line x1="504" y1="40" x2="504" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="472" y1="40" x2="472" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="456" y1="40" x2="456" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><text x="480" y="32" class="regFieldName regFieldNamero regFieldNameInternal regFieldNameInternalro">field0_4</text></g><g><rect x="424" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><text x="432" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text></g><g><rect x="392" y="16" width="32" height="32" class="regFieldBox regFieldBoxother"></rect><line x1="408" y1="40" x2="408" y2="48" class="regFieldBoxInternal regFieldBoxInternalother"></line><text x="528" y="68" class="regFieldName regFieldNameother regFieldName0">Very long name that will never fit</text><path d="M392,48l16,4L424,48" class="regBitBracket regBitBracket0"></path><path d="M408,52V63.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="376" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><text x="384" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text></g><g><rect x="360" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="88" class="regFieldName regFieldNameother regFieldName0">bit9</text><path d="M360,48l8,4L376,48" class="regBitBracket regBitBracket0"></path><path d="M368,52V83.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="344" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="108" class="regFieldName regFieldNameother regFieldName1">bit10</text><path d="M344,48l8,4L360,48" class="regBitBracket regBitBracket1"></path><path d="M352,52V103.5H526.4" class="regBitLine regBitLine1"></path></g><g><rect x="328" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="128" class="regFieldName regFieldNameother regFieldName1">bit11</text><path d="M328,48l8,4L344,48" class="regBitBracket regBitBracket1"></path><path d="M336,52V123.5H526.4" class="regBitLine regBitLine1"></path></g><g><rect x="312" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="148" class="regFieldName regFieldNameother regFieldName0">bit12</text><path d="M312,48l8,4L328,48" class="regBitBracket regBitBracket0"></path><path d="M320,52V143.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="296" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="168" class="regFieldName regFieldNameother regFieldName0">bit13</text><path d="M296,48l8,4L312,48" class="regBitBracket regBitBracket0"></path><path d="M304,52V163.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="8" y="16" width="288" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><line x1="280" y1="40" x2="280" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="264" y1="40" x2="264" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="200" y1="40" x2="200" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="24" y1="40" x2="24" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><text x="152" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">RsvdP</text></g></svg></div><figcaption>Fig. <span class="figno">1</span> <div class="svg"></div><figcaption><span class="fig-title"></span></figcaption></figcaption>
+    </figure>
+
+    </section>
+      <section>
+      <pre>#define INTEL_PTE                                      0x00000058   /* RWI8R */
+#define INTEL_PTE_MUST_BE_ONE                                 0:0   /* RWIVF */
+#define INTEL_PTE_MUST_BE_ONE_INIT                            0x1   /* RWI-V */
+#define INTEL_PTE_RW                                          1:1   /* RW-VF */
+#define INTEL_PTE_US                                          2:2   /* RW-VF */
+#define INTEL_PTE_PWT                                         3:3   /* RW-VF */
+#define INTEL_PTE_PCD                                         4:4   /* RW-VF */
+#define INTEL_PTE_A                                           5:5   /* RW-VF */
+#define INTEL_PTE_IGNORED6                                    6:6   /* RW-VF */
+#define INTEL_PTE_MUST_BE_ZERO                                7:7   /* RWIVF */
+#define INTEL_PTE_MUST_BE_ZERO_INIT                           0x0   /* RWI-V */
+#define INTEL_PTE_IGNORED9_8                                  9:8   /* RW-VF */
+#define INTEL_PTE_EA                                        10:10   /* RW-VF */
+#define INTEL_PTE_IGNORED11                                 11:11   /* RW-VF */
+#define INTEL_PTE_4K_FRAME                             (HAW-1):12   /* RW-VF */
+#define INTEL_PTE_RESERVED_HAW                             51:HAW   /* RWIVF */
+#define INTEL_PTE_RESERVED_HAW_INIT                           0x0   /* RWI-V */
+#define INTEL_PTE_IGNORED62_52                              62:52   /* RW-VF */
+#define INTEL_PTE_XD                                        63:63   /* RW-VF */
+
+
+</pre></section>
+    <section id="name-clashes-after-and-deep-stuff">
+      
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_name-clashes-after-and-deep-stuff"><span class="secno">3. </span>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/">deep</a> stuff</span></h2>
+      <p> Something <em class="rfc2119" title="MUST">MUST</em> happen. </p>
+      <div class="issue"><div class="issue-title" aria-level="2" role="heading" id="h_issue_1"><span>Issue 1</span>: A real problem</div><p class=""> This is a problem </p></div>
+      <div class="issue atrisk"><div class="issue-title" aria-level="2" role="heading" id="h_issue_2"><span>Feature at Risk 2</span>: A REAL problem</div><p class="atrisk"> This is a problem </p></div>
+      <p class="note" title="About this"> Just a note </p>
+      <p class="impnote" title="Imp Note Test"> Implementation a note </p>
+      <p> Problems. aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+        aaaaaaaaaaaaaaaaaaaaaaaaaaa
+      </p>
+    </section>
+    <section id="clash-here">
+      
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_clash-here"><span class="secno">4. </span>Clash here</h2>
+      <pre class="idl"><span class="idlInterface" id="idl-def-Dahut">interface <span class="idlInterfaceID">Dahut</span> {
+<span class="idlMethod">    <span class="idlMethType">void</span> <span class="idlMethName"><a href="#widl-Dahut-other-void">other</a></span> ();</span>
+};</span></pre><section id="methods"><h3 aria-level="2" role="heading" id="h3_methods"><span class="secno">4.1 </span>Methods</h3><dl class="methods"><dt id="widl-Dahut-other-void"><code>other</code></dt><dd> Partial would be better. <div><em>No parameters.</em></div><div><em>Return type: </em><code>void</code></div></dd></dl></section>
+    </section>
+    <section id="type-unions">
+      
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_type-unions"><span class="secno">5. </span>Type Unions</h2>
+      <section id="two">
+        <h3 aria-level="2" role="heading" id="h3_two"><span class="secno">5.1 </span>Two</h3>
+        <pre class="idl"><span class="idlInterface" id="idl-def-MutableCapabilities">interface <span class="idlInterfaceID">MutableCapabilities</span> : <span class="idlSuperclass">Capabilities</span> {
+<span class="idlMethod">    <span class="idlMethType">(DOMString or sequence&lt;long&gt;)</span> <span class="idlMethName"><a href="#widl-MutableCapabilities-bar-DOMString-sequence-long">bar</a></span> ();</span>
+<span class="idlMethod">    <span class="idlMethType">void</span>                          <span class="idlMethName"><a href="#widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1">foo</a></span> (<span class="idlParam"><span class="idlParamType">(unsigned long or sequence&lt;unsigned long&gt;)</span> <span class="idlParamName">value1</span></span>);</span>
+};</span></pre><section id="methods-1"><h4 aria-level="3" role="heading" id="h4_methods-1"><span class="secno">5.1.1 </span>Methods</h4><dl class="methods"><dt id="widl-MutableCapabilities-bar-DOMString-sequence-long"><code>bar</code></dt><dd>without default<div><em>No parameters.</em></div><div><em>Return type: </em><code>(DOMString or sequence&lt;long&gt;)</code></div></dd><dt id="widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1"><code>foo</code></dt><dd>without default<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">value1</td><td class="prmType"><code>(unsigned long or sequence&lt;unsigned long&gt;)</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>void</code></div></dd></dl></section>
+      </section>
+    </section>
+  
+
+<section id="references" class="appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_references"><span class="secno">A. </span>References</h2><section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography" about=""><dt id="bib-REX">[REX]</dt><dd rel="dcterms:requires"><strong>Overridden!</strong>
+</dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">A.2 </span>Informative references</h3><dl class="bibliography" about=""><dt id="bib-DOM4">[DOM4]</dt><dd rel="dcterms:references">Anne van Kesteren; Aryeh Gregor; Ms2ger; Alex Russell; Robin Berjon. <a href="http://www.w3.org/TR/dom/"><cite>W3C DOM4</cite></a>. 7 November 2013. W3C Working Draft. URL: <a href="http://www.w3.org/TR/dom/">http://www.w3.org/TR/dom/</a>
+</dd><dt id="bib-MEMES">[MEMES]</dt><dd rel="dcterms:references"><a href="http://w3cmemes.tumblr.com/">W3C Memes</a>
+</dd><dt id="bib-NO-EXIST">[NO-EXIST]</dt><dd rel="dcterms:references"><em style="color: #f00">Reference not found.</em>
+</dd><dt id="bib-XML10">[XML10]</dt><dd rel="dcterms:references">Tim Bray; Jean Paoli; Michael Sperberg-McQueen; Eve Maler; François Yergeau et al. <a href="http://www.w3.org/TR/xml"><cite>Extensible Markup Language (XML) 1.0 (Fifth Edition)</cite></a>. 26 November 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a>
+</dd></dl></section></section></body></html>
