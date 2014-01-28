@@ -19,6 +19,27 @@
 define(
     ["core/utils"],
     function (utils) {
+        
+        function filter_data(data, filter_string) {
+            if (filter_string === null) return data;
+            var filt = filter_string.trim().split(",");
+            if (filt.length === 0) filt.push(".*");
+            if (filt.length === 1) filt.push("===");
+            if (filt.length === 2) filt.push("[,\\s]+");
+            var match = false;
+            var result = [];
+            var chunks = data.split(new RegExp("^" + filt[1], "m"));
+            var some_match = function(x) { return x.match("^" + filt[0] + "$"); };
+            for (var i = 1; i < chunks.length; i++) {   // skip first chunk
+                var nl = chunks[i].indexOf("\n");
+                if (nl >= 0) {
+                    match = chunks[i].substr(0,nl).trim().split(filt[2]).some(some_match);
+                    if (match) result.push(chunks[i].substr(nl+1));
+                }
+            }
+            return result.join("\n");
+        }
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/data-include");
@@ -30,6 +51,7 @@ define(
                         $el.removeAttr("data-include-format");
                         $el.removeAttr("data-include-replace");
                         $el.removeAttr("data-include-sync");
+                        $el.removeAttr("data-include-filter");
                         len--;
                         if (len <= 0) {
                             msg.pub("end", "w3c/data-include");
@@ -47,6 +69,7 @@ define(
                     ,   format = $el.attr("data-include-format") || "html"
                     ,   replace = !!$el.attr("data-include-replace")
                     ,   sync = !!$el.attr("data-include-sync")
+                    ,   filter = $el.attr("data-include-filter") || null
                     ;
                     $.ajax({
                         dataType:   format
@@ -56,6 +79,7 @@ define(
                             if (data) {
                                 var flist = $el.attr("data-oninclude");
                                 if (flist) data = utils.runTransforms(data, flist, uri);
+                                if (filter) data = filter_data(data, filter);
                                 if (replace) $el.replaceWith(format === "text" ? doc.createTextNode(data) : data);
                                 else format === "text" ? $el.text(data) : $el.html(data);
                             }
