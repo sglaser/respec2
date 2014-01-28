@@ -518,7 +518,7 @@ shortcut = {
 		if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
 		else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
 		else ele['on'+opt['type']] = func;
-	},
+	}
 
 	//Remove the shortcut - just specify the shortcut and I will remove the binding
     // 'remove':function(shortcut_combination) {
@@ -1913,7 +1913,7 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    color:              #900;\n}\n\nh1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a {\n    text-decoration:    none;\n}\n\na .secno, a .figno {\n    color:  #000;\n}\n\nul.tof, ol.tof {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #005a9c;\n}\n\n.simple th {\n    background: #005a9c;\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #f0f6ff;\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\r\n * ReSpec 3 CSS\r\n * Robin Berjon - http://berjon.com/\r\n *****************************************************************/\r\n\r\n/* --- INLINES --- */\r\nem.rfc2119 { \r\n    text-transform:     lowercase;\r\n    font-variant:       small-caps;\r\n    font-style:         normal;\r\n    color:              #900;\r\n}\r\n\r\nh1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,\r\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\r\n    border: none;\r\n}\r\n\r\ndfn {\r\n    font-weight:    bold;\r\n}\r\n\r\na.internalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px solid #99c;\r\n    text-decoration:    none;\r\n}\r\n\r\na.externalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration:    none;\r\n}\r\n\r\na.bibref {\r\n    text-decoration:    none;\r\n}\r\n\r\ncite .bibref {\r\n    font-style: normal;\r\n}\r\n\r\ncode {\r\n    color:  #ff4500;\r\n}\r\n\r\n/* --- TOC --- */\r\n.toc a, .tof a {\r\n    text-decoration:    none;\r\n}\r\n\r\na .secno, a .figno {\r\n    color:  #000;\r\n}\r\n\r\nul.tof, ol.tof {\r\n    list-style: none outside none;\r\n}\r\n\r\n.caption {\r\n    margin-top: 0.5em;\r\n    font-style:   italic;\r\n}\r\n\r\n/* --- TABLE --- */\r\ntable.simple {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    border-bottom:  3px solid #005a9c;\r\n}\r\n\r\n.simple th {\r\n    background: #005a9c;\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n}\r\n\r\n.simple th[scope="row"] {\r\n    background: inherit;\r\n    color:  inherit;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple tr:nth-child(even) {\r\n    background: #f0f6ff;\r\n}\r\n\r\n/* --- DL --- */\r\n.section dd > p:first-child {\r\n    margin-top: 0;\r\n}\r\n\r\n.section dd > p:last-child {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.section dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\n.section dl.attrs dd, .section dl.eldef dd {\r\n    margin-bottom:  0;\r\n}\r\n\r\n@media print {\r\n    .removeOnSave {\r\n        display: none;\r\n    }\r\n}\r\n';});
 
 
 // Module core/style
@@ -3795,13 +3795,13 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
+define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\r\n  <p>\r\n    {{#if prependW3C}}\r\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\r\n    {{/if}}\r\n  </p>\r\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\r\n  {{#if subtitle}}\r\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\r\n  {{/if}}\r\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\r\n  <dl>\r\n    {{#unless isNoTrack}}\r\n      <dt>This version:</dt>\r\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\r\n      <dt>Latest published version:</dt>\r\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\r\n    {{/unless}}\r\n    {{#if edDraftURI}}\r\n      <dt>Latest editor\'s draft:</dt>\r\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if testSuiteURI}}\r\n      <dt>Test suite:</dt>\r\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if implementationReportURI}}\r\n      <dt>Implementation report:</dt>\r\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if isED}}\r\n      {{#if prevED}}\r\n        <dt>Previous editor\'s draft:</dt>\r\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\r\n      {{/if}}\r\n    {{/if}}\r\n    {{#if showPreviousVersion}}\r\n      <dt>Previous version:</dt>\r\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#if prevRecURI}}\r\n      {{#if isRec}}\r\n          <dt>Previous Recommendation:</dt>\r\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\r\n      {{else}}\r\n          <dt>Latest Recommendation:</dt>\r\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\r\n      {{/if}}\r\n    {{/if}}\r\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\r\n    {{showPeople "Editor" editors}}\r\n    {{#if authors}}\r\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\r\n      {{showPeople "Author" authors}}\r\n    {{/if}}\r\n    {{#if otherLinks}}\r\n      {{#each otherLinks}}\r\n        {{#if key}}\r\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\r\n          {{#if data}}\r\n             {{#each data}}\r\n                {{#if value}}\r\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\r\n                    {{#if href}}<a href="{{href}}">{{/if}}\r\n                      {{value}}\r\n                    {{#if href}}</a>{{/if}}\r\n                  </dd>\r\n                {{else}}\r\n                  {{#if href}}\r\n                    <dd><a href="{{href}}">{{href}}</a></dd>\r\n                  {{/if}}\r\n                {{/if}}\r\n             {{/each}}\r\n          {{else}}\r\n            {{#if value}}\r\n              <dd {{#if class}}class="{{class}}"{{/if}}>\r\n                {{#if href}}<a href="{{href}}">{{/if}}\r\n                  {{value}}\r\n                {{#if href}}</a>{{/if}}\r\n              </dd>\r\n            {{else}}\r\n              {{#if href}}\r\n                <dd {{#if class}}class="{{class}}"{{/if}}>\r\n                  <a href="{{href}}">{{href}}</a>\r\n                </dd>\r\n              {{/if}}\r\n            {{/if}}\r\n          {{/if}}\r\n        {{/if}}\r\n      {{/each}}\r\n    {{/if}}\r\n  </dl>\r\n  {{#if errata}}\r\n    <p>\r\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\r\n      reported since publication.\r\n    </p>\r\n  {{/if}}\r\n  {{#if alternateFormats}}\r\n    <p>\r\n      {{#if multipleAlternates}}\r\n        This document is also available in these non-normative formats:\r\n      {{else}}\r\n        This document is also available in this non-normative format:\r\n      {{/if}}\r\n      {{{alternatesHTML}}}\r\n    </p>\r\n  {{/if}}\r\n  {{#if isRec}}\r\n    <p>\r\n      The English version of this specification is the only normative version. Non-normative\r\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\r\n    </p>\r\n  {{/if}}\r\n  {{#if isUnofficial}}\r\n    {{#if additionalCopyrightHolders}}\r\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\r\n    {{else}}\r\n      {{#if overrideCopyright}}\r\n        {{{overrideCopyright}}}\r\n      {{else}}\r\n        <p class=\'copyright\'>\r\n          This document is licensed under a\r\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\r\n          Attribution 3.0 License</a>.\r\n        </p>\r\n      {{/if}}\r\n    {{/if}}\r\n  {{else}}\r\n    {{#if overrideCopyright}}\r\n      {{{overrideCopyright}}}\r\n    {{else}}\r\n      <p class=\'copyright\'>\r\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\r\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\r\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\r\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\r\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\r\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\r\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \r\n        {{#if isCCBY}}\r\n          Some Rights Reserved: this document is dual-licensed,\r\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \r\n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\r\n        {{else}}\r\n        All Rights Reserved.\r\n        {{/if}}\r\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\r\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\r\n        {{#if isCCBY}}\r\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\r\n        {{else}}\r\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\r\n        {{/if}}\r\n        rules apply.\r\n      </p>\r\n    {{/if}}\r\n  {{/if}}\r\n  <hr/>\r\n</div>\r\n');});
 
-define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication.\n          Other documents may supersede this document. A list of current W3C publications and the\n          latest revision of this technical report can be found in the <a\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\n          http://www.w3.org/TR/.</em>\n        </p>\n        {{{sotdCustomParagraph}}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            All comments are welcome.\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
+define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\r\n  {{#if isUnofficial}}\r\n    <p>\r\n      This document is merely a public working draft of a potential specification. It has\r\n      no official standing of any kind and does not represent the support or consensus of any\r\n      standards organisation.\r\n    </p>\r\n    {{{sotdCustomParagraph}}}\r\n  {{else}}\r\n    {{#if isTagFinding}}\r\n      {{{sotdCustomParagraph}}}\r\n    {{else}}\r\n      {{#if isNoTrack}}\r\n        <p>\r\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\r\n          has no official standing of any kind and does not represent consensus of the W3C\r\n          Membership.\r\n        </p>\r\n        {{{sotdCustomParagraph}}}\r\n      {{else}}\r\n        <p>\r\n          <em>This section describes the status of this document at the time of its publication.\r\n          Other documents may supersede this document. A list of current W3C publications and the\r\n          latest revision of this technical report can be found in the <a\r\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\r\n          http://www.w3.org/TR/.</em>\r\n        </p>\r\n        {{{sotdCustomParagraph}}}\r\n        <p>\r\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\r\n          {{#if notYetRec}}\r\n            This document is intended to become a W3C Recommendation.\r\n          {{/if}}\r\n          {{#unless isPR}}\r\n            If you wish to make comments regarding this document, please send them to \r\n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \r\n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\r\n            <a\r\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\r\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\r\n          {{/unless}}\r\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\r\n          {{#if isCR}}\r\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\r\n            stable and to encourage implementation by the developer community. This Candidate\r\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\r\n            {{humanCREnd}}.\r\n          {{/if}}\r\n          {{#if isPR}}\r\n              The W3C Membership and other interested parties are invited to review the document and\r\n              send comments to\r\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \r\n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\r\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\r\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\r\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \r\n              Note that substantive technical comments were expected during the Last Call review\r\n              period that ended {{humanLCEnd}}.\r\n          {{else}}\r\n            All comments are welcome.\r\n          {{/if}}\r\n        </p>\r\n        {{#if implementationReportURI}}\r\n          <p>\r\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\r\n            report</a>.\r\n          </p>\r\n        {{/if}}\r\n        {{#if notRec}}\r\n          <p>\r\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\r\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\r\n            documents at any time. It is inappropriate to cite this document as other than work in\r\n            progress.\r\n          </p>\r\n        {{/if}}\r\n        {{#if isLC}}\r\n          <p>\r\n            This is a Last Call Working Draft and thus the Working Group has determined that this\r\n            document has satisfied the relevant technical requirements and is sufficiently stable to\r\n            advance through the Technical Recommendation process.\r\n          </p>\r\n        {{/if}}\r\n        <p>\r\n          {{#unless isIGNote}}\r\n            This document was produced by a group operating under the \r\n            <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\r\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\r\n            Policy</a>.\r\n          {{/unless}}\r\n          {{#if recNotExpected}}\r\n            The group does not expect this document to become a W3C Recommendation.\r\n          {{/if}}\r\n          {{#unless isIGNote}}\r\n            {{#if multipleWGs}}\r\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\r\n            {{else}}\r\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\r\n              disclosures</a> \r\n            {{/if}}\r\n            made in connection with the deliverables of the group; that page also includes\r\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\r\n            which the individual believes contains\r\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\r\n            Claim(s)</a> must disclose the information in accordance with\r\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\r\n            6 of the W3C Patent Policy</a>.\r\n          {{/unless}}\r\n          {{#if isIGNote}}\r\n            The disclosure obligations of the Participants of this group are described in the \r\n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \r\n          {{/if}}\r\n        </p>\r\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\r\n      {{/if}}\r\n    {{/if}}\r\n  {{/if}}\r\n</section>\r\n');});
 
-define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{longStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#if thisVersion}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    {{/if}}\n    {{#if latestVersion}}\n      <dt>Latest published version:</dt>\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\n    {{/if}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if prevVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#unless isCGFinal}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/unless}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n  </dl>\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats: \n      {{else}}\n        This document is also available in this non-normative format: \n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  <p class=\'copyright\'>\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n    the Contributors to the {{title}} Specification, published by the\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\n    {{#if isCGFinal}}\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\n    {{else}}\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\n    {{/if}}\n  </p>\n  <hr/>\n</div>\n');});
+define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\r\n  <p>\r\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\r\n  </p>\r\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\r\n  {{#if subtitle}}\r\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\r\n  {{/if}}\r\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{longStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\r\n  <dl>\r\n    {{#if thisVersion}}\r\n      <dt>This version:</dt>\r\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#if latestVersion}}\r\n      <dt>Latest published version:</dt>\r\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#if edDraftURI}}\r\n      <dt>Latest editor\'s draft:</dt>\r\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if testSuiteURI}}\r\n      <dt>Test suite:</dt>\r\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if implementationReportURI}}\r\n      <dt>Implementation report:</dt>\r\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if prevVersion}}\r\n      <dt>Previous version:</dt>\r\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#unless isCGFinal}}\r\n      {{#if prevED}}\r\n        <dt>Previous editor\'s draft:</dt>\r\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\r\n      {{/if}}\r\n    {{/unless}}\r\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\r\n    {{showPeople "Editor" editors}}\r\n    {{#if authors}}\r\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\r\n      {{showPeople "Author" authors}}\r\n    {{/if}}\r\n  </dl>\r\n  {{#if alternateFormats}}\r\n    <p>\r\n      {{#if multipleAlternates}}\r\n        This document is also available in these non-normative formats: \r\n      {{else}}\r\n        This document is also available in this non-normative format: \r\n      {{/if}}\r\n      {{{alternatesHTML}}}\r\n    </p>\r\n  {{/if}}\r\n  <p class=\'copyright\'>\r\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \r\n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\r\n    the Contributors to the {{title}} Specification, published by the\r\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\r\n    {{#if isCGFinal}}\r\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \r\n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\r\n    {{else}}\r\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\r\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\r\n    {{/if}}\r\n  </p>\r\n  <hr/>\r\n</div>\r\n');});
 
-define('tmpl!w3c/templates/cgbg-sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  <p>\n    This specification was published by the <a href=\'{{wgURI}}\'>{{wg}}</a>.\n    It is not a W3C Standard nor is it on the W3C Standards Track.\n    {{#if isCGFinal}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/final/">W3C Community Final Specification Agreement (FSA)</a> \n      other conditions apply.\n    {{else}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>\n      there is a limited opt-out and other conditions apply.\n    {{/if}}\n    Learn more about \n    <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.\n  </p>\n  {{{sotdCustomParagraph}}}\n</section>\n');});
+define('tmpl!w3c/templates/cgbg-sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\r\n  <p>\r\n    This specification was published by the <a href=\'{{wgURI}}\'>{{wg}}</a>.\r\n    It is not a W3C Standard nor is it on the W3C Standards Track.\r\n    {{#if isCGFinal}}\r\n      Please note that under the \r\n      <a href="https://www.w3.org/community/about/agreements/final/">W3C Community Final Specification Agreement (FSA)</a> \r\n      other conditions apply.\r\n    {{else}}\r\n      Please note that under the \r\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>\r\n      there is a limited opt-out and other conditions apply.\r\n    {{/if}}\r\n    Learn more about \r\n    <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.\r\n  </p>\r\n  {{{sotdCustomParagraph}}}\r\n</section>\r\n');});
 
 /*jshint
     forin: false
@@ -4219,7 +4219,7 @@ define(
     }
 );
 
-define('tmpl!w3c/templates/conformance.html', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n  and notes in this specification are non-normative. Everything else in this specification is\n  normative.\n</p>\n<p>\n  The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,\n  and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n');});
+define('tmpl!w3c/templates/conformance.html', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\r\n<p>\r\n  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\r\n  and notes in this specification are non-normative. Everything else in this specification is\r\n  normative.\r\n</p>\r\n<p>\r\n  The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,\r\n  and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\r\n</p>\r\n');});
 
 
 // Module w3c/conformance
@@ -4302,6 +4302,33 @@ define(
 define(
     'core/data-include',["core/utils"],
     function (utils) {
+        
+        function filter_data(data, filter_string) {
+            if (filter_string === null) return data;
+            var filt = filter_string.trim().split(",");
+            if (filt.length === 0) filt.push(".*");
+            if (filt.length === 1) filt.push("===");
+            if (filt.length === 2) filt.push("[,\\s]+");
+            console.log("filter_data filter_string='" + filter_string + "'");
+            console.log("filt.length= " + filt.length + "  filt[0] ='" + filt[0] + "'  filt[1]='" + filt[1] + "'  filt[2]='" + filt[2] + "'");
+            var match = false;
+            var result = [];
+            var chunks = data.split(new RegExp("^" + filt[1], "m"));
+            console.log("chunks.length=" + chunks.length);
+            var some_match = function(x) { return x.match("^" + filt[0] + "$"); };
+            for (var i = 1; i < chunks.length; i++) {   // skip first chunk
+                var nl = chunks[i].indexOf("\n");
+                console.log("chunks[" + i + "].length=" + chunks[i].length+ "  nl=" + nl);
+                console.log("chunks[" + i + "]='" + chunks[i] + "'");
+                if (nl >= 0) {
+                    match = chunks[i].substr(0,nl).trim().split(filt[2]).some(some_match);
+                    if (match) result.push(chunks[i].substr(nl+1));
+                }
+                console.log("result.length=" + result.length);
+            }
+            return result.join("\n");
+        }
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/data-include");
@@ -4313,6 +4340,7 @@ define(
                         $el.removeAttr("data-include-format");
                         $el.removeAttr("data-include-replace");
                         $el.removeAttr("data-include-sync");
+                        $el.removeAttr("data-include-filter");
                         len--;
                         if (len <= 0) {
                             msg.pub("end", "w3c/data-include");
@@ -4330,6 +4358,7 @@ define(
                     ,   format = $el.attr("data-include-format") || "html"
                     ,   replace = !!$el.attr("data-include-replace")
                     ,   sync = !!$el.attr("data-include-sync")
+                    ,   filter = $el.attr("data-include-filter") || null
                     ;
                     $.ajax({
                         dataType:   format
@@ -4339,6 +4368,7 @@ define(
                             if (data) {
                                 var flist = $el.attr("data-oninclude");
                                 if (flist) data = utils.runTransforms(data, flist, uri);
+                                if (filter) data = filter_data(data, filter);
                                 if (replace) $el.replaceWith(format === "text" ? doc.createTextNode(data) : data);
                                 else format === "text" ? $el.text(data) : $el.html(data);
                             }
@@ -4461,7 +4491,7 @@ define(
     }
 );
 
-define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
+define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\r\ndiv.example-title {\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.example-title span {\r\n    text-transform: uppercase;   \r\n}\r\naside.example, div.example, div.illegal-example {\r\n    padding: 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\ndiv.illegal-example { color: red }\r\ndiv.illegal-example p { color: black }\r\naside.example, div.example {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n    border-color: #e0cb52;\r\n    background: #fcfaee;    \r\n}\r\n\r\naside.example div.example {\r\n    border-left-width: .1em;\r\n    border-color: #999;\r\n    background: #fff;\r\n}\r\naside.example div.example div.example-title {\r\n    color: #999;\r\n}\r\n';});
 
 
 // Module core/examples
@@ -4537,7 +4567,7 @@ define(
     }
 );
 
-define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title, div.note-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title { color: #e05252; }\ndiv.note-title { color: #2b2; }\ndiv.issue-title span, div.note-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child, .issue > p:first-child { margin-top: 0 }\n.issue, .note {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note, span.issue { padding: .1em .5em .15em; }\n\n.issue {\n    border-color: #e05252;\n    background: #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background: #e9fbe9;\n}\n\n\n';});
+define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title, div.note-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title { color: #e05252; }\r\ndiv.note-title { color: #2b2; }\r\ndiv.issue-title span, div.note-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child, .issue > p:first-child { margin-top: 0 }\r\n.issue, .note {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note, span.issue { padding: .1em .5em .15em; }\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background: #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background: #e9fbe9;\r\n}\r\n\r\n\r\n';});
 
 
 // Module core/issues-notes
@@ -4559,7 +4589,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/issues-notes");
-                var $ins = $(".issue, .note");
+                var $ins = $(".issue, .note .impnote");
                 if ($ins.length) {
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
@@ -4684,7 +4714,7 @@ define(
         };
     }
 );
-define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
+define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\r\ncode.prettyprint {\r\n    color:  inherit;\r\n}\r\n\r\n/* this from google-code-prettify */\r\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\r\n';});
 
 // Copyright (C) 2006 Google Inc.
 //
@@ -6389,7 +6419,7 @@ define(
     }
 );
 
-define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
+define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\r\ndiv.practice {\r\n    border: solid #bebebe 1px;\r\n    margin: 2em 1em 1em 2em;\r\n}\r\n\r\nspan.practicelab {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n    font-weight: bold;\r\n    font-style: italic;\r\n    background: #dfffff;\r\n    position: relative;\r\n    padding: 0 0.5em;\r\n    top: -1.5em;\r\n}\r\n\r\np.practicedesc {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n}\r\n\r\n@media screen {\r\n    p.practicedesc {\r\n        position: relative;\r\n        top: -2em;\r\n        padding: 0;\r\n        margin: 1.5em 0.5em -1em 1em;\r\n    }\r\n}\r\n';});
 
 
 // Module core/best-practices
@@ -6900,43 +6930,43 @@ define(
     }
 );
 
-define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
+define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\r\npre.idl {\r\n    border-top: 1px solid #90b8de;\r\n    border-bottom: 1px solid #90b8de;\r\n    padding:    1em;\r\n    line-height:    120%;\r\n}\r\n\r\npre.idl::before {\r\n    content:    "WebIDL";\r\n    display:    block;\r\n    width:      150px;\r\n    background: #90b8de;\r\n    color:  #fff;\r\n    font-family:    initial;\r\n    padding:    3px;\r\n    font-weight:    bold;\r\n    margin: -1em 0 1em -1em;\r\n}\r\n\r\n.idlType {\r\n    color:  #ff4500;\r\n    font-weight:    bold;\r\n    text-decoration:    none;\r\n}\r\n\r\n/*.idlModule*/\r\n/*.idlModuleID*/\r\n/*.idlInterface*/\r\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\r\n    font-weight:    bold;\r\n    color:  #005a9c;\r\n}\r\na.idlEnumItem {\r\n    color:  #000;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration: none;\r\n}\r\n\r\n.idlSuperclass {\r\n    font-style: italic;\r\n    color:  #005a9c;\r\n}\r\n\r\n/*.idlAttribute*/\r\n.idlAttrType, .idlFieldType, .idlMemberType {\r\n    color:  #005a9c;\r\n}\r\n.idlAttrName, .idlFieldName, .idlMemberName {\r\n    color:  #ff4500;\r\n}\r\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlMethod*/\r\n.idlMethType, .idlCallbackType {\r\n    color:  #005a9c;\r\n}\r\n.idlMethName {\r\n    color:  #ff4500;\r\n}\r\n.idlMethName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlCtor*/\r\n.idlCtorName {\r\n    color:  #ff4500;\r\n}\r\n.idlCtorName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlParam*/\r\n.idlParamType {\r\n    color:  #005a9c;\r\n}\r\n.idlParamName, .idlDefaultValue {\r\n    font-style: italic;\r\n}\r\n\r\n.extAttr {\r\n    color:  #666;\r\n}\r\n\r\n/*.idlSectionComment*/\r\n.idlSectionComment {\r\n    color: gray;\r\n}\r\n\r\n/*.idlConst*/\r\n.idlConstType {\r\n    color:  #005a9c;\r\n}\r\n.idlConstName {\r\n    color:  #ff4500;\r\n}\r\n.idlConstName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlException*/\r\n.idlExceptionID {\r\n    font-weight:    bold;\r\n    color:  #c00;\r\n}\r\n\r\n.idlTypedefID, .idlTypedefType {\r\n    color:  #005a9c;\r\n}\r\n\r\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\r\n    color:  #c00;\r\n    font-weight:    normal;\r\n}\r\n\r\n.excName a {\r\n    font-family:    monospace;\r\n}\r\n\r\n.idlRaises a.idlType, .excName a.idlType {\r\n    border-bottom:  1px dotted #c00;\r\n}\r\n\r\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\r\n    width:  45px;\r\n    text-align: center;\r\n}\r\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\r\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\r\n\r\n.idlImplements a {\r\n    font-weight:    bold;\r\n}\r\n\r\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\r\n    margin-left:    2em;\r\n}\r\n\r\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\r\n    font-weight:    normal;\r\n}\r\n\r\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\r\n    font-weight:    bold;\r\n    color:  #000;\r\n    font-family:    monospace;\r\n}\r\n\r\n.attributes dt code, .fields dt code, .dictionary-members dt code {\r\n    background:  #ffffd2;\r\n}\r\n\r\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\r\n    color:  #005a9c;\r\n    background:  transparent;\r\n    font-family:    inherit;\r\n    font-weight:    normal;\r\n    font-style: italic;\r\n}\r\n\r\n.methods dt code {\r\n    background:  #d9e6f8;\r\n}\r\n\r\n.constants dt code {\r\n    background:  #ddffd2;\r\n}\r\n\r\n.constructors dt code {\r\n    background:  #cfc;\r\n}\r\n\r\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\ntable.parameters, table.exceptions {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    margin: 0.5em 0;\r\n    width:  100%;\r\n}\r\ntable.parameters { border-bottom:  1px solid #90b8de; }\r\ntable.exceptions { border-bottom:  1px solid #deb890; }\r\n\r\n.parameters th, .exceptions th {\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n    font-family:    initial;\r\n    font-weight:    normal;\r\n    text-shadow:    #666 1px 1px 0;\r\n}\r\n.parameters th { background: #90b8de; }\r\n.exceptions th { background: #deb890; }\r\n\r\n.parameters td, .exceptions td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n    vertical-align: top;\r\n}\r\n\r\n.parameters tr:first-child td, .exceptions tr:first-child td {\r\n    border-top: none;\r\n}\r\n\r\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\r\n    width:  100px;\r\n}\r\n\r\n.parameters td.prmType {\r\n    width:  120px;\r\n}\r\n\r\ntable.exceptions table {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    width:  100%;\r\n}\r\n');});
 
-define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\n{{idn indent}}};</span>\n');});
+define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\r\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\r\n{{idn indent}}};</span>\r\n');});
 
-define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\n');});
+define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\r\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\r\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\n');});
+define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\n');});
+define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\r\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\r\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\r\n');});
 
-define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}};</span>\n');});
+define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}};</span>\r\n');});
 
 define('tmpl!core/templates/webidl/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj.refId}}" class="idlEnumItem">{{obj.id}}</a>"');});
 
-define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
+define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\r\n{{{children}}}\r\n{{idn indent}}}};');});
 
-define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\n');});
+define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\r\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\r\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
+define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\r\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\r\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\r\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
 
-define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\n');});
+define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\r\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\r\n');});
 
-define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\n');});
+define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\r\n');});
 
-define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\r\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
 
-define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\r\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\r\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\r\n');});
 
-define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\n}}{{idn indent}}// {{comment}}</span>\n');});
+define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\r\n}}{{idn indent}}// {{comment}}</span>\r\n');});
 
-define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\r\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\r\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}{{idn indent}}}};</span>');});
 
-define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\r\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}{{idn indent}}}};</span>');});
 
 /*global Handlebars, simpleNode */
 
@@ -8794,24 +8824,1421 @@ define(
     }
 );
 
+/* http://keith-wood.name/svg.html
+   SVG for jQuery v1.4.5.
+   Written by Keith Wood (kbwood{at}iinet.com.au) August 2007.
+   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
+   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
+   Please attribute the author if you use it. */
+
+(function($) { // Hide scope, no $ conflict
+
+/* SVG manager.
+   Use the singleton instance of this class, $.svg, 
+   to interact with the SVG functionality. */
+function SVGManager() {
+	this._settings = []; // Settings to be remembered per SVG object
+	this._extensions = []; // List of SVG extensions added to SVGWrapper
+		// for each entry [0] is extension name, [1] is extension class (function)
+		// the function takes one parameter - the SVGWrapper instance
+	this.regional = []; // Localisations, indexed by language, '' for default (English)
+	this.regional[''] = {errorLoadingText: 'Error loading',
+		notSupportedText: 'This browser does not support SVG'};
+	this.local = this.regional['']; // Current localisation
+	this._uuid = new Date().getTime();
+	this._renesis = detectActiveX('RenesisX.RenesisCtrl');
+}
+
+/* Determine whether a given ActiveX control is available.
+   @param  classId  (string) the ID for the ActiveX control
+   @return  (boolean) true if found, false if not */
+function detectActiveX(classId) {
+	try {
+		return !!(window.ActiveXObject && new ActiveXObject(classId));
+	}
+	catch (e) {
+		return false;
+	}
+}
+
+var PROP_NAME = 'svgwrapper';
+
+$.extend(SVGManager.prototype, {
+	/* Class name added to elements to indicate already configured with SVG. */
+	markerClassName: 'hasSVG',
+
+	/* SVG namespace. */
+	svgNS: 'http://www.w3.org/2000/svg',
+	/* XLink namespace. */
+	xlinkNS: 'http://www.w3.org/1999/xlink',
+
+	/* SVG wrapper class. */
+	_wrapperClass: SVGWrapper,
+
+	/* Camel-case versions of attribute names containing dashes or are reserved words. */
+	_attrNames: {class_: 'class', in_: 'in',
+		alignmentBaseline: 'alignment-baseline', baselineShift: 'baseline-shift',
+		clipPath: 'clip-path', clipRule: 'clip-rule',
+		colorInterpolation: 'color-interpolation',
+		colorInterpolationFilters: 'color-interpolation-filters',
+		colorRendering: 'color-rendering', dominantBaseline: 'dominant-baseline',
+		enableBackground: 'enable-background', fillOpacity: 'fill-opacity',
+		fillRule: 'fill-rule', floodColor: 'flood-color',
+		floodOpacity: 'flood-opacity', fontFamily: 'font-family',
+		fontSize: 'font-size', fontSizeAdjust: 'font-size-adjust',
+		fontStretch: 'font-stretch', fontStyle: 'font-style',
+		fontVariant: 'font-variant', fontWeight: 'font-weight',
+		glyphOrientationHorizontal: 'glyph-orientation-horizontal',
+		glyphOrientationVertical: 'glyph-orientation-vertical',
+		horizAdvX: 'horiz-adv-x', horizOriginX: 'horiz-origin-x',
+		imageRendering: 'image-rendering', letterSpacing: 'letter-spacing',
+		lightingColor: 'lighting-color', markerEnd: 'marker-end',
+		markerMid: 'marker-mid', markerStart: 'marker-start',
+		stopColor: 'stop-color', stopOpacity: 'stop-opacity',
+		strikethroughPosition: 'strikethrough-position',
+		strikethroughThickness: 'strikethrough-thickness',
+		strokeDashArray: 'stroke-dasharray', strokeDashOffset: 'stroke-dashoffset',
+		strokeLineCap: 'stroke-linecap', strokeLineJoin: 'stroke-linejoin',
+		strokeMiterLimit: 'stroke-miterlimit', strokeOpacity: 'stroke-opacity',
+		strokeWidth: 'stroke-width', textAnchor: 'text-anchor',
+		textDecoration: 'text-decoration', textRendering: 'text-rendering',
+		underlinePosition: 'underline-position', underlineThickness: 'underline-thickness',
+		vertAdvY: 'vert-adv-y', vertOriginY: 'vert-origin-y',
+		wordSpacing: 'word-spacing', writingMode: 'writing-mode'},
+
+	/* Add the SVG object to its container. */
+	_attachSVG: function(container, settings) {
+		var svg = (container.namespaceURI == this.svgNS ? container : null);
+		var container = (svg ? null : container);
+		if ($(container || svg).hasClass(this.markerClassName)) {
+			return;
+		}
+		if (typeof settings == 'string') {
+			settings = {loadURL: settings};
+		}
+		else if (typeof settings == 'function') {
+			settings = {onLoad: settings};
+		}
+		$(container || svg).addClass(this.markerClassName);
+		try {
+			if (!svg) {
+				svg = document.createElementNS(this.svgNS, 'svg');
+				svg.setAttribute('version', '1.1');
+				if (container.clientWidth > 0) {
+					svg.setAttribute('width', container.clientWidth);
+				}
+				if (container.clientHeight > 0) {
+					svg.setAttribute('height', container.clientHeight);
+				}
+				container.appendChild(svg);
+			}
+			this._afterLoad(container, svg, settings || {});
+		}
+		catch (e) {
+			if ($.browser.msie) {
+				if (!container.id) {
+					container.id = 'svg' + (this._uuid++);
+				}
+				this._settings[container.id] = settings;
+				container.innerHTML = '<embed type="image/svg+xml" width="100%" ' +
+					'height="100%" src="' + (settings.initPath || '') + 'blank.svg" ' +
+					'pluginspage="http://www.adobe.com/svg/viewer/install/main.html"/>';
+			}
+			else {
+				container.innerHTML = '<p class="svg_error">' +
+					this.local.notSupportedText + '</p>';
+			}
+		}
+	},
+
+	/* SVG callback after loading - register SVG root. */
+	_registerSVG: function() {
+		for (var i = 0; i < document.embeds.length; i++) { // Check all
+			var container = document.embeds[i].parentNode;
+			if (!$(container).hasClass($.svg.markerClassName) || // Not SVG
+					$.data(container, PROP_NAME)) { // Already done
+				continue;
+			}
+			var svg = null;
+			try {
+				svg = document.embeds[i].getSVGDocument();
+			}
+			catch(e) {
+				setTimeout($.svg._registerSVG, 250); // Renesis takes longer to load
+				return;
+			}
+			svg = (svg ? svg.documentElement : null);
+			if (svg) {
+				$.svg._afterLoad(container, svg);
+			}
+		}
+	},
+
+	/* Post-processing once loaded. */
+	_afterLoad: function(container, svg, settings) {
+		var settings = settings || this._settings[container.id];
+		this._settings[container ? container.id : ''] = null;
+		var wrapper = new this._wrapperClass(svg, container);
+		$.data(container || svg, PROP_NAME, wrapper);
+		try {
+			if (settings.loadURL) { // Load URL
+				wrapper.load(settings.loadURL, settings);
+			}
+			if (settings.settings) { // Additional settings
+				wrapper.configure(settings.settings);
+			}
+			if (settings.onLoad && !settings.loadURL) { // Onload callback
+				settings.onLoad.apply(container || svg, [wrapper]);
+			}
+		}
+		catch (e) {
+			alert(e);
+		}
+	},
+
+	/* Return the SVG wrapper created for a given container.
+	   @param  container  (string) selector for the container or
+	                      (element) the container for the SVG object or
+	                      jQuery collection - first entry is the container
+	   @return  (SVGWrapper) the corresponding SVG wrapper element, or null if not attached */
+	_getSVG: function(container) {
+		container = (typeof container == 'string' ? $(container)[0] :
+			(container.jquery ? container[0] : container));
+		return $.data(container, PROP_NAME);
+	},
+
+	/* Remove the SVG functionality from a div.
+	   @param  container  (element) the container for the SVG object */
+	_destroySVG: function(container) {
+		var $container = $(container);
+		if (!$container.hasClass(this.markerClassName)) {
+			return;
+		}
+		$container.removeClass(this.markerClassName);
+		if (container.namespaceURI != this.svgNS) {
+			$container.empty();
+		}
+		$.removeData(container, PROP_NAME);
+	},
+
+	/* Extend the SVGWrapper object with an embedded class.
+	   The constructor function must take a single parameter that is
+	   a reference to the owning SVG root object. This allows the 
+	   extension to access the basic SVG functionality.
+	   @param  name      (string) the name of the SVGWrapper attribute to access the new class
+	   @param  extClass  (function) the extension class constructor */
+	addExtension: function(name, extClass) {
+		this._extensions.push([name, extClass]);
+	},
+
+	/* Does this node belong to SVG?
+	   @param  node  (element) the node to be tested
+	   @return  (boolean) true if an SVG node, false if not */
+	isSVGElem: function(node) {
+		return (node.nodeType == 1 && node.namespaceURI == $.svg.svgNS);
+	}
+});
+
+/* The main SVG interface, which encapsulates the SVG element.
+   Obtain a reference from $().svg('get') */
+function SVGWrapper(svg, container) {
+	this._svg = svg; // The SVG root node
+	this._container = container; // The containing div
+	for (var i = 0; i < $.svg._extensions.length; i++) {
+		var extension = $.svg._extensions[i];
+		this[extension[0]] = new extension[1](this);
+	}
+}
+
+$.extend(SVGWrapper.prototype, {
+
+	/* Retrieve the width of the SVG object. */
+	_width: function() {
+		return (this._container ? this._container.clientWidth : this._svg.width);
+	},
+
+	/* Retrieve the height of the SVG object. */
+	_height: function() {
+		return (this._container ? this._container.clientHeight : this._svg.height);
+	},
+
+	/* Retrieve the root SVG element.
+	   @return  the top-level SVG element */
+	root: function() {
+		return this._svg;
+	},
+
+	/* Configure a SVG node.
+	   @param  node      (element, optional) the node to configure
+	   @param  settings  (object) additional settings for the root
+	   @param  clear     (boolean) true to remove existing attributes first,
+	                     false to add to what is already there (optional)
+	   @return  (SVGWrapper) this root */
+	configure: function(node, settings, clear) {
+		if (!node.nodeName) {
+			clear = settings;
+			settings = node;
+			node = this._svg;
+		}
+		if (clear) {
+			for (var i = node.attributes.length - 1; i >= 0; i--) {
+				var attr = node.attributes.item(i);
+				if (!(attr.nodeName == 'onload' || attr.nodeName == 'version' || 
+						attr.nodeName.substring(0, 5) == 'xmlns')) {
+					node.attributes.removeNamedItem(attr.nodeName);
+				}
+			}
+		}
+		for (var attrName in settings) {
+			node.setAttribute($.svg._attrNames[attrName] || attrName, settings[attrName]);
+		}
+		return this;
+	},
+
+	/* Locate a specific element in the SVG document.
+	   @param  id  (string) the element's identifier
+	   @return  (element) the element reference, or null if not found */
+	getElementById: function(id) {
+		return this._svg.ownerDocument.getElementById(id);
+	},
+
+	/* Change the attributes for a SVG node.
+	   @param  element   (SVG element) the node to change
+	   @param  settings  (object) the new settings
+	   @return  (SVGWrapper) this root */
+	change: function(element, settings) {
+		if (element) {
+			for (var name in settings) {
+				if (settings[name] == null) {
+					element.removeAttribute($.svg._attrNames[name] || name);
+				}
+				else {
+					element.setAttribute($.svg._attrNames[name] || name, settings[name]);
+				}
+			}
+		}
+		return this;
+	},
+
+	/* Check for parent being absent and adjust arguments accordingly. */
+	_args: function(values, names, optSettings) {
+		names.splice(0, 0, 'parent');
+		names.splice(names.length, 0, 'settings');
+		var args = {};
+		var offset = 0;
+		if (values[0] != null && values[0].jquery) {
+			values[0] = values[0][0];
+		}
+		if (values[0] != null && !(typeof values[0] == 'object' && values[0].nodeName)) {
+			args['parent'] = null;
+			offset = 1;
+		}
+		for (var i = 0; i < values.length; i++) {
+			args[names[i + offset]] = values[i];
+		}
+		if (optSettings) {
+			$.each(optSettings, function(i, value) {
+				if (typeof args[value] == 'object') {
+					args.settings = args[value];
+					args[value] = null;
+				}
+			});
+		}
+		return args;
+	},
+
+	/* Add a title.
+	   @param  parent    (element or jQuery) the parent node for the new title (optional)
+	   @param  text      (string) the text of the title
+	   @param  settings  (object) additional settings for the title (optional)
+	   @return  (element) the new title node */
+	title: function(parent, text, settings) {
+		var args = this._args(arguments, ['text']);
+		var node = this._makeNode(args.parent, 'title', args.settings || {});
+		node.appendChild(this._svg.ownerDocument.createTextNode(args.text));
+		return node;
+	},
+
+	/* Add a description.
+	   @param  parent    (element or jQuery) the parent node for the new description (optional)
+	   @param  text      (string) the text of the description
+	   @param  settings  (object) additional settings for the description (optional)
+	   @return  (element) the new description node */
+	describe: function(parent, text, settings) {
+		var args = this._args(arguments, ['text']);
+		var node = this._makeNode(args.parent, 'desc', args.settings || {});
+		node.appendChild(this._svg.ownerDocument.createTextNode(args.text));
+		return node;
+	},
+
+	/* Add a definitions node.
+	   @param  parent    (element or jQuery) the parent node for the new definitions (optional)
+	   @param  id        (string) the ID of this definitions (optional)
+	   @param  settings  (object) additional settings for the definitions (optional)
+	   @return  (element) the new definitions node */
+	defs: function(parent, id, settings) {
+		var args = this._args(arguments, ['id'], ['id']);
+		return this._makeNode(args.parent, 'defs', $.extend(
+			(args.id ? {id: args.id} : {}), args.settings || {}));
+	},
+
+	/* Add a symbol definition.
+	   @param  parent    (element or jQuery) the parent node for the new symbol (optional)
+	   @param  id        (string) the ID of this symbol
+	   @param  x1        (number) the left coordinate for this symbol
+	   @param  y1        (number) the top coordinate for this symbol
+	   @param  width     (number) the width of this symbol
+	   @param  height    (number) the height of this symbol
+	   @param  settings  (object) additional settings for the symbol (optional)
+	   @return  (element) the new symbol node */
+	symbol: function(parent, id, x1, y1, width, height, settings) {
+		var args = this._args(arguments, ['id', 'x1', 'y1', 'width', 'height']);
+		return this._makeNode(args.parent, 'symbol', $.extend({id: args.id,
+			viewBox: args.x1 + ' ' + args.y1 + ' ' + args.width + ' ' + args.height},
+			args.settings || {}));
+	},
+
+	/* Add a marker definition.
+	   @param  parent    (element or jQuery) the parent node for the new marker (optional)
+	   @param  id        (string) the ID of this marker
+	   @param  refX      (number) the x-coordinate for the reference point
+	   @param  refY      (number) the y-coordinate for the reference point
+	   @param  mWidth    (number) the marker viewport width
+	   @param  mHeight   (number) the marker viewport height
+	   @param  orient    (string or int) 'auto' or angle (degrees) (optional)
+	   @param  settings  (object) additional settings for the marker (optional)
+	   @return  (element) the new marker node */
+	marker: function(parent, id, refX, refY, mWidth, mHeight, orient, settings) {
+		var args = this._args(arguments, ['id', 'refX', 'refY',
+			'mWidth', 'mHeight', 'orient'], ['orient']);
+		return this._makeNode(args.parent, 'marker', $.extend(
+			{id: args.id, refX: args.refX, refY: args.refY, markerWidth: args.mWidth, 
+			markerHeight: args.mHeight, orient: args.orient || 'auto'}, args.settings || {}));
+	},
+
+	/* Add a style node.
+	   @param  parent    (element or jQuery) the parent node for the new node (optional)
+	   @param  styles    (string) the CSS styles
+	   @param  settings  (object) additional settings for the node (optional)
+	   @return  (element) the new style node */
+	style: function(parent, styles, settings) {
+		var args = this._args(arguments, ['styles']);
+		var node = this._makeNode(args.parent, 'style', $.extend(
+			{type: 'text/css'}, args.settings || {}));
+		node.appendChild(this._svg.ownerDocument.createTextNode(args.styles));
+		if ($.browser.opera) {
+			$('head').append('<style type="text/css">' + args.styles + '</style>');
+		}
+		return node;
+	},
+
+	/* Add a script node.
+	   @param  parent    (element or jQuery) the parent node for the new node (optional)
+	   @param  script    (string) the JavaScript code
+	   @param  type      (string) the MIME type for the code (optional, default 'text/javascript')
+	   @param  settings  (object) additional settings for the node (optional)
+	   @return  (element) the new script node */
+	script: function(parent, script, type, settings) {
+		var args = this._args(arguments, ['script', 'type'], ['type']);
+		var node = this._makeNode(args.parent, 'script', $.extend(
+			{type: args.type || 'text/javascript'}, args.settings || {}));
+		node.appendChild(this._svg.ownerDocument.createTextNode(args.script));
+		if (!$.browser.mozilla) {
+			$.globalEval(args.script);
+		}
+		return node;
+	},
+
+	/* Add a linear gradient definition.
+	   Specify all of x1, y1, x2, y2 or none of them.
+	   @param  parent    (element or jQuery) the parent node for the new gradient (optional)
+	   @param  id        (string) the ID for this gradient
+	   @param  stops     (string[][]) the gradient stops, each entry is
+	                     [0] is offset (0.0-1.0 or 0%-100%), [1] is colour, 
+						 [2] is opacity (optional)
+	   @param  x1        (number) the x-coordinate of the gradient start (optional)
+	   @param  y1        (number) the y-coordinate of the gradient start (optional)
+	   @param  x2        (number) the x-coordinate of the gradient end (optional)
+	   @param  y2        (number) the y-coordinate of the gradient end (optional)
+	   @param  settings  (object) additional settings for the gradient (optional)
+	   @return  (element) the new gradient node */
+	linearGradient: function(parent, id, stops, x1, y1, x2, y2, settings) {
+		var args = this._args(arguments,
+			['id', 'stops', 'x1', 'y1', 'x2', 'y2'], ['x1']);
+		var sets = $.extend({id: args.id}, 
+			(args.x1 != null ? {x1: args.x1, y1: args.y1, x2: args.x2, y2: args.y2} : {}));
+		return this._gradient(args.parent, 'linearGradient', 
+			$.extend(sets, args.settings || {}), args.stops);
+	},
+
+	/* Add a radial gradient definition.
+	   Specify all of cx, cy, r, fx, fy or none of them.
+	   @param  parent    (element or jQuery) the parent node for the new gradient (optional)
+	   @param  id        (string) the ID for this gradient
+	   @param  stops     (string[][]) the gradient stops, each entry
+	                     [0] is offset, [1] is colour, [2] is opacity (optional)
+	   @param  cx        (number) the x-coordinate of the largest circle centre (optional)
+	   @param  cy        (number) the y-coordinate of the largest circle centre (optional)
+	   @param  r         (number) the radius of the largest circle (optional)
+	   @param  fx        (number) the x-coordinate of the gradient focus (optional)
+	   @param  fy        (number) the y-coordinate of the gradient focus (optional)
+	   @param  settings  (object) additional settings for the gradient (optional)
+	   @return  (element) the new gradient node */
+	radialGradient: function(parent, id, stops, cx, cy, r, fx, fy, settings) {
+		var args = this._args(arguments,
+			['id', 'stops', 'cx', 'cy', 'r', 'fx', 'fy'], ['cx']);
+		var sets = $.extend({id: args.id}, (args.cx != null ?
+			{cx: args.cx, cy: args.cy, r: args.r, fx: args.fx, fy: args.fy} : {}));
+		return this._gradient(args.parent, 'radialGradient', 
+			$.extend(sets, args.settings || {}), args.stops);
+	},
+
+	/* Add a gradient node. */
+	_gradient: function(parent, name, settings, stops) {
+		var node = this._makeNode(parent, name, settings);
+		for (var i = 0; i < stops.length; i++) {
+			var stop = stops[i];
+			this._makeNode(node, 'stop', $.extend(
+				{offset: stop[0], stopColor: stop[1]}, 
+				(stop[2] != null ? {stopOpacity: stop[2]} : {})));
+		}
+		return node;
+	},
+
+	/* Add a pattern definition.
+	   Specify all of vx, vy, xwidth, vheight or none of them.
+	   @param  parent    (element or jQuery) the parent node for the new pattern (optional)
+	   @param  id        (string) the ID for this pattern
+	   @param  x         (number) the x-coordinate for the left edge of the pattern
+	   @param  y         (number) the y-coordinate for the top edge of the pattern
+	   @param  width     (number) the width of the pattern
+	   @param  height    (number) the height of the pattern
+	   @param  vx        (number) the minimum x-coordinate for view box (optional)
+	   @param  vy        (number) the minimum y-coordinate for the view box (optional)
+	   @param  vwidth    (number) the width of the view box (optional)
+	   @param  vheight   (number) the height of the view box (optional)
+	   @param  settings  (object) additional settings for the pattern (optional)
+	   @return  (element) the new pattern node */
+	pattern: function(parent, id, x, y, width, height, vx, vy, vwidth, vheight, settings) {
+		var args = this._args(arguments, ['id', 'x', 'y', 'width', 'height',
+			'vx', 'vy', 'vwidth', 'vheight'], ['vx']);
+		var sets = $.extend({id: args.id, x: args.x, y: args.y,
+			width: args.width, height: args.height}, (args.vx != null ?
+			{viewBox: args.vx + ' ' + args.vy + ' ' + args.vwidth + ' ' + args.vheight} : {}));
+		return this._makeNode(args.parent, 'pattern', $.extend(sets, args.settings || {}));
+	},
+
+	/* Add a clip path definition.
+	   @param  parent  (element) the parent node for the new element (optional)
+	   @param  id      (string) the ID for this path
+	   @param  units   (string) either 'userSpaceOnUse' (default) or 'objectBoundingBox' (optional)
+	   @return  (element) the new clipPath node */
+	clipPath: function(parent, id, units, settings) {
+		var args = this._args(arguments, ['id', 'units']);
+		args.units = args.units || 'userSpaceOnUse';
+		return this._makeNode(args.parent, 'clipPath', $.extend(
+			{id: args.id, clipPathUnits: args.units}, args.settings || {}));
+	},
+
+	/* Add a mask definition.
+	   @param  parent    (element or jQuery) the parent node for the new mask (optional)
+	   @param  id        (string) the ID for this mask
+	   @param  x         (number) the x-coordinate for the left edge of the mask
+	   @param  y         (number) the y-coordinate for the top edge of the mask
+	   @param  width     (number) the width of the mask
+	   @param  height    (number) the height of the mask
+	   @param  settings  (object) additional settings for the mask (optional)
+	   @return  (element) the new mask node */
+	mask: function(parent, id, x, y, width, height, settings) {
+		var args = this._args(arguments, ['id', 'x', 'y', 'width', 'height']);
+		return this._makeNode(args.parent, 'mask', $.extend(
+			{id: args.id, x: args.x, y: args.y, width: args.width, height: args.height},
+			args.settings || {}));
+	},
+
+	/* Create a new path object.
+	   @return  (SVGPath) a new path object */
+	createPath: function() {
+		return new SVGPath();
+	},
+
+	/* Create a new text object.
+	   @return  (SVGText) a new text object */
+	createText: function() {
+		return new SVGText();
+	},
+
+	/* Add an embedded SVG element.
+	   Specify all of vx, vy, vwidth, vheight or none of them.
+	   @param  parent    (element or jQuery) the parent node for the new node (optional)
+	   @param  x         (number) the x-coordinate for the left edge of the node
+	   @param  y         (number) the y-coordinate for the top edge of the node
+	   @param  width     (number) the width of the node
+	   @param  height    (number) the height of the node
+	   @param  vx        (number) the minimum x-coordinate for view box (optional)
+	   @param  vy        (number) the minimum y-coordinate for the view box (optional)
+	   @param  vwidth    (number) the width of the view box (optional)
+	   @param  vheight   (number) the height of the view box (optional)
+	   @param  settings  (object) additional settings for the node (optional)
+	   @return  (element) the new node */
+	svg: function(parent, x, y, width, height, vx, vy, vwidth, vheight, settings) {
+		var args = this._args(arguments, ['x', 'y', 'width', 'height',
+			'vx', 'vy', 'vwidth', 'vheight'], ['vx']);
+		var sets = $.extend({x: args.x, y: args.y, width: args.width, height: args.height}, 
+			(args.vx != null ? {viewBox: args.vx + ' ' + args.vy + ' ' +
+			args.vwidth + ' ' + args.vheight} : {}));
+		return this._makeNode(args.parent, 'svg', $.extend(sets, args.settings || {}));
+	},
+
+	/* Create a group.
+	   @param  parent    (element or jQuery) the parent node for the new group (optional)
+	   @param  id        (string) the ID of this group (optional)
+	   @param  settings  (object) additional settings for the group (optional)
+	   @return  (element) the new group node */
+	group: function(parent, id, settings) {
+		var args = this._args(arguments, ['id'], ['id']);
+		return this._makeNode(args.parent, 'g', $.extend({id: args.id}, args.settings || {}));
+	},
+
+	/* Add a usage reference.
+	   Specify all of x, y, width, height or none of them.
+	   @param  parent    (element or jQuery) the parent node for the new node (optional)
+	   @param  x         (number) the x-coordinate for the left edge of the node (optional)
+	   @param  y         (number) the y-coordinate for the top edge of the node (optional)
+	   @param  width     (number) the width of the node (optional)
+	   @param  height    (number) the height of the node (optional)
+	   @param  ref       (string) the ID of the definition node
+	   @param  settings  (object) additional settings for the node (optional)
+	   @return  (element) the new node */
+	use: function(parent, x, y, width, height, ref, settings) {
+		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'ref']);
+		if (typeof args.x == 'string') {
+			args.ref = args.x;
+			args.settings = args.y;
+			args.x = args.y = args.width = args.height = null;
+		}
+		var node = this._makeNode(args.parent, 'use', $.extend(
+			{x: args.x, y: args.y, width: args.width, height: args.height},
+			args.settings || {}));
+		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
+		return node;
+	},
+
+	/* Add a link, which applies to all child elements.
+	   @param  parent    (element or jQuery) the parent node for the new link (optional)
+	   @param  ref       (string) the target URL
+	   @param  settings  (object) additional settings for the link (optional)
+	   @return  (element) the new link node */
+	link: function(parent, ref, settings) {
+		var args = this._args(arguments, ['ref']);
+		var node = this._makeNode(args.parent, 'a', args.settings);
+		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
+		return node;
+	},
+
+	/* Add an image.
+	   @param  parent    (element or jQuery) the parent node for the new image (optional)
+	   @param  x         (number) the x-coordinate for the left edge of the image
+	   @param  y         (number) the y-coordinate for the top edge of the image
+	   @param  width     (number) the width of the image
+	   @param  height    (number) the height of the image
+	   @param  ref       (string) the path to the image
+	   @param  settings  (object) additional settings for the image (optional)
+	   @return  (element) the new image node */
+	image: function(parent, x, y, width, height, ref, settings) {
+		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'ref']);
+		var node = this._makeNode(args.parent, 'image', $.extend(
+			{x: args.x, y: args.y, width: args.width, height: args.height},
+			args.settings || {}));
+		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
+		return node;
+	},
+
+	/* Draw a path.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  path      (string or SVGPath) the path to draw
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	path: function(parent, path, settings) {
+		var args = this._args(arguments, ['path']);
+		return this._makeNode(args.parent, 'path', $.extend(
+			{d: (args.path.path ? args.path.path() : args.path)}, args.settings || {}));
+	},
+
+	/* Draw a rectangle.
+	   Specify both of rx and ry or neither.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  x         (number) the x-coordinate for the left edge of the rectangle
+	   @param  y         (number) the y-coordinate for the top edge of the rectangle
+	   @param  width     (number) the width of the rectangle
+	   @param  height    (number) the height of the rectangle
+	   @param  rx        (number) the x-radius of the ellipse for the rounded corners (optional)
+	   @param  ry        (number) the y-radius of the ellipse for the rounded corners (optional)
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	rect: function(parent, x, y, width, height, rx, ry, settings) {
+		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'rx', 'ry'], ['rx']);
+		return this._makeNode(args.parent, 'rect', $.extend(
+			{x: args.x, y: args.y, width: args.width, height: args.height},
+			(args.rx ? {rx: args.rx, ry: args.ry} : {}), args.settings || {}));
+	},
+
+	/* Draw a circle.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  cx        (number) the x-coordinate for the centre of the circle
+	   @param  cy        (number) the y-coordinate for the centre of the circle
+	   @param  r         (number) the radius of the circle
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	circle: function(parent, cx, cy, r, settings) {
+		var args = this._args(arguments, ['cx', 'cy', 'r']);
+		return this._makeNode(args.parent, 'circle', $.extend(
+			{cx: args.cx, cy: args.cy, r: args.r}, args.settings || {}));
+	},
+
+	/* Draw an ellipse.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  cx        (number) the x-coordinate for the centre of the ellipse
+	   @param  cy        (number) the y-coordinate for the centre of the ellipse
+	   @param  rx        (number) the x-radius of the ellipse
+	   @param  ry        (number) the y-radius of the ellipse
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	ellipse: function(parent, cx, cy, rx, ry, settings) {
+		var args = this._args(arguments, ['cx', 'cy', 'rx', 'ry']);
+		return this._makeNode(args.parent, 'ellipse', $.extend(
+			{cx: args.cx, cy: args.cy, rx: args.rx, ry: args.ry}, args.settings || {}));
+	},
+
+	/* Draw a line.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  x1        (number) the x-coordinate for the start of the line
+	   @param  y1        (number) the y-coordinate for the start of the line
+	   @param  x2        (number) the x-coordinate for the end of the line
+	   @param  y2        (number) the y-coordinate for the end of the line
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	line: function(parent, x1, y1, x2, y2, settings) {
+		var args = this._args(arguments, ['x1', 'y1', 'x2', 'y2']);
+		return this._makeNode(args.parent, 'line', $.extend(
+			{x1: args.x1, y1: args.y1, x2: args.x2, y2: args.y2}, args.settings || {}));
+	},
+
+	/* Draw a polygonal line.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  points    (number[][]) the x-/y-coordinates for the points on the line
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	polyline: function(parent, points, settings) {
+		var args = this._args(arguments, ['points']);
+		return this._poly(args.parent, 'polyline', args.points, args.settings);
+	},
+
+	/* Draw a polygonal shape.
+	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
+	   @param  points    (number[][]) the x-/y-coordinates for the points on the shape
+	   @param  settings  (object) additional settings for the shape (optional)
+	   @return  (element) the new shape node */
+	polygon: function(parent, points, settings) {
+		var args = this._args(arguments, ['points']);
+		return this._poly(args.parent, 'polygon', args.points, args.settings);
+	},
+
+	/* Draw a polygonal line or shape. */
+	_poly: function(parent, name, points, settings) {
+		var ps = '';
+		for (var i = 0; i < points.length; i++) {
+			ps += points[i].join() + ' ';
+		}
+		return this._makeNode(parent, name, $.extend(
+			{points: $.trim(ps)}, settings || {}));
+	},
+
+	/* Draw text.
+	   Specify both of x and y or neither of them.
+	   @param  parent    (element or jQuery) the parent node for the text (optional)
+	   @param  x         (number or number[]) the x-coordinate(s) for the text (optional)
+	   @param  y         (number or number[]) the y-coordinate(s) for the text (optional)
+	   @param  value     (string) the text content or
+	                     (SVGText) text with spans and references
+	   @param  settings  (object) additional settings for the text (optional)
+	   @return  (element) the new text node */
+	text: function(parent, x, y, value, settings) {
+		var args = this._args(arguments, ['x', 'y', 'value']);
+		if (typeof args.x == 'string' && arguments.length < 4) {
+			args.value = args.x;
+			args.settings = args.y;
+			args.x = args.y = null;
+		}
+		return this._text(args.parent, 'text', args.value, $.extend(
+			{x: (args.x && isArray(args.x) ? args.x.join(' ') : args.x),
+			y: (args.y && isArray(args.y) ? args.y.join(' ') : args.y)}, 
+			args.settings || {}));
+	},
+
+	/* Draw text along a path.
+	   @param  parent    (element or jQuery) the parent node for the text (optional)
+	   @param  path      (string) the ID of the path
+	   @param  value     (string) the text content or
+	                     (SVGText) text with spans and references
+	   @param  settings  (object) additional settings for the text (optional)
+	   @return  (element) the new text node */
+	textpath: function(parent, path, value, settings) {
+		var args = this._args(arguments, ['path', 'value']);
+		var node = this._text(args.parent, 'textPath', args.value, args.settings || {});
+		node.setAttributeNS($.svg.xlinkNS, 'href', args.path);
+		return node;
+	},
+
+	/* Draw text. */
+	_text: function(parent, name, value, settings) {
+		var node = this._makeNode(parent, name, settings);
+		if (typeof value == 'string') {
+			node.appendChild(node.ownerDocument.createTextNode(value));
+		}
+		else {
+			for (var i = 0; i < value._parts.length; i++) {
+				var part = value._parts[i];
+				if (part[0] == 'tspan') {
+					var child = this._makeNode(node, part[0], part[2]);
+					child.appendChild(node.ownerDocument.createTextNode(part[1]));
+					node.appendChild(child);
+				}
+				else if (part[0] == 'tref') {
+					var child = this._makeNode(node, part[0], part[2]);
+					child.setAttributeNS($.svg.xlinkNS, 'href', part[1]);
+					node.appendChild(child);
+				}
+				else if (part[0] == 'textpath') {
+					var set = $.extend({}, part[2]);
+					set.href = null;
+					var child = this._makeNode(node, part[0], set);
+					child.setAttributeNS($.svg.xlinkNS, 'href', part[2].href);
+					child.appendChild(node.ownerDocument.createTextNode(part[1]));
+					node.appendChild(child);
+				}
+				else { // straight text
+					node.appendChild(node.ownerDocument.createTextNode(part[1]));
+				}
+			}
+		}
+		return node;
+	},
+
+	/* Add a custom SVG element.
+	   @param  parent    (element or jQuery) the parent node for the new element (optional)
+	   @param  name      (string) the name of the element
+	   @param  settings  (object) additional settings for the element (optional)
+	   @return  (element) the new custom node */
+	other: function(parent, name, settings) {
+		var args = this._args(arguments, ['name']);
+		return this._makeNode(args.parent, args.name, args.settings || {});
+	},
+
+	/* Create a shape node with the given settings. */
+	_makeNode: function(parent, name, settings) {
+		parent = parent || this._svg;
+		var node = this._svg.ownerDocument.createElementNS($.svg.svgNS, name);
+		for (var name in settings) {
+			var value = settings[name];
+			if (value != null && value != null && 
+					(typeof value != 'string' || value != '')) {
+				node.setAttribute($.svg._attrNames[name] || name, value);
+			}
+		}
+		parent.appendChild(node);
+		return node;
+	},
+
+	/* Add an existing SVG node to the diagram.
+	   @param  parent  (element or jQuery) the parent node for the new node (optional)
+	   @param  node    (element) the new node to add or
+	                   (string) the jQuery selector for the node or
+	                   (jQuery collection) set of nodes to add
+	   @return  (SVGWrapper) this wrapper */
+	add: function(parent, node) {
+		var args = this._args((arguments.length == 1 ? [null, parent] : arguments), ['node']);
+		var svg = this;
+		args.parent = args.parent || this._svg;
+		args.node = (args.node.jquery ? args.node : $(args.node));
+		try {
+			if ($.svg._renesis) {
+				throw 'Force traversal';
+			}
+			args.parent.appendChild(args.node.cloneNode(true));
+		}
+		catch (e) {
+			args.node.each(function() {
+				var child = svg._cloneAsSVG(this);
+				if (child) {
+					args.parent.appendChild(child);
+				}
+			});
+		}
+		return this;
+	},
+
+	/* Clone an existing SVG node and add it to the diagram.
+	   @param  parent  (element or jQuery) the parent node for the new node (optional)
+	   @param  node    (element) the new node to add or
+	                   (string) the jQuery selector for the node or
+	                   (jQuery collection) set of nodes to add
+	   @return  (element[]) collection of new nodes */
+	clone: function(parent, node) {
+		var svg = this;
+		var args = this._args((arguments.length == 1 ? [null, parent] : arguments), ['node']);
+		args.parent = args.parent || this._svg;
+		args.node = (args.node.jquery ? args.node : $(args.node));
+		var newNodes = [];
+		args.node.each(function() {
+			var child = svg._cloneAsSVG(this);
+			if (child) {
+				child.id = '';
+				args.parent.appendChild(child);
+				newNodes.push(child);
+			}
+		});
+		return newNodes;
+	},
+
+	/* SVG nodes must belong to the SVG namespace, so clone and ensure this is so.
+	   @param  node  (element) the SVG node to clone
+	   @return  (element) the cloned node */
+	_cloneAsSVG: function(node) {
+		var newNode = null;
+		if (node.nodeType == 1) { // element
+			newNode = this._svg.ownerDocument.createElementNS(
+				$.svg.svgNS, this._checkName(node.nodeName));
+			for (var i = 0; i < node.attributes.length; i++) {
+				var attr = node.attributes.item(i);
+				if (attr.nodeName != 'xmlns' && attr.nodeValue) {
+					if (attr.prefix == 'xlink') {
+						newNode.setAttributeNS($.svg.xlinkNS,
+							attr.localName || attr.baseName, attr.nodeValue);
+					}
+					else {
+						newNode.setAttribute(this._checkName(attr.nodeName), attr.nodeValue);
+					}
+				}
+			}
+			for (var i = 0; i < node.childNodes.length; i++) {
+				var child = this._cloneAsSVG(node.childNodes[i]);
+				if (child) {
+					newNode.appendChild(child);
+				}
+			}
+		}
+		else if (node.nodeType == 3) { // text
+			if ($.trim(node.nodeValue)) {
+				newNode = this._svg.ownerDocument.createTextNode(node.nodeValue);
+			}
+		}
+		else if (node.nodeType == 4) { // CDATA
+			if ($.trim(node.nodeValue)) {
+				try {
+					newNode = this._svg.ownerDocument.createCDATASection(node.nodeValue);
+				}
+				catch (e) {
+					newNode = this._svg.ownerDocument.createTextNode(
+						node.nodeValue.replace(/&/g, '&amp;').
+						replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+				}
+			}
+		}
+		return newNode;
+	},
+
+	/* Node names must be lower case and without SVG namespace prefix. */
+	_checkName: function(name) {
+		name = (name.substring(0, 1) >= 'A' && name.substring(0, 1) <= 'Z' ?
+			name.toLowerCase() : name);
+		return (name.substring(0, 4) == 'svg:' ? name.substring(4) : name);
+	},
+
+	/* Load an external SVG document.
+	   @param  url       (string) the location of the SVG document or
+	                     the actual SVG content
+	   @param  settings  (boolean) see addTo below or
+	                     (function) see onLoad below or
+	                     (object) additional settings for the load with attributes below:
+	                       addTo       (boolean) true to add to what's already there,
+	                                   or false to clear the canvas first
+						   changeSize  (boolean) true to allow the canvas size to change,
+	                                   or false to retain the original
+	                       onLoad      (function) callback after the document has loaded,
+	                                   'this' is the container, receives SVG object and
+	                                   optional error message as a parameter
+	                       parent      (string or element or jQuery) the parent to load
+	                                   into, defaults to top-level svg element
+	   @return  (SVGWrapper) this root */
+	load: function(url, settings) {
+		settings = (typeof settings == 'boolean' ? {addTo: settings} :
+			(typeof settings == 'function' ? {onLoad: settings} :
+			(typeof settings == 'string' ? {parent: settings} : 
+			(typeof settings == 'object' && settings.nodeName ? {parent: settings} :
+			(typeof settings == 'object' && settings.jquery ? {parent: settings} :
+			settings || {})))));
+		if (!settings.parent && !settings.addTo) {
+			this.clear(false);
+		}
+		var size = [this._svg.getAttribute('width'), this._svg.getAttribute('height')];
+		var wrapper = this;
+		// Report a problem with the load
+		var reportError = function(message) {
+			message = $.svg.local.errorLoadingText + ': ' + message;
+			if (settings.onLoad) {
+				settings.onLoad.apply(wrapper._container || wrapper._svg, [wrapper, message]);
+			}
+			else {
+				wrapper.text(null, 10, 20, message);
+			}
+		};
+		// Create a DOM from SVG content
+		var loadXML4IE = function(data) {
+			var xml = new ActiveXObject('Microsoft.XMLDOM');
+			xml.validateOnParse = false;
+			xml.resolveExternals = false;
+			xml.async = false;
+			xml.loadXML(data);
+			if (xml.parseError.errorCode != 0) {
+				reportError(xml.parseError.reason);
+				return null;
+			}
+			return xml;
+		};
+		// Load the SVG DOM
+		var loadSVG = function(data) {
+			if (!data) {
+				return;
+			}
+			if (data.documentElement.nodeName != 'svg') {
+				var errors = data.getElementsByTagName('parsererror');
+				var messages = (errors.length ? errors[0].getElementsByTagName('div') : []); // Safari
+				reportError(!errors.length ? '???' :
+					(messages.length ? messages[0] : errors[0]).firstChild.nodeValue);
+				return;
+			}
+			var parent = (settings.parent ? $(settings.parent)[0] : wrapper._svg);
+			var attrs = {};
+			for (var i = 0; i < data.documentElement.attributes.length; i++) {
+				var attr = data.documentElement.attributes.item(i);
+				if (!(attr.nodeName == 'version' || attr.nodeName.substring(0, 5) == 'xmlns')) {
+					attrs[attr.nodeName] = attr.nodeValue;
+				}
+			}
+			wrapper.configure(parent, attrs, !settings.parent);
+			var nodes = data.documentElement.childNodes;
+			for (var i = 0; i < nodes.length; i++) {
+				try {
+					if ($.svg._renesis) {
+						throw 'Force traversal';
+					}
+					parent.appendChild(wrapper._svg.ownerDocument.importNode(nodes[i], true));
+					if (nodes[i].nodeName == 'script') {
+						$.globalEval(nodes[i].textContent);
+					}
+				}
+				catch (e) {
+					wrapper.add(parent, nodes[i]);
+				}
+			}
+			if (!settings.changeSize) {
+				wrapper.configure(parent, {width: size[0], height: size[1]});
+			}
+			if (settings.onLoad) {
+				settings.onLoad.apply(wrapper._container || wrapper._svg, [wrapper]);
+			}
+		};
+		if (url.match('<svg')) { // Inline SVG
+			loadSVG($.browser.msie ? loadXML4IE(url) :
+				new DOMParser().parseFromString(url, 'text/xml'));
+		}
+		else { // Remote SVG
+			$.ajax({url: url, dataType: ($.browser.msie ? 'text' : 'xml'),
+				success: function(xml) {
+					loadSVG($.browser.msie ? loadXML4IE(xml) : xml);
+				}, error: function(http, message, exc) {
+					reportError(message + (exc ? ' ' + exc.message : ''));
+				}});
+		}
+		return this;
+	},
+
+	/* Delete a specified node.
+	   @param  node  (element or jQuery) the drawing node to remove
+	   @return  (SVGWrapper) this root */
+	remove: function(node) {
+		node = (node.jquery ? node[0] : node);
+		node.parentNode.removeChild(node);
+		return this;
+	},
+
+	/* Delete everything in the current document.
+	   @param  attrsToo  (boolean) true to clear any root attributes as well,
+	                     false to leave them (optional)
+	   @return  (SVGWrapper) this root */
+	clear: function(attrsToo) {
+		if (attrsToo) {
+			this.configure({}, true);
+		}
+		while (this._svg.firstChild) {
+			this._svg.removeChild(this._svg.firstChild);
+		}
+		return this;
+	},
+
+	/* Serialise the current diagram into an SVG text document.
+	   @param  node  (SVG element) the starting node (optional)
+	   @return  (string) the SVG as text */
+	toSVG: function(node) {
+		node = node || this._svg;
+		return (typeof XMLSerializer == 'undefined' ? this._toSVG(node) :
+			new XMLSerializer().serializeToString(node));
+	},
+
+	/* Serialise one node in the SVG hierarchy. */
+	_toSVG: function(node) {
+		var svgDoc = '';
+		if (!node) {
+			return svgDoc;
+		}
+		if (node.nodeType == 3) { // Text
+			svgDoc = node.nodeValue;
+		}
+		else if (node.nodeType == 4) { // CDATA
+			svgDoc = '<![CDATA[' + node.nodeValue + ']]>';
+		}
+		else { // Element
+			svgDoc = '<' + node.nodeName;
+			if (node.attributes) {
+				for (var i = 0; i < node.attributes.length; i++) {
+					var attr = node.attributes.item(i);
+					if (!($.trim(attr.nodeValue) == '' || attr.nodeValue.match(/^\[object/) ||
+							attr.nodeValue.match(/^function/))) {
+						svgDoc += ' ' + (attr.namespaceURI == $.svg.xlinkNS ? 'xlink:' : '') + 
+							attr.nodeName + '="' + attr.nodeValue + '"';
+					}
+				}
+			}	
+			if (node.firstChild) {
+				svgDoc += '>';
+				var child = node.firstChild;
+				while (child) {
+					svgDoc += this._toSVG(child);
+					child = child.nextSibling;
+				}
+				svgDoc += '</' + node.nodeName + '>';
+			}
+				else {
+				svgDoc += '/>';
+			}
+		}
+		return svgDoc;
+	}
+});
+
+/* Helper to generate an SVG path.
+   Obtain an instance from the SVGWrapper object.
+   String calls together to generate the path and use its value:
+   var path = root.createPath();
+   root.path(null, path.move(100, 100).line(300, 100).line(200, 300).close(), {fill: 'red'});
+   or
+   root.path(null, path.move(100, 100).line([[300, 100], [200, 300]]).close(), {fill: 'red'}); */
+function SVGPath() {
+	this._path = '';
+}
+
+$.extend(SVGPath.prototype, {
+	/* Prepare to create a new path.
+	   @return  (SVGPath) this path */
+	reset: function() {
+		this._path = '';
+		return this;
+	},
+
+	/* Move the pointer to a position.
+	   @param  x         (number) x-coordinate to move to or
+	                     (number[][]) x-/y-coordinates to move to
+	   @param  y         (number) y-coordinate to move to (omitted if x is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	move: function(x, y, relative) {
+		relative = (isArray(x) ? y : relative);
+		return this._coords((relative ? 'm' : 'M'), x, y);
+	},
+
+	/* Draw a line to a position.
+	   @param  x         (number) x-coordinate to move to or
+	                     (number[][]) x-/y-coordinates to move to
+	   @param  y         (number) y-coordinate to move to (omitted if x is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	line: function(x, y, relative) {
+		relative = (isArray(x) ? y : relative);
+		return this._coords((relative ? 'l' : 'L'), x, y);
+	},
+
+	/* Draw a horizontal line to a position.
+	   @param  x         (number) x-coordinate to draw to or
+	                     (number[]) x-coordinates to draw to
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	horiz: function(x, relative) {
+		this._path += (relative ? 'h' : 'H') + (isArray(x) ? x.join(' ') : x);
+		return this;
+	},
+
+	/* Draw a vertical line to a position.
+	   @param  y         (number) y-coordinate to draw to or
+	                     (number[]) y-coordinates to draw to
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	vert: function(y, relative) {
+		this._path += (relative ? 'v' : 'V') + (isArray(y) ? y.join(' ') : y);
+		return this;
+	},
+
+	/* Draw a cubic Bézier curve.
+	   @param  x1        (number) x-coordinate of beginning control point or
+	                     (number[][]) x-/y-coordinates of control and end points to draw to
+	   @param  y1        (number) y-coordinate of beginning control point (omitted if x1 is array)
+	   @param  x2        (number) x-coordinate of ending control point (omitted if x1 is array)
+	   @param  y2        (number) y-coordinate of ending control point (omitted if x1 is array)
+	   @param  x         (number) x-coordinate of curve end (omitted if x1 is array)
+	   @param  y         (number) y-coordinate of curve end (omitted if x1 is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	curveC: function(x1, y1, x2, y2, x, y, relative) {
+		relative = (isArray(x1) ? y1 : relative);
+		return this._coords((relative ? 'c' : 'C'), x1, y1, x2, y2, x, y);
+	},
+
+	/* Continue a cubic Bézier curve.
+	   Starting control point is the reflection of the previous end control point.
+	   @param  x2        (number) x-coordinate of ending control point or
+	                     (number[][]) x-/y-coordinates of control and end points to draw to
+	   @param  y2        (number) y-coordinate of ending control point (omitted if x2 is array)
+	   @param  x         (number) x-coordinate of curve end (omitted if x2 is array)
+	   @param  y         (number) y-coordinate of curve end (omitted if x2 is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	smoothC: function(x2, y2, x, y, relative) {
+		relative = (isArray(x2) ? y2 : relative);
+		return this._coords((relative ? 's' : 'S'), x2, y2, x, y);
+	},
+
+	/* Draw a quadratic Bézier curve.
+	   @param  x1        (number) x-coordinate of control point or
+	                     (number[][]) x-/y-coordinates of control and end points to draw to
+	   @param  y1        (number) y-coordinate of control point (omitted if x1 is array)
+	   @param  x         (number) x-coordinate of curve end (omitted if x1 is array)
+	   @param  y         (number) y-coordinate of curve end (omitted if x1 is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	curveQ: function(x1, y1, x, y, relative) {
+		relative = (isArray(x1) ? y1 : relative);
+		return this._coords((relative ? 'q' : 'Q'), x1, y1, x, y);
+	},
+
+	/* Continue a quadratic Bézier curve.
+	   Control point is the reflection of the previous control point.
+	   @param  x         (number) x-coordinate of curve end or
+	                     (number[][]) x-/y-coordinates of points to draw to
+	   @param  y         (number) y-coordinate of curve end (omitted if x is array)
+	   @param  relative  (boolean) true for coordinates relative to the current point,
+	                     false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	smoothQ: function(x, y, relative) {
+		relative = (isArray(x) ? y : relative);
+		return this._coords((relative ? 't' : 'T'), x, y);
+	},
+
+	/* Generate a path command with (a list of) coordinates. */
+	_coords: function(cmd, x1, y1, x2, y2, x3, y3) {
+		if (isArray(x1)) {
+			for (var i = 0; i < x1.length; i++) {
+				var cs = x1[i];
+				this._path += (i == 0 ? cmd : ' ') + cs[0] + ',' + cs[1] +
+					(cs.length < 4 ? '' : ' ' + cs[2] + ',' + cs[3] +
+					(cs.length < 6 ? '': ' ' + cs[4] + ',' + cs[5]));
+			}
+		}
+		else {
+			this._path += cmd + x1 + ',' + y1 + 
+				(x2 == null ? '' : ' ' + x2 + ',' + y2 +
+				(x3 == null ? '' : ' ' + x3 + ',' + y3));
+		}
+		return this;
+	},
+
+	/* Draw an arc to a position.
+	   @param  rx         (number) x-radius of arc or
+	                      (number/boolean[][]) x-/y-coordinates and flags for points to draw to
+	   @param  ry         (number) y-radius of arc (omitted if rx is array)
+	   @param  xRotate    (number) x-axis rotation (degrees, clockwise) (omitted if rx is array)
+	   @param  large      (boolean) true to draw the large part of the arc,
+	                      false to draw the small part (omitted if rx is array)
+	   @param  clockwise  (boolean) true to draw the clockwise arc,
+	                      false to draw the anti-clockwise arc (omitted if rx is array)
+	   @param  x          (number) x-coordinate of arc end (omitted if rx is array)
+	   @param  y          (number) y-coordinate of arc end (omitted if rx is array)
+	   @param  relative   (boolean) true for coordinates relative to the current point,
+	                      false for coordinates being absolute
+	   @return  (SVGPath) this path */
+	arc: function(rx, ry, xRotate, large, clockwise, x, y, relative) {
+		relative = (isArray(rx) ? ry : relative);
+		this._path += (relative ? 'a' : 'A');
+		if (isArray(rx)) {
+			for (var i = 0; i < rx.length; i++) {
+				var cs = rx[i];
+				this._path += (i == 0 ? '' : ' ') + cs[0] + ',' + cs[1] + ' ' +
+					cs[2] + ' ' + (cs[3] ? '1' : '0') + ',' +
+					(cs[4] ? '1' : '0') + ' ' + cs[5] + ',' + cs[6];
+			}
+		}
+		else {
+			this._path += rx + ',' + ry + ' ' + xRotate + ' ' +
+				(large ? '1' : '0') + ',' + (clockwise ? '1' : '0') + ' ' + x + ',' + y;
+		}
+		return this;
+	},
+
+	/* Close the current path.
+	   @return  (SVGPath) this path */
+	close: function() {
+		this._path += 'z';
+		return this;
+	},
+
+	/* Return the string rendering of the specified path.
+	   @return  (string) stringified path */
+	path: function() {
+		return this._path;
+	}
+});
+
+SVGPath.prototype.moveTo = SVGPath.prototype.move;
+SVGPath.prototype.lineTo = SVGPath.prototype.line;
+SVGPath.prototype.horizTo = SVGPath.prototype.horiz;
+SVGPath.prototype.vertTo = SVGPath.prototype.vert;
+SVGPath.prototype.curveCTo = SVGPath.prototype.curveC;
+SVGPath.prototype.smoothCTo = SVGPath.prototype.smoothC;
+SVGPath.prototype.curveQTo = SVGPath.prototype.curveQ;
+SVGPath.prototype.smoothQTo = SVGPath.prototype.smoothQ;
+SVGPath.prototype.arcTo = SVGPath.prototype.arc;
+
+/* Helper to generate an SVG text object.
+   Obtain an instance from the SVGWrapper object.
+   String calls together to generate the text and use its value:
+   var text = root.createText();
+   root.text(null, x, y, text.string('This is ').
+     span('red', {fill: 'red'}).string('!'), {fill: 'blue'}); */
+function SVGText() {
+	this._parts = []; // The components of the text object
+}
+
+$.extend(SVGText.prototype, {
+	/* Prepare to create a new text object.
+	   @return  (SVGText) this text */
+	reset: function() {
+		this._parts = [];
+		return this;
+	},
+
+	/* Add a straight string value.
+	   @param  value  (string) the actual text
+	   @return  (SVGText) this text object */
+	string: function(value) {
+		this._parts[this._parts.length] = ['text', value];
+		return this;
+	},
+
+	/* Add a separate text span that has its own settings.
+	   @param  value     (string) the actual text
+	   @param  settings  (object) the settings for this text
+	   @return  (SVGText) this text object */
+	span: function(value, settings) {
+		this._parts[this._parts.length] = ['tspan', value, settings];
+		return this;
+	},
+
+	/* Add a reference to a previously defined text string.
+	   @param  id        (string) the ID of the actual text
+	   @param  settings  (object) the settings for this text
+	   @return  (SVGText) this text object */
+	ref: function(id, settings) {
+		this._parts[this._parts.length] = ['tref', id, settings];
+		return this;
+	},
+
+	/* Add text drawn along a path.
+	   @param  id        (string) the ID of the path
+	   @param  value     (string) the actual text
+	   @param  settings  (object) the settings for this text
+	   @return  (SVGText) this text object */
+	path: function(id, value, settings) {
+		this._parts[this._parts.length] = ['textpath', value, 
+			$.extend({href: id}, settings || {})];
+		return this;
+	}
+});
+
+/* Attach the SVG functionality to a jQuery selection.
+   @param  command  (string) the command to run (optional, default 'attach')
+   @param  options  (object) the new settings to use for these SVG instances
+   @return jQuery (object) for chaining further calls */
+$.fn.svg = function(options) {
+	var otherArgs = Array.prototype.slice.call(arguments, 1);
+	if (typeof options == 'string' && options == 'get') {
+		return $.svg['_' + options + 'SVG'].apply($.svg, [this[0]].concat(otherArgs));
+	}
+	return this.each(function() {
+		if (typeof options == 'string') {
+			$.svg['_' + options + 'SVG'].apply($.svg, [this].concat(otherArgs));
+		}
+		else {
+			$.svg._attachSVG(this, options || {});
+		} 
+	});
+};
+
+/* Determine whether an object is an array. */
+function isArray(a) {
+	return (a && a.constructor == Array);
+}
+
+// Singleton primary SVG interface
+$.svg = new SVGManager();
+
+})(jQuery);
+
+define("jquery-svg/jquery.svg.js", function(){});
+
 // Module core/regpict
 // Handles register pictures in the document. This encompasses two primary operations. One is
 // extracting register information from a variety of table styles. The other is inventing an
 // svg diagram that represents the fields in the table.
 define(
-    'core/regpict',["core/utils"],
+    'core/regpict',["core/utils",
+     "jquery-svg/jquery.svg.js"],
     function (utils) {
 
-        var defaultWidth = 32;
+        /*var defaultWidth = 32;
         var defaultUnused = "RsvdP";
         var cellWidth = 16;
         var cellHeight = 32;
         var cellInternalHeight = 8;
         var cellTop = 16;
-        var log_ul = $("#log");
-        var validAttr = /^(rw|ro|rw1c|hwinit|ros|rws|rw1cs|rsvp|rsvz)$/i;
+        var validAttr = /^(rw|ro|rw1c|rw1s|hwinit|rws|ros|rw1cs|rw1ss|reserved|rsvd|rsvp|rsvz|zero|one|other)$/i;*/
 
-        function remove_all_regpict() {
+        /*function remove_all_regpict() {
             $("div.regpict").remove();
         }
 
@@ -8898,27 +10325,89 @@ define(
             var svgdiv_string = "<div class='regpict'/>";
             $(this).prepend(svgdiv_string);
             $("div.regpict", this).svg(draw_regpict);
+        }*/
+        
+        function pget(obj, prop, def) {
+            if ((obj !== null) && prop in obj)
+                return obj[prop];
+            else
+                return def;
         }
 
-        function draw_regpict(svg) {
-            var fields = $(this).parent().data("regpict").fields;
-            var width = 0;
-            for (var i = 0; i < fields.length; i++) {
-                var msb = fields[i].msb + 1;
-                width = width <= msb ? msb : width;
+        function draw_regpict(svg, reg) {
+            var width               = Number(pget(reg, "width", 32));
+            var unused              = String(pget(reg, "unused", "RsvdP"));
+            var defaultAttr         = String(pget(reg, "defaultAttr", "other"));
+            var cellWidth           = Number(pget(reg, "cellWidth", 16));
+            var cellHeight          = Number(pget(reg, "cellHeight", 32));
+            var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+            var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
+            var cellTop             = Number(pget(reg, "cellTop", 16));
+            var fields              = pget(reg, "fields", [ ]); // default to empty register
+            if (! Array.isArray(fields)) fields = [ ];
+            console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
+            console.log("draw_regpict: fields=" + fields.toString());
+            
+            // sanitize field array to avoid subsequent problems
+            fields.forEach(function (item, index) {
+                if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
+                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;
+                if (!("unused" in item)) item.unused = false;
+                if (!("attr" in item)) item.attr = defaultAttr;
+                if (!("name" in item)) item.name = "UNSPECIFIED NAME";
+                console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+            
+            });
+            
+            var bitarray = [];  // Array indexed by bit # in register range 0:width
+                                // field[bitarray[N]] contains bit N
+                                // bitarray[N] == -1 for unused bits
+                                // bitarray[N] == 1000 for first bit outside register width
+            
+            bitarray[width] = 1000;
+            for (var i = 0; i < width; i++) {
+                bitarray[i] = -1;
             }
-
+            fields.forEach(function (item, index) {
+                for (var i = item.lsb; i <= item.msb; i++) {
+                    bitarray[i] = index;
+                }
+            });
+            
+            var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
+            for (var i = 0; i <= width; ++i) {
+                if (lsb >= 0 && bitarray[i] >= 0) {
+                    // first "used" bit after stretch of unused bits, invent an "unused" field
+                    fields.push({
+                        "msb": i - 1,
+                        "lsb": lsb,
+                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
+                        "attr": unused.toLowerCase(),   // attribute is name
+                        "unused": true
+                    });
+                    lsb = -1;
+                }
+                if (lsb < 0 && bitarray[i] < 0) {
+                    // starting a string of unused bits
+                    lsb = i;
+                }
+            }
+            
+            // x position of left edge of bit i
             function leftOf(i) {
                 return cellWidth * (width - i - 0.5);
             }
 
+            // x position of right edge of bit i
             function rightOf(i) {
                 return cellWidth * (width - i + 0.5);
             }
 
+            // x position of middle of bit i
             function middleOf(i) {
                 return cellWidth * (width - i);
             }
+            
             var g = svg.group();
             var p = svg.createPath();
             for (var i = 0; i < fields.length; i++) {
@@ -8975,14 +10464,19 @@ define(
                             });
                             p = svg.createPath();
                             p.move(leftOf(f.msb), cellTop + cellHeight)
-                                .line((f.msb - f.lsb + 1) * cellWidth / 2, 4, true)
-                                .line(rightOf(f.lsb), cellTop + cellHeight)
-                                .move((f.lsb - f.msb - 1) * cellWidth / 2, 4, true)
-                                .vert(nextBitLine - text.clientHeight / 4)
-                                .horiz(rightOf(-0.4));
+                             .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
+                             .line(rightOf(f.lsb), cellTop + cellHeight);
                             svg.path(g, p, {
                                 class_: "regBitBracket" +
                                     " regBitBracket" + (bitLineCount < 2 ? "0" : "1")
+                            });  
+                            p = svg.createPath();
+                            p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
+                             .vert(nextBitLine - text.clientHeight / 4)
+                             .horiz(rightOf(-0.4));
+                            svg.path(g, p, {
+                                class_: "regBitLine" +
+                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1")
                             });
                             nextBitLine += text.clientHeight + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
@@ -8995,17 +10489,33 @@ define(
             });
         }
 
-        function log(str) {
-            if (str == undefined)
-                log_ul.append("<li class='log'>undefined</li>");
-            else
-                log_ul.append("<li class='log'>" + str.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + "</li>");
-        }
         return {
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
-                $(".register", doc).each(function (index) {
-                    msg.pub("warn", "core/regpict: found register index=" + index + " contents=" + this.outerHTML);
+                $("figure.register", doc).each(function (index) {
+                    var json = null;
+                    $("pre.json,div.json", this).each(function (index) {
+                        json = $.parseJSON(this.textContent);
+                        $(this).hide();
+                    });
+                    // TODO extract register JSON from other sources (e.g. adjacent table)
+                    if (json === null) {
+                        msg.pub("warn", "core/regpict: no register definition");
+                    }
+                    // invent a div to hold the svg, if necessary
+                    var $divsvg = $("div.svg", this);
+                    if ($divsvg.length === 0) {
+                        var $cap = $("figcaption", this);
+                        if ($cap.length > 0) {
+                            console.log("inserting div.svg before <figcaption>");
+                            $cap.before('<div class="svg"></div>');
+                        } else {
+                            console.log("inserting div.svg at end of <figure>");
+                            $(this).append('<div class="svg"></div>');
+                        }
+                        $divsvg=$("div.svg", this);
+                    }
+                    if (json !== null) { $divsvg.first().svg(function(svg) { draw_regpict(svg, json); }); }
                 });
                 msg.pub("end", "core/regpict");
                 cb();
