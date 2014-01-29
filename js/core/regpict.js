@@ -205,7 +205,8 @@ define(
             var nextBitLine = cellTop + cellHeight + 20; //76;
             var bitLineCount = 0;
             svg.path(g, p, {
-                class_: "regBitNumLine"
+                class_: "regBitNumLine",
+                fill: "none"
             });
             for (var b = 0; b < width; b++) {
                 for (var i = 0; i < fields.length; i++) {
@@ -245,7 +246,8 @@ define(
                              .line(rightOf(f.lsb), cellTop + cellHeight);
                             svg.path(g, p, {
                                 class_: "regBitBracket" +
-                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1")
+                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
+                                fill: "none"
                             });  
                             p = svg.createPath();
                             p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
@@ -253,7 +255,8 @@ define(
                              .horiz(rightOf(-0.4));
                             svg.path(g, p, {
                                 class_: "regBitLine" +
-                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1")
+                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
+                                fill: "none"
                             });
                             nextBitLine += text.clientHeight + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
