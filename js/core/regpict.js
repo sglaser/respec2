@@ -308,7 +308,7 @@ define(
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
                                                         name: String(match[2].substr(1)),
-                                                        attr: match[4].substr(0,2).toLowerCase });
+                                                        attr: match[4].substr(0,2).toLowerCase() });
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
                                                 }
