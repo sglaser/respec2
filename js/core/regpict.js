@@ -281,7 +281,7 @@ define(
                         $(this).hide();
                     });
                     
-                    $("a.ness", $fig).each(function (index) {
+                    $("a.nv_refman", $fig).each(function (index) {
                         var $el = $(this);
                         $el.hide();
                         json = $.parseJSON(this.textContent);
@@ -289,7 +289,7 @@ define(
                         //console.log("json=" + json.toString());
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
-                        //console.log("a.ness: pattern='" + pattern.toString() + "'");
+                        //console.log("a.refman: pattern='" + pattern.toString() + "'");
                         var href = $el.attr("href");
                         $.ajax({
                             dataType:   "text",
