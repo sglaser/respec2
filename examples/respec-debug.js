@@ -10433,7 +10433,8 @@ define(
             var nextBitLine = cellTop + cellHeight + 20; //76;
             var bitLineCount = 0;
             svg.path(g, p, {
-                class_: "regBitNumLine"
+                class_: "regBitNumLine",
+                fill: "none"
             });
             for (var b = 0; b < width; b++) {
                 for (var i = 0; i < fields.length; i++) {
@@ -10473,7 +10474,8 @@ define(
                              .line(rightOf(f.lsb), cellTop + cellHeight);
                             svg.path(g, p, {
                                 class_: "regBitBracket" +
-                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1")
+                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
+                                fill: "none"
                             });  
                             p = svg.createPath();
                             p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
@@ -10481,7 +10483,8 @@ define(
                              .horiz(rightOf(-0.4));
                             svg.path(g, p, {
                                 class_: "regBitLine" +
-                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1")
+                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
+                                fill: "none"
                             });
                             nextBitLine += text.clientHeight + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
@@ -10515,9 +10518,10 @@ define(
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
                         //console.log("a.ness: pattern='" + pattern.toString() + "'");
+                        var href = $el.attr("href");
                         $.ajax({
                             dataType:   "text",
-                            url:        $el.attr("href"),   
+                            url:        href,
                             async:      false,
                             success:    function (data) {
                                 if (data) {
@@ -10547,8 +10551,7 @@ define(
                                 }
                             },
                             error:      function (xhr, status, error) {
-                                msg.pub("error", "Error including URI=" + uri + ": " + status + " (" + error + ")");
-                                finish($el);
+                                msg.pub("error", "Error including URI=" + href + ": " + status + " (" + error + ")");
                             }
                         });
                     });
