@@ -24,6 +24,8 @@
               ,   "REX":    "<strong>Overridden!</strong>"
               }
           ,   trace:        true
+          ,   figFmt:       "%1Figure %(%c-%#%): %t"
+          ,   tblFmt:       "%1Table %(%c-%#%): %t"
         };
     </script>
 <style type="text/css">
@@ -118,7 +120,7 @@ figure pre.json {
     <section id="abstract">
       <p> This is just a very basic document. [[!REX]] Yeah for memes [[MEMES]].
         [[DOM4]], [[XML10]], [[\WHATEVER]] </p>
-      <p> [[NO-EXIST]] </p>
+<!--      <p> [[NO-EXIST]] </p>-->
     </section>
     <section id="sotd">
       <p> CUSTOM PARAGRAPH </p>
@@ -166,15 +168,18 @@ figure pre.json {
                     "name": "bit13"
                 } ] }
         </pre>
-        <figcaption>Graph for XXX Example (
-            <a href="figure1.svg">SVG version</a>)</figcaption>
+        <figcaption>Graph for XXX Example (SVG version)</figcaption>
     </figure>
 
     </section>
-      <section>
-      <pre data-include="intel.ref" data-include-filter="PTE"></pre>
-          <figure><a class="register-ness" href="intel.ref">INTEL_PTE</a></figure>
-      </section>
+    <section>
+        <h2>Intel PTE</h2>
+        <pre data-include="intel.ref" data-include-filter="PTE"></pre>
+        <figure id="figure2" class="register">
+            <a class="ness" href="intel.ref">{ "width": 64, "unused": "reserved", "register": "INTEL_PTE"}</a>
+            <figcaption><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="ness" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a></figcaption>
+        </figure>
+    </section>
     <section>
       <h2>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/"
             >deep</a> stuff</span></h2>
@@ -183,7 +188,7 @@ figure pre.json {
       <p class="issue atrisk" title="A REAL problem"> This is a problem </p>
       <p class="note" title="About this"> Just a note </p>
       <p class="impnote" title="Imp Note Test"> Implementation a note </p>
-      <p> Problems. <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+      <p> Problems. <!-- <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
@@ -218,6 +223,7 @@ figure pre.json {
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+-->
       </p>
     </section>
     <section>

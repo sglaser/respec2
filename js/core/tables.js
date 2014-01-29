@@ -7,16 +7,19 @@ define(
     ["core/utils"],
     function (utils) {
         var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
-            $cap.html("");
-            if (fmt === "" || fmt === "%t") {
-                $cap.wrapInner($("<span class='" + label + "-title'/>"));
+            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+            if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
+                $cap.wrapInner($("<span class='" + label + "title'/>"));
                 return num;
             }
             var $num = $("<span class='" + label + "no'/>");
-            var $cur = $cap;
-            var $title = $cap.clone().wrapInner("<span class='" + label + "'></span>");
+            var $title = $cap.clone().renameElement("span").addClass(label + "title");
+            //console.log("title='" + $title.html() + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
+            var $cur = $cap;
+            $cap.html("");
+            //console.log("$cur='"+$cur.html()+"'");
             //console.log("fmt=\"" + adjfmt + "\"");
             for (var i = 0; i < sfmt.length; i++) {
                 var s = sfmt[i];
@@ -35,6 +38,8 @@ define(
                 //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
             }
             num[0]++;
+            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+
             return num;
         };
         return {

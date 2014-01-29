@@ -7,28 +7,28 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_ROOT_TABLE_ADDR_RTT_INIT                        0x0   /* RWI-V */
 #define INTEL_ROOT_TABLE_ADDR_RTT_NONEXTENDED                 0x0   /* RWI-V */
 #define INTEL_ROOT_TABLE_ADDR_RTT_EXTENDED                    0x1   /* RWI-V */
-#define INTEL_ROOT_TABLE_ADDR_RTA                      (HAW-1):12   /* RWIVF */
+#define INTEL_ROOT_TABLE_ADDR_RTA                           47:12   /* RWIVF */
 #define INTEL_ROOT_TABLE_ADDR_RTA_INIT                        0x0   /* RWI-V */
-#define INTEL_ROOT_TABLE_ADDR_RESERVED_HAW                 63:HAW   /* RWIVF */
+#define INTEL_ROOT_TABLE_ADDR_RESERVED_HAW                  63:48   /* RWIVF */
 #define INTEL_ROOT_TABLE_ADDR_RESERVED_HAW_INIT               0x0   /* RWI-V */
 
 ===ROOT_TABLE_ENTRY
 #define INTEL_ROOT_TABLE_ENTRY                         0x00000008   /* RWI8R */
 #define INTEL_ROOT_TABLE_ENTRY_P                              0:0   /* RW-VF */
-#define INTEL_ROOT_TABLE_ENTRY_CTP                     (HAW-1):12   /* RW-VF */
-#define INTEL_ROOT_TABLE_ENTRY_RESERVED_HAW                63:HAW   /* RWIVF */
+#define INTEL_ROOT_TABLE_ENTRY_CTP                          47:12   /* RW-VF */
+#define INTEL_ROOT_TABLE_ENTRY_RESERVED_HAW                 63:48   /* RWIVF */
 #define INTEL_ROOT_TABLE_ENTRY_RESERVED_HAW_INIT              0x0   /* RWI-V */
 
 #define INTEL_EXT_ROOT_TABLE_ENTRY0                    0x00000010   /* RWI8R */
 #define INTEL_EXT_ROOT_TABLE_ENTRY0_LP                        0:0   /* RW-VF */
-#define INTEL_EXT_ROOT_TABLE_ENTRY0_LCTP               (HAW-1):12   /* RW-VF */
-#define INTEL_EXT_ROOT_TABLE_ENTRY0_RESERVED_HAW           63:HAW   /* RWIVF */
+#define INTEL_EXT_ROOT_TABLE_ENTRY0_LCTP                    47:12   /* RW-VF */
+#define INTEL_EXT_ROOT_TABLE_ENTRY0_RESERVED_HAW            63:48   /* RWIVF */
 #define INTEL_EXT_ROOT_TABLE_ENTRY0_RESERVED_HAW_INIT         0x0   /* RWI-V */
 
 #define INTEL_EXT_ROOT_TABLE_ENTRY1                    0x00000018   /* RWI8R */
 #define INTEL_EXT_ROOT_TABLE_ENTRY1_UP                        0:0   /* RW-VF */
-#define INTEL_EXT_ROOT_TABLE_ENTRY1_UCTP               (HAW-1):12   /* RW-VF */
-#define INTEL_EXT_ROOT_TABLE_ENTRY1_RESERVED_HAW           63:HAW   /* RWIVF */
+#define INTEL_EXT_ROOT_TABLE_ENTRY1_UCTP                    47:12   /* RW-VF */
+#define INTEL_EXT_ROOT_TABLE_ENTRY1_RESERVED_HAW            63:48   /* RWIVF */
 #define INTEL_EXT_ROOT_TABLE_ENTRY1_RESERVED_HAW_INIT         0x0   /* RWI-V */
 
 ===CONTEXT_ENTRY
@@ -36,8 +36,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_CONTEXT_ENTRY0_P                                0:0   /* RW-VF */
 #define INTEL_CONTEXT_ENTRY0_FPD                              1:1   /* RW-VF */
 #define INTEL_CONTEXT_ENTRY0_T                                3:2   /* RW-VF */
-#define INTEL_CONTEXT_ENTRY0_LPTPTR                    (HAW-1):12   /* RW-VF */
-#define INTEL_CONTEXT_ENTRY0_RESERVED_HAW                  63:HAW   /* RWIVF */
+#define INTEL_CONTEXT_ENTRY0_LPTPTR                         47:12   /* RW-VF */
+#define INTEL_CONTEXT_ENTRY0_RESERVED_HAW                   63:48   /* RWIVF */
 #define INTEL_CONTEXT_ENTRY0_RESERVED_HAW_INIT                0x0   /* RWI-V */
 
 #define INTEL_CONTEXT_ENTRY1                           0x00000028   /* RWI8R */
@@ -54,8 +54,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_EXT_CONTEXT_ENTRY0_PRE                          9:9   /* RW-VF */
 #define INTEL_EXT_CONTEXT_ENTRY0_NESTE                      10:10   /* RW-VF */
 #define INTEL_EXT_CONTEXT_ENTRY0_PASIDE                     11:11   /* RW-VF */
-#define INTEL_EXT_CONTEXT_ENTRY0_SLPTPTR               (HAW-1):12   /* RW-VF */
-#define INTEL_EXT_CONTEXT_ENTRY0_RESERVED_HAW              63:HAW   /* RWIVF */
+#define INTEL_EXT_CONTEXT_ENTRY0_SLPTPTR                    47:12   /* RW-VF */
+#define INTEL_EXT_CONTEXT_ENTRY0_RESERVED_HAW               63:48   /* RWIVF */
 #define INTEL_EXT_CONTEXT_ENTRY0_RESERVED_HAW_INIT            0x0   /* RWI-V */
 
 #define INTEL_EXT_CONTEXT_ENTRY1                       0x00000018   /* RWI8R */
@@ -112,34 +112,34 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_PML4E_IGNORED9_8                                 9:8  /* RW-VF */
 #define INTEL_PML4E_EA                                       10:10  /* RW-VF */
 #define INTEL_PML4E_IGNORED11                                11:11  /* RW-VF */
-#define INTEL_PML4E_PDPPTR                              (HAW-1):12  /* RW-VF */
-#define INTEL_PML4E_RESERVED_HAW                            51:HAW  /* RWIVF */
+#define INTEL_PML4E_PDPPTR                                   47:12  /* RW-VF */
+#define INTEL_PML4E_RESERVED_HAW                             51:48  /* RWIVF */
 #define INTEL_PML4E_RESERVED_HAW_INIT                          0x0  /* RWI-V */
 #define INTEL_PML4E_IGNORED62_52                             62:52  /* RW-VF */
 #define INTEL_PML4E_XD                                       63:63  /* RW-VF */
 
-===PDPE_1GB,PDPE
-#define INTEL_PDPE_1GB                                  0x00000048  /* RWI8R */
-#define INTEL_PDPE_1GB_MUST_BE_ONE                             0:0  /* RWIVF */
-#define INTEL_PDPE_1GB_MUST_BE_ONE_INIT                        0x1  /* RWI-V */
-#define INTEL_PDPE_1GB_RW                                      1:1  /* RW-VF */
-#define INTEL_PDPE_1GB_US                                      2:2  /* RW-VF */
-#define INTEL_PDPE_1GB_PWT                                     3:3  /* RW-VF */
-#define INTEL_PDPE_1GB_PCD                                     4:4  /* RW-VF */
-#define INTEL_PDPE_1GB_A                                       5:5  /* RW-VF */
-#define INTEL_PDPE_1GB_D                                       6:6  /* RW-VF */
-#define INTEL_PDPE_1GB_MUST_BE_ONE                             7:7  /* RWIVF */
-#define INTEL_PDPE_1GB_MUST_BE_ONE_INIT                        0x1  /* RWI-V */
-#define INTEL_PDPE_1GB_G                                       8:8  /* RW-VF */
-#define INTEL_PDPE_1GB_IGNORED9                                9:9  /* RW-VF */
-#define INTEL_PDPE_1GB_EA                                    10:10  /* RW-VF */
-#define INTEL_PDPE_1GB_IGNORED11                             11:11  /* RW-VF */
-#define INTEL_PDPE_1GB_PAT                                   12:12  /* RW-VF */
-#define INTEL_PDPE_1GB_1GB_FRAME                        (HAW-1):30  /* RW-VF */
-#define INTEL_PDPE_1GB_RESERVED_HAW                         51:HAW  /* RWIVF */
-#define INTEL_PDPE_1GB_RESERVED_HAW_INIT                       0x0  /* RWI-V */
-#define INTEL_PDPE_1GB_IGNORED62_52                          62:52  /* RW-VF */
-#define INTEL_PDPE_1GB_XD                                    63:63  /* RW-VF */
+===PDPE_PAGE,PDPE
+#define INTEL_PDPE_PAGE                                 0x00000048  /* RWI8R */
+#define INTEL_PDPE_PAGE_MUST_BE_ONE                            0:0  /* RWIVF */
+#define INTEL_PDPE_PAGE_MUST_BE_ONE_INIT                       0x1  /* RWI-V */
+#define INTEL_PDPE_PAGE_RW                                     1:1  /* RW-VF */
+#define INTEL_PDPE_PAGE_US                                     2:2  /* RW-VF */
+#define INTEL_PDPE_PAGE_PWT                                    3:3  /* RW-VF */
+#define INTEL_PDPE_PAGE_PCD                                    4:4  /* RW-VF */
+#define INTEL_PDPE_PAGE_A                                      5:5  /* RW-VF */
+#define INTEL_PDPE_PAGE_D                                      6:6  /* RW-VF */
+#define INTEL_PDPE_PAGE_MUST_BE_ONE                            7:7  /* RWIVF */
+#define INTEL_PDPE_PAGE_MUST_BE_ONE_INIT                       0x1  /* RWI-V */
+#define INTEL_PDPE_PAGE_G                                      8:8  /* RW-VF */
+#define INTEL_PDPE_PAGE_IGNORED9                               9:9  /* RW-VF */
+#define INTEL_PDPE_PAGE_EA                                   10:10  /* RW-VF */
+#define INTEL_PDPE_PAGE_IGNORED11                            11:11  /* RW-VF */
+#define INTEL_PDPE_PAGE_PAT                                  12:12  /* RW-VF */
+#define INTEL_PDPE_PAGE_FRAME_1G                             47:30  /* RW-VF */
+#define INTEL_PDPE_PAGE_RESERVED_HAW                         51:48  /* RWIVF */
+#define INTEL_PDPE_PAGE_RESERVED_HAW_INIT                      0x0  /* RWI-V */
+#define INTEL_PDPE_PAGE_IGNORED62_52                         62:52  /* RW-VF */
+#define INTEL_PDPE_PAGE_XD                                   63:63  /* RW-VF */
 
 ===PSPE_PD,PDPE
 #define INTEL_PDPE_PD                                   0x00000050  /* RWI8R */
@@ -156,33 +156,33 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_PDPE_PD_IGNORED9_8                               9:8  /* RW-VF */
 #define INTEL_PDPE_PD_EA                                     10:10  /* RW-VF */
 #define INTEL_PDPE_PD_IGNORED11                              11:11  /* RW-VF */
-#define INTEL_PDPE_PD_PAGE_DIRECTORY                    (HAW-1):12  /* RW-VF */
-#define INTEL_PDPE_PD_RESERVED_HAW                          51:HAW  /* RWIVF */
+#define INTEL_PDPE_PD_PAGE_DIRECTORY                         47:12  /* RW-VF */
+#define INTEL_PDPE_PD_RESERVED_HAW                           51:48  /* RWIVF */
 #define INTEL_PDPE_PD_RESERVED_HAW_INIT                        0x0  /* RWI-V */
 #define INTEL_PDPE_PD_IGNORED62_52                           62:52  /* RW-VF */
 #define INTEL_PDPE_PD_XD                                     63:63  /* RW-VF */
 
-===PDE_2M,PDE
-#define INTEL_PDE_2M                                    0x00000048  /* RWI8R */
-#define INTEL_PDE_2M_MUST_BE_ONE                               0:0  /* RWIVF */
-#define INTEL_PDE_2M_MUST_BE_ONE_INIT                          0x1  /* RWI-V */
-#define INTEL_PDE_2M_RW                                        1:1  /* RW-VF */
-#define INTEL_PDE_2M_US                                        2:2  /* RW-VF */
-#define INTEL_PDE_2M_PWT                                       3:3  /* RW-VF */
-#define INTEL_PDE_2M_PCD                                       4:4  /* RW-VF */
-#define INTEL_PDE_2M_A                                         5:5  /* RW-VF */
-#define INTEL_PDE_2M_IGNORED6                                  6:6  /* RW-VF */
-#define INTEL_PDE_2M_MUST_BE_ZERO                              7:7  /* RWIVF */
-#define INTEL_PDE_2M_MUST_BE_ZERO_INIT                         0x0  /* RWI-V */
-#define INTEL_PDE_2M_IGNORED9_8                                9:8  /* RW-VF */
-#define INTEL_PDE_2M_EA                                      10:10  /* RW-VF */
-#define INTEL_PDE_2M_IGNORED11                               11:11  /* RW-VF */
-#define INTEL_PDE_2M_PAT                                     12:12  /* RW-VF */
-#define INTEL_PDE_2M_2M_FRAME                           (HAW-1):20  /* RW-VF */
-#define INTEL_PDE_2M_RESERVED_HAW                           51:HAW  /* RWIVF */
-#define INTEL_PDE_2M_RESERVED_HAW_INIT                         0x0  /* RWI-V */
-#define INTEL_PDE_2M_IGNORED62_52                            62:52  /* RW-VF */
-#define INTEL_PDE_2M_XD                                      63:63  /* RW-VF */
+===PDE_PAGE,PDE
+#define INTEL_PDE_PAGE                                  0x00000048  /* RWI8R */
+#define INTEL_PDE_PAGE_MUST_BE_ONE                             0:0  /* RWIVF */
+#define INTEL_PDE_PAGE_MUST_BE_ONE_INIT                        0x1  /* RWI-V */
+#define INTEL_PDE_PAGE_RW                                      1:1  /* RW-VF */
+#define INTEL_PDE_PAGE_US                                      2:2  /* RW-VF */
+#define INTEL_PDE_PAGE_PWT                                     3:3  /* RW-VF */
+#define INTEL_PDE_PAGE_PCD                                     4:4  /* RW-VF */
+#define INTEL_PDE_PAGE_A                                       5:5  /* RW-VF */
+#define INTEL_PDE_PAGE_IGNORED6                                6:6  /* RW-VF */
+#define INTEL_PDE_PAGE_MUST_BE_ZERO                            7:7  /* RWIVF */
+#define INTEL_PDE_PAGE_MUST_BE_ZERO_INIT                       0x0  /* RWI-V */
+#define INTEL_PDE_PAGE_IGNORED9_8                              9:8  /* RW-VF */
+#define INTEL_PDE_PAGE_EA                                    10:10  /* RW-VF */
+#define INTEL_PDE_PAGE_IGNORED11                             11:11  /* RW-VF */
+#define INTEL_PDE_PAGE_PAT                                   12:12  /* RW-VF */
+#define INTEL_PDE_PAGE_FRAME_2M                              47:20  /* RW-VF */
+#define INTEL_PDE_PAGE_RESERVED_HAW                          51:48  /* RWIVF */
+#define INTEL_PDE_PAGE_RESERVED_HAW_INIT                       0x0  /* RWI-V */
+#define INTEL_PDE_PAGE_IGNORED62_52                          62:52  /* RW-VF */
+#define INTEL_PDE_PAGE_XD                                    63:63  /* RW-VF */
 
 ===PDE_PT,PDE
 #define INTEL_PDE_PT                                   0x00000050   /* RWI8R */
@@ -199,8 +199,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_PDE_PT_IGNORED9_8                               9:8   /* RW-VF */
 #define INTEL_PDE_PT_EA                                     10:10   /* RW-VF */
 #define INTEL_PDE_PT_IGNORED11                              11:11   /* RW-VF */
-#define INTEL_PDE_PT_PAGE_TABLE                        (HAW-1):12   /* RW-VF */
-#define INTEL_PDE_PT_RESERVED_HAW                          51:HAW   /* RWIVF */
+#define INTEL_PDE_PT_PAGE_TABLE                             47:12   /* RW-VF */
+#define INTEL_PDE_PT_RESERVED_HAW                           51:48   /* RWIVF */
 #define INTEL_PDE_PT_RESERVED_HAW_INIT                        0x0   /* RWI-V */
 #define INTEL_PDE_PT_IGNORED62_52                           62:52   /* RW-VF */
 #define INTEL_PDE_PT_XD                                     63:63   /* RW-VF */
@@ -220,8 +220,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_PTE_IGNORED9_8                                  9:8   /* RW-VF */
 #define INTEL_PTE_EA                                        10:10   /* RW-VF */
 #define INTEL_PTE_IGNORED11                                 11:11   /* RW-VF */
-#define INTEL_PTE_4K_FRAME                             (HAW-1):12   /* RW-VF */
-#define INTEL_PTE_RESERVED_HAW                             51:HAW   /* RWIVF */
+#define INTEL_PTE_FRAME_4K                                  47:12   /* RW-VF */
+#define INTEL_PTE_RESERVED_HAW                              51:48   /* RWIVF */
 #define INTEL_PTE_RESERVED_HAW_INIT                           0x0   /* RWI-V */
 #define INTEL_PTE_IGNORED62_52                              62:52   /* RW-VF */
 #define INTEL_PTE_XD                                        63:63   /* RW-VF */
@@ -236,29 +236,29 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_SLPML4E_IGNORED9_8                              9:8   /* RW-VF */
 #define INTEL_SLPML4E_EA                                    10:10   /* RW-VF */
 #define INTEL_SLPML4E_IGNORED11                             11:11   /* RW-VF */
-#define INTEL_SLPML4E_SLPDPPTR                         (HAW-1):12   /* RW-VF */
-#define INTEL_SLPML4E_RESERVED_HAW                         51:HAW   /* RWIVF */
+#define INTEL_SLPML4E_SLPDPPTR                              47:12   /* RW-VF */
+#define INTEL_SLPML4E_RESERVED_HAW                          51:48   /* RWIVF */
 #define INTEL_SLPML4E_RESERVED_HAW_INIT                       0x0   /* RWI-V */
 #define INTEL_SLPML4E_IGNORED61_52                          61:52   /* RW-VF */
 #define INTEL_SLPML4E_IGNORED63                             63:63   /* RW-VF */
 
-===SLPDPE_1GB,SLPDPE
-#define INTEL_SLPDPE_1GB                               0x00000088   /* RWI8R */
-#define INTEL_SLPDPE_1GB_R                                    0:0   /* RW-VF */
-#define INTEL_SLPDPE_1GB_W                                    1:1   /* RW-VF */
-#define INTEL_SLPDPE_1GB_X                                    2:2   /* RW-VF */
-#define INTEL_SLPDPE_1GB_EMT                                  5:3   /* RW-VF */
-#define INTEL_SLPDPE_1GB_IPAT                                 6:6   /* RW-VF */
-#define INTEL_SLPDPE_1GB_MUST_BE_ONE                          7:7   /* RWIVF */
-#define INTEL_SLPDPE_1GB_MUST_BE_ONE_INIT                     0x1   /* RWI-V */
-#define INTEL_SLPDPE_1GB_IGNORED10_8                         10:8   /* RW-VF */
-#define INTEL_SLPDPE_1GB_SNP                                11:11   /* RW-VF */
-#define INTEL_SLPDPE_1GB_1GB_FRAME                     (HAW-1):30   /* RW-VF */
-#define INTEL_SLPDPE_1GB_RESERVED_HAW                      51:HAW   /* RWIVF */
-#define INTEL_SLPDPE_1GB_RESERVED_HAW_INIT                    0x0   /* RWI-V */
-#define INTEL_SLPDPE_1GB_IGNORED61_52                       61:52   /* RW-VF */
-#define INTEL_SLPDPE_1GB_TM                                 62:62   /* RW-VF */
-#define INTEL_SLPDPE_1GB_IGNORED63                          63:63   /* RW-VF */
+===SLPDPE_PAGE,SLPDPE
+#define INTEL_SLPDPE_PAGE                              0x00000088   /* RWI8R */
+#define INTEL_SLPDPE_PAGE_R                                   0:0   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_W                                   1:1   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_X                                   2:2   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_EMT                                 5:3   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_IPAT                                6:6   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_MUST_BE_ONE                         7:7   /* RWIVF */
+#define INTEL_SLPDPE_PAGE_MUST_BE_ONE_INIT                    0x1   /* RWI-V */
+#define INTEL_SLPDPE_PAGE_IGNORED10_8                        10:8   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_SNP                               11:11   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_FRAME_1GB                         47:30   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_RESERVED_HAW                      51:48   /* RWIVF */
+#define INTEL_SLPDPE_PAGE_RESERVED_HAW_INIT                   0x0   /* RWI-V */
+#define INTEL_SLPDPE_PAGE_IGNORED61_52                      61:52   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_TM                                62:62   /* RW-VF */
+#define INTEL_SLPDPE_PAGE_IGNORED63                         63:63   /* RW-VF */
 
 ===SLPDPE_PD,SLPDPE
 #define INTEL_SLPDPE_PD                                0x00000090   /* RWI8R */
@@ -269,29 +269,29 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_SLPDPE_PD_MUST_BE_ZERO                          7:7   /* RWIVF */
 #define INTEL_SLPDPE_PD_MUST_BE_ZERO_INIT                     0x0   /* RWI-V */
 #define INTEL_SLPDPE_PD_IGNORED10_8                          10:8   /* RW-VF */
-#define INTEL_SLPDPE_PD_SL_PAGE_DIRECTORY              (HAW-1):12   /* RW-VF */
-#define INTEL_SLPDPE_PD_RESERVED_HAW                       51:HAW   /* RWIVF */
+#define INTEL_SLPDPE_PD_SL_PAGE_DIRECTORY                   47:12   /* RW-VF */
+#define INTEL_SLPDPE_PD_RESERVED_HAW                        51:48   /* RWIVF */
 #define INTEL_SLPDPE_PD_RESERVED_HAW_INIT                     0x0   /* RWI-V */
 #define INTEL_SLPDPE_PD_IGNORED61_52                        61:52   /* RW-VF */
 #define INTEL_SLPDPE_PD_IGNORED63                           63:63   /* RW-VF */
 
-===SLPDE_2M,SLPDE
-#define INTEL_SLPDE_2M                                 0x00000098   /* RWI8R */
-#define INTEL_SLPDE_2M_R                                      0:0   /* RW-VF */
-#define INTEL_SLPDE_2M_W                                      1:1   /* RW-VF */
-#define INTEL_SLPDE_2M_X                                      2:2   /* RW-VF */
-#define INTEL_SLPDE_2M_EMT                                    5:3   /* RW-VF */
-#define INTEL_SLPDE_2M_IPAT                                   6:6   /* RW-VF */
-#define INTEL_SLPDE_2M_MUST_BE_ONE                            7:7   /* RWIVF */
-#define INTEL_SLPDE_2M_MUST_BE_ONE_INIT                       0x1   /* RWI-V */
-#define INTEL_SLPDE_2M_IGNORED10_8                           10:8   /* RW-VF */
-#define INTEL_SLPDE_2M_SNP                                  11:11   /* RW-VF */
-#define INTEL_SLPDE_2M_2M_FRAME                        (HAW-1):20   /* RW-VF */
-#define INTEL_SLPDE_2M_RESERVED_HAW                        51:HAW   /* RWIVF */
-#define INTEL_SLPDE_2M_RESERVED_HAW_INIT                      0x0   /* RWI-V */
-#define INTEL_SLPDE_2M_IGNORED61_52                         61:52   /* RW-VF */
-#define INTEL_SLPDE_2M_TM                                   62:62   /* RW-VF */
-#define INTEL_SLPDE_2M_IGNORED63                            63:63   /* RW-VF */
+===SLPDE_PAGE,SLPDE
+#define INTEL_SLPDE_PAGE                               0x00000098   /* RWI8R */
+#define INTEL_SLPDE_PAGE_R                                    0:0   /* RW-VF */
+#define INTEL_SLPDE_PAGE_W                                    1:1   /* RW-VF */
+#define INTEL_SLPDE_PAGE_X                                    2:2   /* RW-VF */
+#define INTEL_SLPDE_PAGE_EMT                                  5:3   /* RW-VF */
+#define INTEL_SLPDE_PAGE_IPAT                                 6:6   /* RW-VF */
+#define INTEL_SLPDE_PAGE_MUST_BE_ONE                          7:7   /* RWIVF */
+#define INTEL_SLPDE_PAGE_MUST_BE_ONE_INIT                     0x1   /* RWI-V */
+#define INTEL_SLPDE_PAGE_IGNORED10_8                         10:8   /* RW-VF */
+#define INTEL_SLPDE_PAGE_SNP                                11:11   /* RW-VF */
+#define INTEL_SLPDE_PAGE_FRAME_2M                           47:20   /* RW-VF */
+#define INTEL_SLPDE_PAGE_RESERVED_HAW                       51:48   /* RWIVF */
+#define INTEL_SLPDE_PAGE_RESERVED_HAW_INIT                    0x0   /* RWI-V */
+#define INTEL_SLPDE_PAGE_IGNORED61_52                       61:52   /* RW-VF */
+#define INTEL_SLPDE_PAGE_TM                                 62:62   /* RW-VF */
+#define INTEL_SLPDE_PAGE_IGNORED63                          63:63   /* RW-VF */
 
 ===SLPDE_PT,SLPDE
 #define INTEL_SLPDE_PT                                 0x000000A0   /* RWI8R */
@@ -302,8 +302,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_SLPDE_PT_MUST_BE_ZERO                           7:7   /* RWIVF */
 #define INTEL_SLPDE_PT_MUST_BE_ZERO_INIT                      0x0   /* RWI-V */
 #define INTEL_SLPDE_PT_IGNORED10_8                           10:8   /* RW-VF */
-#define INTEL_SLPDE_PT_PAGE_TABLE                      (HAW-1):12   /* RW-VF */
-#define INTEL_SLPDE_PT_RESERVED_HAW                        51:HAW   /* RWIVF */
+#define INTEL_SLPDE_PT_PAGE_TABLE                           47:12   /* RW-VF */
+#define INTEL_SLPDE_PT_RESERVED_HAW                         51:48   /* RWIVF */
 #define INTEL_SLPDE_PT_RESERVED_HAW_INIT                      0x0   /* RWI-V */
 #define INTEL_SLPDE_PT_IGNORED61_52                         61:52   /* RW-VF */
 #define INTEL_SLPDE_PT_IGNORED63                            63:63   /* RW-VF */
@@ -317,8 +317,8 @@ HAW == Hardware Address Width.  In physical addresses, bits > HAW are Reserved
 #define INTEL_SLPTE_IPAT                                      6:6   /* RW-VF */
 #define INTEL_SLPTE_IGNORED10_7                              10:7   /* RW-VF */
 #define INTEL_SLPTE_SNP                                     11:11   /* RW-VF */
-#define INTEL_SLPTE_4K_FRAME                           (HAW-1):12   /* RW-VF */
-#define INTEL_SLPTE_RESERVED_HAW                           51:HAW   /* RWIVF */
+#define INTEL_SLPTE_FRAME_4K                                47:12   /* RW-VF */
+#define INTEL_SLPTE_RESERVED_HAW                            51:48   /* RWIVF */
 #define INTEL_SLPTE_RESERVED_HAW_INIT                         0x0   /* RWI-V */
 #define INTEL_SLPTE_IGNORED61_52                            61:52   /* RW-VF */
 #define INTEL_SLPTE_TM                                      62:62   /* RW-VF */

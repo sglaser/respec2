@@ -10,16 +10,19 @@ define(
     ["core/utils"],
     function (utils) {
         var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
-            $cap.html("");
-            if (fmt === "" || fmt === "%t" || fmt === "%") {
-                $cap.wrapInner($("<span class='" + label + "-title'/>"));
+            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+            if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
+                $cap.wrapInner($("<span class='" + label + "title'/>"));
                 return num;
             }
             var $num = $("<span class='" + label + "no'/>");
-            var $cur = $cap;
-            var $title = $cap.clone().wrapInner($("<span class='" + label + "-title'/>"));
+            var $title = $cap.clone().renameElement("span").addClass(label + "title");
+            //console.log("title='" + $title.html() + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
+            var $cur = $cap;
+            $cap.html("");
+            //console.log("$cur='"+$cur.html()+"'");
             //console.log("fmt=\"" + adjfmt + "\"");
             for (var i = 0; i < sfmt.length; i++) {
                 var s = sfmt[i];
@@ -38,6 +41,8 @@ define(
                 //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
             }
             num[0]++;
+            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+
             return num;
         };
 
@@ -85,6 +90,7 @@ define(
 						,   $cap = $fig.find("figcaption")
 						,   id = $fig.makeID("fig", $cap.text());
 						if (!$cap.length) msg.pub("warn", "A <figure> should contain a <figcaption>.");
+						if ($cap.length > 1) msg.pub("warn", "A <figure> should not have more than one <figcaption>.");
                     
 						// set proper caption title
 						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);

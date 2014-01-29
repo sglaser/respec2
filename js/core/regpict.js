@@ -122,8 +122,8 @@ define(
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var fields              = pget(reg, "fields", [ ]); // default to empty register
             if (! Array.isArray(fields)) fields = [ ];
-            console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
-            console.log("draw_regpict: fields=" + fields.toString());
+            //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
+            //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
             fields.forEach(function (item, index) {
@@ -132,7 +132,7 @@ define(
                 if (!("unused" in item)) item.unused = false;
                 if (!("attr" in item)) item.attr = defaultAttr;
                 if (!("name" in item)) item.name = "UNSPECIFIED NAME";
-                console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+                //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
             
             });
             
@@ -270,24 +270,73 @@ define(
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
                 $("figure.register", doc).each(function (index) {
+                    var $fig = $(this);
                     var json = null;
-                    $("pre.json,div.json", this).each(function (index) {
+
+                    $("pre.json,div.json", $fig).each(function (index) {
                         json = $.parseJSON(this.textContent);
                         $(this).hide();
                     });
+                    
+                    $("a.ness", $fig).each(function (index) {
+                        var $el = $(this);
+                        $el.hide();
+                        json = $.parseJSON(this.textContent);
+                        json.fields = [ ];
+                        //console.log("json=" + json.toString());
+                        var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
+                        var bitpattern = /(\d+):(\d+)/;
+                        //console.log("a.ness: pattern='" + pattern.toString() + "'");
+                        $.ajax({
+                            dataType:   "text",
+                            url:        $el.attr("href"),   
+                            async:      false,
+                            success:    function (data) {
+                                if (data) {
+                                    var lines = data.split(/\n/);
+                                    for (var i = 0; i < lines.length; i++) {
+                                        var match = pattern.exec(lines[i]);
+                                        if (match) {
+                                            //console.log("match.length=" + match.length);
+                                            for (var j = 0; j < match.length; j++) {
+                                                //console.log("match[" + j + "]=" + match[j]);
+                                            }
+                                            if ((match[2] != "") && (match[4].substr(4,1) === "F")) {
+                                                var bits = bitpattern.exec(match[3]);
+                                                if (bits) {
+                                                    json.fields.push({
+                                                        msb : Number(bits[1]),
+                                                        lsb : Number(bits[2]),
+                                                        name: String(match[2].substr(1)),
+                                                        attr: match[4].substr(0,2).toLowerCase });
+                                                } else {
+                                                    msg.pub("error", "Unknown field width " + match[0]);
+                                                }
+                                            }
+                                            //console.log("json=" + JSON.stringify(json, null, 2));
+                                        }
+                                    }
+                                }
+                            },
+                            error:      function (xhr, status, error) {
+                                msg.pub("error", "Error including URI=" + uri + ": " + status + " (" + error + ")");
+                                finish($el);
+                            }
+                        });
+                    });
                     // TODO extract register JSON from other sources (e.g. adjacent table)
                     if (json === null) {
-                        msg.pub("warn", "core/regpict: no register definition");
+                        msg.pub("warn", "core/regpict: no register definition " + $fig.get(0).outerHTML);
                     }
                     // invent a div to hold the svg, if necessary
                     var $divsvg = $("div.svg", this);
                     if ($divsvg.length === 0) {
                         var $cap = $("figcaption", this);
                         if ($cap.length > 0) {
-                            console.log("inserting div.svg before <figcaption>");
+                            //console.log("inserting div.svg before <figcaption>");
                             $cap.before('<div class="svg"></div>');
                         } else {
-                            console.log("inserting div.svg at end of <figure>");
+                            //console.log("inserting div.svg at end of <figure>");
                             $(this).append('<div class="svg"></div>');
                         }
                         $divsvg=$("div.svg", this);
