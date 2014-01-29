@@ -290,9 +290,10 @@ define(
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
                         //console.log("a.ness: pattern='" + pattern.toString() + "'");
+                        var href = $el.attr("href");
                         $.ajax({
                             dataType:   "text",
-                            url:        $el.attr("href"),   
+                            url:        href,
                             async:      false,
                             success:    function (data) {
                                 if (data) {
@@ -322,8 +323,7 @@ define(
                                 }
                             },
                             error:      function (xhr, status, error) {
-                                msg.pub("error", "Error including URI=" + uri + ": " + status + " (" + error + ")");
-                                finish($el);
+                                msg.pub("error", "Error including URI=" + href + ": " + status + " (" + error + ")");
                             }
                         });
                     });
