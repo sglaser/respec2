@@ -68,7 +68,7 @@ define(
 							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
 							tblMap[id] = $cap.contents().clone();
                             var $totCap = $cap.clone();
-                            $totCap.find("a").renameElement("span").removeattr("href");
+                            $totCap.find("a").renameElement("span").removeAttr("href");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
 									.append($totCap.contents())
