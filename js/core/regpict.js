@@ -276,21 +276,65 @@ define(
                     var $fig = $(this);
                     var json = null;
 
-                    $("pre.json,div.json", $fig).each(function (index) {
+                    var temp = $fig.attr("data-json");
+                    if (temp != null && temp != undefined && temp != "") {
+                        //console.log("parsing JSON '" + temp + "'");
+                        json = $.parseJSON(temp);
+                    }
+                    
+                    $("pre.json,div.json,span.json", $fig).each(function (index) {
                         json = $.parseJSON(this.textContent);
                         $(this).hide();
                     });
                     
-                    $("a.nv_refman", $fig).each(function (index) {
-                        var $el = $(this);
-                        $el.hide();
-                        json = $.parseJSON(this.textContent);
-                        json.fields = [ ];
-                        //console.log("json=" + json.toString());
+                    if ($fig.hasClass("pcisig_reg")) {
+                        if (json == null) json = { };
+                        if (! ("fields" in json)) json.fields = [ ];
+                        var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
+                        //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
+                        $tbody.children().each(function () {
+                            var td = $(this).children();
+                            if (td.length >= 3) {
+                                var bits = td.eq(0).text();
+                                var desc = td.eq(1);
+                                var attr = td.eq(2).text().toLowerCase();
+                                var lsb, msb, match;
+                                lsb = msb = -1;
+                                if (match = /^(\d+)(:(\d+))?$/.exec(bits)) {
+                                    msb = lsb = Number(match[1]);
+                                    if (match[3] != null) lsb = Number(match[3]);
+                                    if (lsb > msb) {
+                                        msb = lsb; lsb = Number(match[1]);
+                                    }
+                                }
+                                var fieldName = $("code:first", desc);
+                                if (fieldName.length === 0) {
+                                    fieldName = /^\s*(\w+)/.exec(desc.text())[1];
+                                } else {
+                                    fieldName = fieldName.first().text().trim();
+                                }
+                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvp|rsvz|other)$/i;
+                                if (!validAttr.test(attr)) {
+                                    attr = "other";
+                                }
+                                json.fields.push({
+                                    "msb": msb,
+                                    "lsb": lsb,
+                                    "name": fieldName,
+                                    "attr": attr,
+                                    "unused": false
+                                });
+                            }
+                        });
+                        //console.log("json=" + JSON.stringify(json, null, 2));
+                    }
+                    
+                    if ($fig.hasClass("nv_refman")) {
+                        if (json == null) json = { };
+                        if (! ("fields" in json)) json.fields = [ ];
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
-                        //console.log("a.refman: pattern='" + pattern.toString() + "'");
-                        var href = $el.attr("href");
+                        var href = $fig.attr("data-href");
                         $.ajax({
                             dataType:   "text",
                             url:        href,
@@ -301,9 +345,14 @@ define(
                                     for (var i = 0; i < lines.length; i++) {
                                         var match = pattern.exec(lines[i]);
                                         if (match) {
-                                            //console.log("match.length=" + match.length);
-                                            for (var j = 0; j < match.length; j++) {
-                                                //console.log("match[" + j + "]=" + match[j]);
+                                            if (! json.hasOwnProperty("width")) {
+                                                if ((match[2] == "") && (match[4].substr(4,1) === "R")) {
+                                                    var w = match[4].substr(3,1);
+                                                    if (w === "2") json.width = 16;
+                                                    else if (w === "4") json.width = 32;
+                                                    else if (w === "8") json.width = 64;
+                                                    else json.width = 32;
+                                                }
                                             }
                                             if ((match[2] != "") && (match[4].substr(4,1) === "F")) {
                                                 var bits = bitpattern.exec(match[3]);
@@ -326,11 +375,12 @@ define(
                                 msg.pub("error", "Error including URI=" + href + ": " + status + " (" + error + ")");
                             }
                         });
-                    });
-                    // TODO extract register JSON from other sources (e.g. adjacent table)
+                    }
+                    
                     if (json === null) {
                         msg.pub("warn", "core/regpict: no register definition " + $fig.get(0).outerHTML);
                     }
+
                     // invent a div to hold the svg, if necessary
                     var $divsvg = $("div.svg", this);
                     if ($divsvg.length === 0) {

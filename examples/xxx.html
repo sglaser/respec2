@@ -172,11 +172,128 @@ figure pre.json {
     <section>
         <h2>Intel PTE</h2>
         <pre data-include="intel.ref" data-include-filter="PTE"></pre>
-        <figure id="figure2" class="register">
-            <a class="nv_refman" href="intel.ref">{ "width": 64, "unused": "reserved", "register": "INTEL_PTE"}</a>
-            <figcaption><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="ness" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a></figcaption>
+        <figure id="figure2" class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-json='{"unused" : "reserved", "register" : "INTEL_PTE" }'>
+<!--            <a class="nv-refman" href="intel.ref">{ "unused": "reserved", "register": "INTEL_PTE"}</a>-->
+            <figcaption><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="nv-refman" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a></figcaption>
         </figure>
     </section>
+      <section>
+    <h2>PCISIG style Registers</h2>
+    <figure class="register pcisig_reg" data-table="#reg1">
+        <figcaption>PCISIG-Style Register #1</figcaption>
+    </figure>
+    <table class="pcisig_reg" id="reg1">
+        <caption>PCISIG-Style Register #1</caption>
+        <thead>
+            <tr>
+                <th>Bits</th>
+                <th>Description</th>
+                <th>Attributes</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>
+                    <p>
+                        <code>Z</code>
+                        &ndash; This field is a very special field.
+                    </p>
+                    <p>This is the middle paragraph.</p>
+                    <p>This is the last paragraph.</p>
+                </td>
+                <td>RO</td>
+            </tr>
+            <tr>
+                <td>2:1</td>
+                <td>
+                    <p>
+                        <code>bit1_2</code>
+                        &ndash;
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>bit3 &ndash; three</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>
+                    <p>
+                        <code>Ab</code>
+                        &ndash; four
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>bit5&ndash; five</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>
+                    <p>
+                        <code>bit 6a</code>
+                        &ndash; six a
+                    </p>
+                    <p>
+                        <code>bit 6b</code>
+                        &ndash; six b
+                    </p>
+                    <p>bit 6c six c</p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>bit7</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>bit8 eight</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>
+                    <p>bit9</p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>
+                    <code>bit 14a</code>
+                    <table>
+                        <tr>
+                            <td>
+                                <code>first</code>
+                            </td>
+                            <td>
+                                <code>second</code>
+                            </td>
+                            <td>
+                                <code>third</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>second row</td>
+                        </tr>
+                    </table>
+                    <p>
+                        <code>fourth</code>
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
     <section>
       <h2>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/"
             >deep</a> stuff</span></h2>
