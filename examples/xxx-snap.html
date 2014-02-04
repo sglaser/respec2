@@ -1,700 +1,1437 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en">
+
 <head>
     <meta charset="utf-8">
     <title>Basic ReSpec Evolution Example</title>
     <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
     <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script> -->
     <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
-    
+
     <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
     <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
-    
-<style type="text/css">
 
-text.regBitNum {
-	text-anchor: middle;
-	fill: grey;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-}
-
-path.regBitNumLine {
-	stroke: grey;
-	stroke-width: 1px;
-}
-
-rect.regFieldBox {
-	fill: white;
-	stroke: black;
-	stroke-width: 1.5px;
-}
-
-rect.regFieldBoxrsvdp,
-rect.regFieldBoxrsvdz,
-rect.regFieldBoxReserved,
-rect.regFieldRsvd {
-	fill: white;
-}
-
-line.regFieldBoxInternal {
-	stroke: black;
-}
-
-line.regFieldBoxInternalrsvdp,
-line.regFieldBoxInternalrsvdz {
-	stroke: grey;
-}
-
-text.regFieldNameInternal {
-	text-anchor: middle;
-}
-
-text.regFieldNameInternalrsvdp,
-text.regFieldNameInternalrsvdz {
-	fill: grey;
-}
-
-text.regFieldName {
-	font-size: 11pt;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-}
-
-path.regBitLine1,
-path.regBitBracket1 {
-	fill: none;
-	stroke: black;
-	stroke-width: 1px;
-}
-
-path.regBitLine0 {
-	fill: none;
-	stroke: green;
-    stroke-dasharray: 4,2;
-	stroke-width: 1px;
-}
-
-path.regBitBracket0 {
-    fill: none;
-    stroke: green;
-    stroke-width: 1px;
-}
-
-svg.regpict {
-	color: green;
-}
-
-.svg_error {
-	color: red;
-	font-weight: bold;
-}
-
-figure div.json,
-figure pre.json {
-    color: rgb(0,90,156);
-    display: inherit;
-}
-    
-    
-</style>
-  <style>/*****************************************************************
- * ReSpec 3 CSS
- * Robin Berjon - http://berjon.com/
- *****************************************************************/
-
-/* --- INLINES --- */
-em.rfc2119 { 
-    text-transform:     lowercase;
-    font-variant:       small-caps;
-    font-style:         normal;
-    color:              #900;
-}
-
-h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
-h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
-    border: none;
-}
-
-dfn {
-    font-weight:    bold;
-}
-
-a.internalDFN {
-    color:  inherit;
-    border-bottom:  1px solid #99c;
-    text-decoration:    none;
-}
-
-a.externalDFN {
-    color:  inherit;
-    border-bottom:  1px dotted #ccc;
-    text-decoration:    none;
-}
-
-a.bibref {
-    text-decoration:    none;
-}
-
-cite .bibref {
-    font-style: normal;
-}
-
-code {
-    color:  #ff4500;
-}
-
-/* --- TOC --- */
-.toc a, .tof a {
-    text-decoration:    none;
-}
-
-a .secno, a .figno {
-    color:  #000;
-}
-
-ul.tof, ol.tof {
-    list-style: none outside none;
-}
-
-.caption {
-    margin-top: 0.5em;
-    font-style:   italic;
-}
-
-/* --- TABLE --- */
-table.simple {
-    border-spacing: 0;
-    border-collapse:    collapse;
-    border-bottom:  3px solid #005a9c;
-}
-
-.simple th {
-    background: #005a9c;
-    color:  #fff;
-    padding:    3px 5px;
-    text-align: left;
-}
-
-.simple th[scope="row"] {
-    background: inherit;
-    color:  inherit;
-    border-top: 1px solid #ddd;
-}
-
-.simple td {
-    padding:    3px 10px;
-    border-top: 1px solid #ddd;
-}
-
-.simple tr:nth-child(even) {
-    background: #f0f6ff;
-}
-
-/* --- DL --- */
-.section dd > p:first-child {
-    margin-top: 0;
-}
-
-.section dd > p:last-child {
-    margin-bottom: 0;
-}
-
-.section dd {
-    margin-bottom:  1em;
-}
-
-.section dl.attrs dd, .section dl.eldef dd {
-    margin-bottom:  0;
-}
-
-@media print {
-    .removeOnSave {
-        display: none;
-    }
-}
-</style><style>/* --- ISSUES/NOTES --- */
-div.issue-title, div.note-title {
-    padding-right:  1em;
-    min-width: 7.5em;
-    color: #b9ab2d;
-}
-div.issue-title { color: #e05252; }
-div.note-title { color: #2b2; }
-div.issue-title span, div.note-title span {
-    text-transform: uppercase;
-}
-div.note, div.issue {
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
-.note > p:first-child, .issue > p:first-child { margin-top: 0 }
-.issue, .note {
-    padding: .5em;
-    border-left-width: .5em;
-    border-left-style: solid;
-}
-div.issue, div.note {
-    padding: 1em 1.2em 0.5em;
-    margin: 1em 0;
-    position: relative;
-    clear: both;
-}
-span.note, span.issue { padding: .1em .5em .15em; }
-
-.issue {
-    border-color: #e05252;
-    background: #fbe9e9;
-}
-.note {
-    border-color: #52e052;
-    background: #e9fbe9;
-}
-
-
-</style><style>/* --- WEB IDL --- */
-pre.idl {
-    border-top: 1px solid #90b8de;
-    border-bottom: 1px solid #90b8de;
-    padding:    1em;
-    line-height:    120%;
-}
-
-pre.idl::before {
-    content:    "WebIDL";
-    display:    block;
-    width:      150px;
-    background: #90b8de;
-    color:  #fff;
-    font-family:    initial;
-    padding:    3px;
-    font-weight:    bold;
-    margin: -1em 0 1em -1em;
-}
-
-.idlType {
-    color:  #ff4500;
-    font-weight:    bold;
-    text-decoration:    none;
-}
-
-/*.idlModule*/
-/*.idlModuleID*/
-/*.idlInterface*/
-.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
-    font-weight:    bold;
-    color:  #005a9c;
-}
-a.idlEnumItem {
-    color:  #000;
-    border-bottom:  1px dotted #ccc;
-    text-decoration: none;
-}
-
-.idlSuperclass {
-    font-style: italic;
-    color:  #005a9c;
-}
-
-/*.idlAttribute*/
-.idlAttrType, .idlFieldType, .idlMemberType {
-    color:  #005a9c;
-}
-.idlAttrName, .idlFieldName, .idlMemberName {
-    color:  #ff4500;
-}
-.idlAttrName a, .idlFieldName a, .idlMemberName a {
-    color:  #ff4500;
-    border-bottom:  1px dotted #ff4500;
-    text-decoration: none;
-}
-
-/*.idlMethod*/
-.idlMethType, .idlCallbackType {
-    color:  #005a9c;
-}
-.idlMethName {
-    color:  #ff4500;
-}
-.idlMethName a {
-    color:  #ff4500;
-    border-bottom:  1px dotted #ff4500;
-    text-decoration: none;
-}
-
-/*.idlCtor*/
-.idlCtorName {
-    color:  #ff4500;
-}
-.idlCtorName a {
-    color:  #ff4500;
-    border-bottom:  1px dotted #ff4500;
-    text-decoration: none;
-}
-
-/*.idlParam*/
-.idlParamType {
-    color:  #005a9c;
-}
-.idlParamName, .idlDefaultValue {
-    font-style: italic;
-}
-
-.extAttr {
-    color:  #666;
-}
-
-/*.idlSectionComment*/
-.idlSectionComment {
-    color: gray;
-}
-
-/*.idlConst*/
-.idlConstType {
-    color:  #005a9c;
-}
-.idlConstName {
-    color:  #ff4500;
-}
-.idlConstName a {
-    color:  #ff4500;
-    border-bottom:  1px dotted #ff4500;
-    text-decoration: none;
-}
-
-/*.idlException*/
-.idlExceptionID {
-    font-weight:    bold;
-    color:  #c00;
-}
-
-.idlTypedefID, .idlTypedefType {
-    color:  #005a9c;
-}
-
-.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
-    color:  #c00;
-    font-weight:    normal;
-}
-
-.excName a {
-    font-family:    monospace;
-}
-
-.idlRaises a.idlType, .excName a.idlType {
-    border-bottom:  1px dotted #c00;
-}
-
-.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
-    width:  45px;
-    text-align: center;
-}
-.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
-.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
-
-.idlImplements a {
-    font-weight:    bold;
-}
-
-dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
-    margin-left:    2em;
-}
-
-.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
-    font-weight:    normal;
-}
-
-.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
-    font-weight:    bold;
-    color:  #000;
-    font-family:    monospace;
-}
-
-.attributes dt code, .fields dt code, .dictionary-members dt code {
-    background:  #ffffd2;
-}
-
-.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
-    color:  #005a9c;
-    background:  transparent;
-    font-family:    inherit;
-    font-weight:    normal;
-    font-style: italic;
-}
-
-.methods dt code {
-    background:  #d9e6f8;
-}
-
-.constants dt code {
-    background:  #ddffd2;
-}
-
-.constructors dt code {
-    background:  #cfc;
-}
-
-.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
-    margin-bottom:  1em;
-}
-
-table.parameters, table.exceptions {
-    border-spacing: 0;
-    border-collapse:    collapse;
-    margin: 0.5em 0;
-    width:  100%;
-}
-table.parameters { border-bottom:  1px solid #90b8de; }
-table.exceptions { border-bottom:  1px solid #deb890; }
-
-.parameters th, .exceptions th {
-    color:  #fff;
-    padding:    3px 5px;
-    text-align: left;
-    font-family:    initial;
-    font-weight:    normal;
-    text-shadow:    #666 1px 1px 0;
-}
-.parameters th { background: #90b8de; }
-.exceptions th { background: #deb890; }
-
-.parameters td, .exceptions td {
-    padding:    3px 10px;
-    border-top: 1px solid #ddd;
-    vertical-align: top;
-}
-
-.parameters tr:first-child td, .exceptions tr:first-child td {
-    border-top: none;
-}
-
-.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
-    width:  100px;
-}
-
-.parameters td.prmType {
-    width:  120px;
-}
-
-table.exceptions table {
-    border-spacing: 0;
-    border-collapse:    collapse;
-    width:  100%;
-}
-</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
-  <body class="h-entry" style="" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
-  <p>
-    
-      <a href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/Icons/w3c_home" alt="W3C"></a>
-    
-  </p>
-  <h1 class="title p-name" id="title" property="dcterms:title">Basic ReSpec Evolution Example</h1>
-  
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-01-29T16:50:13.000Z" id="w3c-editor-s-draft-29-january-2014"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-01-29">29 January 2014</time></h2>
-  <dl>
-    
-      <dt>This version:</dt>
-      <dd><a class="u-url" href="http://darobin.github.com/respec">http://darobin.github.com/respec</a></dd>
-      <dt>Latest published version:</dt>
-      <dd><a href="http://www.w3.org/TR/basics/">http://www.w3.org/TR/basics/</a></dd>
-    
-    
-      <dt>Latest editor's draft:</dt>
-      <dd><a href="http://darobin.github.com/respec">http://darobin.github.com/respec</a></dd>
-    
-    
-    
-    
-      
-    
-    
-    
-    <dt>Editor:</dt>
-    <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Steve Glaser</span></span>
-</dd>
-
-    
-    
-  </dl>
-  
-  
-  
-  
-    
-      <p class="copyright">
-        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
-        2014
+    <style type="text/css">
+        text.regBitNum {
+        	text-anchor: middle;
+        	fill: grey;
+        	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+        	font-size: 8pt;
+        }
         
-        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
-        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
-        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
-        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        path.regBitNumLine {
+        	stroke: grey;
+        	stroke-width: 1px;
+        }
         
-        All Rights Reserved.
+        rect.regFieldBox {
+        	fill: white;
+        	stroke: black;
+        	stroke-width: 1.5px;
+        }
         
-        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
-        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        rect.regFieldBoxrsvdp,
+        rect.regFieldBoxrsvdz,
+        rect.regFieldBoxReserved,
+        rect.regFieldRsvd {
+        	fill: white;
+        }
         
-          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        line.regFieldBoxInternal {
+        	stroke: black;
+        }
         
-        rules apply.
-      </p>
-    
-  
-  <hr>
-</div>
-    <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2>
-      <p> This is just a very basic document. [<cite><a class="bibref" href="#bib-REX">REX</a></cite>] Yeah for memes [<cite><a class="bibref" href="#bib-MEMES">MEMES</a></cite>].
-        [<cite><a class="bibref" href="#bib-DOM4">DOM4</a></cite>], [<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>], [[WHATEVER]] </p>
-<!--      <p> [[NO-EXIST]] </p>-->
-    </section><section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
-  
-    
-      
-        <p>
-          <em>This section describes the status of this document at the time of its publication.
-          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
-          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
-          http://www.w3.org/TR/.</em>
+        line.regFieldBoxInternalrsvdp,
+        line.regFieldBoxInternalrsvdz {
+        	stroke: grey;
+        }
+        
+        text.regFieldNameInternal {
+        	text-anchor: middle;
+        }
+        
+        text.regFieldNameInternalrsvdp,
+        text.regFieldNameInternalrsvdz {
+        	fill: grey;
+        }
+        
+        text.regFieldName {
+        	font-size: 11pt;
+        	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+        }
+        
+        path.regBitLine1,
+        path.regBitBracket1 {
+        	stroke: black;
+        	stroke-width: 1px;
+        }
+        
+        path.regBitLine0 {
+        	stroke: green;
+            stroke-dasharray: 4,2;
+        	stroke-width: 1px;
+        }
+        
+        path.regBitBracket0 {
+            stroke: green;
+            stroke-width: 1px;
+        }
+        
+        svg.regpict {
+        	color: green;
+        }
+        
+        .svg_error {
+        	color: red;
+        	font-weight: bold;
+        }
+        
+        figure div.json,
+        figure pre.json {
+            color: rgb(0,90,156);
+            display: inherit;
+        }
+    </style>
+    <style>
+        /*****************************************************************
+         * ReSpec 3 CSS
+         * Robin Berjon - http://berjon.com/
+         *****************************************************************/
+        
+        /* --- INLINES --- */
+        em.rfc2119 { 
+            text-transform:     lowercase;
+            font-variant:       small-caps;
+            font-style:         normal;
+            color:              #900;
+        }
+        
+        h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+        h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+            border: none;
+        }
+        
+        dfn {
+            font-weight:    bold;
+        }
+        
+        a.internalDFN {
+            color:  inherit;
+            border-bottom:  1px solid #99c;
+            text-decoration:    none;
+        }
+        
+        a.externalDFN {
+            color:  inherit;
+            border-bottom:  1px dotted #ccc;
+            text-decoration:    none;
+        }
+        
+        a.bibref {
+            text-decoration:    none;
+        }
+        
+        cite .bibref {
+            font-style: normal;
+        }
+        
+        code {
+            color:  #ff4500;
+        }
+        
+        /* --- TOC --- */
+        .toc a, .tof a {
+            text-decoration:    none;
+        }
+        
+        a .secno, a .figno {
+            color:  #000;
+        }
+        
+        ul.tof, ol.tof {
+            list-style: none outside none;
+        }
+        
+        .caption {
+            margin-top: 0.5em;
+            font-style:   italic;
+        }
+        
+        /* --- TABLE --- */
+        table.simple {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            border-bottom:  3px solid #005a9c;
+        }
+        
+        .simple th {
+            background: #005a9c;
+            color:  #fff;
+            padding:    3px 5px;
+            text-align: left;
+        }
+        
+        .simple th[scope="row"] {
+            background: inherit;
+            color:  inherit;
+            border-top: 1px solid #ddd;
+        }
+        
+        .simple td {
+            padding:    3px 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .simple tr:nth-child(even) {
+            background: #f0f6ff;
+        }
+        
+        /* --- DL --- */
+        .section dd > p:first-child {
+            margin-top: 0;
+        }
+        
+        .section dd > p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section dd {
+            margin-bottom:  1em;
+        }
+        
+        .section dl.attrs dd, .section dl.eldef dd {
+            margin-bottom:  0;
+        }
+        
+        @media print {
+            .removeOnSave {
+                display: none;
+            }
+        }
+    </style>
+    <style>
+        /* --- ISSUES/NOTES --- */
+        div.issue-title, div.note-title {
+            padding-right:  1em;
+            min-width: 7.5em;
+            color: #b9ab2d;
+        }
+        div.issue-title { color: #e05252; }
+        div.note-title { color: #2b2; }
+        div.issue-title span, div.note-title span {
+            text-transform: uppercase;
+        }
+        div.note, div.issue {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        .note > p:first-child, .issue > p:first-child { margin-top: 0 }
+        .issue, .note {
+            padding: .5em;
+            border-left-width: .5em;
+            border-left-style: solid;
+        }
+        div.issue, div.note {
+            padding: 1em 1.2em 0.5em;
+            margin: 1em 0;
+            position: relative;
+            clear: both;
+        }
+        span.note, span.issue { padding: .1em .5em .15em; }
+        
+        .issue {
+            border-color: #e05252;
+            background: #fbe9e9;
+        }
+        .note {
+            border-color: #52e052;
+            background: #e9fbe9;
+        }
+    </style>
+    <style>
+        /* --- WEB IDL --- */
+        pre.idl {
+            border-top: 1px solid #90b8de;
+            border-bottom: 1px solid #90b8de;
+            padding:    1em;
+            line-height:    120%;
+        }
+        
+        pre.idl::before {
+            content:    "WebIDL";
+            display:    block;
+            width:      150px;
+            background: #90b8de;
+            color:  #fff;
+            font-family:    initial;
+            padding:    3px;
+            font-weight:    bold;
+            margin: -1em 0 1em -1em;
+        }
+        
+        .idlType {
+            color:  #ff4500;
+            font-weight:    bold;
+            text-decoration:    none;
+        }
+        
+        /*.idlModule*/
+        /*.idlModuleID*/
+        /*.idlInterface*/
+        .idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+            font-weight:    bold;
+            color:  #005a9c;
+        }
+        a.idlEnumItem {
+            color:  #000;
+            border-bottom:  1px dotted #ccc;
+            text-decoration: none;
+        }
+        
+        .idlSuperclass {
+            font-style: italic;
+            color:  #005a9c;
+        }
+        
+        /*.idlAttribute*/
+        .idlAttrType, .idlFieldType, .idlMemberType {
+            color:  #005a9c;
+        }
+        .idlAttrName, .idlFieldName, .idlMemberName {
+            color:  #ff4500;
+        }
+        .idlAttrName a, .idlFieldName a, .idlMemberName a {
+            color:  #ff4500;
+            border-bottom:  1px dotted #ff4500;
+            text-decoration: none;
+        }
+        
+        /*.idlMethod*/
+        .idlMethType, .idlCallbackType {
+            color:  #005a9c;
+        }
+        .idlMethName {
+            color:  #ff4500;
+        }
+        .idlMethName a {
+            color:  #ff4500;
+            border-bottom:  1px dotted #ff4500;
+            text-decoration: none;
+        }
+        
+        /*.idlCtor*/
+        .idlCtorName {
+            color:  #ff4500;
+        }
+        .idlCtorName a {
+            color:  #ff4500;
+            border-bottom:  1px dotted #ff4500;
+            text-decoration: none;
+        }
+        
+        /*.idlParam*/
+        .idlParamType {
+            color:  #005a9c;
+        }
+        .idlParamName, .idlDefaultValue {
+            font-style: italic;
+        }
+        
+        .extAttr {
+            color:  #666;
+        }
+        
+        /*.idlSectionComment*/
+        .idlSectionComment {
+            color: gray;
+        }
+        
+        /*.idlConst*/
+        .idlConstType {
+            color:  #005a9c;
+        }
+        .idlConstName {
+            color:  #ff4500;
+        }
+        .idlConstName a {
+            color:  #ff4500;
+            border-bottom:  1px dotted #ff4500;
+            text-decoration: none;
+        }
+        
+        /*.idlException*/
+        .idlExceptionID {
+            font-weight:    bold;
+            color:  #c00;
+        }
+        
+        .idlTypedefID, .idlTypedefType {
+            color:  #005a9c;
+        }
+        
+        .idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+            color:  #c00;
+            font-weight:    normal;
+        }
+        
+        .excName a {
+            font-family:    monospace;
+        }
+        
+        .idlRaises a.idlType, .excName a.idlType {
+            border-bottom:  1px dotted #c00;
+        }
+        
+        .excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+            width:  45px;
+            text-align: center;
+        }
+        .excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+        .excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+        
+        .idlImplements a {
+            font-weight:    bold;
+        }
+        
+        dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+            margin-left:    2em;
+        }
+        
+        .attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+            font-weight:    normal;
+        }
+        
+        .attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+            font-weight:    bold;
+            color:  #000;
+            font-family:    monospace;
+        }
+        
+        .attributes dt code, .fields dt code, .dictionary-members dt code {
+            background:  #ffffd2;
+        }
+        
+        .attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+            color:  #005a9c;
+            background:  transparent;
+            font-family:    inherit;
+            font-weight:    normal;
+            font-style: italic;
+        }
+        
+        .methods dt code {
+            background:  #d9e6f8;
+        }
+        
+        .constants dt code {
+            background:  #ddffd2;
+        }
+        
+        .constructors dt code {
+            background:  #cfc;
+        }
+        
+        .attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+            margin-bottom:  1em;
+        }
+        
+        table.parameters, table.exceptions {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            margin: 0.5em 0;
+            width:  100%;
+        }
+        table.parameters { border-bottom:  1px solid #90b8de; }
+        table.exceptions { border-bottom:  1px solid #deb890; }
+        
+        .parameters th, .exceptions th {
+            color:  #fff;
+            padding:    3px 5px;
+            text-align: left;
+            font-family:    initial;
+            font-weight:    normal;
+            text-shadow:    #666 1px 1px 0;
+        }
+        .parameters th { background: #90b8de; }
+        .exceptions th { background: #deb890; }
+        
+        .parameters td, .exceptions td {
+            padding:    3px 10px;
+            border-top: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        .parameters tr:first-child td, .exceptions tr:first-child td {
+            border-top: none;
+        }
+        
+        .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+            width:  100px;
+        }
+        
+        .parameters td.prmType {
+            width:  120px;
+        }
+        
+        table.exceptions table {
+            border-spacing: 0;
+            border-collapse:    collapse;
+            width:  100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED">
+    <!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+
+<body class="h-entry" style="" role="document" id="respecDocument">
+    <div class="head" role="contentinfo" id="respecHeader">
+<!--            <a href="http://www.pcisig.com/">-->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="1.522in" width="2.781in"
+	 viewBox="0 0 278.1 152.2" enable-background="new 0 0 278.1 152.2" xml:space="preserve">
+<g>
+	<path d="M96.9,89.1h16.4c6.9,0,7.7,4.1,7,7.4c-1.1,5.2-4.5,8.3-9.8,8.3h-10.3l-1.8,8.7h-6.6L96.9,89.1z M101.1,100.3h7.1
+		c2,0,4.4-0.1,5.1-3.3c0.7-3.2-1.2-3.4-3.1-3.4h-7.7L101.1,100.3z"/>
+	<path d="M125.3,89.1H143c6.7,0,7,4.1,6.5,6.6c-0.6,3-2.2,4.9-5.2,5.9l0,0.1c2.8,0.4,2.5,4.1,2,6.5c-0.3,1.2-0.8,4.1,0.1,5.3h-7.2
+		c-0.4-1.1-0.2-2.1,0.3-4.7c0.7-3.4-0.6-4.3-2.6-4.3h-8.2l-1.9,8.9h-6.6L125.3,89.1z M129.6,99.9h8.8c1.5,0,3.3-0.8,3.8-3.1
+		c0.5-2.4-1.3-3-2.9-3h-8.4L129.6,99.9z"/>
+	<path d="M154.3,89.1h22.7l-1,4.6H160l-1.1,5h15.3l-0.9,4.4H158l-1.2,5.6H173l-1,4.6h-22.9L154.3,89.1z"/>
+	<path d="M195.8,96.1c0.3-3.2-2.7-3.5-5.4-3.5c-2.7,0-4.8,1.2-5.1,2.9c-0.3,1.3,0.7,2,2.3,2.3l8,1.3c4.3,0.7,7.3,2.4,6.4,6.8
+		c-1,4.5-4.8,8.2-14.4,8.2c-5.9,0-13.5-0.8-11.9-8.4h7.4c-0.6,3.3,2.6,3.9,5.4,3.9c3.1,0,5.4-0.9,5.9-3c0.4-1.9-1-2.4-3.5-2.8
+		l-5.8-0.9c-4.1-0.6-7.9-1.9-6.9-6.9c1.2-5.4,6.1-7.6,13.7-7.6c5,0,12.3,0.9,11.3,7.7H195.8z"/>
+	<path d="M223.6,96.1c0.3-3.2-2.7-3.5-5.4-3.5c-2.7,0-4.8,1.2-5.1,2.9c-0.3,1.3,0.7,2,2.3,2.3l8,1.3c4.3,0.7,7.3,2.4,6.4,6.8
+		c-1,4.5-4.8,8.2-14.4,8.2c-5.9,0-13.5-0.8-11.9-8.4h7.4c-0.6,3.3,2.6,3.9,5.4,3.9c3.1,0,5.4-0.9,5.9-3c0.4-1.9-1-2.4-3.5-2.8
+		l-5.8-0.9c-4.1-0.6-7.9-1.9-6.9-6.9c1.2-5.4,6.1-7.6,13.7-7.6c5,0,12.3,0.9,11.2,7.7H223.6z"/>
+	<path d="M39.5,39.1H62c6.4,0,12.6,3.2,12.6,12c0,7.9-5.2,12.2-14.5,12.2H43.8v17.5h-4.3V39.1z M43.8,59.3h16.7
+		c7.2,0,9.4-3.3,9.4-8.2c0-6.3-3.5-8.1-8.5-8.1H43.8V59.3z"/>
+	<path d="M121.3,64.9c-0.9,9.4-8.6,17-20.6,17c-13.6,0-22.2-8.5-22.2-21.9c0-9.5,5.9-21.9,22.2-21.9c9.1,0,19,4.1,20.3,15.1h-4.3
+		c-1.3-7.9-8.4-11.2-16-11.2C90.3,42,83.1,47.8,83.1,60c0,9.3,4.9,17.9,17.5,17.9c9.9,0,14.8-5,16.3-13H121.3z"/>
+	<path d="M128,39.1h4.3v41.7H128V39.1z"/>
+	<path d="M43.2,89.1H66l-1,4.6H48.8l-1.1,5h15.3l-0.9,4.4H46.8l-1.2,5.6h16.3l-1,4.6H38L43.2,89.1z"/>
+	<path d="M74.7,100.9l-7-11.8h7.9l3.7,7.6l7-7.6h7.9l-12,11.8l7.7,12.6h-8.2l-4.2-8.2l-7.7,8.2h-8.2L74.7,100.9z"/>
+	<g>
+		<polygon fill="#0060A9" points="173.7,54.4 153.2,38.9 143.5,38.9 162.1,53.3 		"/>
+		<polygon fill="#0060A9" points="162,66.2 143.5,80.5 153.2,80.5 173.7,65.1 		"/>
+	</g>
+	<g>
+		<polygon fill="#0060A9" points="228.5,59.7 160.6,38.9 185.1,55.5 		"/>
+		<polygon fill="#0060A9" points="184.9,64 160.6,80.5 228.6,59.8 		"/>
+	</g>
+	<g>
+		<path d="M239.1,94.1c-0.7,0.7-1.5,1-2.4,1c-0.9,0-1.7-0.3-2.4-1c-0.7-0.7-1-1.5-1-2.4c0-0.9,0.3-1.7,1-2.4c0.7-0.7,1.4-1,2.4-1
+			c0.9,0,1.7,0.3,2.4,1c0.7,0.7,1,1.4,1,2.4C240.1,92.6,239.7,93.4,239.1,94.1z M234.6,89.6c-0.6,0.6-0.9,1.3-0.9,2.1
+			c0,0.8,0.3,1.5,0.8,2.1c0.6,0.6,1.3,0.9,2.1,0.9c0.8,0,1.5-0.3,2.1-0.9c0.6-0.6,0.9-1.3,0.9-2.1c0-0.8-0.3-1.5-0.9-2.1
+			c-0.6-0.6-1.3-0.9-2.1-0.9C235.9,88.8,235.2,89.1,234.6,89.6z M236.6,89.8c0.5,0,0.8,0,1,0.1c0.4,0.2,0.6,0.5,0.6,0.9
+			c0,0.3-0.1,0.6-0.4,0.7c-0.1,0.1-0.3,0.1-0.5,0.2c0.3,0,0.5,0.2,0.6,0.4c0.1,0.2,0.2,0.4,0.2,0.6V93c0,0.1,0,0.2,0,0.3
+			c0,0.1,0,0.2,0,0.2l0,0h-0.6c0,0,0,0,0,0c0,0,0,0,0,0l0-0.1V93c0-0.4-0.1-0.7-0.4-0.8c-0.1-0.1-0.4-0.1-0.7-0.1H236v1.5h-0.6v-3.7
+			H236.6z M237.3,90.4c-0.2-0.1-0.4-0.1-0.8-0.1H236v1.3h0.6c0.3,0,0.5,0,0.6-0.1c0.3-0.1,0.4-0.3,0.4-0.6
+			C237.6,90.7,237.5,90.5,237.3,90.4z"/>
+	</g>
+</g>
+<!--<rect x="0" y="0" fill="none" width="278.1" height="152.2"/>-->
+</svg>
+        
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="1.545in" width="3.4955in"
+	 viewBox="0 0 599.1 309" enable-background="new 0 0 599.1 309" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<path d="M158.5,92.8H171c3.9,0,5.3,1.6,4.5,5.3c-0.8,3.7-2.8,5.3-6.7,5.3h-12.5L158.5,92.8z M137.3,126.1h14l3-14h17.8
+				c11.3,0,16.4-7.1,17.9-14c1.7-8-1.1-14-12.5-14h-31.1L137.3,126.1z"/>
+			<path d="M244.2,109.9c-3.6,9.1-10.4,17.5-30.4,17.5c-17.8,0-24.8-7.8-21.7-22.4c3-14.1,13-22.4,31.2-22.4
+				c12.9,0,22.9,2.9,22.8,17.5h-15.6c-0.2-3-1.2-8.1-9.1-8.1c-8.8,0-12.9,6-14.4,12.9c-1.5,7-0.2,12.9,8.9,12.9
+				c6.3,0,10.8-3.2,12.8-8.1H244.2z"/>
+			<path d="M255.7,84h14l-9,42.1h-14L255.7,84z"/>
+			<path d="M361.4,196.8c0.2-2.9-1.7-4.9-8.1-4.9c-4.7,0-7.6,1.4-8.2,4.1c-0.3,1.4,0.5,2.2,2.6,2.6c3.4,0.6,13.9,2.2,17.9,2.9
+				c7.6,1.4,11.6,4.5,10,12c-3,14.3-21.6,14.4-27.4,14.4c-14.3,0-24.1-2.5-22.4-14.3h16.6c-0.3,3.2,1,5.2,8.3,5.2
+				c3.5,0,7.5-0.8,8.3-4.4c0.5-2.2-1.1-3-5.9-3.8l-13.6-2.1c-8.4-1.3-10.8-5.7-9.5-11.9c1.2-5.5,6.3-13.4,24.7-13.4
+				c15.3,0,23.7,3.7,22.5,13.6H361.4z"/>
+			<path d="M387.5,184.4h14l-9,42.1h-14L387.5,184.4z"/>
+			<path d="M434.4,202.7H457l-5.1,23.9h-6.5l-0.8-4.4c-2.3,2.1-8.5,5.7-19.4,5.7c-18.4,0-24.8-7.8-21.7-22.4
+				c2.6-12.4,13-22.4,31.2-22.4c11.6,0,24.1,3,23.3,15.2h-15.9c-0.2-3.2-2.1-6.1-8.7-6.1c-8.6,0-13.8,5.9-15.3,13.3
+				c-1.6,7.3,1.1,13.2,9.7,13.2c6.9,0,11.1-2.6,13.4-7.4h-8.6L434.4,202.7z"/>
+			<path d="M158.5,92.8H171c3.9,0,5.3,1.6,4.5,5.3c-0.8,3.7-2.8,5.3-6.7,5.3h-12.5L158.5,92.8z M137.3,126.1h14l3-14h17.8
+				c11.3,0,16.4-7.1,17.9-14c1.7-8-1.1-14-12.5-14h-31.1L137.3,126.1z"/>
+			<path d="M244.2,109.9c-3.6,9.1-10.4,17.5-30.4,17.5c-17.8,0-24.8-7.8-21.7-22.4c3-14.1,13-22.4,31.2-22.4
+				c12.9,0,22.9,2.9,22.8,17.5h-15.6c-0.2-3-1.2-8.1-9.1-8.1c-8.8,0-12.9,6-14.4,12.9c-1.5,7-0.2,12.9,8.9,12.9
+				c6.3,0,10.8-3.2,12.8-8.1H244.2z"/>
+			<path d="M255.7,84h14l-9,42.1h-14L255.7,84z"/>
+			<path d="M361.4,196.8c0.2-2.9-1.7-4.9-8.1-4.9c-4.7,0-7.6,1.4-8.2,4.1c-0.3,1.4,0.5,2.2,2.6,2.6c3.4,0.6,13.9,2.2,17.9,2.9
+				c7.6,1.4,11.6,4.5,10,12c-3,14.3-21.6,14.4-27.4,14.4c-14.3,0-24.1-2.5-22.4-14.3h16.6c-0.3,3.2,1,5.2,8.3,5.2
+				c3.5,0,7.5-0.8,8.3-4.4c0.5-2.2-1.1-3-5.9-3.8l-13.6-2.1c-8.4-1.3-10.8-5.7-9.5-11.9c1.2-5.5,6.3-13.4,24.7-13.4
+				c15.3,0,23.7,3.7,22.5,13.6H361.4z"/>
+			<path d="M387.5,184.4h14l-9,42.1h-14L387.5,184.4z"/>
+			<path d="M434.4,202.7H457l-5.1,23.9h-6.5l-0.8-4.4c-2.3,2.1-8.5,5.7-19.4,5.7c-18.4,0-24.8-7.8-21.7-22.4
+				c2.6-12.4,13-22.4,31.2-22.4c11.6,0,24.1,3,23.3,15.2h-15.9c-0.2-3.2-2.1-6.1-8.7-6.1c-8.6,0-13.8,5.9-15.3,13.3
+				c-1.6,7.3,1.1,13.2,9.7,13.2c6.9,0,11.1-2.6,13.4-7.4h-8.6L434.4,202.7z"/>
+			<g>
+				<path fill="#25358E" d="M290.1,122.8c-1.8-4.4-2.4-9.1-1.8-14.3c0.1-0.7,0.2-1.4,0.3-2.2l-6,25.3
+					c-10,49.7,165.5,42.3,238.6,43.3C444.8,173.7,308.3,167.2,290.1,122.8z"/>
+				
+					<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="321.2144" y1="277.4072" x2="306.1069" y2="305.298" gradientTransform="matrix(1.6388 0 0 1.6388 -209.1364 -378.1123)">
+					<stop  offset="0" style="stop-color:#ABAAD2"/>
+					<stop  offset="1" style="stop-color:#25358E"/>
+				</linearGradient>
+				<path fill="url(#SVGID_1_)" d="M297,123.5c-8.4-12-7.1-40.6,22.5-45.7l-9.3,34C302.7,113.5,298.6,116.8,297,123.5z"/>
+			</g>
+			
+				<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="304.6259" y1="355.3074" x2="321.793" y2="355.3074" gradientTransform="matrix(1.6388 0 0 1.6388 -209.1364 -378.1123)">
+				<stop  offset="0" style="stop-color:#ABAAD2"/>
+				<stop  offset="1" style="stop-color:#25358E"/>
+			</linearGradient>
+			<path fill="url(#SVGID_2_)" d="M289.7,231.3c8.1-2.8,19.2-12,22.5-23.6l5.7-30.7c-2.5,13.1-12.7,20.1-22,23.4L289.7,231.3z"/>
+			<path fill="#25358E" d="M77.8,138c138.1-4.6,201.6,2.6,226,16.5c7.5,4.3,12.9,19.7,4.7,29.4c-3.1-22.8-70.9-46-230.4-45.9"/>
+		</g>
+	</g>
+	<g>
+		<path d="M473.4,188c2,0,3.7,1.7,3.7,3.7c0,2.1-1.6,3.7-3.7,3.7c-2,0-3.7-1.6-3.7-3.7C469.7,189.7,471.3,188,473.4,188L473.4,188z
+			 M473.4,188.6c-1.6,0-3,1.4-3,3.1c0,1.8,1.3,3.2,3,3.2c1.7,0,3-1.4,3-3.1C476.3,190,475,188.6,473.4,188.6L473.4,188.6z
+			 M472.7,193.9H472v-4.2c0.3,0,0.7-0.1,1.2-0.1c0.6,0,1,0.1,1.3,0.3c0.3,0.2,0.4,0.5,0.4,0.9c0,0.5-0.4,0.9-0.8,1v0
+			c0.4,0.1,0.6,0.4,0.7,1c0.1,0.6,0.2,0.9,0.3,1h-0.7c-0.1-0.1-0.2-0.5-0.3-1.1c-0.1-0.5-0.4-0.7-0.9-0.7h-0.5V193.9z M472.7,191.6
+			h0.5c0.5,0,1-0.2,1-0.7c0-0.4-0.3-0.7-1-0.7c-0.2,0-0.4,0-0.5,0V191.6z"/>
+	</g>
+</g>
+</svg>
+        
+        <h1 class="title p-name" id="title" property="dcterms:title">Basic ReSpec Evolution Example</h1>
+
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-02-04T14:17:36.000Z" id="w3c-editor-s-draft-04-february-2014">
+            <abbr title="World Wide Web Consortium">W3C</abbr>Editor's Draft
+            <time class="dt-published" datetime="2014-02-04">04 February 2014</time>
+        </h2>
+        <dl>
+
+            <dt>This version:</dt>
+            <dd>
+                <a class="u-url" href="http://darobin.github.com/respec">http://darobin.github.com/respec</a>
+            </dd>
+            <dt>Latest published version:</dt>
+            <dd>
+                <a href="http://www.w3.org/TR/basics/">http://www.w3.org/TR/basics/</a>
+            </dd>
+
+
+            <dt>Latest editor's draft:</dt>
+            <dd>
+                <a href="http://darobin.github.com/respec">http://darobin.github.com/respec</a>
+            </dd>
+
+
+
+
+
+
+
+
+
+            <dt>Editor:</dt>
+            <dd class="p-author h-card vcard" rel="bibo:editor" inlist="">
+                <span typeof="foaf:Person">
+                    <span property="foaf:name" class="p-name fn">Steve Glaser</span>
+                </span>
+            </dd>
+
+
+
+        </dl>
+
+
+
+
+
+        <p class="copyright">
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>© 2014
+
+            <a href="http://www.w3.org/">
+                <abbr title="World Wide Web Consortium">W3C</abbr>
+            </a>
+            <sup>®</sup>
+            (
+            <a href="http://www.csail.mit.edu/">
+                <abbr title="Massachusetts Institute of Technology">MIT</abbr>
+            </a>,
+            <a href="http://www.ercim.eu/">
+                <abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
+            </a>,
+            <a href="http://www.keio.ac.jp/">Keio</a>,
+            <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved.
+
+            <abbr title="World Wide Web Consortium">W3C</abbr>
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>and
+
+            <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+
+            rules apply.
         </p>
-        
-      <p> CUSTOM PARAGRAPH </p>
-    
+
+
+        <hr>
+    </div>
+    <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2>
+        <p>This is just a very basic document. [
+            <cite>
+                <a class="bibref" href="#bib-REX">REX</a>
+            </cite>] Yeah for memes [
+            <cite>
+                <a class="bibref" href="#bib-MEMES">MEMES</a>
+            </cite>]. [
+            <cite>
+                <a class="bibref" href="#bib-DOM4">DOM4</a>
+            </cite>], [
+            <cite>
+                <a class="bibref" href="#bib-XML10">XML10</a>
+            </cite>], [[WHATEVER]]</p>
+        <!--      <p> [[NO-EXIST]] </p>-->
+    </section>
+    <section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
+
+
+
         <p>
-          This document was published by the <a href="http://darobin.github.com/respec">ReSpec Hackin' Gang</a> as an Editor's Draft.
-          
-          
-            If you wish to make comments regarding this document, please send them to 
-            <a href="mailto:none@w3.org">none@w3.org</a> 
-            (<a href="mailto:none-request@w3.org?subject=subscribe">subscribe</a>,
-            <a href="http://lists.w3.org/Archives/Public/none/">archives</a>).
-          
-          
-          
-          
-            All comments are welcome.
-          
+            <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current
+                <abbr title="World Wide Web Consortium">W3C</abbr>publications and the latest revision of this technical report can be found in the
+                <a href="http://www.w3.org/TR/">
+                    <abbr title="World Wide Web Consortium">W3C</abbr>technical reports index</a>at http://www.w3.org/TR/.
+            </em>
         </p>
-        
-        
-          <p>
-            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
-            Membership. This is a draft document and may be updated, replaced or obsoleted by other
-            documents at any time. It is inappropriate to cite this document as other than work in
-            progress.
-          </p>
-        
-        
+
+        <p>CUSTOM PARAGRAPH</p>
+
         <p>
-          
-            This document was produced by a group operating under the 
-            <a id="sotd_patent" about="" rel="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
-            Policy</a>.
-          
-          
-          
-            
-              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="XXX" rel="disclosure">public list of any patent
-              disclosures</a> 
-            
-            made in connection with the deliverables of the group; that page also includes
-            instructions for disclosing a patent. An individual who has actual knowledge of a patent
-            which the individual believes contains
-            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
-            Claim(s)</a> must disclose the information in accordance with
-            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
-            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
-          
-          
+            This document was published by the
+            <a href="http://darobin.github.com/respec">ReSpec Hackin' Gang</a>as an Editor's Draft. If you wish to make comments regarding this document, please send them to
+            <a href="mailto:none@w3.org">none@w3.org</a>
+            (
+            <a href="mailto:none-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/none/">archives</a>). All comments are welcome.
+
         </p>
-        
-      
-    
-  
-</section><section id="toc"><h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2><ul class="toc" role="directory" id="respecContents"><li class="tocline"><a href="#informative-section" class="tocxref"><span class="secno">1. </span>Informative section</a><ul class="toc"><li class="tocline"><a href="#inner-section" class="tocxref"><span class="secno">1.1 </span>Inner section</a></li><li class="tocline"><a href="#other-inner-section" class="tocxref"><span class="secno">1.2 </span>Other inner section</a></li></ul></li><li class="tocline"><a href="#register-figure" class="tocxref"><span class="secno">2. </span>Register Figure</a></li><li class="tocline"><a href="#intel-pte" class="tocxref"><span class="secno">3. </span>Intel PTE</a></li><li class="tocline"><a href="#name-clashes-after-and-deep-stuff" class="tocxref"><span class="secno">4. </span>Name <span class="formerLink">clashes</span> after <span>and <span class="formerLink">deep</span> stuff</span></a></li><li class="tocline"><a href="#clash-here" class="tocxref"><span class="secno">5. </span>Clash here</a><ul class="toc"><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">5.1 </span>Methods</a></li></ul></li><li class="tocline"><a href="#type-unions" class="tocxref"><span class="secno">6. </span>Type Unions</a><ul class="toc"><li class="tocline"><a href="#two" class="tocxref"><span class="secno">6.1 </span>Two</a><ul class="toc"><li class="tocline"><a href="#methods-1" class="tocxref"><span class="secno">6.1.1 </span>Methods</a></li></ul></li></ul></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></section>
-    
-    <section id="tof" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h2 aria-level="1" role="heading" id="h2_tof">Table of Figures</h2><ul class="tof" role="directory" id="respecFigures"><li class="tofline"><a class="tocxref" href="#figure1">Figure <span class="figno">2-1</span>: <span class="figtitle">Graph for XXX Example (SVG version)</span></a></li><li class="tofline"><a class="tocxref" href="#figure2">Figure <span class="figno">3-1</span>: <span class="figtitle"><span>data-include-filter="PTE" folowed by &lt;a class="ness" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</span></span></a></li></ul></section>
-      <section class="informative" id="informative-section">
-      <!--OddPage--><h2 aria-level="1" role="heading" id="h2_informative-section"><span class="secno">1. </span>Informative section</h2><p><em>This section is non-normative.</em></p>
-      <p>blah</p>
-      <section id="inner-section">
-        <h3 aria-level="2" role="heading" id="h3_inner-section"><span class="secno">1.1 </span>Inner section</h3>
-        <p>blahblah</p>
-      </section>
-      <section id="other-inner-section">
-        <h3 aria-level="2" role="heading" id="h3_other-inner-section"><span class="secno">1.2 </span>Other inner section</h3>
-        <p>blahblah</p>
-      </section>
+
+
+        <p>
+            Publication as an Editor's Draft does not imply endorsement by the
+            <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.
+        </p>
+
+
+
+        <p>
+
+            This document was produced by a group operating under the
+            <a id="sotd_patent" about="" rel="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004
+                <abbr title="World Wide Web Consortium">W3C</abbr>Patent Policy
+            </a>.
+
+
+
+
+            <abbr title="World Wide Web Consortium">W3C</abbr>maintains a
+            <a href="XXX" rel="disclosure">public list of any patent disclosures
+            </a>
+
+            made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)
+            </a>must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the
+                <abbr title="World Wide Web Consortium">W3C</abbr>Patent Policy</a>.
+
+
+        </p>
+
+
+
+
+    </section>
+    <section id="toc">
+        <h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2>
+        <ul class="toc" role="directory" id="respecContents">
+            <li class="tocline">
+                <a href="#informative-section" class="tocxref">
+                    <span class="secno">1.</span>Informative section</a>
+                <ul class="toc">
+                    <li class="tocline">
+                        <a href="#inner-section" class="tocxref">
+                            <span class="secno">1.1</span>Inner section</a>
+                    </li>
+                    <li class="tocline">
+                        <a href="#other-inner-section" class="tocxref">
+                            <span class="secno">1.2</span>Other inner section</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="tocline">
+                <a href="#register-figure" class="tocxref">
+                    <span class="secno">2.</span>Register Figure</a>
+            </li>
+            <li class="tocline">
+                <a href="#intel-pte" class="tocxref">
+                    <span class="secno">3.</span>Intel PTE</a>
+            </li>
+            <li class="tocline">
+                <a href="#pcisig-style-registers" class="tocxref">
+                    <span class="secno">4.</span>PCISIG style Registers</a>
+            </li>
+            <li class="tocline">
+                <a href="#name-clashes-after-and-deep-stuff" class="tocxref">
+                    <span class="secno">5.</span>Name
+                    <span class="formerLink">clashes</span>after
+                    <span>and
+                        <span class="formerLink">deep</span>stuff</span>
+                </a>
+            </li>
+            <li class="tocline">
+                <a href="#clash-here" class="tocxref">
+                    <span class="secno">6.</span>Clash here</a>
+                <ul class="toc">
+                    <li class="tocline">
+                        <a href="#methods" class="tocxref">
+                            <span class="secno">6.1</span>Methods</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="tocline">
+                <a href="#type-unions" class="tocxref">
+                    <span class="secno">7.</span>Type Unions</a>
+                <ul class="toc">
+                    <li class="tocline">
+                        <a href="#two" class="tocxref">
+                            <span class="secno">7.1</span>Two</a>
+                        <ul class="toc">
+                            <li class="tocline">
+                                <a href="#methods-1" class="tocxref">
+                                    <span class="secno">7.1.1</span>Methods</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="tocline">
+                <a href="#references" class="tocxref">
+                    <span class="secno">A.</span>References</a>
+                <ul class="toc">
+                    <li class="tocline">
+                        <a href="#normative-references" class="tocxref">
+                            <span class="secno">A.1</span>Normative references</a>
+                    </li>
+                    <li class="tocline">
+                        <a href="#informative-references" class="tocxref">
+                            <span class="secno">A.2</span>Informative references</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section id="tof" class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_tof">Table of Figures</h2>
+        <ul class="tof" role="directory" id="respecFigures">
+            <li class="tofline">
+                <a class="tocxref" href="#figure1">Figure
+                    <span class="figno">2-1</span>:
+                    <span class="figtitle">Graph for XXX Example (SVG version)</span>
+                </a>
+            </li>
+            <li class="tofline">
+                <a class="tocxref" href="#figure2">Figure
+                    <span class="figno">3-1</span>:
+                    <span class="figtitle">
+                        <span>data-include-filter="PTE" folowed by &lt;a class="nv-refman" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</span>
+                    </span>
+                </a>
+            </li>
+            <li class="tofline">
+                <a class="tocxref" href="#fig-pcisig-style-register-1">Figure
+                    <span class="figno">4-1</span>:
+                    <span class="figtitle">PCISIG-Style Register #1</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <section class="informative" id="informative-section">
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_informative-section">
+            <span class="secno">1.</span>Informative section</h2>
+        <p>
+            <em>This section is non-normative.</em>
+        </p>
+        <p>blah</p>
+        <section id="inner-section">
+            <h3 aria-level="2" role="heading" id="h3_inner-section">
+                <span class="secno">1.1</span>Inner section</h3>
+            <p>blahblah</p>
+        </section>
+        <section id="other-inner-section">
+            <h3 aria-level="2" role="heading" id="h3_other-inner-section">
+                <span class="secno">1.2</span>Other inner section</h3>
+            <p>blahblah</p>
+        </section>
     </section>
     <section id="register-figure">
-    <!--OddPage--><h2 aria-level="1" role="heading" id="h2_register-figure"><span class="secno">2. </span>Register Figure</h2>
-    <figure id="figure1" class="register">
-        <pre class="json" style="display: none;">            { "width" : 32,
-              "fields": [
-                {   "msb": 4,
-                    "lsb": 0,
-                    "name": "field0_4",
-                    "attr": "ro"
-                }, {
-                    "msb": 7,
-                    "lsb":6, "name":"Very long name that will never fit"
-                }, {
-                    "msb": 9,
-                    "name": "bit9"
-                }, {
-                    "lsb": 10,
-                    "name": "bit10"
-                }, {
-                    "lsb": 11,
-                    "name": "bit11"
-                }, {
-                    "lsb": 12,
-                    "name": "bit12"
-                }, {
-                    "lsb": 13,
-                    "name": "bit13"
-                } ] }
-        </pre>
-        <div class="svg hasSVG"><svg version="1.1" width="1314" height="188"><g><text x="512" y="12" class="regBitNum">0</text><text x="448" y="12" class="regBitNum">4</text><text x="416" y="12" class="regBitNum">6</text><text x="400" y="12" class="regBitNum">7</text><text x="368" y="12" class="regBitNum">9</text><text x="352" y="12" class="regBitNum">10</text><text x="336" y="12" class="regBitNum">11</text><text x="320" y="12" class="regBitNum">12</text><text x="304" y="12" class="regBitNum">13</text><text x="432" y="12" class="regBitNum">5</text><text x="384" y="12" class="regBitNum">8</text><text x="288" y="12" class="regBitNum">14</text><text x="16" y="12" class="regBitNum">31</text><path d="M520,3l0,16M424,3l0,16M376,3l0,16M360,3l0,16M344,3l0,16M328,3l0,16M312,3l0,16M440,3l0,16M392,3l0,16M296,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine"></path></g><g><rect x="440" y="16" width="80" height="32" class="regFieldBox regFieldBoxro"></rect><line x1="504" y1="40" x2="504" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="472" y1="40" x2="472" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><line x1="456" y1="40" x2="456" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line><text x="480" y="32" class="regFieldName regFieldNamero regFieldNameInternal regFieldNameInternalro">field0_4</text></g><g><rect x="424" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><text x="432" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text></g><g><rect x="392" y="16" width="32" height="32" class="regFieldBox regFieldBoxother"></rect><line x1="408" y1="40" x2="408" y2="48" class="regFieldBoxInternal regFieldBoxInternalother"></line><text x="528" y="68" class="regFieldName regFieldNameother regFieldName0">Very long name that will never fit</text><path d="M392,48l16,4L424,48" class="regBitBracket regBitBracket0"></path><path d="M408,52V63.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="376" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><text x="384" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text></g><g><rect x="360" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="88" class="regFieldName regFieldNameother regFieldName0">bit9</text><path d="M360,48l8,4L376,48" class="regBitBracket regBitBracket0"></path><path d="M368,52V83.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="344" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="108" class="regFieldName regFieldNameother regFieldName1">bit10</text><path d="M344,48l8,4L360,48" class="regBitBracket regBitBracket1"></path><path d="M352,52V103.5H526.4" class="regBitLine regBitLine1"></path></g><g><rect x="328" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="128" class="regFieldName regFieldNameother regFieldName1">bit11</text><path d="M328,48l8,4L344,48" class="regBitBracket regBitBracket1"></path><path d="M336,52V123.5H526.4" class="regBitLine regBitLine1"></path></g><g><rect x="312" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="148" class="regFieldName regFieldNameother regFieldName0">bit12</text><path d="M312,48l8,4L328,48" class="regBitBracket regBitBracket0"></path><path d="M320,52V143.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="296" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect><text x="528" y="168" class="regFieldName regFieldNameother regFieldName0">bit13</text><path d="M296,48l8,4L312,48" class="regBitBracket regBitBracket0"></path><path d="M304,52V163.5H526.4" class="regBitLine regBitLine0"></path></g><g><rect x="8" y="16" width="288" height="32" class="regFieldBox regFieldBoxrsvdp"></rect><line x1="280" y1="40" x2="280" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="264" y1="40" x2="264" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="200" y1="40" x2="200" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><line x1="24" y1="40" x2="24" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line><text x="152" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">RsvdP</text></g></svg></div><figcaption>Figure <span class="figno">2-1</span>: <span class="figtitle">Graph for XXX Example (SVG version)</span></figcaption>
-    </figure>
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_register-figure">
+            <span class="secno">2.</span>Register Figure</h2>
+        <figure id="figure1" class="register">
+            <pre class="json" style="display: none;">{ "width" : 32, "fields": [ { "msb": 4, "lsb": 0, "name": "field0_4", "attr": "ro" }, { "msb": 7, "lsb":6, "name":"Very long name that will never fit" }, { "msb": 9, "name": "bit9" }, { "lsb": 10, "name": "bit10" }, { "lsb": 11, "name": "bit11" }, { "lsb": 12, "name": "bit12" }, { "lsb": 13, "name": "bit13" } ] }
+            </pre>
+            <div class="svg hasSVG">
+                <svg version="1.1" width="1545" height="188">
+                    <g>
+                        <text x="512" y="12" class="regBitNum">0</text>
+                        <text x="448" y="12" class="regBitNum">4</text>
+                        <text x="416" y="12" class="regBitNum">6</text>
+                        <text x="400" y="12" class="regBitNum">7</text>
+                        <text x="368" y="12" class="regBitNum">9</text>
+                        <text x="352" y="12" class="regBitNum">10</text>
+                        <text x="336" y="12" class="regBitNum">11</text>
+                        <text x="320" y="12" class="regBitNum">12</text>
+                        <text x="304" y="12" class="regBitNum">13</text>
+                        <text x="432" y="12" class="regBitNum">5</text>
+                        <text x="384" y="12" class="regBitNum">8</text>
+                        <text x="288" y="12" class="regBitNum">14</text>
+                        <text x="16" y="12" class="regBitNum">31</text>
+                        <path d="M520,3l0,16M424,3l0,16M376,3l0,16M360,3l0,16M344,3l0,16M328,3l0,16M312,3l0,16M440,3l0,16M392,3l0,16M296,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="440" y="16" width="80" height="32" class="regFieldBox regFieldBoxro"></rect>
+                        <line x1="504" y1="40" x2="504" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line>
+                        <line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line>
+                        <line x1="472" y1="40" x2="472" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line>
+                        <line x1="456" y1="40" x2="456" y2="48" class="regFieldBoxInternal regFieldBoxInternalro"></line>
+                        <text x="480" y="32" class="regFieldName regFieldNamero regFieldNameInternal regFieldNameInternalro">field0_4</text>
+                    </g>
+                    <g>
+                        <rect x="424" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect>
+                        <text x="432" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text>
+                    </g>
+                    <g>
+                        <rect x="392" y="16" width="32" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <line x1="408" y1="40" x2="408" y2="48" class="regFieldBoxInternal regFieldBoxInternalother"></line>
+                        <text x="528" y="68" class="regFieldName regFieldNameother regFieldName0">Very long name that will never fit</text>
+                        <path d="M392,48l16,4L424,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M408,52V63.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="376" y="16" width="16" height="32" class="regFieldBox regFieldBoxrsvdp"></rect>
+                        <text x="384" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">R</text>
+                    </g>
+                    <g>
+                        <rect x="360" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <text x="528" y="88" class="regFieldName regFieldNameother regFieldName0">bit9</text>
+                        <path d="M360,48l8,4L376,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M368,52V83.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="344" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <text x="528" y="108" class="regFieldName regFieldNameother regFieldName1">bit10</text>
+                        <path d="M344,48l8,4L360,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M352,52V103.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="328" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <text x="528" y="128" class="regFieldName regFieldNameother regFieldName1">bit11</text>
+                        <path d="M328,48l8,4L344,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M336,52V123.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="312" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <text x="528" y="148" class="regFieldName regFieldNameother regFieldName0">bit12</text>
+                        <path d="M312,48l8,4L328,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M320,52V143.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="296" y="16" width="16" height="32" class="regFieldBox regFieldBoxother"></rect>
+                        <text x="528" y="168" class="regFieldName regFieldNameother regFieldName0">bit13</text>
+                        <path d="M296,48l8,4L312,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M304,52V163.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="8" y="16" width="288" height="32" class="regFieldBox regFieldBoxrsvdp"></rect>
+                        <line x1="280" y1="40" x2="280" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="264" y1="40" x2="264" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="200" y1="40" x2="200" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="24" y1="40" x2="24" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <text x="152" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">RsvdP</text>
+                    </g>
+                </svg>
+            </div>
+            <figcaption>Figure
+                <span class="figno">2-1</span>:
+                <span class="figtitle">Graph for XXX Example (SVG version)</span>
+            </figcaption>
+        </figure>
 
     </section>
     <section id="intel-pte">
-        <!--OddPage--><h2 aria-level="1" role="heading" id="h2_intel-pte"><span class="secno">3. </span>Intel PTE</h2>
-        <pre>#define INTEL_PTE                                      0x00000058   /* RWI8R */
-#define INTEL_PTE_MUST_BE_ONE                                 0:0   /* RWIVF */
-#define INTEL_PTE_MUST_BE_ONE_INIT                            0x1   /* RWI-V */
-#define INTEL_PTE_RW                                          1:1   /* RW-VF */
-#define INTEL_PTE_US                                          2:2   /* RW-VF */
-#define INTEL_PTE_PWT                                         3:3   /* RW-VF */
-#define INTEL_PTE_PCD                                         4:4   /* RW-VF */
-#define INTEL_PTE_A                                           5:5   /* RW-VF */
-#define INTEL_PTE_IGNORED6                                    6:6   /* RW-VF */
-#define INTEL_PTE_MUST_BE_ZERO                                7:7   /* RWIVF */
-#define INTEL_PTE_MUST_BE_ZERO_INIT                           0x0   /* RWI-V */
-#define INTEL_PTE_IGNORED9_8                                  9:8   /* RW-VF */
-#define INTEL_PTE_EA                                        10:10   /* RW-VF */
-#define INTEL_PTE_IGNORED11                                 11:11   /* RW-VF */
-#define INTEL_PTE_FRAME_4K                                  47:12   /* RW-VF */
-#define INTEL_PTE_RESERVED_HAW                              51:48   /* RWIVF */
-#define INTEL_PTE_RESERVED_HAW_INIT                           0x0   /* RWI-V */
-#define INTEL_PTE_IGNORED62_52                              62:52   /* RW-VF */
-#define INTEL_PTE_XD                                        63:63   /* RW-VF */
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_intel-pte">
+            <span class="secno">3.</span>Intel PTE</h2>
+        <pre>
+#define INTEL_PTE		 0x00000058	/* RWI8R */
+#define INTEL_PTE_MUST_BE_ONE		0:0	/* RWIVF */
+#define INTEL_PTE_MUST_BE_ONE_INIT	0x1	/* RWI-V */
+#define INTEL_PTE_RW			1:1	/* RW-VF */
+#define INTEL_PTE_US			2:2	/* RW-VF */
+#define INTEL_PTE_PWT			3:3	/* RW-VF */
+#define INTEL_PTE_PCD			4:4	/* RW-VF */
+#define INTEL_PTE_A			5:5	/* RW-VF */
+#define INTEL_PTE_IGNORED6		6:6	/* RW-VF */
+#define INTEL_PTE_MUST_BE_ZERO		7:7	/* RWIVF */
+#define INTEL_PTE_MUST_BE_ZERO_INIT	0x0	/* RWI-V */
+#define INTEL_PTE_IGNORED9_8		9:8	/* RW-VF */
+#define INTEL_PTE_EA		      10:10	/* RW-VF */
+#define INTEL_PTE_IGNORED11	      11:11	/* RW-VF */
+#define INTEL_PTE_FRAME_4K	      47:12	/* RW-VF */
+#define INTEL_PTE_RESERVED_HAW	      51:48	/* RWIVF */
+#define INTEL_PTE_RESERVED_HAW_INIT	0x0	/* RWI-V */
+#define INTEL_PTE_IGNORED62_52	      62:52	/* RW-VF */
+#define INTEL_PTE_XD		      63:63	/* RW-VF */
 
-
-</pre>
-        <figure id="figure2" class="register">
-            <a class="ness" href="intel.ref" style="display: none;">{ "width": 64, "unused": "reserved", "register": "INTEL_PTE"}</a>
-            <div class="svg hasSVG"><svg version="1.1" width="1314" height="308"><g><text x="1024" y="12" class="regBitNum">0</text><text x="1008" y="12" class="regBitNum">1</text><text x="992" y="12" class="regBitNum">2</text><text x="976" y="12" class="regBitNum">3</text><text x="960" y="12" class="regBitNum">4</text><text x="944" y="12" class="regBitNum">5</text><text x="928" y="12" class="regBitNum">6</text><text x="912" y="12" class="regBitNum">7</text><text x="896" y="12" class="regBitNum">8</text><text x="880" y="12" class="regBitNum">9</text><text x="864" y="12" class="regBitNum">10</text><text x="848" y="12" class="regBitNum">11</text><text x="832" y="12" class="regBitNum">12</text><text x="272" y="12" class="regBitNum">47</text><text x="256" y="12" class="regBitNum">48</text><text x="208" y="12" class="regBitNum">51</text><text x="192" y="12" class="regBitNum">52</text><text x="32" y="12" class="regBitNum">62</text><text x="16" y="12" class="regBitNum">63</text><path d="M1032,3l0,16M1016,3l0,16M1000,3l0,16M984,3l0,16M968,3l0,16M952,3l0,16M936,3l0,16M920,3l0,16M904,3l0,16M872,3l0,16M856,3l0,16M840,3l0,16M264,3l0,16M200,3l0,16M24,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine"></path></g><g><rect x="1016" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="68" class="regFieldName regFieldNamerw regFieldName0">MUST_BE_ONE</text><path d="M1016,48l8,4L1032,48" class="regBitBracket regBitBracket0"></path><path d="M1024,52V63.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="1000" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="88" class="regFieldName regFieldNamerw regFieldName0">RW</text><path d="M1000,48l8,4L1016,48" class="regBitBracket regBitBracket0"></path><path d="M1008,52V83.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="984" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="108" class="regFieldName regFieldNamerw regFieldName1">US</text><path d="M984,48l8,4L1000,48" class="regBitBracket regBitBracket1"></path><path d="M992,52V103.5H1038.4" class="regBitLine regBitLine1"></path></g><g><rect x="968" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="128" class="regFieldName regFieldNamerw regFieldName1">PWT</text><path d="M968,48l8,4L984,48" class="regBitBracket regBitBracket1"></path><path d="M976,52V123.5H1038.4" class="regBitLine regBitLine1"></path></g><g><rect x="952" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="148" class="regFieldName regFieldNamerw regFieldName0">PCD</text><path d="M952,48l8,4L968,48" class="regBitBracket regBitBracket0"></path><path d="M960,52V143.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="936" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="944" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">A</text></g><g><rect x="920" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="168" class="regFieldName regFieldNamerw regFieldName0">IGNORED6</text><path d="M920,48l8,4L936,48" class="regBitBracket regBitBracket0"></path><path d="M928,52V163.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="904" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="188" class="regFieldName regFieldNamerw regFieldName1">MUST_BE_ZERO</text><path d="M904,48l8,4L920,48" class="regBitBracket regBitBracket1"></path><path d="M912,52V183.5H1038.4" class="regBitLine regBitLine1"></path></g><g><rect x="872" y="16" width="32" height="32" class="regFieldBox regFieldBoxrw"></rect><line x1="888" y1="40" x2="888" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><text x="1040" y="208" class="regFieldName regFieldNamerw regFieldName1">IGNORED9_8</text><path d="M872,48l16,4L904,48" class="regBitBracket regBitBracket1"></path><path d="M888,52V203.5H1038.4" class="regBitLine regBitLine1"></path></g><g><rect x="856" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="228" class="regFieldName regFieldNamerw regFieldName0">EA</text><path d="M856,48l8,4L872,48" class="regBitBracket regBitBracket0"></path><path d="M864,52V223.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="840" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="248" class="regFieldName regFieldNamerw regFieldName0">IGNORED11</text><path d="M840,48l8,4L856,48" class="regBitBracket regBitBracket0"></path><path d="M848,52V243.5H1038.4" class="regBitLine regBitLine0"></path></g><g><rect x="264" y="16" width="576" height="32" class="regFieldBox regFieldBoxrw"></rect><line x1="824" y1="40" x2="824" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="808" y1="40" x2="808" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="792" y1="40" x2="792" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="776" y1="40" x2="776" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="760" y1="40" x2="760" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="744" y1="40" x2="744" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="728" y1="40" x2="728" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="712" y1="40" x2="712" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="696" y1="40" x2="696" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="680" y1="40" x2="680" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="664" y1="40" x2="664" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="648" y1="40" x2="648" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="632" y1="40" x2="632" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="616" y1="40" x2="616" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="600" y1="40" x2="600" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="584" y1="40" x2="584" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="568" y1="40" x2="568" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="552" y1="40" x2="552" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="536" y1="40" x2="536" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="520" y1="40" x2="520" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="504" y1="40" x2="504" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="472" y1="40" x2="472" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="456" y1="40" x2="456" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="440" y1="40" x2="440" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="424" y1="40" x2="424" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="408" y1="40" x2="408" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="392" y1="40" x2="392" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="376" y1="40" x2="376" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="360" y1="40" x2="360" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="344" y1="40" x2="344" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="328" y1="40" x2="328" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="312" y1="40" x2="312" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="296" y1="40" x2="296" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="280" y1="40" x2="280" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><text x="552" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">FRAME_4K</text></g><g><rect x="200" y="16" width="64" height="32" class="regFieldBox regFieldBoxrw"></rect><line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><text x="1040" y="268" class="regFieldName regFieldNamerw regFieldName1">RESERVED_HAW</text><path d="M200,48l32,4L264,48" class="regBitBracket regBitBracket1"></path><path d="M232,52V263.5H1038.4" class="regBitLine regBitLine1"></path></g><g><rect x="24" y="16" width="176" height="32" class="regFieldBox regFieldBoxrw"></rect><line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line><text x="112" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">IGNORED62_52</text></g><g><rect x="8" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect><text x="1040" y="288" class="regFieldName regFieldNamerw regFieldName1">XD</text><path d="M8,48l8,4L24,48" class="regBitBracket regBitBracket1"></path><path d="M16,52V283.5H1038.4" class="regBitLine regBitLine1"></path></g></svg></div><figcaption>Figure <span class="figno">3-1</span>: <span class="figtitle"><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="ness" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a></span></figcaption>
+        </pre>
+        <figure id="figure2" class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-json="{&quot;unused&quot; : &quot;reserved&quot;, &quot;register&quot; : &quot;INTEL_PTE&quot; }">
+            <!--            <a class="nv-refman" href="intel.ref">{ "unused": "reserved", "register": "INTEL_PTE"}</a>-->
+            <div class="svg hasSVG">
+                <svg version="1.1" width="1545" height="308">
+                    <g>
+                        <text x="1024" y="12" class="regBitNum">0</text>
+                        <text x="1008" y="12" class="regBitNum">1</text>
+                        <text x="992" y="12" class="regBitNum">2</text>
+                        <text x="976" y="12" class="regBitNum">3</text>
+                        <text x="960" y="12" class="regBitNum">4</text>
+                        <text x="944" y="12" class="regBitNum">5</text>
+                        <text x="928" y="12" class="regBitNum">6</text>
+                        <text x="912" y="12" class="regBitNum">7</text>
+                        <text x="896" y="12" class="regBitNum">8</text>
+                        <text x="880" y="12" class="regBitNum">9</text>
+                        <text x="864" y="12" class="regBitNum">10</text>
+                        <text x="848" y="12" class="regBitNum">11</text>
+                        <text x="832" y="12" class="regBitNum">12</text>
+                        <text x="272" y="12" class="regBitNum">47</text>
+                        <text x="256" y="12" class="regBitNum">48</text>
+                        <text x="208" y="12" class="regBitNum">51</text>
+                        <text x="192" y="12" class="regBitNum">52</text>
+                        <text x="32" y="12" class="regBitNum">62</text>
+                        <text x="16" y="12" class="regBitNum">63</text>
+                        <path d="M1032,3l0,16M1016,3l0,16M1000,3l0,16M984,3l0,16M968,3l0,16M952,3l0,16M936,3l0,16M920,3l0,16M904,3l0,16M872,3l0,16M856,3l0,16M840,3l0,16M264,3l0,16M200,3l0,16M24,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="1016" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="68" class="regFieldName regFieldNamerw regFieldName0">MUST_BE_ONE</text>
+                        <path d="M1016,48l8,4L1032,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M1024,52V63.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="1000" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="88" class="regFieldName regFieldNamerw regFieldName0">RW</text>
+                        <path d="M1000,48l8,4L1016,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M1008,52V83.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="984" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="108" class="regFieldName regFieldNamerw regFieldName1">US</text>
+                        <path d="M984,48l8,4L1000,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M992,52V103.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="968" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="128" class="regFieldName regFieldNamerw regFieldName1">PWT</text>
+                        <path d="M968,48l8,4L984,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M976,52V123.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="952" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="148" class="regFieldName regFieldNamerw regFieldName0">PCD</text>
+                        <path d="M952,48l8,4L968,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M960,52V143.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="936" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="944" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">A</text>
+                    </g>
+                    <g>
+                        <rect x="920" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="168" class="regFieldName regFieldNamerw regFieldName0">IGNORED6</text>
+                        <path d="M920,48l8,4L936,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M928,52V163.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="904" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="188" class="regFieldName regFieldNamerw regFieldName1">MUST_BE_ZERO</text>
+                        <path d="M904,48l8,4L920,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M912,52V183.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="872" y="16" width="32" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <line x1="888" y1="40" x2="888" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <text x="1040" y="208" class="regFieldName regFieldNamerw regFieldName1">IGNORED9_8</text>
+                        <path d="M872,48l16,4L904,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M888,52V203.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="856" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="228" class="regFieldName regFieldNamerw regFieldName0">EA</text>
+                        <path d="M856,48l8,4L872,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M864,52V223.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="840" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="248" class="regFieldName regFieldNamerw regFieldName0">IGNORED11</text>
+                        <path d="M840,48l8,4L856,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M848,52V243.5H1038.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="264" y="16" width="576" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <line x1="824" y1="40" x2="824" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="808" y1="40" x2="808" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="792" y1="40" x2="792" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="776" y1="40" x2="776" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="760" y1="40" x2="760" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="744" y1="40" x2="744" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="728" y1="40" x2="728" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="712" y1="40" x2="712" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="696" y1="40" x2="696" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="680" y1="40" x2="680" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="664" y1="40" x2="664" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="648" y1="40" x2="648" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="632" y1="40" x2="632" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="616" y1="40" x2="616" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="600" y1="40" x2="600" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="584" y1="40" x2="584" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="568" y1="40" x2="568" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="552" y1="40" x2="552" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="536" y1="40" x2="536" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="520" y1="40" x2="520" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="504" y1="40" x2="504" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="472" y1="40" x2="472" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="456" y1="40" x2="456" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="440" y1="40" x2="440" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="424" y1="40" x2="424" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="408" y1="40" x2="408" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="392" y1="40" x2="392" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="376" y1="40" x2="376" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="360" y1="40" x2="360" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="344" y1="40" x2="344" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="328" y1="40" x2="328" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="312" y1="40" x2="312" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="296" y1="40" x2="296" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="280" y1="40" x2="280" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <text x="552" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">FRAME_4K</text>
+                    </g>
+                    <g>
+                        <rect x="200" y="16" width="64" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <text x="1040" y="268" class="regFieldName regFieldNamerw regFieldName1">RESERVED_HAW</text>
+                        <path d="M200,48l32,4L264,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M232,52V263.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="24" y="16" width="176" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <text x="112" y="32" class="regFieldName regFieldNamerw regFieldNameInternal regFieldNameInternalrw">IGNORED62_52</text>
+                    </g>
+                    <g>
+                        <rect x="8" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="1040" y="288" class="regFieldName regFieldNamerw regFieldName1">XD</text>
+                        <path d="M8,48l8,4L24,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M16,52V283.5H1038.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                </svg>
+            </div>
+            <figcaption>Figure
+                <span class="figno">3-1</span>:
+                <span class="figtitle">
+                    <a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="nv-refman" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a>
+                </span>
+            </figcaption>
         </figure>
     </section>
+    <section id="pcisig-style-registers">
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_pcisig-style-registers">
+            <span class="secno">4.</span>PCISIG style Registers</h2>
+        <figure class="register pcisig_reg" data-table="#reg1" id="fig-pcisig-style-register-1">
+            <div class="svg hasSVG">
+                <svg version="1.1" width="1545" height="248">
+                    <g>
+                        <text x="512" y="12" class="regBitNum">0</text>
+                        <text x="496" y="12" class="regBitNum">1</text>
+                        <text x="480" y="12" class="regBitNum">2</text>
+                        <text x="464" y="12" class="regBitNum">3</text>
+                        <text x="448" y="12" class="regBitNum">4</text>
+                        <text x="432" y="12" class="regBitNum">5</text>
+                        <text x="416" y="12" class="regBitNum">6</text>
+                        <text x="400" y="12" class="regBitNum">7</text>
+                        <text x="384" y="12" class="regBitNum">8</text>
+                        <text x="368" y="12" class="regBitNum">9</text>
+                        <text x="288" y="12" class="regBitNum">14</text>
+                        <text x="352" y="12" class="regBitNum">10</text>
+                        <text x="304" y="12" class="regBitNum">13</text>
+                        <text x="272" y="12" class="regBitNum">15</text>
+                        <text x="16" y="12" class="regBitNum">31</text>
+                        <path d="M520,3l0,16M504,3l0,16M472,3l0,16M456,3l0,16M440,3l0,16M424,3l0,16M408,3l0,16M392,3l0,16M376,3l0,16M296,3l0,16M360,3l0,16M280,3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="504" y="16" width="16" height="32" class="regFieldBox regFieldBoxro"></rect>
+                        <text x="512" y="32" class="regFieldName regFieldNamero regFieldNameInternal regFieldNameInternalro">Z</text>
+                    </g>
+                    <g>
+                        <rect x="472" y="16" width="32" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <line x1="488" y1="40" x2="488" y2="48" class="regFieldBoxInternal regFieldBoxInternalrw"></line>
+                        <text x="528" y="68" class="regFieldName regFieldNamerw regFieldName0">bit1_2</text>
+                        <path d="M472,48l16,4L504,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M488,52V63.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="456" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="88" class="regFieldName regFieldNamerw regFieldName0">bit3</text>
+                        <path d="M456,48l8,4L472,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M464,52V83.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="440" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="108" class="regFieldName regFieldNamerw regFieldName1">Ab</text>
+                        <path d="M440,48l8,4L456,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M448,52V103.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="424" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="128" class="regFieldName regFieldNamerw regFieldName1">bit5</text>
+                        <path d="M424,48l8,4L440,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M432,52V123.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="408" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="148" class="regFieldName regFieldNamerw regFieldName0">bit 6a</text>
+                        <path d="M408,48l8,4L424,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M416,52V143.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="392" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="168" class="regFieldName regFieldNamerw regFieldName0">bit7</text>
+                        <path d="M392,48l8,4L408,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M400,52V163.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="376" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="188" class="regFieldName regFieldNamerw regFieldName1">bit8</text>
+                        <path d="M376,48l8,4L392,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M384,52V183.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="360" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="208" class="regFieldName regFieldNamerw regFieldName1">bit9</text>
+                        <path d="M360,48l8,4L376,48" class="regBitBracket regBitBracket1" fill="none"></path>
+                        <path d="M368,52V203.5H526.4" class="regBitLine regBitLine1" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="296" y="16" width="64" height="32" class="regFieldBox regFieldBoxrsvdp"></rect>
+                        <line x1="344" y1="40" x2="344" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="328" y1="40" x2="328" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="312" y1="40" x2="312" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <text x="328" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">RsvdP</text>
+                    </g>
+                    <g>
+                        <rect x="280" y="16" width="16" height="32" class="regFieldBox regFieldBoxrw"></rect>
+                        <text x="528" y="228" class="regFieldName regFieldNamerw regFieldName0">bit 14a</text>
+                        <path d="M280,48l8,4L296,48" class="regBitBracket regBitBracket0" fill="none"></path>
+                        <path d="M288,52V223.5H526.4" class="regBitLine regBitLine0" fill="none"></path>
+                    </g>
+                    <g>
+                        <rect x="8" y="16" width="272" height="32" class="regFieldBox regFieldBoxrsvdp"></rect>
+                        <line x1="264" y1="40" x2="264" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="248" y1="40" x2="248" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="232" y1="40" x2="232" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="216" y1="40" x2="216" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="200" y1="40" x2="200" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="184" y1="40" x2="184" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="168" y1="40" x2="168" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="152" y1="40" x2="152" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="136" y1="40" x2="136" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="120" y1="40" x2="120" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="104" y1="40" x2="104" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="88" y1="40" x2="88" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="72" y1="40" x2="72" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="56" y1="40" x2="56" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="40" y1="40" x2="40" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <line x1="24" y1="40" x2="24" y2="48" class="regFieldBoxInternal regFieldBoxInternalrsvdp"></line>
+                        <text x="144" y="32" class="regFieldName regFieldNamersvdp regFieldNameInternal regFieldNameInternalrsvdp">RsvdP</text>
+                    </g>
+                </svg>
+            </div>
+            <figcaption>Figure
+                <span class="figno">4-1</span>:
+                <span class="figtitle">PCISIG-Style Register #1</span>
+            </figcaption>
+        </figure>
+        <table class="pcisig_reg" id="reg1">
+            <caption>Table
+                <span class="tblno">4-1</span>:
+                <span class="tbltitle">PCISIG-Style Register #1</span>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Bits</th>
+                    <th>Description</th>
+                    <th>Attributes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td>
+                        <p>
+                            <code>Z</code>
+                            – This field is a very special field.
+                        </p>
+                        <p>This is the middle paragraph.</p>
+                        <p>This is the last paragraph.</p>
+                    </td>
+                    <td>RO</td>
+                </tr>
+                <tr>
+                    <td>2:1</td>
+                    <td>
+                        <p>
+                            <code>bit1_2</code>
+                            –
+                        </p>
+                    </td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>bit3 – three</td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <p>
+                            <code>Ab</code>
+                            – four
+                        </p>
+                    </td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>bit5– five</td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>
+                        <p>
+                            <code>bit 6a</code>
+                            – six a
+                        </p>
+                        <p>
+                            <code>bit 6b</code>
+                            – six b
+                        </p>
+                        <p>bit 6c six c</p>
+                    </td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>bit7</td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>bit8 eight</td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>
+                        <p>bit9</p>
+                    </td>
+                    <td>RW</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>
+                        <code>bit 14a</code>
+                        <table id="tbl-first-second-third-second-row">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code>first</code>
+                                    </td>
+                                    <td>
+                                        <code>second</code>
+                                    </td>
+                                    <td>
+                                        <code>third</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>second row</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <code>fourth</code>
+                        </p>
+                    </td>
+                    <td>RW</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
     <section id="name-clashes-after-and-deep-stuff">
-      <!--OddPage--><h2 aria-level="1" role="heading" id="h2_name-clashes-after-and-deep-stuff"><span class="secno">4. </span>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/">deep</a> stuff</span></h2>
-      <p> Something <em class="rfc2119" title="MUST">MUST</em> happen. </p>
-      <div class="issue"><div class="issue-title" aria-level="2" role="heading" id="h_issue_1"><span>Issue 1</span>: A real problem</div><p class=""> This is a problem </p></div>
-      <div class="issue atrisk"><div class="issue-title" aria-level="2" role="heading" id="h_issue_2"><span>Feature at Risk 2</span>: A REAL problem</div><p class="atrisk"> This is a problem </p></div>
-      <p class="note" title="About this"> Just a note </p>
-      <p class="impnote" title="Imp Note Test"> Implementation a note </p>
-      <p> Problems. <!-- <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_name-clashes-after-and-deep-stuff">
+            <span class="secno">5.</span>Name
+            <a href="http://berjon.com/">clashes</a>after
+            <span>and
+                <a href="http://w3.org/">deep</a>stuff</span>
+        </h2>
+        <p>Something
+            <em class="rfc2119" title="MUST">MUST</em>happen.</p>
+        <div class="issue">
+            <div class="issue-title" aria-level="2" role="heading" id="h_issue_1">
+                <span>Issue 1</span>: A real problem</div>
+            <p class="">This is a problem</p>
+        </div>
+        <div class="issue atrisk">
+            <div class="issue-title" aria-level="2" role="heading" id="h_issue_2">
+                <span>Feature at Risk 2</span>: A REAL problem</div>
+            <p class="atrisk">This is a problem</p>
+        </div>
+        <p class="note" title="About this">Just a note</p>
+        <p class="impnote" title="Imp Note Test">Implementation a note</p>
+        <p>Problems.
+            <!-- <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
@@ -730,28 +1467,162 @@ table.exceptions table {
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
 -->
-      </p>
+        </p>
     </section>
     <section id="clash-here">
-      <!--OddPage--><h2 aria-level="1" role="heading" id="h2_clash-here"><span class="secno">5. </span>Clash here</h2>
-      <pre class="idl"><span class="idlInterface" id="idl-def-Dahut">interface <span class="idlInterfaceID">Dahut</span> {
-<span class="idlMethod">    <span class="idlMethType">void</span> <span class="idlMethName"><a href="#widl-Dahut-other-void">other</a></span> ();</span>
-};</span></pre><section id="methods"><h3 aria-level="2" role="heading" id="h3_methods"><span class="secno">5.1 </span>Methods</h3><dl class="methods"><dt id="widl-Dahut-other-void"><code>other</code></dt><dd> Partial would be better. <div><em>No parameters.</em></div><div><em>Return type: </em><code>void</code></div></dd></dl></section>
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_clash-here">
+            <span class="secno">6.</span>Clash here</h2>
+        <pre class="idl">
+            <span class="idlInterface" id="idl-def-Dahut">interface
+                <span class="idlInterfaceID">Dahut</span>{
+                <span class="idlMethod">
+                    <span class="idlMethType">void</span>
+                    <span class="idlMethName">
+                        <a href="#widl-Dahut-other-void">other</a>
+                    </span>();</span>
+                };</span>
+        </pre>
+        <section id="methods">
+            <h3 aria-level="2" role="heading" id="h3_methods">
+                <span class="secno">6.1</span>Methods</h3>
+            <dl class="methods">
+                <dt id="widl-Dahut-other-void">
+                    <code>other</code>
+                </dt>
+                <dd>Partial would be better.
+                    <div>
+                        <em>No parameters.</em>
+                    </div>
+                    <div>
+                        <em>Return type:</em>
+                        <code>void</code>
+                    </div>
+                </dd>
+            </dl>
+        </section>
     </section>
     <section id="type-unions">
-      <!--OddPage--><h2 aria-level="1" role="heading" id="h2_type-unions"><span class="secno">6. </span>Type Unions</h2>
-      <section id="two">
-        <h3 aria-level="2" role="heading" id="h3_two"><span class="secno">6.1 </span>Two</h3>
-        <pre class="idl"><span class="idlInterface" id="idl-def-MutableCapabilities">interface <span class="idlInterfaceID">MutableCapabilities</span> : <span class="idlSuperclass">Capabilities</span> {
-<span class="idlMethod">    <span class="idlMethType">(DOMString or sequence&lt;long&gt;)</span> <span class="idlMethName"><a href="#widl-MutableCapabilities-bar-DOMString-sequence-long">bar</a></span> ();</span>
-<span class="idlMethod">    <span class="idlMethType">void</span>                          <span class="idlMethName"><a href="#widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1">foo</a></span> (<span class="idlParam"><span class="idlParamType">(unsigned long or sequence&lt;unsigned long&gt;)</span> <span class="idlParamName">value1</span></span>);</span>
-};</span></pre><section id="methods-1"><h4 aria-level="3" role="heading" id="h4_methods-1"><span class="secno">6.1.1 </span>Methods</h4><dl class="methods"><dt id="widl-MutableCapabilities-bar-DOMString-sequence-long"><code>bar</code></dt><dd>without default<div><em>No parameters.</em></div><div><em>Return type: </em><code>(DOMString or sequence&lt;long&gt;)</code></div></dd><dt id="widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1"><code>foo</code></dt><dd>without default<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">value1</td><td class="prmType"><code>(unsigned long or sequence&lt;unsigned long&gt;)</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>void</code></div></dd></dl></section>
-      </section>
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_type-unions">
+            <span class="secno">7.</span>Type Unions</h2>
+        <section id="two">
+            <h3 aria-level="2" role="heading" id="h3_two">
+                <span class="secno">7.1</span>Two</h3>
+            <pre class="idl">
+                <span class="idlInterface" id="idl-def-MutableCapabilities">interface
+                    <span class="idlInterfaceID">MutableCapabilities</span>:
+                    <span class="idlSuperclass">Capabilities</span>{
+                    <span class="idlMethod">
+                        <span class="idlMethType">(DOMString or sequence&lt;long&gt;)</span>
+                        <span class="idlMethName">
+                            <a href="#widl-MutableCapabilities-bar-DOMString-sequence-long">bar</a>
+                        </span>();</span>
+                    <span class="idlMethod">
+                        <span class="idlMethType">void</span>
+                        <span class="idlMethName">
+                            <a href="#widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1">foo</a>
+                        </span>(
+                        <span class="idlParam">
+                            <span class="idlParamType">(unsigned long or sequence&lt;unsigned long&gt;)</span>
+                            <span class="idlParamName">value1</span>
+                        </span>);</span>
+                    };</span>
+            </pre>
+            <section id="methods-1">
+                <h4 aria-level="3" role="heading" id="h4_methods-1">
+                    <span class="secno">7.1.1</span>Methods</h4>
+                <dl class="methods">
+                    <dt id="widl-MutableCapabilities-bar-DOMString-sequence-long">
+                        <code>bar</code>
+                    </dt>
+                    <dd>without default
+                        <div>
+                            <em>No parameters.</em>
+                        </div>
+                        <div>
+                            <em>Return type:</em>
+                            <code>(DOMString or sequence&lt;long&gt;)</code>
+                        </div>
+                    </dd>
+                    <dt id="widl-MutableCapabilities-foo-void-unsigned-long-sequence-unsigned-long--value1">
+                        <code>foo</code>
+                    </dt>
+                    <dd>without default
+                        <table class="parameters">
+                            <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Nullable</th>
+                                    <th>Optional</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td class="prmName">value1</td>
+                                    <td class="prmType">
+                                        <code>(unsigned long or sequence&lt;unsigned long&gt;)</code>
+                                    </td>
+                                    <td class="prmNullFalse">
+                                        <span role="img" aria-label="False">✘</span>
+                                    </td>
+                                    <td class="prmOptFalse">
+                                        <span role="img" aria-label="False">✘</span>
+                                    </td>
+                                    <td class="prmDesc"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <em>Return type:</em>
+                            <code>void</code>
+                        </div>
+                    </dd>
+                </dl>
+            </section>
+        </section>
     </section>
-  
 
-<section id="references" class="appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><!--OddPage--><h2 aria-level="1" role="heading" id="h2_references"><span class="secno">A. </span>References</h2><section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography" about=""><dt id="bib-REX">[REX]</dt><dd rel="dcterms:requires"><strong>Overridden!</strong>
-</dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">A.2 </span>Informative references</h3><dl class="bibliography" about=""><dt id="bib-DOM4">[DOM4]</dt><dd rel="dcterms:references">Anne van Kesteren; Aryeh Gregor; Ms2ger; Alex Russell; Robin Berjon. <a href="http://www.w3.org/TR/dom/"><cite>W3C DOM4</cite></a>. 7 November 2013. W3C Working Draft. URL: <a href="http://www.w3.org/TR/dom/">http://www.w3.org/TR/dom/</a>
-</dd><dt id="bib-MEMES">[MEMES]</dt><dd rel="dcterms:references"><a href="http://w3cmemes.tumblr.com/">W3C Memes</a>
-</dd><dt id="bib-XML10">[XML10]</dt><dd rel="dcterms:references">Tim Bray; Jean Paoli; Michael Sperberg-McQueen; Eve Maler; François Yergeau et al. <a href="http://www.w3.org/TR/xml"><cite>Extensible Markup Language (XML) 1.0 (Fifth Edition)</cite></a>. 26 November 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a>
-</dd></dl></section></section></body></html>
+
+    <section id="references" class="appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        <!--OddPage-->
+        <h2 aria-level="1" role="heading" id="h2_references">
+            <span class="secno">A.</span>References</h2>
+        <section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+            <h3 aria-level="2" role="heading" id="h3_normative-references">
+                <span class="secno">A.1</span>Normative references</h3>
+            <dl class="bibliography" about="">
+                <dt id="bib-REX">[REX]</dt>
+                <dd rel="dcterms:requires">
+                    <strong>Overridden!</strong>
+                </dd>
+            </dl>
+        </section>
+        <section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+            <h3 aria-level="2" role="heading" id="h3_informative-references">
+                <span class="secno">A.2</span>Informative references</h3>
+            <dl class="bibliography" about="">
+                <dt id="bib-DOM4">[DOM4]</dt>
+                <dd rel="dcterms:references">Anne van Kesteren; Aryeh Gregor; Ms2ger; Alex Russell; Robin Berjon.
+                    <a href="http://www.w3.org/TR/dom/">
+                        <cite>W3C DOM4</cite>
+                    </a>. 7 November 2013. W3C Working Draft. URL:
+                    <a href="http://www.w3.org/TR/dom/">http://www.w3.org/TR/dom/</a>
+                </dd>
+                <dt id="bib-MEMES">[MEMES]</dt>
+                <dd rel="dcterms:references">
+                    <a href="http://w3cmemes.tumblr.com/">W3C Memes</a>
+                </dd>
+                <dt id="bib-XML10">[XML10]</dt>
+                <dd rel="dcterms:references">Tim Bray; Jean Paoli; Michael Sperberg-McQueen; Eve Maler; François Yergeau et al.
+                    <a href="http://www.w3.org/TR/xml">
+                        <cite>Extensible Markup Language (XML) 1.0 (Fifth Edition)</cite>
+                    </a>. 26 November 2008. W3C Recommendation. URL:
+                    <a href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a>
+                </dd>
+            </dl>
+        </section>
+    </section>
+</body>
+
+</html>
