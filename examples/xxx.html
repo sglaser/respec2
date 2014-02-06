@@ -110,6 +110,30 @@ figure pre.json {
     display: inherit;
 }
 
+span.respec-error {
+    color: red;
+    font-size: 12pt;
+    font-weight: bold;
+    font-family: monospace;
+}
+    
+a.signal.internalDFN,
+dfn.signal {
+    color: blue;
+    font-size: 12pt;
+    font-family: monospace;
+    font-style: normal;
+    font-weight:  bold;
+}
+
+a.pin.internalDFN,
+dfn.pin {
+    color: green;
+    font-size: 12pt;
+    font-family: monospace;
+    font-style: normal;
+    font-weight: bold;
+}
     
 </style>
   </head>
@@ -140,8 +164,8 @@ figure pre.json {
     <dl>
         <dt><dfn title="tErM1">Term1</dfn></dt>
         <dd>This is the definition for Term #1. It uses no markup.</dd>
-        <dt><dfn>Term2</dfn></dt>
-        <dd>This is the definition for Term #2. It uses &lt;dfn&gt;.</dd>
+        <dt><dfn class="pin">Term 2</dfn></dt>
+        <dd>This is the definition for Term #2. It uses &lt;dfn class="pin"&gt;Term 2&lt;/dnf&gt;.</dd>
         <dt><dfn><abbr title="Term number 3">TERM3</abbr></dfn></dt>
         <dd>This is the definition for Term #3. It uses <span class="highlight">&lt;dfn&gt;&lt;abbr title="Term number 3"&gt;TERM3&lt;abbr&gt;&lt;/dfn&gt;</span></dd>
         <dt><dfn><acronym title="Term4">Term number 4</acronym></dfn></dt>
@@ -154,24 +178,42 @@ figure pre.json {
         <dd>This is the definition for Term<sub>7</sub>. It <span class="highlight">&lt;dfn&gt;&lt;abbr&gt;Term&lt;sub&gt;7&lt;/sub&gt;&lt;/abbr&gt;&lt;/dfn&gt;.</span></dd>
         <dt><dfn><acronym title="Term number 8">Term<sub>8</sub></acronym></dfn></dt>
         <dd>This is the definition for Term<sub>8</sub>. It <span class="highlight">&lt;dfn&gt;&lt;acronym title="Term number 8"&gt;Term&lt;sub&gt;8&lt;/sub&gt;&lt;/acronym&gt;&lt;/dfn&gt;.</span></dd>
-    </dl>
+        <dt><dfn class="pin">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="pin"&gt;.</dd>
+        <dt><dfn class="signal">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="signal"&gt;.</dd>
+        <dt><dfn class="term">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+        <dt><dfn class="term">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+        <dt><dfn class="term">Term 9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+ </dl>
         References:
-        <ul><li>Term1 <a>Term1</a>.</li>
-            <li>tErM1 <a>tErM1</a>.</li>
-            <li>Term2 <a>Term2</a>.</li>
-            <li>TERM3 <a>TERM3</a>.</li>
-            <li>term number 3 <a>term number 3</a>.</li>
-            <li>title="term number 3" <a title="term number 3">This is term number 3</a>.</li>
-            <li>TERM3 <a title="term number 3"></a>.</li>
-            <li>Term number 4 <a>Term<sub>4</sub></a>.</li>
-            <li>D3cold <a>D3cold</a>.</li>
-            <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a>.</li>
-            <li>D3<sub>cold</sub> <a title="d3cold">D3<sub>cold</sub></a>.</li>
+        <ul><li>Term1 <a>Term1</a></li>
+            <li>tErM1 <a>tErM1</a></li>
+            <li>Term 2 <a>Term 2</a></li>
+            <li>TERM3 <a>TERM3</a></li>
+            <li>term number 3 <a>term number 3</a></li>
+            <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
+            <li>TERM3 <a title="term number 3">xxx</a></li>
+            <li>Term number 4 <a>Term<sub>4</sub></a></li>
             <li>D3cold <a>D3cold</a></li>
-            <li>Term<sub>6</sub> <a>Term<sub>6</sub></a>.</li>
-            <li>Term<sub>7</sub> <a>Term<sub>7</sub></a>.</li>
+            <li>d3cold <a>d3cold</a></li>
+            <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
+            <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
+            <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
+            <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
             <li>term number 8 <a>term number 8</a></li>
-      </ul>
+            <li>Term9 class="pin" <a class="pin">Term9</a></li>
+            <li>Term9 class="signal" <a class="signal">Term9</a></li>
+            <li>Term9 class="term" <a class="term">Term9</a></li>
+            <li>Term9 no class (ambiguous) <a>Term9</a></li>
+            <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
+            <li>Term 9 (with space before the '9') <a>Term 9</a></li>
+            <li>first <a>first</a></li>
+            <li>Z <a>z</a></li>
+       </ul>
     </section>
       <section>
     <h2>MathML Test</h2>
@@ -428,7 +470,7 @@ figure pre.json {
                 <td>0</td>
                 <td>
                     <p>
-                        <code>Z</code>
+                        <dfn class="field">Z</dfn>
                         &ndash; This field is a very special field.
                     </p>
                     <p>This is the middle paragraph.</p>
@@ -440,7 +482,7 @@ figure pre.json {
                 <td>2:1</td>
                 <td>
                     <p>
-                        <code>bit1_2</code>
+                        <dfn class="field">bit1_2</dfn>
                         &ndash;
                     </p>
                 </td>
@@ -455,7 +497,7 @@ figure pre.json {
                 <td>4</td>
                 <td>
                     <p>
-                        <code>Ab</code>
+                        <dfn class="field">Ab</dfn>
                         &ndash; four
                     </p>
                 </td>
@@ -470,11 +512,11 @@ figure pre.json {
                 <td>6</td>
                 <td>
                     <p>
-                        <code>bit 6a</code>
+                        <dfn class="field">bit 6a</dfn>
                         &ndash; six a
                     </p>
                     <p>
-                        <code>bit 6b</code>
+                        <dfn class="field">bit 6b</dfn>
                         &ndash; six b
                     </p>
                     <p>bit 6c six c</p>
@@ -501,17 +543,17 @@ figure pre.json {
             <tr>
                 <td>14</td>
                 <td>
-                    <code>bit 14a</code>
+                    <dfn class="field">bit 14a</dfn>
                     <table>
                         <tr>
                             <td>
-                                <code>first</code>
+                                <dfn class="field">first</dfn>
                             </td>
                             <td>
-                                <code>second</code>
+                                <dfn class="field">second</dfn>
                             </td>
                             <td>
-                                <code>third</code>
+                                <dfn class="field">third</dfn>
                             </td>
                         </tr>
                         <tr>
@@ -519,7 +561,7 @@ figure pre.json {
                         </tr>
                     </table>
                     <p>
-                        <code>fourth</code>
+                        <dfn class="field">fourth</dfn>
                     </p>
                 </td>
                 <td>RW</td>
