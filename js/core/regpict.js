@@ -268,7 +268,8 @@ define(
                 }
             }
             svg.configure({
-                height: "" + nextBitLine
+                height: "" + nextBitLine,
+                width: "100%"
             });
         }
 
