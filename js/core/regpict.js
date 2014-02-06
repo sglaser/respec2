@@ -307,7 +307,7 @@ define(
                                         msb = lsb; lsb = Number(match[1]);
                                     }
                                 }
-                                var fieldName = $("code:first", desc);
+                                var fieldName = $("code:first, dfn:first", desc);
                                 if (fieldName.length === 0) {
                                     fieldName = /^\s*(\w+)/.exec(desc.text())[1];
                                 } else {
