@@ -40,6 +40,7 @@ define([
         ,   "core/biblio"
         ,   "core/rdfa"
         ,   "core/webidl-oldschool"
+        ,   "core/regpict"
         ,   "core/dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
@@ -49,7 +50,6 @@ define([
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
-        ,   "core/regpict"
         ],
         function (domReady, runner, ui) {
             var args = Array.prototype.slice.call(arguments);

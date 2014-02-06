@@ -24,6 +24,13 @@ define(
                     conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
                     conf.definitionHTML[tag + "-" + title] = $(this).html();
                 });
+                $("svg text[id]").each(function () {
+                    //console.log("svg text[id] matches " + this.outerHTML);
+                    var title = $(this).dfnTitle();
+                    if (!conf.definitionMap["field-" + title]) {
+                        conf.definitionMap["field-" + title] = $(this).attr("id");
+                    }
+                });
                 $("a:not([href])").each(function () {
                     var $ant = $(this);
                     if ($ant.hasClass("externalDFN")) return;
@@ -52,7 +59,7 @@ define(
                         } else {
                             $ant.attr("href", "#" + conf.definitionMap[tag.split("-")[0] + "-" + title]);
                             var temp = "Ambiguous reference to '" + tag + "-" + title + "'";
-                            msg.pub("error", temp);
+                            msg.pub("warn", temp);
                             $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
                         }
 

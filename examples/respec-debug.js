@@ -8456,430 +8456,6 @@ window.simpleNode.prototype = {
     }
 };
 
-
-// Module core/dfn
-// Handles the processing and linking of <dfn> and <a> elements.
-define(
-    'core/dfn',[],
-    function () {
-        var dfnClass = ["dfn", "pin", "signal", "term", "field", "register", "state", "value", "parameter", "argument"];
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/dfn");
-                doc.normalize();
-                if (!conf.definitionMap) conf.definitionMap = {};
-                if (!conf.definitionHTML) conf.definitionHTML = {};
-                $("dfn").each(function () {
-                    var tag = dfnClass[0];  // default "dfn"
-                    for (var i = 1; i < dfnClass.length; i++) {
-                        if ($(this).hasClass(dfnClass[i])) tag = dfnClass[i];
-                    }
-                    var title = $(this).dfnTitle();
-                    if (conf.definitionMap[tag + "-" + title]) {
-                        msg.pub("error", "Duplicate definition '" + tag + "-" + title + "'");
-                        $(this).append("<span class=\"respec-error\"> Duplicate definition of '" + tag + "-" + title + "'</span>");
-                    }
-                    conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
-                    conf.definitionHTML[tag + "-" + title] = $(this).html();
-                });
-                $("a:not([href])").each(function () {
-                    var $ant = $(this);
-                    if ($ant.hasClass("externalDFN")) return;
-                    var title = $ant.dfnTitle();
-                    var tag = null;
-                    for (var i = 0; i < dfnClass.length; i++) {
-                        if (conf.definitionMap[dfnClass[i] + "-" + title]) {
-                            if ($ant.hasClass(dfnClass[i])) {
-                                tag = dfnClass[i];
-                            }
-                            else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
-                                if (tag == null) {
-                                    tag = dfnClass[i];
-                                }
-                                else if (!$ant.hasClass(tag)) {
-                                    tag = tag + "-" + dfnClass[i];
-                                }
-                            }
-                        }
-                    }
-                    if (tag != null) {
-                        if (conf.definitionMap[tag + "-" + title]) {
-                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
-                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
-                                $ant.html(conf.definitionHTML[tag + "-" + title]);
-                        } else {
-                            $ant.attr("href", "#" + conf.definitionMap[tag.split("-")[0] + "-" + title]);
-                            var temp = "Ambiguous reference to '" + tag + "-" + title + "'";
-                            msg.pub("error", temp);
-                            $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
-                        }
-
-                    }
-                    else {
-                        // ignore WebIDL
-                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
-                        }
-                        $ant.replaceWith($ant.contents());
-                    }
-                });
-                msg.pub("end", "core/dfn");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/fix-headers
-// Make sure that all h1-h6 headers (that are first direct children of sections) are actually
-// numbered at the right depth level. This makes it possible to just use any of them (conventionally
-// h2) with the knowledge that the proper depth level will be used
-
-define(
-    'core/fix-headers',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/fix-headers");
-                var $secs = $("section:not(.introductory)", doc)
-                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
-                $secs.each(function () {
-                    var depth = $(this).parents("section").length + 1;
-                    if (depth > 6) depth = 6;
-                    var h = "h" + depth;
-                    if (this.localName.toLowerCase() !== h) $(this).renameElement(h);
-                });
-                msg.pub("end", "core/fix-headers");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/structure
-//  Handles producing the ToC and numbering sections across the document.
-
-// CONFIGURATION:
-//  - noTOC: if set to true, no TOC is generated and sections are not numbered
-//  - tocIntroductory: if set to true, the introductory material is listed in the TOC
-//  - lang: can change the generated text (supported: en, fr)
-//  - maxTocLevel: only generate a TOC so many levels deep
-
-define(
-    'core/structure',["core/utils"],
-    function (utils) {
-        var i18n = {
-                    en: { toc: "Table of Contents" },
-                    fr: { toc: "Sommaire" }
-                }
-        ,   secMap = {}
-        ,   appendixMode = false
-        ,   lastNonAppendix = 0
-        ,   makeTOCAtLevel = function ($parent, doc, current, level, conf) {
-                var $secs = $parent.children(conf.tocIntroductory ? "section" : "section:not(.introductory)");
-
-                if ($secs.length === 0) return null;
-                var $ul = $("<ul class='toc'></ul>");
-                for (var i = 0; i < $secs.length; i++) {
-                    var $sec = $($secs[i], doc)
-                    ,   isIntro = $sec.hasClass("introductory")
-                    ;
-                    if (!$sec.children().length) continue;
-                    var h = $sec.children()[0]
-                    ,   ln = h.localName.toLowerCase();
-                    if (ln !== "h2" && ln !== "h3" && ln !== "h4" && ln !== "h5" && ln !== "h6") continue;
-                    var title = h.textContent
-                    ,   $kidsHolder = $("<div></div>").append($(h).contents().clone())
-                    ;
-                    $kidsHolder.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
-                    $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
-                    var id = $sec.makeID(null, title);
-                    
-                    if (!isIntro) current[current.length - 1]++;
-                    var secnos = current.slice();
-                    if ($sec.hasClass("appendix") && current.length === 1 && !appendixMode) {
-                        lastNonAppendix = current[0];
-                        appendixMode = true;
-                    }
-                    if (appendixMode) secnos[0] = utils.appendixMap(current[0] - lastNonAppendix);
-                    var secno = secnos.join(".")
-                    ,   isTopLevel = secnos.length == 1;
-                    if (isTopLevel) {
-                        secno = secno + ".";
-                        // if this is a top level item, insert
-                        // an OddPage comment so html2ps will correctly
-                        // paginate the output
-                        $(h).before(document.createComment('OddPage'));
-                    }
-                    var $span = $("<span class='secno'></span>").text(secno + " ");
-                    if (!isIntro) $(h).prepend($span);
-                    secMap[id] = (isIntro ? "" : "<span class='secno'>" + secno + "</span> ") +
-                                "<span class='sec-title'>" + title + "</span>";
-
-                    var $a = $("<a/>").attr({ href: "#" + id, 'class' : 'tocxref' })
-                                      .append(isIntro ? "" : $span.clone())
-                                      .append($kidsHolder.contents());
-                    var $item = $("<li class='tocline'/>").append($a);
-                    if (conf.maxTocLevel == 0 || level <= conf.maxTocLevel) {
-                    	$ul.append($item);
-                    }
-                    current.push(0);
-                    var $sub = makeTOCAtLevel($sec, doc, current, level + 1, conf);
-                    if ($sub) $item.append($sub);
-                    current.pop();
-                }
-                return $ul;
-            }
-        ;
-        
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/structure");
-                if (!conf.tocIntroductory) conf.tocIntroductory = false;
-                if (!conf.maxTocLevel) conf.maxTocLevel = 0;
-                var $secs = $("section:not(.introductory)", doc)
-                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first")
-                ,   finish = function () {
-                        msg.pub("end", "core/structure");
-                        cb();
-                    }
-                ;
-                if (!$secs.length) return finish();
-                $secs.each(function () {
-                    var depth = $(this).parents("section").length + 1;
-                    if (depth > 6) depth = 6;
-                    var h = "h" + depth;
-                    if (this.localName.toLowerCase() != h) $(this).renameElement(h);
-                });
-
-                // makeTOC
-                if (!conf.noTOC) {
-                    var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
-                    if (!$ul) return;
-                    var $sec = $("<section id='toc'/>").append("<h2 class='introductory'>" + i18n[conf.lang || "en"].toc + "</h2>")
-                                                       .append($ul);
-                    var $ref = $("#toc", doc), replace = false;
-                    if ($ref.length) replace = true;
-                    if (!$ref.length) $ref = $("#sotd", doc);
-                    if (!$ref.length) $ref = $("#abstract", doc);
-                    replace ? $ref.replaceWith($sec) : $ref.after($sec);
-                }
-
-                // Update all anchors with empty content that reference a section ID
-                $("a[href^='#']:not(.tocxref)", doc).each(function () {
-                    var $a = $(this);
-                    if ($a.html() !== "") return;
-                    var id = $a.attr("href").slice(1);
-                    if (secMap[id]) {
-                        $a.addClass('sec-ref');
-                        $a.html(($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
-                    }
-                });
-
-                finish();
-            }
-        };
-    }
-);
-
-
-// Module w3c/informative
-// Mark specific sections as informative, based on CSS
-
-define(
-    'w3c/informative',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/informative");
-                $("section.informative").find("> h2:first, > h3:first, > h4:first, > h5:first, > h6:first")
-                                        .after("<p><em>This section is non-normative.</em></p>");
-                msg.pub("end", "core/informative");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/id-headers
-// All headings are expected to have an ID, unless their immediate container has one.
-// This is currently in core though it comes from a W3C rule. It may move in the future.
-
-define(
-    'core/id-headers',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/id-headers");
-                $("h2, h3, h4, h5, h6").each(function () {
-                    var $h = $(this);
-                    if (!$h.attr("id")) {
-                        if ($h.parent("section").attr("id") && $h.prev().length === 0) return;
-                        $h.makeID();
-                    }
-                });
-                msg.pub("end", "core/id-headers");
-                cb();
-            }
-        };
-    }
-);
-
-// Module w3c/aria
-// Adds wai-aria landmarks and roles to entire document.
-// Introduced by Shane McCarron (shane@aptest.com) from the W3C PFWG
-
-define(
-    'w3c/aria',["core/utils"], // load this to be sure that the jQuery extensions are loaded
-    function (utils) {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "w3c/aria");
-                // ensure all headers after sections have
-                // headings and aria-level
-                var $secs = $("section", doc)
-                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
-                $secs.each(function(i, item) {
-                    var $item = $(item)
-                    ,   resourceID = $item.parent('section[id]').attr('id')
-                    ,   level = $item.parents("section").length ;
-
-                    $item.attr('aria-level', level);
-                    $item.attr('role', 'heading') ;
-                    if (!$item.attr("id")) {
-                        $item.attr('id', $item.prop('tagName').toLowerCase() + '_' + resourceID) ;
-                    }
-                });
-                // ensure head section is labeled
-                $('body', doc).attr('role', 'document') ;
-                $('body', doc).attr('id', 'respecDocument') ;
-                $('div.head', doc).attr('role', 'contentinfo') ;
-                $('div.head', doc).attr('id', 'respecHeader') ;
-                if (!conf.noTOC) {
-                    // ensure toc is labeled
-                    var toc = $('section#toc', doc)
-                                  .find("ul:first");
-                    toc.attr('role', 'directory') ;
-                    if (!toc.attr("id")) {
-                        toc.attr('id', 'respecContents') ;
-                    }
-                }
-		// ensure Table of Figures (tof) is labeled
-                var tof = $('section#tof', doc)
-                               .find("ul:first");
-                if (tof.length > 0) {
-		    tof.attr('role', 'directory') ;
-                    if (!tof.attr("id")) {
-                        tof.attr('id', 'respecFigures') ;
-                    }
-                }
-                // ensure Table of Tables (tot) is labeled
-                var tot = $('section#tot', doc)
-                    	       .find("ul:first");
-                if (tot.length > 0) {
-		    tot.attr('role', 'directory') ;
-                    if (!tot.attr("id")) {
-                        tot.attr('id', 'respecTables') ;
-                    }
-                }
-                // mark issues and notes with heading
-                var noteNum = 0, issueNum = 0;
-                $(".note-title, .issue-title", doc).each(function (i, item) {
-                    var $item = $(item)
-                    ,   isIssue = $item.hasClass("issue-title")
-                    ,   level = $item.parents("section").length + 1 ;
-
-                    $item.attr('aria-level', level);
-                    $item.attr('role', 'heading') ;
-                    if (isIssue) {
-                        issueNum++;
-                        $item.attr('id', 'h_issue_'+issueNum);
-                    } else {
-                        noteNum++;
-                        $item.attr('id', 'h_note_'+noteNum);
-                    }
-                });
-                msg.pub("end", "w3c/aria");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/shiv
-// Injects the HTML5 shiv conditional comment
-
-define(
-    'core/shiv',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/shiv");
-                var cmt = doc.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
-                $("head").append(cmt);
-                msg.pub("end", "core/shiv");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/remove-respec
-// Removes all ReSpec artefacts right before processing ends
-
-define(
-    'core/remove-respec',["core/utils"],
-    function (utils) {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/remove-respec");
-                // it is likely that some asynch operations won't have completed at that moment
-                // if they happen to need the artefacts, we could change this to be hooked into
-                // the base-runner to run right before end-all
-                utils.removeReSpec(doc);
-                msg.pub("end", "core/remove-respec");
-                cb();
-            }
-        };
-    }
-);
-
-
-// Module core/location-hash
-// Resets window.location.hash to jump to the right point in the document
-
-define(
-    'core/location-hash',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/location-hash");
-                var hash = window.location.hash;
-
-                // Number of pixels that the document has already been
-                // scrolled vertically (cross-browser)
-                var scrollY = (window.pageYOffset !== undefined)
-                    ? window.pageYOffset
-                    : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-
-                // Only scroll to the hash if the document hasn't been scrolled yet
-                // this ensures that a page refresh maintains the scroll position
-                if (hash && !scrollY) {
-                    window.location.hash = "";
-                    window.location.hash = hash;
-                }
-                msg.pub("end", "core/location-hash");
-                cb();
-            }
-        };
-    }
-);
-
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
    Written by Keith Wood (kbwood{at}iinet.com.au) August 2007.
@@ -10511,6 +10087,9 @@ define(
                                     " regFieldNameInternal" +
                                     " regFieldNameInternal" + f.attr
                             });
+                        if ("id" in f) {
+                            svg.change(text, {id: f.id});
+                        }
                         if ((text.clientWidth + 2 > rightOf(f.lsb) - leftOf(f.msb)) || (text.clientHeight + 2 > cellHeight - cellInternalHeight)) {
                             svg.change(text, {
                                 x: rightOf(-0.5),
@@ -10640,6 +10219,7 @@ define(
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
                                                         name: String(match[2].substr(1)),
+                                                        id:   String(match[1] + match[2]),
                                                         attr: match[4].substr(0,2).toLowerCase() });
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
@@ -10681,6 +10261,437 @@ define(
         };
     }
 );
+
+// Module core/dfn
+// Handles the processing and linking of <dfn> and <a> elements.
+define(
+    'core/dfn',[],
+    function () {
+        var dfnClass = ["dfn", "pin", "signal", "term", "field", "register", "state", "value", "parameter", "argument"];
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/dfn");
+                doc.normalize();
+                if (!conf.definitionMap) conf.definitionMap = {};
+                if (!conf.definitionHTML) conf.definitionHTML = {};
+                $("dfn").each(function () {
+                    var tag = dfnClass[0];  // default "dfn"
+                    for (var i = 1; i < dfnClass.length; i++) {
+                        if ($(this).hasClass(dfnClass[i])) tag = dfnClass[i];
+                    }
+                    var title = $(this).dfnTitle();
+                    if (conf.definitionMap[tag + "-" + title]) {
+                        msg.pub("error", "Duplicate definition '" + tag + "-" + title + "'");
+                        $(this).append("<span class=\"respec-error\"> Duplicate definition of '" + tag + "-" + title + "'</span>");
+                    }
+                    conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
+                    conf.definitionHTML[tag + "-" + title] = $(this).html();
+                });
+                $("svg text[id]").each(function () {
+                    //console.log("svg text[id] matches " + this.outerHTML);
+                    var title = $(this).dfnTitle();
+                    if (!conf.definitionMap["field-" + title]) {
+                        conf.definitionMap["field-" + title] = $(this).attr("id");
+                    }
+                });
+                $("a:not([href])").each(function () {
+                    var $ant = $(this);
+                    if ($ant.hasClass("externalDFN")) return;
+                    var title = $ant.dfnTitle();
+                    var tag = null;
+                    for (var i = 0; i < dfnClass.length; i++) {
+                        if (conf.definitionMap[dfnClass[i] + "-" + title]) {
+                            if ($ant.hasClass(dfnClass[i])) {
+                                tag = dfnClass[i];
+                            }
+                            else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
+                                if (tag == null) {
+                                    tag = dfnClass[i];
+                                }
+                                else if (!$ant.hasClass(tag)) {
+                                    tag = tag + "-" + dfnClass[i];
+                                }
+                            }
+                        }
+                    }
+                    if (tag != null) {
+                        if (conf.definitionMap[tag + "-" + title]) {
+                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
+                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
+                                $ant.html(conf.definitionHTML[tag + "-" + title]);
+                        } else {
+                            $ant.attr("href", "#" + conf.definitionMap[tag.split("-")[0] + "-" + title]);
+                            var temp = "Ambiguous reference to '" + tag + "-" + title + "'";
+                            msg.pub("warn", temp);
+                            $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
+                        }
+
+                    }
+                    else {
+                        // ignore WebIDL
+                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
+                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                        }
+                        $ant.replaceWith($ant.contents());
+                    }
+                });
+                msg.pub("end", "core/dfn");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/fix-headers
+// Make sure that all h1-h6 headers (that are first direct children of sections) are actually
+// numbered at the right depth level. This makes it possible to just use any of them (conventionally
+// h2) with the knowledge that the proper depth level will be used
+
+define(
+    'core/fix-headers',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/fix-headers");
+                var $secs = $("section:not(.introductory)", doc)
+                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
+                $secs.each(function () {
+                    var depth = $(this).parents("section").length + 1;
+                    if (depth > 6) depth = 6;
+                    var h = "h" + depth;
+                    if (this.localName.toLowerCase() !== h) $(this).renameElement(h);
+                });
+                msg.pub("end", "core/fix-headers");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/structure
+//  Handles producing the ToC and numbering sections across the document.
+
+// CONFIGURATION:
+//  - noTOC: if set to true, no TOC is generated and sections are not numbered
+//  - tocIntroductory: if set to true, the introductory material is listed in the TOC
+//  - lang: can change the generated text (supported: en, fr)
+//  - maxTocLevel: only generate a TOC so many levels deep
+
+define(
+    'core/structure',["core/utils"],
+    function (utils) {
+        var i18n = {
+                    en: { toc: "Table of Contents" },
+                    fr: { toc: "Sommaire" }
+                }
+        ,   secMap = {}
+        ,   appendixMode = false
+        ,   lastNonAppendix = 0
+        ,   makeTOCAtLevel = function ($parent, doc, current, level, conf) {
+                var $secs = $parent.children(conf.tocIntroductory ? "section" : "section:not(.introductory)");
+
+                if ($secs.length === 0) return null;
+                var $ul = $("<ul class='toc'></ul>");
+                for (var i = 0; i < $secs.length; i++) {
+                    var $sec = $($secs[i], doc)
+                    ,   isIntro = $sec.hasClass("introductory")
+                    ;
+                    if (!$sec.children().length) continue;
+                    var h = $sec.children()[0]
+                    ,   ln = h.localName.toLowerCase();
+                    if (ln !== "h2" && ln !== "h3" && ln !== "h4" && ln !== "h5" && ln !== "h6") continue;
+                    var title = h.textContent
+                    ,   $kidsHolder = $("<div></div>").append($(h).contents().clone())
+                    ;
+                    $kidsHolder.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+                    $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
+                    var id = $sec.makeID(null, title);
+                    
+                    if (!isIntro) current[current.length - 1]++;
+                    var secnos = current.slice();
+                    if ($sec.hasClass("appendix") && current.length === 1 && !appendixMode) {
+                        lastNonAppendix = current[0];
+                        appendixMode = true;
+                    }
+                    if (appendixMode) secnos[0] = utils.appendixMap(current[0] - lastNonAppendix);
+                    var secno = secnos.join(".")
+                    ,   isTopLevel = secnos.length == 1;
+                    if (isTopLevel) {
+                        secno = secno + ".";
+                        // if this is a top level item, insert
+                        // an OddPage comment so html2ps will correctly
+                        // paginate the output
+                        $(h).before(document.createComment('OddPage'));
+                    }
+                    var $span = $("<span class='secno'></span>").text(secno + " ");
+                    if (!isIntro) $(h).prepend($span);
+                    secMap[id] = (isIntro ? "" : "<span class='secno'>" + secno + "</span> ") +
+                                "<span class='sec-title'>" + title + "</span>";
+
+                    var $a = $("<a/>").attr({ href: "#" + id, 'class' : 'tocxref' })
+                                      .append(isIntro ? "" : $span.clone())
+                                      .append($kidsHolder.contents());
+                    var $item = $("<li class='tocline'/>").append($a);
+                    if (conf.maxTocLevel == 0 || level <= conf.maxTocLevel) {
+                    	$ul.append($item);
+                    }
+                    current.push(0);
+                    var $sub = makeTOCAtLevel($sec, doc, current, level + 1, conf);
+                    if ($sub) $item.append($sub);
+                    current.pop();
+                }
+                return $ul;
+            }
+        ;
+        
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/structure");
+                if (!conf.tocIntroductory) conf.tocIntroductory = false;
+                if (!conf.maxTocLevel) conf.maxTocLevel = 0;
+                var $secs = $("section:not(.introductory)", doc)
+                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first")
+                ,   finish = function () {
+                        msg.pub("end", "core/structure");
+                        cb();
+                    }
+                ;
+                if (!$secs.length) return finish();
+                $secs.each(function () {
+                    var depth = $(this).parents("section").length + 1;
+                    if (depth > 6) depth = 6;
+                    var h = "h" + depth;
+                    if (this.localName.toLowerCase() != h) $(this).renameElement(h);
+                });
+
+                // makeTOC
+                if (!conf.noTOC) {
+                    var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
+                    if (!$ul) return;
+                    var $sec = $("<section id='toc'/>").append("<h2 class='introductory'>" + i18n[conf.lang || "en"].toc + "</h2>")
+                                                       .append($ul);
+                    var $ref = $("#toc", doc), replace = false;
+                    if ($ref.length) replace = true;
+                    if (!$ref.length) $ref = $("#sotd", doc);
+                    if (!$ref.length) $ref = $("#abstract", doc);
+                    replace ? $ref.replaceWith($sec) : $ref.after($sec);
+                }
+
+                // Update all anchors with empty content that reference a section ID
+                $("a[href^='#']:not(.tocxref)", doc).each(function () {
+                    var $a = $(this);
+                    if ($a.html() !== "") return;
+                    var id = $a.attr("href").slice(1);
+                    if (secMap[id]) {
+                        $a.addClass('sec-ref');
+                        $a.html(($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
+                    }
+                });
+
+                finish();
+            }
+        };
+    }
+);
+
+
+// Module w3c/informative
+// Mark specific sections as informative, based on CSS
+
+define(
+    'w3c/informative',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/informative");
+                $("section.informative").find("> h2:first, > h3:first, > h4:first, > h5:first, > h6:first")
+                                        .after("<p><em>This section is non-normative.</em></p>");
+                msg.pub("end", "core/informative");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/id-headers
+// All headings are expected to have an ID, unless their immediate container has one.
+// This is currently in core though it comes from a W3C rule. It may move in the future.
+
+define(
+    'core/id-headers',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/id-headers");
+                $("h2, h3, h4, h5, h6").each(function () {
+                    var $h = $(this);
+                    if (!$h.attr("id")) {
+                        if ($h.parent("section").attr("id") && $h.prev().length === 0) return;
+                        $h.makeID();
+                    }
+                });
+                msg.pub("end", "core/id-headers");
+                cb();
+            }
+        };
+    }
+);
+
+// Module w3c/aria
+// Adds wai-aria landmarks and roles to entire document.
+// Introduced by Shane McCarron (shane@aptest.com) from the W3C PFWG
+
+define(
+    'w3c/aria',["core/utils"], // load this to be sure that the jQuery extensions are loaded
+    function (utils) {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "w3c/aria");
+                // ensure all headers after sections have
+                // headings and aria-level
+                var $secs = $("section", doc)
+                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
+                $secs.each(function(i, item) {
+                    var $item = $(item)
+                    ,   resourceID = $item.parent('section[id]').attr('id')
+                    ,   level = $item.parents("section").length ;
+
+                    $item.attr('aria-level', level);
+                    $item.attr('role', 'heading') ;
+                    if (!$item.attr("id")) {
+                        $item.attr('id', $item.prop('tagName').toLowerCase() + '_' + resourceID) ;
+                    }
+                });
+                // ensure head section is labeled
+                $('body', doc).attr('role', 'document') ;
+                $('body', doc).attr('id', 'respecDocument') ;
+                $('div.head', doc).attr('role', 'contentinfo') ;
+                $('div.head', doc).attr('id', 'respecHeader') ;
+                if (!conf.noTOC) {
+                    // ensure toc is labeled
+                    var toc = $('section#toc', doc)
+                                  .find("ul:first");
+                    toc.attr('role', 'directory') ;
+                    if (!toc.attr("id")) {
+                        toc.attr('id', 'respecContents') ;
+                    }
+                }
+		// ensure Table of Figures (tof) is labeled
+                var tof = $('section#tof', doc)
+                               .find("ul:first");
+                if (tof.length > 0) {
+		    tof.attr('role', 'directory') ;
+                    if (!tof.attr("id")) {
+                        tof.attr('id', 'respecFigures') ;
+                    }
+                }
+                // ensure Table of Tables (tot) is labeled
+                var tot = $('section#tot', doc)
+                    	       .find("ul:first");
+                if (tot.length > 0) {
+		    tot.attr('role', 'directory') ;
+                    if (!tot.attr("id")) {
+                        tot.attr('id', 'respecTables') ;
+                    }
+                }
+                // mark issues and notes with heading
+                var noteNum = 0, issueNum = 0;
+                $(".note-title, .issue-title", doc).each(function (i, item) {
+                    var $item = $(item)
+                    ,   isIssue = $item.hasClass("issue-title")
+                    ,   level = $item.parents("section").length + 1 ;
+
+                    $item.attr('aria-level', level);
+                    $item.attr('role', 'heading') ;
+                    if (isIssue) {
+                        issueNum++;
+                        $item.attr('id', 'h_issue_'+issueNum);
+                    } else {
+                        noteNum++;
+                        $item.attr('id', 'h_note_'+noteNum);
+                    }
+                });
+                msg.pub("end", "w3c/aria");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/shiv
+// Injects the HTML5 shiv conditional comment
+
+define(
+    'core/shiv',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/shiv");
+                var cmt = doc.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
+                $("head").append(cmt);
+                msg.pub("end", "core/shiv");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/remove-respec
+// Removes all ReSpec artefacts right before processing ends
+
+define(
+    'core/remove-respec',["core/utils"],
+    function (utils) {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/remove-respec");
+                // it is likely that some asynch operations won't have completed at that moment
+                // if they happen to need the artefacts, we could change this to be hooked into
+                // the base-runner to run right before end-all
+                utils.removeReSpec(doc);
+                msg.pub("end", "core/remove-respec");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/location-hash
+// Resets window.location.hash to jump to the right point in the document
+
+define(
+    'core/location-hash',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/location-hash");
+                var hash = window.location.hash;
+
+                // Number of pixels that the document has already been
+                // scrolled vertically (cross-browser)
+                var scrollY = (window.pageYOffset !== undefined)
+                    ? window.pageYOffset
+                    : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+                // Only scroll to the hash if the document hasn't been scrolled yet
+                // this ensures that a page refresh maintains the scroll position
+                if (hash && !scrollY) {
+                    window.location.hash = "";
+                    window.location.hash = hash;
+                }
+                msg.pub("end", "core/location-hash");
+                cb();
+            }
+        };
+    }
+);
+
 /*global respecVersion */
 
 // this is only set in a build, not at all in the dev environment
@@ -10723,6 +10734,7 @@ define('profile-w3c-common',[
         ,   "core/biblio"
         ,   "core/rdfa"
         ,   "core/webidl-oldschool"
+        ,   "core/regpict"
         ,   "core/dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
@@ -10732,7 +10744,6 @@ define('profile-w3c-common',[
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
-        ,   "core/regpict"
         ],
         function (domReady, runner, ui) {
             var args = Array.prototype.slice.call(arguments);

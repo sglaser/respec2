@@ -232,6 +232,9 @@ define(
                                     " regFieldNameInternal" +
                                     " regFieldNameInternal" + f.attr
                             });
+                        if ("id" in f) {
+                            svg.change(text, {id: f.id});
+                        }
                         if ((text.clientWidth + 2 > rightOf(f.lsb) - leftOf(f.msb)) || (text.clientHeight + 2 > cellHeight - cellInternalHeight)) {
                             svg.change(text, {
                                 x: rightOf(-0.5),
@@ -361,6 +364,7 @@ define(
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
                                                         name: String(match[2].substr(1)),
+                                                        id:   String(match[1] + match[2]),
                                                         attr: match[4].substr(0,2).toLowerCase() });
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
