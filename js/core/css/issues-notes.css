@@ -1,31 +1,32 @@
 /* --- ISSUES/NOTES --- */
-div.issue-title, div.note-title {
+div.issue-title, div.note-title, div.impnote-title {
     padding-right:  1em;
     min-width: 7.5em;
     color: #b9ab2d;
 }
 div.issue-title { color: #e05252; }
 div.note-title { color: #2b2; }
-div.issue-title span, div.note-title span {
+div.impnote-title { color: black; }
+div.issue-title span, div.note-title span, div.impnote-title span {
     text-transform: uppercase;
 }
-div.note, div.issue {
+div.note, div.issue, div.impnote {
     margin-top: 1em;
     margin-bottom: 1em;
 }
-.note > p:first-child, .issue > p:first-child { margin-top: 0 }
-.issue, .note {
+.note > p:first-child, .issue > p:first-child, .impnote > p:first-child { margin-top: 0 }
+.issue, .note, .impnote {
     padding: .5em;
     border-left-width: .5em;
     border-left-style: solid;
 }
-div.issue, div.note {
+div.issue, div.note, .impnote {
     padding: 1em 1.2em 0.5em;
     margin: 1em 0;
     position: relative;
     clear: both;
 }
-span.note, span.issue { padding: .1em .5em .15em; }
+span.note, span.issue, span.impnote { padding: .1em .5em .15em; }
 
 .issue {
     border-color: #e05252;
@@ -34,6 +35,10 @@ span.note, span.issue { padding: .1em .5em .15em; }
 .note {
     border-color: #52e052;
     background: #e9fbe9;
+}
+.impnote {
+    border-color: black;
+    background: #e0e0e0;
 }
 
 
