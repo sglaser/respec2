@@ -9,36 +9,42 @@
 define(
     ["core/utils"],
     function (utils) {
-    	var makeFigNum = function(fmt, doc, chapter, $cap, label, num, tit) {
-            $cap.html("");
-            if (fmt === "" || fmt === "%t" || fmt === "%") {
-            	$cap.append($("<span class='" + label + "-title'/>").text(tit));
-            	return num;
+        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
+            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+            if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
+                $cap.wrapInner($("<span class='" + label + "title'/>"));
+                return num;
             }
             var $num = $("<span class='" + label + "no'/>");
-            var $cur = $cap;
+            var $title = $cap.clone().renameElement("span").addClass(label + "title");
+            //console.log("title='" + $title.html() + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-    		//console.log("fmt=\"" + adjfmt + "\"");
-    		for (var i = 0; i < sfmt.length; i++) {
-            	var s = sfmt[i];
-            	switch (s.substr(0,1)) {
-            	case " ": break;
-            	case "(": $cur = $num; break;
-            	case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
-            	case "\\":$cur.append(doc.createTextNode("%")); break;
-            	case "#": $cur.append(doc.createTextNode(num[0])); break;
-            	case "c": $cur.append(doc.createTextNode(chapter)); break;
-            	case "1": if (num[1] != chapter) num = [1, chapter]; break;
-            	case "t": $cur.append($("<span class='"+label+"-title'/>").text(tit)); break;
-            	default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
-            	}
-            	$cur.append(doc.createTextNode(s.substr(1)));
-            	//console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+            var $cur = $cap;
+            $cap.html("");
+            //console.log("$cur='"+$cur.html()+"'");
+            //console.log("fmt=\"" + adjfmt + "\"");
+            for (var i = 0; i < sfmt.length; i++) {
+                var s = sfmt[i];
+                switch (s.substr(0,1)) {
+                    case " ": break;
+                    case "(": $cur = $num; break;
+                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "\\":$cur.append(doc.createTextNode("%")); break;
+                    case "#": $cur.append(doc.createTextNode(num[0])); break;
+                    case "c": $cur.append(doc.createTextNode(chapter)); break;
+                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "t": $cur.append($title); break;
+                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                }
+                $cur.append(doc.createTextNode(s.substr(1)));
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
             }
-    		num[0]++;
+            num[0]++;
+            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+
             return num;
-    	};
+        };
 
         return {
             run:    function (conf, doc, cb, msg) {
@@ -82,16 +88,18 @@ define(
                     $("figure", $sec).each(function () {
 						var $fig = $(this)
 						,   $cap = $fig.find("figcaption")
-						,   tit = $cap.text()
-						,   id = $fig.makeID("fig", tit);
+						,   id = $fig.makeID("fig", $cap.text());
 						if (!$cap.length) msg.pub("warn", "A <figure> should contain a <figcaption>.");
+						if ($cap.length > 1) msg.pub("warn", "A <figure> should not have more than one <figcaption>.");
                     
 						// set proper caption title
-						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num, tit);
+						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
 						figMap[id] = $cap.contents().clone();
+                        var $tofCap = $cap.clone();
+                        $tofCap.find("a").renameElement("span").removeAttr("href");
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
-                                .append($cap.contents().clone())
+                                .append($tofCap.contents())
                                 .end());
 					});
 				}

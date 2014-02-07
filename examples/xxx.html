@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic ReSpec Evolution Example</title>
+    <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
+    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script> -->
+    <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
+    <script src="respec-debug.js" async="async" class="remove"></script>
+    <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
+    <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
+    <script class="remove">
+      var respecConfig = {
+              specStatus:   "ED"
+          ,   shortName:    "basics"
+          ,   editors:      [{ name: "Steve Glaser"}]
+          ,   wg:           "ReSpec Hackin' Gang"
+          ,   wgURI:        "http://darobin.github.com/respec"
+          ,   wgPublicList: "none"
+          ,   wgPatentURI:  "XXX"
+          ,   edDraftURI:   "http://darobin.github.com/respec"
+          ,   localBiblio:  {
+                  "MEMES":  "<a href='http://w3cmemes.tumblr.com/'>W3C Memes</a>"
+              ,   "REX":    "<strong>Overridden!</strong>"
+              }
+          ,   trace:        true
+          ,   figFmt:       "%1Figure %(%c-%#%): %t"
+          ,   tblFmt:       "%1Table %(%c-%#%): %t"
+          ,   ajaxIsLocal:  true
+        };
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p> This is just a very basic document. [[!REX]] Yeah for memes [[MEMES]].
+        [[DOM4]], [[XML10]], [[\WHATEVER]] </p>
+<!--      <p> [[NO-EXIST]] </p>-->
+    </section>
+    <section id="sotd">
+      <p> CUSTOM PARAGRAPH </p>
+    </section>
+    <section id="tof"></section>
+      <section class="informative">
+      <h2>Informative section</h2>
+      <p>blah</p>
+      <section>
+        <h2>Inner section</h2>
+        <p>blahblah</p>
+      </section>
+      <section>
+        <h2>Other inner section</h2>
+        <p>blahblah</p>
+      </section>
+    </section>
+    <section>
+    <h2>Terms and Acronyms</h2>
+    <dl>
+        <dt><dfn title="tErM1">Term1</dfn></dt>
+        <dd>This is the definition for Term #1. It uses no markup.</dd>
+        <dt><dfn class="pin">Term 2</dfn></dt>
+        <dd>This is the definition for Term #2. It uses &lt;dfn class="pin"&gt;Term 2&lt;/dnf&gt;.</dd>
+        <dt><dfn><abbr title="Term number 3">TERM3</abbr></dfn></dt>
+        <dd>This is the definition for Term #3. It uses <span class="highlight">&lt;dfn&gt;&lt;abbr title="Term number 3"&gt;TERM3&lt;abbr&gt;&lt;/dfn&gt;</span></dd>
+        <dt><dfn><acronym title="Term4">Term number 4</acronym></dfn></dt>
+        <dd>This is the definition for Term #4. It uses <span class="highlight">&lt;dfn&gt;&lt;acronym title="Term4"&gt;Term number 4&lt;/acronym&gt;&lt;/dfn&gt;</span></dd>
+        <dt><dfn>D3<sub>cold</sub></dfn></dt>
+        <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
+        <dt><dfn>Term<sub>6</sub></dfn></dt>
+        <dd>This is the definition for Term<sub>6</sub>. It <span class="highlight">&lt;dfn&gt;Term&lt;sub&gt;6&lt;/sub&gt;&lt;/dfn&gt;.</span></dd>
+        <dt><dfn><abbr>Term<sub>7</sub></abbr></dfn></dt>
+        <dd>This is the definition for Term<sub>7</sub>. It <span class="highlight">&lt;dfn&gt;&lt;abbr&gt;Term&lt;sub&gt;7&lt;/sub&gt;&lt;/abbr&gt;&lt;/dfn&gt;.</span></dd>
+        <dt><dfn><acronym title="Term number 8">Term<sub>8</sub></acronym></dfn></dt>
+        <dd>This is the definition for Term<sub>8</sub>. It <span class="highlight">&lt;dfn&gt;&lt;acronym title="Term number 8"&gt;Term&lt;sub&gt;8&lt;/sub&gt;&lt;/acronym&gt;&lt;/dfn&gt;.</span></dd>
+        <dt><dfn class="pin">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="pin"&gt;.</dd>
+        <dt><dfn class="signal">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="signal"&gt;.</dd>
+        <dt><dfn class="term">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+        <dt><dfn class="term">Term9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+        <dt><dfn class="term">Term 9</dfn></dt>
+        <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
+ </dl>
+        References:
+        <ul><li>Term1 <a>Term1</a></li>
+            <li>tErM1 <a>tErM1</a></li>
+            <li>Term 2 <a>Term 2</a></li>
+            <li>TERM3 <a>TERM3</a></li>
+            <li>term number 3 <a>term number 3</a></li>
+            <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
+            <li>TERM3 <a title="term number 3">xxx</a></li>
+            <li>Term number 4 <a>Term<sub>4</sub></a></li>
+            <li>D3cold <a>D3cold</a></li>
+            <li>d3cold <a>d3cold</a></li>
+            <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
+            <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
+            <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
+            <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
+            <li>term number 8 <a>term number 8</a></li>
+            <li>Term9 class="pin" <a class="pin">Term9</a></li>
+            <li>Term9 class="signal" <a class="signal">Term9</a></li>
+            <li>Term9 class="term" <a class="term">Term9</a></li>
+            <li>Term9 no class (ambiguous) <a>Term9</a></li>
+            <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
+            <li>Term 9 (with space before the '9') <a>Term 9</a></li>
+            <li>first <a>first</a></li>
+            <li>Z <a>z</a></li>
+            <li>bit13 <a class="field">bit13</a></li>
+       </ul>
+    </section>
+      <section>
+    <h2>MathML Test</h2>
+    <p>This is a simple MathML equation (pi r squared).</p>
+    <math>
+        <mi>&pi;
+            <!-- &#x03C0; π -->
+        </mi>
+        <mo>&#x2062;
+            <!-- &InvisibleTimes; -->
+        </mo>
+        <msup>
+            <mi>r</mi>
+            <mn>2</mn>
+        </msup>
+    </math>
+           <p>This is an example figure generated by MathType 6.9 and copied cia the clipboard. This equation is meaningless.</p>
+   <!-- MathType@Translator@5@5@MathML2 (no namespace).tdl@MathML 2.0 (no namespace)@ -->
+<math display='block'>
+ <mrow>
+  <msqrt>
+   <mrow>
+    <msup>
+     <mi>a</mi>
+     <mn>2</mn>
+    </msup>
+    <mo>+</mo><msup>
+     <mi>b</mi>
+     <mn>2</mn>
+    </msup>
+    </mrow>
+  </msqrt>
+  <mfrac>
+   <mrow>
+    <mo>&#x2212;</mo><mi>b</mi><mo>&#x00B1;</mo><msqrt>
+     <mrow>
+      <msup>
+       <mi>b</mi>
+       <mn>2</mn>
+      </msup>
+      <mo>&#x2212;</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow>
+    </msqrt>
+    </mrow>
+   <mrow>
+    <mn>2</mn><mi>a</mi></mrow>
+  </mfrac>
+  <munder>
+   <mrow>
+    <mi>lim</mi></mrow>
+   <mrow>
+    <mi>x</mi><mo>&#x2192;</mo><mi>&#x221E;</mi></mrow>
+  </munder>
+  <mrow><mo>(</mo>
+   <mrow>
+    <mtable>
+     <mtr>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mrow>
+          <mn>11</mn></mrow>
+        </msub>
+        </mrow>
+      </mtd>
+      <mtd>
+       <mo>&#x2026;</mo>
+      </mtd>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mrow>
+          <mn>1</mn><mi>n</mi></mrow>
+        </msub>
+        </mrow>
+      </mtd>
+     </mtr>
+     <mtr>
+      <mtd>
+       <mo>&#x22EE;</mo>
+      </mtd>
+      <mtd>
+       <mo>&#x22F1;</mo>
+      </mtd>
+      <mtd>
+       <mo>&#x22EE;</mo>
+      </mtd>
+     </mtr>
+     <mtr>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mrow>
+          <mi>m</mi><mn>1</mn></mrow>
+        </msub>
+        </mrow>
+      </mtd>
+      <mtd>
+       <mo>&#x22EF;</mo>
+      </mtd>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mrow>
+          <mi>m</mi><mi>n</mi></mrow>
+        </msub>
+        </mrow>
+      </mtd>
+     </mtr>
+     
+    </mtable></mrow>
+  <mo>)</mo></mrow><mrow><mo>(</mo>
+   <mrow>
+    <mtable>
+     <mtr>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mn>1</mn>
+        </msub>
+        </mrow>
+      </mtd>
+      <mtd>
+       <mrow>
+        <mover accent='true'>
+         <mrow>
+          <mi>A</mi><mi>B</mi><mi>C</mi></mrow>
+         <mo stretchy='true'>&#x2322;</mo>
+        </mover>
+        </mrow>
+      </mtd>
+      <mtd>
+       <mn>0</mn>
+      </mtd>
+     </mtr>
+     <mtr>
+      <mtd>
+       <mrow>
+        <mover accent='true'>
+         <mrow>
+          <mi>A</mi><mi>B</mi></mrow>
+         <mo stretchy='true'>&#x2194;</mo>
+        </mover>
+        </mrow>
+      </mtd>
+      <mtd>
+       <mo>&#x22F1;</mo>
+      </mtd>
+      <mtd>
+       <mrow>
+        <mover accent='true'>
+         <mrow>
+          <mi>A</mi><mi>B</mi></mrow>
+         <mo stretchy='true'>&#x2192;</mo>
+        </mover>
+        </mrow>
+      </mtd>
+     </mtr>
+     <mtr>
+      <mtd>
+       <mn>0</mn>
+      </mtd>
+      <mtd>
+       <mrow>
+        <mo>&#x25B3;</mo><mi>A</mi><mi>B</mi><mi>C</mi></mrow>
+      </mtd>
+      <mtd>
+       <mrow>
+        <msub>
+         <mi>a</mi>
+         <mi>n</mi>
+        </msub>
+        </mrow>
+      </mtd>
+     </mtr>
+     
+    </mtable></mrow>
+  <mo>)</mo></mrow><mfrac>
+   <mrow>
+    <msup>
+     <mo>&#x2202;</mo>
+     <mn>2</mn>
+    </msup>
+    <mi>&#x03A9;</mi></mrow>
+   <mrow>
+    <mo>&#x2202;</mo><mi>u</mi><mo>&#x2202;</mo><mi>v</mi></mrow>
+  </mfrac>
+  </mrow>
+</math>
+<!-- MathType@End@5@5@ -->
+
+</section>
+    <section>
+    <h2>Register Figure</h2>
+    <figure id="figure1" class="register">
+        <pre class="json">
+            { "width" : 32,
+              "fields": [
+                {   "msb": 4,
+                    "lsb": 0,
+                    "name": "field0_4",
+                    "attr": "ro"
+                }, {
+                    "msb": 7,
+                    "lsb":6, "name":"Very long name that will never fit"
+                }, {
+                    "msb": 9,
+                    "name": "bit9"
+                }, {
+                    "lsb": 10,
+                    "name": "bit10"
+                }, {
+                    "lsb": 11,
+                    "name": "bit11"
+                }, {
+                    "lsb": 12,
+                    "name": "bit12"
+                }, {
+                    "lsb": 13,
+                    "name": "bit13",
+                    "id": "field-bit13"
+                } ] }
+        </pre>
+        <figcaption>Graph for XXX Example (SVG version)</figcaption>
+    </figure>
+
+    </section>
+    <section>
+        <h2>Intel PTE</h2>
+        <pre data-include="intel.ref" data-include-filter="PTE"></pre>
+        <figure id="figure2" class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-json='{"unused" : "reserved", "register" : "INTEL_PTE" }'>
+<!--            <a class="nv-refman" href="intel.ref">{ "unused": "reserved", "register": "INTEL_PTE"}</a>-->
+            <figcaption><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="nv-refman" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a></figcaption>
+        </figure>
+    </section>
+      <section>
+    <h2>PCISIG style Registers</h2>
+    <figure class="register pcisig_reg" data-table="#reg1">
+        <figcaption>PCISIG-Style Register #1</figcaption>
+    </figure>
+    <table class="pcisig_reg" id="reg1">
+        <caption>PCISIG-Style Register #1</caption>
+        <thead>
+            <tr>
+                <th>Bits</th>
+                <th>Description</th>
+                <th>Attributes</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>
+                    <p>
+                        <dfn class="field">Z</dfn>
+                        &ndash; This field is a very special field.
+                    </p>
+                    <p>This is the middle paragraph.</p>
+                    <p>This is the last paragraph.</p>
+                </td>
+                <td>RO</td>
+            </tr>
+            <tr>
+                <td>2:1</td>
+                <td>
+                    <p>
+                        <dfn class="field">bit1_2</dfn>
+                        &ndash;
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>bit3 &ndash; three</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>
+                    <p>
+                        <dfn class="field">Ab</dfn>
+                        &ndash; four
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>bit5&ndash; five</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>
+                    <p>
+                        <dfn class="field">bit 6a</dfn>
+                        &ndash; six a
+                    </p>
+                    <p>
+                        <dfn class="field">bit 6b</dfn>
+                        &ndash; six b
+                    </p>
+                    <p>bit 6c six c</p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>bit7</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>bit8 eight</td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>
+                    <p>bit9</p>
+                </td>
+                <td>RW</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>
+                    <dfn class="field">bit 14a</dfn>
+                    <table>
+                        <tr>
+                            <td>
+                                <dfn class="field">first</dfn>
+                            </td>
+                            <td>
+                                <dfn class="field">second</dfn>
+                            </td>
+                            <td>
+                                <dfn class="field">third</dfn>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>second row</td>
+                        </tr>
+                    </table>
+                    <p>
+                        <dfn class="field">fourth</dfn>
+                    </p>
+                </td>
+                <td>RW</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+      <h2>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/"
+            >deep</a> stuff</span></h2>
+      <p> Something MUST happen. </p>
+      <p class="issue" title="A real problem"> This is a problem </p>
+      <p class="issue atrisk" title="A REAL problem"> This is a problem </p>
+      <p class="note" title="About this"> Just a note </p>
+      <p class="impnote" title="Imp Note Test"> Body of the implementation note </p>
+      <p> Problems. <!-- <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+        <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
+-->
+      </p>
+    </section>
+    <section>
+      <h2>Clash here</h2>
+      <dl class="idl" title="interface Dahut">
+        <dt>void other ()</dt>
+        <dd> Partial would be better. </dd>
+      </dl>
+    </section>
+    <section>
+      <h2>Type Unions</h2>
+      <section>
+        <h2>Two</h2>
+        <dl class="idl" title="interface MutableCapabilities : Capabilities">
+          <dt>(DOMString or sequence&lt;long&gt;) bar()</dt>
+          <dd>without default</dd>
+          <dt>void foo((unsigned long or sequence&lt;unsigned long&gt;) value1)</dt>
+          <dd>without default</dd>
+          <!-- <dt>void foo(boolean value1, DOMString other1)</dt>
+          <dd>without default</dd>
+          <dt>void bar(boolean value2 = true, DOMString other2)</dt>
+          <dd>with default</dd>
+          <dt>void bar(unsigned long value3 = 8.2, DOMString other3 = "something else")</dt>
+          <dd>with default</dd> -->
+        </dl>
+      </section>
+    </section>
+  </body>
+</html>

@@ -40,6 +40,7 @@ define([
         ,   "core/biblio"
         ,   "core/rdfa"
         ,   "core/webidl-oldschool"
+        ,   "core/regpict"
         ,   "core/dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
