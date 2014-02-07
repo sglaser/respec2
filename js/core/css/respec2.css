@@ -32,6 +32,18 @@ a.externalDFN {
     text-decoration:    none;
 }
 
+a.signal.internalDFN,
+dfn.signal {
+    font-style:     normal;
+    color:          blue;
+}
+
+a.pin.internalDFN,
+dfn.pin {
+    font-style:     normal;
+    color:          green;
+}
+    
 a.bibref {
     text-decoration:    none;
 }
@@ -49,11 +61,11 @@ code {
     text-decoration:    none;
 }
 
-a .secno, a .figno {
+a .secno, a .figno, a .tblno {
     color:  #000;
 }
 
-ul.tof, ol.tof {
+ul.tof, ol.tof, ul.tot, ol.tot {
     list-style: none outside none;
 }
 
