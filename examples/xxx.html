@@ -26,31 +26,9 @@
           ,   trace:        true
           ,   figFmt:       "%1Figure %(%c-%#%): %t"
           ,   tblFmt:       "%1Table %(%c-%#%): %t"
+          ,   ajaxIsLocal:  true
         };
-        $(function($) {
-            $.ajaxSetup({isLocal: true});
-        });
     </script>
-<style type="text/css">
-a.signal.internalDFN,
-dfn.signal {
-    color: blue;
-    font-size: 12pt;
-    font-family: monospace;
-    font-style: normal;
-    font-weight:  bold;
-}
-
-a.pin.internalDFN,
-dfn.pin {
-    color: green;
-    font-size: 12pt;
-    font-family: monospace;
-    font-style: normal;
-    font-weight: bold;
-}
-    
-</style>
   </head>
   <body>
     <section id="abstract">
@@ -493,7 +471,7 @@ dfn.pin {
       <p class="issue" title="A real problem"> This is a problem </p>
       <p class="issue atrisk" title="A REAL problem"> This is a problem </p>
       <p class="note" title="About this"> Just a note </p>
-      <p class="impnote" title="Imp Note Test"> Implementation a note </p>
+      <p class="impnote" title="Imp Note Test"> Body of the implementation note </p>
       <p> Problems. <!-- <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
         <a>aaaaaaaaaaaaaaaaaaaaaaaaaaa</a>
