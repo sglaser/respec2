@@ -71,6 +71,8 @@ define(
                     ,   sync = !!$el.attr("data-include-sync")
                     ,   filter = $el.attr("data-include-filter") || null
                     ;
+                    if (!!conf.ajaxIsLocal) $.ajaxSetup({ isLocal: true});
+                    conf.ajaxIsLocal = false;
                     $.ajax({
                         dataType:   format
                     ,   url:        uri

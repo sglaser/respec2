@@ -343,6 +343,8 @@ define(
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
                         var href = $fig.attr("data-href");
+                        if (!!conf.ajaxIsLocal) $.ajaxSetup({ isLocal: true});
+                        conf.ajaxIsLocal = false;
                         $.ajax({
                             dataType:   "text",
                             url:        href,
