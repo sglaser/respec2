@@ -108,6 +108,13 @@ table.simple {
     margin-bottom:  0;
 }
 
+span.respec-error {
+    color: red;
+    font-size: 12pt;
+    font-weight: bold;
+    font-family: monospace;
+}
+
 @media print {
     .removeOnSave {
         display: none;

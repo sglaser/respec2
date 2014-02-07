@@ -4,8 +4,9 @@
 // svg diagram that represents the fields in the table.
 define(
     ["core/utils",
+     "text!core/css/regpict.css",
      "jquery-svg/jquery.svg.js"],
-    function (utils) {
+    function (utils, css) {
 
         /*var defaultWidth = 32;
         var defaultUnused = "RsvdP";
@@ -276,6 +277,9 @@ define(
         return {
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
+                if (!conf.noReSpecCSS) {
+                    $("<style/>").appendTo($("head", $(doc))).text(css);
+                }
                 $("figure.register", doc).each(function (index) {
                     var $fig = $(this);
                     var json = null;

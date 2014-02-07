@@ -27,96 +27,11 @@
           ,   figFmt:       "%1Figure %(%c-%#%): %t"
           ,   tblFmt:       "%1Table %(%c-%#%): %t"
         };
+        $(function($) {
+            $.ajaxSetup({isLocal: true});
+        });
     </script>
 <style type="text/css">
-
-text.regBitNum {
-	text-anchor: middle;
-	fill: grey;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-}
-
-path.regBitNumLine {
-	stroke: grey;
-	stroke-width: 1px;
-}
-
-rect.regFieldBox {
-	fill: white;
-	stroke: black;
-	stroke-width: 1.5px;
-}
-
-rect.regFieldBoxrsvdp,
-rect.regFieldBoxrsvdz,
-rect.regFieldBoxReserved,
-rect.regFieldRsvd {
-	fill: white;
-}
-
-line.regFieldBoxInternal {
-	stroke: black;
-}
-
-line.regFieldBoxInternalrsvdp,
-line.regFieldBoxInternalrsvdz {
-	stroke: grey;
-}
-
-text.regFieldNameInternal {
-	text-anchor: middle;
-}
-
-text.regFieldNameInternalrsvdp,
-text.regFieldNameInternalrsvdz {
-	fill: grey;
-}
-
-text.regFieldName {
-	font-size: 11pt;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-}
-
-path.regBitLine1,
-path.regBitBracket1 {
-	stroke: black;
-	stroke-width: 1px;
-}
-
-path.regBitLine0 {
-	stroke: green;
-    stroke-dasharray: 4,2;
-	stroke-width: 1px;
-}
-
-path.regBitBracket0 {
-    stroke: green;
-    stroke-width: 1px;
-}
-
-svg.regpict {
-	color: green;
-}
-
-.svg_error {
-	color: red;
-	font-weight: bold;
-}
-
-figure div.json,
-figure pre.json {
-    color: rgb(0,90,156);
-    display: inherit;
-}
-
-span.respec-error {
-    color: red;
-    font-size: 12pt;
-    font-weight: bold;
-    font-family: monospace;
-}
-    
 a.signal.internalDFN,
 dfn.signal {
     color: blue;
