@@ -37,8 +37,7 @@ text.regFieldNameInternal {
 	text-anchor: middle;
 }
 
-text.regFieldNameInternalrsvdp,
-text.regFieldNameInternalrsvdz {
+text.regFieldUnused {
 	fill: grey;
 }
 

@@ -126,12 +126,14 @@ define(
                                 rightOf(j), cellTop + cellHeight - cellInternalHeight,
                                 rightOf(j), cellTop + cellHeight, {
                                     class_: "regFieldBoxInternal" +
+                                        (f.unused ? " regFieldBoxUnused" : "") +
                                         " regFieldBoxInternal" + f.attr
                                 });
                         }
                         var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             svg.createText().string(f.name), {
                                 class_: "regFieldName" +
+                                    (f.unused ? " regFieldUnused" : "") +
                                     " regFieldName" + f.attr +
                                     " regFieldNameInternal" +
                                     " regFieldNameInternal" + f.attr
