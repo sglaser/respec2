@@ -28,8 +28,7 @@ line.regFieldBoxInternal {
 	stroke: black;
 }
 
-line.regFieldBoxInternalrsvdp,
-line.regFieldBoxInternalrsvdz {
+line.regFieldBoxUnused {
 	stroke: grey;
 }
 
