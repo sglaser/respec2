@@ -186,6 +186,7 @@ define(
                 $("figure.register", doc).each(function (index) {
                     var $fig = $(this);
                     var json = null;
+                    msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
                     var temp = $fig.attr("data-json");
                     if (temp != null && temp != undefined && temp != "") {
