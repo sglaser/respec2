@@ -7,103 +7,6 @@ define(
      "text!core/css/regpict.css",
      "jquery-svg/jquery.svg.js"],
     function (utils, css) {
-
-        /*var defaultWidth = 32;
-        var defaultUnused = "RsvdP";
-        var cellWidth = 16;
-        var cellHeight = 32;
-        var cellInternalHeight = 8;
-        var cellTop = 16;
-        var validAttr = /^(rw|ro|rw1c|rw1s|hwinit|rws|ros|rw1cs|rw1ss|reserved|rsvd|rsvp|rsvz|zero|one|other)$/i;*/
-
-        /*function remove_all_regpict() {
-            $("div.regpict").remove();
-        }
-
-        function add_all_regpict() {
-            $("div.register").each(add_regpict);
-        }
-
-        function replace_all_regpict() {
-            remove_all_regpict();
-            add_all_regpict();
-        }
-
-        function add_regpict() {
-            var width = (this.dataset && this.dataset.width) || defaultWidth;
-            var unused = (this.dataset && this.dataset.unused) || defaultUnused;
-            var fields = [];
-
-            $("table tbody", this).first().children().each(function () {
-                var td = $(this).children();
-                if (td.length >= 3) {
-                    var bits = td.eq(0).text();
-                    var desc = td.eq(1);
-                    var attr = td.eq(2).text().toLowerCase();
-                    var lsb, msb, match;
-                    if ((match = /^(\d+):(\d+)$/.exec(bits)) !== null) {
-                        msb = +match[1];
-                        lsb = +match[2];
-                        if (lsb > msb) {
-                            msb = +match[2];
-                            lsb = +match[1];
-                        }
-                    } else if ((match = /^(\d+)$/.exec(bits)) !== null) {
-                        msb = lsb = +match[1];
-                    } else {
-                        msb = lsb = -1;
-                    }
-                    var fieldName = $("code:first", desc);
-                    if (fieldName.length === 0) {
-                        fieldName = /^\s*(\w+)/.exec(desc.text())[1];
-                    } else {
-                        fieldName = fieldName.first().text();
-                    }
-                    if (!validAttr.test(attr)) {
-                        attr = "other";
-                    }
-                    fields.push({
-                        "msb": msb,
-                        "lsb": lsb,
-                        "name": fieldName,
-                        "attr": attr,
-                        "unused": false
-                    });
-                }
-            });
-            var bitarray = [];
-            bitarray[width] = 1000;
-            for (var i = 0; i < width; i++) {
-                bitarray[i] = -1;
-            }
-            fields.forEach(function (item, index) {
-                for (var i = item.lsb; i <= item.msb; i++) {
-                    bitarray[i] = index;
-                }
-            });
-            var lsb = -1;
-            for (var i = 0; i <= width; ++i) {
-                if (lsb >= 0 && bitarray[i] >= 0) {
-                    fields.push({
-                        "msb": i - 1,
-                        "lsb": lsb,
-                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R",
-                        "attr": unused.toLowerCase(),
-                        "unused": true
-                    });
-                    lsb = -1;
-                }
-                if (lsb < 0 && bitarray[i] < 0) {
-                    lsb = i;
-                }
-            }
-            $(this).data("regpict", {
-                "fields": fields
-            });
-            var svgdiv_string = "<div class='regpict'/>";
-            $(this).prepend(svgdiv_string);
-            $("div.regpict", this).svg(draw_regpict);
-        }*/
         
         function pget(obj, prop, def) {
             if ((obj !== null) && prop in obj)
@@ -223,12 +126,14 @@ define(
                                 rightOf(j), cellTop + cellHeight - cellInternalHeight,
                                 rightOf(j), cellTop + cellHeight, {
                                     class_: "regFieldBoxInternal" +
+                                        (f.unused ? " regFieldBoxUnused" : "") +
                                         " regFieldBoxInternal" + f.attr
                                 });
                         }
                         var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             svg.createText().string(f.name), {
                                 class_: "regFieldName" +
+                                    (f.unused ? " regFieldUnused" : "") +
                                     " regFieldName" + f.attr +
                                     " regFieldNameInternal" +
                                     " regFieldNameInternal" + f.attr
@@ -236,7 +141,30 @@ define(
                         if ("id" in f) {
                             svg.change(text, {id: f.id});
                         }
-                        if ((text.clientWidth + 2 > rightOf(f.lsb) - leftOf(f.msb)) || (text.clientHeight + 2 > cellHeight - cellInternalHeight)) {
+                        var text_width = text.clientWidth;
+                        if (text_width === 0) {
+                            // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                            text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                        }
+                        var text_height = text.clientHeight;
+                        if (text_height === 0) {
+                            // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
+                            text_height = 18;             // Assume 18px: 1 row of text, 15px high
+                        }
+                        /*console.log("field " + f.name +
+                                    " msb=" + f.msb +
+                                    " lsb=" + f.lsb +
+                                    " attr=" + f.attr +
+                                    " unused=" + f.unused +
+                                    (("id" in f) ? f.id : ""));
+                        console.log(" text.clientWidth=" + text.clientWidth +
+                                    " text_width=" + text_width +
+                                    " text.clientHeight=" + text.clientHeight +
+                                    " text_height=" + text_height +
+                                    " rightOf(msb)=" + rightOf(f.lsb) +
+                                    " leftOf(lsb)=" + leftOf(f.msb) +
+                                    " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
+                        if (((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                             svg.change(text, {
                                 x: rightOf(-0.5),
                                 y: nextBitLine,
@@ -255,14 +183,14 @@ define(
                             });  
                             p = svg.createPath();
                             p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
-                             .vert(nextBitLine - text.clientHeight / 4)
+                             .vert(nextBitLine - text_height / 4)
                              .horiz(rightOf(-0.4));
                             svg.path(g, p, {
                                 class_: "regBitLine" +
                                     " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
                                 fill: "none"
                             });
-                            nextBitLine += text.clientHeight + 2;
+                            nextBitLine += text_height + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
                         }
                     }
@@ -283,6 +211,7 @@ define(
                 $("figure.register", doc).each(function (index) {
                     var $fig = $(this);
                     var json = null;
+                    msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
                     var temp = $fig.attr("data-json");
                     if (temp != null && temp != undefined && temp != "") {

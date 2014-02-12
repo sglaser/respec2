@@ -28,8 +28,7 @@ line.regFieldBoxInternal {
 	stroke: black;
 }
 
-line.regFieldBoxInternalrsvdp,
-line.regFieldBoxInternalrsvdz {
+line.regFieldBoxUnused {
 	stroke: grey;
 }
 
@@ -37,8 +36,7 @@ text.regFieldNameInternal {
 	text-anchor: middle;
 }
 
-text.regFieldNameInternalrsvdp,
-text.regFieldNameInternalrsvdz {
+text.regFieldUnused {
 	fill: grey;
 }
 
