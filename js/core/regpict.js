@@ -141,7 +141,30 @@ define(
                         if ("id" in f) {
                             svg.change(text, {id: f.id});
                         }
-                        if ((text.clientWidth + 2 > rightOf(f.lsb) - leftOf(f.msb)) || (text.clientHeight + 2 > cellHeight - cellInternalHeight)) {
+                        var text_width = text.clientWidth;
+                        if (text_width === 0) {
+                            // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                            text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                        }
+                        var text_height = text.clientHeight;
+                        if (text_height === 0) {
+                            // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
+                            text_height = 18;             // Assume 18px: 1 row of text, 15px high
+                        }
+                        /*console.log("field " + f.name +
+                                    " msb=" + f.msb +
+                                    " lsb=" + f.lsb +
+                                    " attr=" + f.attr +
+                                    " unused=" + f.unused +
+                                    (("id" in f) ? f.id : ""));
+                        console.log(" text.clientWidth=" + text.clientWidth +
+                                    " text_width=" + text_width +
+                                    " text.clientHeight=" + text.clientHeight +
+                                    " text_height=" + text_height +
+                                    " rightOf(msb)=" + rightOf(f.lsb) +
+                                    " leftOf(lsb)=" + leftOf(f.msb) +
+                                    " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
+                        if (((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                             svg.change(text, {
                                 x: rightOf(-0.5),
                                 y: nextBitLine,
@@ -160,14 +183,14 @@ define(
                             });  
                             p = svg.createPath();
                             p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
-                             .vert(nextBitLine - text.clientHeight / 4)
+                             .vert(nextBitLine - text_height / 4)
                              .horiz(rightOf(-0.4));
                             svg.path(g, p, {
                                 class_: "regBitLine" +
                                     " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
                                 fill: "none"
                             });
-                            nextBitLine += text.clientHeight + 2;
+                            nextBitLine += text_height + 2;
                             bitLineCount = (bitLineCount + 1) % 4;
                         }
                     }
