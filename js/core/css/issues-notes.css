@@ -1,5 +1,7 @@
 /* --- ISSUES/NOTES --- */
-div.issue-title, div.note-title, div.impnote-title {
+div.issue-title,
+div.note-title,
+div.impnote-title {
     padding-right:  1em;
     min-width: 7.5em;
     color: #b9ab2d;
@@ -7,14 +9,20 @@ div.issue-title, div.note-title, div.impnote-title {
 div.issue-title     { color: #e05252; }
 div.note-title      { color: #2b2; }
 div.impnote-title   { color: #0060A9; }
-div.issue-title span, div.note-title span, div.impnote-title span {
+div.issue-title span,
+div.note-title span,
+div.impnote-title span {
     text-transform: uppercase;
 }
 div.note, div.issue, div.impnote {
     margin-top: 1em;
     margin-bottom: 1em;
 }
-.note > p:first-child, .issue > p:first-child, .impnote > p:first-child { margin-top: 0 }
+.note > p:first-child,
+.issue > p:first-child,
+.impnote > p:first-child {
+    margin-top: 0;
+}
 .issue, .note, .impnote {
     padding: .5em;
     border-left-width: .5em;
@@ -26,7 +34,11 @@ div.issue, div.note, div.impnote {
     position: relative;
     clear: both;
 }
-span.note, span.issue, span.impnote { padding: .1em .5em .15em; }
+span.note,
+span.issue,
+span.impnote {
+    padding: .1em .5em .15em;
+}
 
 .issue {
     border-color: #e05252;
