@@ -2,23 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Basic ReSpec Evolution Example</title>
+    <title>PCISIG ReSpec Example</title>
     <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
-    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script> -->
+    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script>-->
     <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
-    <script src="respec-debug.js" async="async" class="remove"></script>
+       <script src="respec-debug.js" async="async" class="remove"></script>
     <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
     <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
     <script class="remove">
       var respecConfig = {
               specStatus:   "ED"
-          ,   shortName:    "basics"
+          ,   shortName:    "pcisig-example"
           ,   editors:      [{ name: "Steve Glaser"}]
-          ,   wg:           "ReSpec Hackin' Gang"
+          ,   wg:           "Protocol Working Group"
           ,   wgURI:        "http://darobin.github.com/respec"
           ,   wgPublicList: "none"
           ,   wgPatentURI:  "XXX"
-          ,   edDraftURI:   "http://darobin.github.com/respec"
+          ,   edDraftURI:   "http://sglaser.github.io/respec/examples/xxx.html"
           ,   localBiblio:  {
                   "MEMES":  "<a href='http://w3cmemes.tumblr.com/'>W3C Memes</a>"
               ,   "REX":    "<strong>Overridden!</strong>"
@@ -300,7 +300,7 @@
                 <td>3:0</td>
                 <td>
                     <p>
-                        <dfn class="field">Completion Timeout Ranges Supported</dfn>– This field indicates device Function support for the optional Completion Timeout programmability mechanism. This mechanism allows system software to modify the Completion Timeout value.</p>
+                        <dfn class="field">Completion Timeout Ranges Supported</dfn> – This field indicates device Function support for the optional Completion Timeout programmability mechanism. This mechanism allows system software to modify the Completion Timeout value.</p>
                     <p>
                         This field is applicable only to Root Ports, Endpoints that issue Requests on their own behalf, and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express. For all other Functions this field is Reserved and must be hardwired to 0000b.</p>
                     <p>
@@ -344,7 +344,7 @@
                 <td>4</td>
                 <td>
                     <p>
-                        <dfn class="field">Completion Timeout Disable Supported</dfn>– A value of 1b indicates support for the Completion Timeout Disable mechanism.</p>
+                        <dfn class="field">Completion Timeout Disable Supported</dfn> – A value of 1b indicates support for the Completion Timeout Disable mechanism.</p>
                     <p>The Completion Timeout Disable mechanism is required for Endpoints that issue Requests on their own behalf and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express.
                     </p>
                     <p>This mechanism is optional for Root Ports.</p>
@@ -357,7 +357,7 @@
                 <td>5</td>
                 <td>
                     <p>
-                        <dfn class="field">ARI Forwarding Supported</dfn>– Applicable only to Switch Downstream Ports and Root Ports; must be 0b for other Function types. This bit must be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
+                        <dfn class="field">ARI Forwarding Supported</dfn> – Applicable only to Switch Downstream Ports and Root Ports; must be 0b for other Function types. This bit must be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
                     </p>
                 </td>
                 <td>RO</td>
@@ -367,7 +367,7 @@
                 <td>6</td>
                 <td>
                     <p>
-                        <dfn class="field">AtomicOp Routing Supported</dfn>– Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; must be 0b for other Function types. This bit must be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
+                        <dfn class="field">AtomicOp Routing Supported</dfn> – Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; must be 0b for other Function types. This bit must be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
                 </td>
                 <td>RO</td>
             </tr>
@@ -377,7 +377,7 @@
                 <td>7</td>
                 <td>
                     <p>
-                        <dfn class="field">32-bit AtomicOp Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
+                        <dfn class="field">32-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
                 </td>
                 <td>RO</td>
             </tr>
@@ -387,7 +387,7 @@
                 <td>8</td>
                 <td>
                     <p>
-                        <dfn class="field">64-bit AtomicOp Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
+                        <dfn class="field">64-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
                     </p>
                 </td>
                 <td>RO</td>
@@ -398,7 +398,7 @@
                 <td>9</td>
                 <td>
                     <p>
-                        <dfn class="field">128-bit CAS Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
+                        <dfn class="field">128-bit CAS Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
                     </p>
                 </td>
                 <td>RO</td>
@@ -408,7 +408,7 @@
                 <td>10</td>
                 <td>
                     <p>
-                        <dfn class="field">No RO-enabled PR-PR Passing</dfn>– If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
+                        <dfn class="field">No RO-enabled PR-PR Passing</dfn> – If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
                     <p>
                         This bit applies only for Switches and RCs that support peer-to-peer traffic between Root Ports. This bit applies only to Posted Requests being forwarded through the Switch or RC and does not apply to traffic originating or terminating within the Switch or RC itself. All Ports on a Switch or RC must report the same value for this bit.</p>
                     <p class="issue">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
@@ -423,7 +423,7 @@
                 <td>11</td>
                 <td>
                     <p>
-                        <dfn class="field">LTR Mechanism Supported</dfn>– A value of 1b indicates support for the optional Latency Tolerance Reporting (LTR) mechanism.</p>
+                        <dfn class="field">LTR Mechanism Supported</dfn> – A value of 1b indicates support for the optional Latency Tolerance Reporting (LTR) mechanism.</p>
                     <p>Root Ports, Switches and Endpoints are permitted to implement this capability.</p>
                     <p>For a multi-Function device associated with an Upstream Port, each Function must report the same value for this bit.</p>
                     <p>For Bridges and other Functions that do not implement this capability, this bit must be hardwired to 0b.
@@ -437,7 +437,7 @@
                 <td>13:12</td>
                 <td>
                     <p>
-                        <dfn class="field">TPH Completer Supported</dfn>– Value indicates Completer support for TPH or Extended TPH. Applicable only to Root Ports and Endpoints. For all other Functions, this field is Reserved.</p>
+                        <dfn class="field">TPH Completer Supported</dfn> – Value indicates Completer support for TPH or Extended TPH. Applicable only to Root Ports and Endpoints. For all other Functions, this field is Reserved.</p>
                     <p>Defined Encodings are:</p>
                     <dl>
                         <dt>00b</dt>
@@ -458,7 +458,7 @@
                 <td>15:14</td>
                 <td>
                     <p>
-                        <dfn class="field">LN System CLS</dfn>– Applicable only to Root Ports and RCRBs; must be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
+                        <dfn class="field">LN System CLS</dfn> – Applicable only to Root Ports and RCRBs; must be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
                     <p>Encodings are:</p>
                     <dl>
                         <dt>00b</dt>
@@ -478,7 +478,7 @@
                 <td>19:18</td>
                 <td>
                     <p>
-                        <dfn class="field">OBFF Supported</dfn>– This field indicates if OBFF is supported and, if so, what signaling mechanism is used.</p>
+                        <dfn class="field">OBFF Supported</dfn> – This field indicates if OBFF is supported and, if so, what signaling mechanism is used.</p>
                     <dl>
                         <dt>00b</dt>
                         <dd>OBFF Not Supported</dd>
@@ -506,7 +506,7 @@
                 <td>20</td>
                 <td>
                     <p>
-                        <dfn class="field">Extended Fmt Field Supported</dfn>– If Set, the Function supports the 3-bit definition of the Fmt field. If Clear, the Function supports a 2-bit definition of the Fmt field. See Section 2.2.</p>
+                        <dfn class="field">Extended Fmt Field Supported</dfn> – If Set, the Function supports the 3-bit definition of the Fmt field. If Clear, the Function supports a 2-bit definition of the Fmt field. See Section 2.2.</p>
                     <p>Must be Set for Functions that support End-End TLP Prefixes. All Functions in an Upstream Port must have the same value for this bit. Each Downstream Port of a component may have a different value for this bit.</p>
                     <p>It is strongly recommended that Functions support the 3-bit definition of the Fmt field.
                     </p>
@@ -519,12 +519,12 @@
                 <td>21</td>
                 <td>
                     <p>
-                        <dfn class="field">End-End TLP Prefix Supported</dfn>– Indicates whether End-End TLP Prefix support is offered by a Function. Values are:</p>
+                        <dfn class="field">End-End TLP Prefix Supported</dfn> – Indicates whether End-End TLP Prefix support is offered by a Function. Values are:</p>
                     <dl>
                         <dt>0b</dt>
                         <dd>No Support</dd>
                         <dt>1b</dt>
-                    <dd>Support is provided to receive TLPs containing End-End TLP Prefixes.</dd>
+                        <dd>Support is provided to receive TLPs containing End-End TLP Prefixes.</dd>
                     </dl>
                     <p>All Ports of a Switch must have the same value for this bit.
                     </p>
@@ -537,7 +537,7 @@
                 <td>23:22</td>
                 <td>
                     <p>
-                        <dfn class="field">Max End-End TLP Prefixes</dfn>– Indicates the maximum number of End-End TLP Prefixes supported by this Function. See Section 2.2.10.2 for important details. Values are:</p>
+                        <dfn class="field">Max End-End TLP Prefixes</dfn> – Indicates the maximum number of End-End TLP Prefixes supported by this Function. See Section 2.2.10.2 for important details. Values are:</p>
                     <dl>
                         <dt>01b</dt>
                         <dd>1 End-End TLP Prefix</dd>
