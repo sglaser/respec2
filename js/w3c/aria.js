@@ -56,10 +56,11 @@ define(
                     }
                 }
                 // mark issues and notes with heading
-                var noteNum = 0, issueNum = 0;
-                $(".note-title, .issue-title", doc).each(function (i, item) {
+                var noteNum = 0, issueNum = 0, impnoteNum = 0;
+                $(".note-title, .issue-title, .impnote-title", doc).each(function (i, item) {
                     var $item = $(item)
                     ,   isIssue = $item.hasClass("issue-title")
+                    ,   isNote  = $item.hasClass("note-title")
                     ,   level = $item.parents("section").length + 1 ;
 
                     $item.attr('aria-level', level);
@@ -67,9 +68,12 @@ define(
                     if (isIssue) {
                         issueNum++;
                         $item.attr('id', 'h_issue_'+issueNum);
-                    } else {
+                    } else if (isNote) {
                         noteNum++;
                         $item.attr('id', 'h_note_'+noteNum);
+                    } else {
+                        impnoteNum++;
+                        $item.attr('id', 'h_impnote_'+impnoteNum);
                     }
                 });
                 msg.pub("end", "w3c/aria");
