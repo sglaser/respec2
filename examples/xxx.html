@@ -177,14 +177,20 @@
     <dl>
         <dt><dfn title="tErM1">Term1</dfn></dt>
         <dd>This is the definition for Term #1. It uses no markup.</dd>
-        <dt><dfn class="pin">Term 2</dfn></dt>
+        <dt><dfn class="pin">Term2</dfn></dt>
+        <dt><dfn class="pin">pin2#</dfn></dt>
+        <dt><dfn class="pin">pin2a#</dfn></dt>
         <dd>This is the definition for Term #2. It uses &lt;dfn class="pin"&gt;Term 2&lt;/dnf&gt;.</dd>
         <dt><dfn><abbr title="Term number 3">TERM3</abbr></dfn></dt>
         <dd>This is the definition for Term #3. It uses <span class="highlight">&lt;dfn&gt;&lt;abbr title="Term number 3"&gt;TERM3&lt;abbr&gt;&lt;/dfn&gt;</span></dd>
+        <dt><dfn><abbr title="Term number 3a">Term3a</abbr></dfn></dt>
+        <dd>This is the definition for Term #3a.</dd>
         <dt><dfn><acronym title="Term4">Term number 4</acronym></dfn></dt>
         <dd>This is the definition for Term #4. It uses <span class="highlight">&lt;dfn&gt;&lt;acronym title="Term4"&gt;Term number 4&lt;/acronym&gt;&lt;/dfn&gt;</span></dd>
-        <dt><dfn>D3<sub>cold</sub></dfn></dt>
-        <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
+        <dt><dfn class="state">D3<sub>cold</sub></dfn></dt>
+        <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn class="state"&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
+        <dt><dfn class="state">Detect.Quiet</dfn></dt>
+        <dd>This is &lt;dfn class="state"&gt;Detect.Quiet&lt;/dfn&gt;</dd>
         <dt><dfn>Term<sub>6</sub></dfn></dt>
         <dd>This is the definition for Term<sub>6</sub>. It <span class="highlight">&lt;dfn&gt;Term&lt;sub&gt;6&lt;/sub&gt;&lt;/dfn&gt;.</span></dd>
         <dt><dfn><abbr>Term<sub>7</sub></abbr></dfn></dt>
@@ -202,32 +208,35 @@
         <dt><dfn class="term">Term 9</dfn></dt>
         <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
  </dl>
-        References:
-        <ul><li>Term1 <a>Term1</a></li>
-            <li>tErM1 <a>tErM1</a></li>
-            <li>Term 2 <a>Term 2</a></li>
-            <li>TERM3 <a>TERM3</a></li>
-            <li>term number 3 <a>term number 3</a></li>
-            <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
-            <li>TERM3 <a title="term number 3">xxx</a></li>
-            <li>Term number 4 <a>Term<sub>4</sub></a></li>
-            <li>D3cold <a>D3cold</a></li>
-            <li>d3cold <a>d3cold</a></li>
-            <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
-            <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
-            <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
-            <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
-            <li>term number 8 <a>term number 8</a></li>
-            <li>Term9 class="pin" <a class="pin">Term9</a></li>
-            <li>Term9 class="signal" <a class="signal">Term9</a></li>
-            <li>Term9 class="term" <a class="term">Term9</a></li>
-            <li>Term9 no class (ambiguous) <a>Term9</a></li>
-            <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
-            <li>Term 9 (with space before the '9') <a>Term 9</a></li>
-            <li>first <a>first</a></li>
-            <li>Z <a>z</a></li>
-            <li>bit13 <a class="field">bit13</a></li>
-       </ul>
+        <section>
+            <h2>References:</h2>
+            <ul>
+                <li>Term1 <a>Term1</a></li>
+                <li>tErM1 <a>tErM1</a></li>
+                <li>Term2 <a>Term2</a></li>
+                <li>TERM3 <a>TERM3</a></li>
+                <li>term number 3 <a>term number 3</a></li>
+                <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
+                <li>TERM3 <a title="term number 3">xxx</a></li>
+                <li>Term number 4 <a>Term<sub>4</sub></a></li>
+                <li>D3cold <a>D3cold</a></li>
+                <li>d3cold <a>d3cold</a></li>
+                <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
+                <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
+                <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
+                <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
+                <li>term number 8 <a>term number 8</a></li>
+                <li>Term9 class="pin" <a class="pin">Term9</a></li>
+                <li>Term9 class="signal" <a class="signal">Term9</a></li>
+                <li>Term9 class="term" <a class="term">Term9</a></li>
+                <li>Term9 no class (ambiguous) <a>Term9</a></li>
+                <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
+                <li>Term 9 (with space before the '9') <a>Term 9</a></li>
+                <li>Detect.Quiet <a>Detect.Quiet</a></li>
+                <li>first <a>first</a></li>
+                <li>Z <a>z</a></li>
+                <li>bit13 <a class="field">bit13</a></li>
+       </ul></section>
     </section>
       <section>
     <h2>MathML Test</h2>
@@ -292,8 +301,8 @@
         <caption>PCISIG-Style Register #1</caption>
         <thead>
             <tr>
-                <th>Bits</th>
-                <th>Description</th>
+                <th>Bit&nbsp;Location</th>
+                <th>Register&nbsp;Description</th>
                 <th>Attributes</th></tr>
         </thead>
         <tbody>
@@ -314,14 +323,14 @@
                 <td>
                     <p>
                         <dfn class="field">bit1_2</dfn>
-                        &ndash;
+                        &ndash; Bits 1 &amp; 2
                     </p>
                 </td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>3</td>
-                <td>bit3 &ndash; three</td>
+                <td><dfn class="field">bit3</dfn> &ndash; three</td>
                 <td>RW</td>
             </tr>
             <tr>
@@ -356,18 +365,18 @@
             </tr>
             <tr>
                 <td>7</td>
-                <td>bit7</td>
+                <td><dfn class="field">bit7</dfn></td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>8</td>
-                <td>bit8 eight</td>
+                <td><dfn class="field">bit8</dfn> - eight</td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>9</td>
                 <td>
-                    <p>bit9</p>
+                    <dfn class="field">bit9</dfn>
                 </td>
                 <td>RW</td>
             </tr>
@@ -375,8 +384,10 @@
                 <td>14</td>
                 <td>
                     <dfn class="field">bit 14a</dfn>
-                    <table>
-                        <tr>
+                    <table class="simple">
+                        <thead>
+                        <tr><th>Col&nbsp;1</th><th>Col&nbsp;2</th><th>Col&nbsp;3</th></tr></thead>
+                        <tbody><tr>
                             <td>
                                 <dfn class="field">first</dfn>
                             </td>
@@ -388,8 +399,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>second row</td>
+                            <td colspan="3">second row</td>
                         </tr>
+                            </tbody>
                     </table>
                     <p>
                         <dfn class="field">fourth</dfn>
@@ -409,8 +421,8 @@
         <caption>Device Capabilities 2 Register</caption>
         <thead>
             <tr>
-                <th>Bit Location</th>
-                <th>Register Description</th>
+                <th>Bit&nbsp;Location</th>
+                <th>Register&nbsp;Description</th>
                 <th>Attributes</th>
             </tr>
         </thead>
