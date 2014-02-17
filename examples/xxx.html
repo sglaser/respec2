@@ -29,19 +29,64 @@
           ,   ajaxIsLocal:  true
         };
     </script>
+      </head>
+    <body>
       <style type="text/css">
+          
+          dl + * { clear: left;}
+          dl.left {
+              display: block;
+              clear: left;
+          }
+          dl.left dt {
+              display: block;
+              overflow: hidden;
+              float: left;
+              clear: left;
+              width: 12%;
+          }
+          
+          dl.left dd {
+              display: block;
+              overflow: hidden;
+              float: left;
+              width: 85%;
+              margin-left: 1em;
+          }
+          dl dd {
+              margin-bottom: 0.75em;
+          }
+          
+          dl dt {
+              margin-bottom: 0.25em;
+          }
           
           table {
               border-collapse: collapse;
+              border-bottom: 3px solid #0038A8;
+          }
+          table th {
+              background: #0038A8;
+              color: white;
+          }
+          
+          h1, h2, h3, h4, h5, h6 {
+              color: #0038A8;
           }
           
           table tbody,
           table thead {
-              font-family: "Cailbri", "Arial", sans-serif;
+              font-family: "Calibri", "Arial", sans-serif;
           }
-          
+          table caption {
+              margin: 12px 0;
+          }
+          figcaption {
+              margin: 12px 0;
+              text-align: center;
+          }
           th p,
-          td p              { margin: 6px; }
+          td p              { margin: 6px 0; }
           th p:first-child,
           td p:first-child  { margin-top: 0px; }
           th p:last-child,
@@ -50,7 +95,7 @@
           td                { border: 1px solid gray; }
 
           th { padding: 6px; vertical-align: middle; }
-          td { padding: 3px; vertical-align: top; }
+          td { padding: 6px; vertical-align: top; }
           
           th:first-child,
           td:first-child,
@@ -77,15 +122,34 @@
               font-weight: bold;
           }
           td dl dd {
-              float left;
               overflow: hidden;
               margin-bottom: 0.5em;
           }
           td dl     { margin-top: 0; margin-bottom: 0; }
           td dl + p { margin-top: 0; }
+          li        { margin: 0.25em 0;}
+          a.state,
+          dfn.state {
+              color: #0038A8;
+          }
+          a.pin.internalDFN,
+          dfn.pin {
+              text-transform: uppercase;
+          }
+          a.signal.internalDFN,
+          dfn.signal    {
+              text-transform: uppercase;
+              color: #0038A8;
+          }
+          dfn.pin,
+          dfn.signal,
+          a.internalDFN.pin,
+          a.internalDFN.signal {
+              font-weight: normal;
+              font-style: normal;
+              font-family: "Courier", monospace;
+          }
       </style>
-  </head>
-  <body>
     <section id="abstract">
       <p> This is just a very basic document. [[!REX]] Yeah for memes [[MEMES]].
         [[DOM4]], [[XML10]], [[\WHATEVER]] </p>
