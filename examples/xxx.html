@@ -466,7 +466,7 @@
                         <dfn class="field">No RO-enabled PR-PR Passing</dfn> – If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
                     <p>
                         This bit applies only for Switches and RCs that support peer-to-peer traffic between Root Ports. This bit applies only to Posted Requests being forwarded through the Switch or RC and does not apply to traffic originating or terminating within the Switch or RC itself. All Ports on a Switch or RC must report the same value for this bit.</p>
-                    <p class="issue">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
+                    <p class="issue" title="This is an issue">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
                     <p>
                         For all other functions, this bit must be 0b
                     </p>
