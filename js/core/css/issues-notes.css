@@ -4,10 +4,10 @@ div.issue-title, div.note-title, div.impnote-title {
     min-width: 7.5em;
     color: #b9ab2d;
 }
-div.issue-title { color: #e05252; }
-div.note-title { color: #2b2; }
-div.impnote-title { color: rgb(89,24,187); }
-div.issue-title span, div.note-title span , div.impnote-title span {
+div.issue-title     { color: #e05252; }
+div.note-title      { color: #2b2; }
+div.impnote-title   { color: #0060A9; }
+div.issue-title span, div.note-title span, div.impnote-title span {
     text-transform: uppercase;
 }
 div.note, div.issue, div.impnote {
@@ -30,15 +30,15 @@ span.note, span.issue, span.impnote { padding: .1em .5em .15em; }
 
 .issue {
     border-color: #e05252;
-    background: #fbe9e9;
+    background:   #fbe9e9;
 }
 .note {
     border-color: #52e052;
-    background: #e9fbe9;
+    background:   #e9fbe9;
 }
 .impnote {
-    border-color: rgb(89,24,187);
-    background: rgb(233,222,252);
+    border-color: #0060A9; 
+    background:   #E5F4FF;
 }
 
 
