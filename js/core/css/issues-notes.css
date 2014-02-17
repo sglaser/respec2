@@ -7,7 +7,7 @@ div.issue-title, div.note-title, div.impnote-title {
 div.issue-title { color: #e05252; }
 div.note-title { color: #2b2; }
 div.impnote-title { color: black; }
-div.issue-title span, div.note-title span, div.impnote-title span {
+div.issue-title span, div.note-title span , div.impnote-title span {
     text-transform: uppercase;
 }
 div.note, div.issue, div.impnote {
@@ -20,7 +20,7 @@ div.note, div.issue, div.impnote {
     border-left-width: .5em;
     border-left-style: solid;
 }
-div.issue, div.note, .impnote {
+div.issue, div.note, div.impnote {
     padding: 1em 1.2em 0.5em;
     margin: 1em 0;
     position: relative;
