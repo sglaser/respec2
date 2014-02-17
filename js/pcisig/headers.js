@@ -3,7 +3,7 @@
 */
 /*global Handlebars*/
 
-// Module w3c/headers
+// Module pcisig/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
@@ -37,7 +37,7 @@
 //  - noRecTrack: set to true if this document is not intended to be on the Recommendation track
 //  - edDraftURI: the URI of the Editor's Draft for this document, if any. Required if
 //      specStatus is set to "ED".
-//  - additionalCopyrightHolders: a copyright owner in addition to W3C (or the only one if specStatus
+//  - additionalCopyrightHolders: a copyright owner in addition to pcisig (or the only one if specStatus
 //      is unofficial)
 //  - overrideCopyright: provides markup to completely override the copyright
 //  - copyrightStart: the year from which the copyright starts running
@@ -73,17 +73,15 @@
 //          - value: The value that will appear in the <dd> (e.g., "GitHub"). Optional.
 //          - href: a URL for the value (e.g., "http://foo.com/issues"). Optional.
 //          - class: a string representing CSS classes. Optional.
-//  - license: can either be "w3c" (for the currently default, restrictive license) or "cc-by" for
+//  - license: can either be "pcisig" (for the currently default, restrictive license) or "cc-by" for
 //      the friendly persmissive dual license that nice people use (if they are participating in the
 //      HTML WG licensing experiment)
 
 define(
     ["handlebars"
     ,"core/utils"
-    ,"tmpl!w3c/templates/headers.html"
-    ,"tmpl!w3c/templates/sotd.html"
-    ,"tmpl!w3c/templates/cgbg-headers.html"
-    ,"tmpl!w3c/templates/cgbg-sotd.html"
+    ,"tmpl!pcisig/templates/headers.html"
+    ,"tmpl!pcisig/templates/sotd.html"
     ],
     function (hb, utils, headersTmpl, sotdTmpl, cgbgHeadersTmpl, cgbgSotdTmpl) {
         Handlebars.registerHelper("showPeople", function (name, items) {
@@ -192,11 +190,10 @@ define(
             }
         ,   recTrackStatus: ["FPWD", "WD", "FPLC", "LC", "CR", "PR", "PER", "REC"]
         ,   noTrackStatus:  ["MO", "unofficial", "base", "finding", "draft-finding", "CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
-        ,   cgbg:           ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
         ,   precededByAn:   ["ED", "IG-NOTE"]
                         
         ,   run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "w3c/headers");
+                msg.pub("start", "pcisig/headers");
 
                 if (conf.doRDFa !== false) {
                     if (conf.doRDFa === undefined) {
@@ -204,14 +201,9 @@ define(
                     }
                 }
                 // validate configuration and derive new configuration values
-                if (!conf.license) conf.license = "w3c";
-                // NOTE: this is currently only available to the HTML WG
-                // this check will be relaxed later
-                conf.isCCBY = conf.license === "cc-by" && conf.wgPatentURI === "http://www.w3.org/2004/01/pp-impl/40318/status";
-                conf.isCGBG = $.inArray(conf.specStatus, this.cgbg) >= 0;
-                conf.isCGFinal = conf.isCGBG && /G-FINAL$/.test(conf.specStatus);
+                if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
-                if (!conf.isCGBG && !conf.shortName) msg.pub("error", "Missing required configuration: shortName");
+                if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
                 if (!conf.publishDate) {
@@ -317,7 +309,7 @@ define(
                     msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");
                 conf.isUnofficial = conf.specStatus === "unofficial";
-                conf.prependW3C = !conf.isUnofficial;
+                conf.prependPCIeLogo = !conf.isUnofficial;
                 conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
                 conf.isCR = (conf.specStatus === "CR");
@@ -391,7 +383,7 @@ define(
                                      "please specify one using a <code><section></code> element with ID=sotd.");
                 }
 
-                msg.pub("end", "w3c/headers");
+                msg.pub("end", "pcisig/headers");
                 cb();
             }
         };

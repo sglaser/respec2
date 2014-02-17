@@ -2,23 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Basic ReSpec Evolution Example</title>
+    <title>PCISIG ReSpec Example</title>
     <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
-    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script> -->
+    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script>-->
     <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
-    <script src="respec-debug.js" async="async" class="remove"></script>
+       <script src="respec-debug.js" async="async" class="remove"></script>
     <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
     <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
     <script class="remove">
       var respecConfig = {
-              specStatus:   "ED"
-          ,   shortName:    "basics"
+              specStatus:   "unofficial"
+          ,   shortName:    "pcisig-example"
           ,   editors:      [{ name: "Steve Glaser"}]
-          ,   wg:           "ReSpec Hackin' Gang"
+          ,   wg:           "Protocol Working Group"
           ,   wgURI:        "http://darobin.github.com/respec"
           ,   wgPublicList: "none"
           ,   wgPatentURI:  "XXX"
-          ,   edDraftURI:   "http://darobin.github.com/respec"
+          ,   edDraftURI:   "http://sglaser.github.io/respec/examples/xxx.html"
           ,   localBiblio:  {
                   "MEMES":  "<a href='http://w3cmemes.tumblr.com/'>W3C Memes</a>"
               ,   "REX":    "<strong>Overridden!</strong>"
@@ -29,9 +29,189 @@
           ,   ajaxIsLocal:  true
         };
     </script>
-  </head>
-  <body>
-    <section id="abstract">
+      </head>
+    <body>
+      <style type="text/css">
+          
+          dl + * { clear: left;}
+          dl.left {
+              display: block;
+              clear: left;
+          }
+          dl.left dt {
+              display: block;
+              overflow: hidden;
+              float: left;
+              clear: left;
+              width: 12%;
+          }
+          
+          dl.left dd {
+              display: block;
+              overflow: hidden;
+              float: left;
+              width: 85%;
+              margin-left: 1em;
+          }
+          dl dd {
+              margin-bottom: 0.75em;
+          }
+          
+          dl dt {
+              margin-bottom: 0.25em;
+          }
+          
+          table {
+              border-collapse: collapse;
+              border-bottom: 3px solid #0060A9;
+          }
+          table th {
+              background: #0060A9;
+              color: white;
+          }          
+          table caption {
+              margin: 12px 0;
+          }
+          figcaption {
+              margin: 12px 0;
+              text-align: center;
+          }
+          th p,
+          td p              { margin: 5px 0; }
+          th p:first-child,
+          td p:first-child  { margin-top: 0px; }
+          th p:last-child,
+          td p:last-child   { margin-bottom: 0px; }
+          th,
+          td                { border: 1px solid gray; }
+
+          th { padding: 5px; vertical-align: middle; }
+          td { padding: 5px; vertical-align: top; }
+          
+          th:first-child,
+          td:first-child,
+          th:last-child,
+          td:last-child {
+              border-left: none;
+              border-right: none;
+          }
+          
+          dfn.field {
+              font-style: normal;
+              font-weight: bold;
+          }
+          
+          table.pcisig_reg td:first-child,
+          table.pcisig_reg td:last-child {
+              text-align: center;
+          }
+          table dl { width: 100%;}
+          table dt {
+              float: left;
+              width: 12%;
+              margin-left: 6px;
+              font-weight: bold;
+          }
+          td dl dd {
+              overflow: hidden;
+              margin-bottom: 0.5em;
+          }
+          td dl     { margin-top: 0; margin-bottom: 0; }
+          td dl + p { margin-top: 0; }
+          li        { margin: 0.25em 0;}
+
+          a.state,
+          dfn.state { color: #0060A9; }
+          
+          a.pin.internalDFN,
+          dfn.pin {
+              text-transform: uppercase;
+          }
+
+          a.signal.internalDFN,
+          dfn.signal    {
+              text-transform: uppercase;
+              color: #0060A9;
+          }
+          
+          dfn.pin,
+          dfn.signal,
+          a.internalDFN.pin,
+          a.internalDFN.signal {
+              font-weight: normal;
+              font-style: normal;
+              font-family: "Courier", monospace;
+          }
+          body {
+              padding: 2em 1em 2em 36px;
+              font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+              background-image: none;
+          }
+          
+          #respecHeader > p:first-child::before { content: url(pci_express_PMS.svg);}
+
+          #respec-banner {
+              position: fixed;
+              top: -15px;
+              height: 20px;
+              left: -595px;
+              width: 600px;
+              margin: 0 0 0 0;
+              text-align: right;
+              padding: 4px 4px 4px 4px;
+              /* W3C */
+              transform: rotate(270deg);
+              transform-origin: right center;
+              /* Safari, Chrome */
+              -webkit-transform: rotate(270deg);
+              -webkit-transform-origin: right center;
+          }
+          
+          #respec-banner {
+              font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+              font-size: 17px;
+              color: white;
+              background-color: #0060A9; /*#38197a; /* PCIe Logo Blue */
+          }
+          
+          caption, figcaption, thead, h1, h2, h3, h4, h5 {
+              font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+              color: #0060A9; /* PCIe Logo Blue */
+          }
+
+          td,
+          th {
+              font-family: "Lato", "Source Sans Pro", sans-serif;
+              font-size: 15px;
+          }
+          th {
+              font-size: 17px;
+              font-weight: normal;
+          }
+          
+          path.regBitLine0 {
+              stroke: #0060A9;
+              stroke-dasharray: 4,2;
+              stroke-width: 1px;
+          }
+          
+          path.regBitBracket0 {
+              stroke: #0060A9;
+              stroke-width: 1px;
+          }
+          
+      </style>
+        <div id="respec-banner">
+        <span id="respec-banner-status">
+            <span>Editor's &nbsp; Draft</span> &nbsp;&mdash;&nbsp;</span>
+        <span class="respec-banner-next-state">
+            <span>Member &nbsp; Review</span> &nbsp;&mdash;&nbsp;</span>
+        <span id="respec-banner-maturity">
+            <span>0.3</span> &nbsp; Level &nbsp;&mdash;&nbsp;</span>
+        <span class="respec-banner-spec-name">
+            <span>PCIe &nbsp; Base &nbsp; 4.0</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+<section id="abstract">
       <p> This is just a very basic document. [[!REX]] Yeah for memes [[MEMES]].
         [[DOM4]], [[XML10]], [[\WHATEVER]] </p>
 <!--      <p> [[NO-EXIST]] </p>-->
@@ -58,14 +238,20 @@
     <dl>
         <dt><dfn title="tErM1">Term1</dfn></dt>
         <dd>This is the definition for Term #1. It uses no markup.</dd>
-        <dt><dfn class="pin">Term 2</dfn></dt>
+        <dt><dfn class="pin">Term2</dfn></dt>
+        <dt><dfn class="pin">pin2#</dfn></dt>
+        <dt><dfn class="pin">pin2a#</dfn></dt>
         <dd>This is the definition for Term #2. It uses &lt;dfn class="pin"&gt;Term 2&lt;/dnf&gt;.</dd>
         <dt><dfn><abbr title="Term number 3">TERM3</abbr></dfn></dt>
         <dd>This is the definition for Term #3. It uses <span class="highlight">&lt;dfn&gt;&lt;abbr title="Term number 3"&gt;TERM3&lt;abbr&gt;&lt;/dfn&gt;</span></dd>
+        <dt><dfn><abbr title="Term number 3a">Term3a</abbr></dfn></dt>
+        <dd>This is the definition for Term #3a.</dd>
         <dt><dfn><acronym title="Term4">Term number 4</acronym></dfn></dt>
         <dd>This is the definition for Term #4. It uses <span class="highlight">&lt;dfn&gt;&lt;acronym title="Term4"&gt;Term number 4&lt;/acronym&gt;&lt;/dfn&gt;</span></dd>
-        <dt><dfn>D3<sub>cold</sub></dfn></dt>
-        <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
+        <dt><dfn class="state">D3<sub>cold</sub></dfn></dt>
+        <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn class="state"&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
+        <dt><dfn class="state">Detect.Quiet</dfn></dt>
+        <dd>This is &lt;dfn class="state"&gt;Detect.Quiet&lt;/dfn&gt;</dd>
         <dt><dfn>Term<sub>6</sub></dfn></dt>
         <dd>This is the definition for Term<sub>6</sub>. It <span class="highlight">&lt;dfn&gt;Term&lt;sub&gt;6&lt;/sub&gt;&lt;/dfn&gt;.</span></dd>
         <dt><dfn><abbr>Term<sub>7</sub></abbr></dfn></dt>
@@ -83,32 +269,35 @@
         <dt><dfn class="term">Term 9</dfn></dt>
         <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
  </dl>
-        References:
-        <ul><li>Term1 <a>Term1</a></li>
-            <li>tErM1 <a>tErM1</a></li>
-            <li>Term 2 <a>Term 2</a></li>
-            <li>TERM3 <a>TERM3</a></li>
-            <li>term number 3 <a>term number 3</a></li>
-            <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
-            <li>TERM3 <a title="term number 3">xxx</a></li>
-            <li>Term number 4 <a>Term<sub>4</sub></a></li>
-            <li>D3cold <a>D3cold</a></li>
-            <li>d3cold <a>d3cold</a></li>
-            <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
-            <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
-            <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
-            <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
-            <li>term number 8 <a>term number 8</a></li>
-            <li>Term9 class="pin" <a class="pin">Term9</a></li>
-            <li>Term9 class="signal" <a class="signal">Term9</a></li>
-            <li>Term9 class="term" <a class="term">Term9</a></li>
-            <li>Term9 no class (ambiguous) <a>Term9</a></li>
-            <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
-            <li>Term 9 (with space before the '9') <a>Term 9</a></li>
-            <li>first <a>first</a></li>
-            <li>Z <a>z</a></li>
-            <li>bit13 <a class="field">bit13</a></li>
-       </ul>
+        <section>
+            <h2>References:</h2>
+            <ul>
+                <li>Term1 <a>Term1</a></li>
+                <li>tErM1 <a>tErM1</a></li>
+                <li>Term2 <a>Term2</a></li>
+                <li>TERM3 <a>TERM3</a></li>
+                <li>term number 3 <a>term number 3</a></li>
+                <li>title="term number 3" <a title="term number 3">This is term number 3</a></li>
+                <li>TERM3 <a title="term number 3">xxx</a></li>
+                <li>Term number 4 <a>Term<sub>4</sub></a></li>
+                <li>D3cold <a>D3cold</a></li>
+                <li>d3cold <a>d3cold</a></li>
+                <li>D3<sub>cold</sub> <a>D3<sub>cold</sub></a></li>
+                <li>xyzzy title="d3cold" <a title="d3cold">xyzzy</a></li>
+                <li>Term<sub>6</sub> <a>Term<sub>6</sub></a></li>
+                <li>Term<sub>7</sub> <a>Term<sub>7</sub></a></li>
+                <li>term number 8 <a>term number 8</a></li>
+                <li>Term9 class="pin" <a class="pin">Term9</a></li>
+                <li>Term9 class="signal" <a class="signal">Term9</a></li>
+                <li>Term9 class="term" <a class="term">Term9</a></li>
+                <li>Term9 no class (ambiguous) <a>Term9</a></li>
+                <li>Term9 class="externalDFN" <a class="externalDFN">Term9</a></li>
+                <li>Term 9 (with space before the '9') <a>Term 9</a></li>
+                <li>Detect.Quiet <a>Detect.Quiet</a></li>
+                <li>first <a>first</a></li>
+                <li>Z <a>z</a></li>
+                <li>bit13 <a class="field">bit13</a></li>
+       </ul></section>
     </section>
       <section>
     <h2>MathML Test</h2>
@@ -173,8 +362,8 @@
         <caption>PCISIG-Style Register #1</caption>
         <thead>
             <tr>
-                <th>Bits</th>
-                <th>Description</th>
+                <th>Bit&nbsp;Location</th>
+                <th>Register&nbsp;Description</th>
                 <th>Attributes</th></tr>
         </thead>
         <tbody>
@@ -195,14 +384,14 @@
                 <td>
                     <p>
                         <dfn class="field">bit1_2</dfn>
-                        &ndash;
+                        &ndash; Bits 1 &amp; 2
                     </p>
                 </td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>3</td>
-                <td>bit3 &ndash; three</td>
+                <td><dfn class="field">bit3</dfn> &ndash; three</td>
                 <td>RW</td>
             </tr>
             <tr>
@@ -237,18 +426,18 @@
             </tr>
             <tr>
                 <td>7</td>
-                <td>bit7</td>
+                <td><dfn class="field">bit7</dfn></td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>8</td>
-                <td>bit8 eight</td>
+                <td><dfn class="field">bit8</dfn> - eight</td>
                 <td>RW</td>
             </tr>
             <tr>
                 <td>9</td>
                 <td>
-                    <p>bit9</p>
+                    <dfn class="field">bit9</dfn>
                 </td>
                 <td>RW</td>
             </tr>
@@ -256,8 +445,10 @@
                 <td>14</td>
                 <td>
                     <dfn class="field">bit 14a</dfn>
-                    <table>
-                        <tr>
+                    <table class="simple">
+                        <thead>
+                        <tr><th>Col&nbsp;1</th><th>Col&nbsp;2</th><th>Col&nbsp;3</th></tr></thead>
+                        <tbody><tr>
                             <td>
                                 <dfn class="field">first</dfn>
                             </td>
@@ -269,8 +460,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>second row</td>
+                            <td colspan="3">second row</td>
                         </tr>
+                            </tbody>
                     </table>
                     <p>
                         <dfn class="field">fourth</dfn>
@@ -286,12 +478,12 @@
     <figure class="register pcisig_reg" data-table="#reg_pcie_capability__device_capability_2">
         <figcaption>Device Capabilities 2 Register</figcaption>
     </figure>
-    <table class="pcisig_reg" id="reg_pcie_capability__device_capability_2" border="1px" colspace="0" colpadding="0">
+    <table class="pcisig_reg" id="reg_pcie_capability__device_capability_2">
         <caption>Device Capabilities 2 Register</caption>
         <thead>
             <tr>
-                <th>Bit Location</th>
-                <th>Register Description</th>
+                <th>Bit&nbsp;Location</th>
+                <th>Register&nbsp;Description</th>
                 <th>Attributes</th>
             </tr>
         </thead>
@@ -300,7 +492,7 @@
                 <td>3:0</td>
                 <td>
                     <p>
-                        <dfn class="field">Completion Timeout Ranges Supported</dfn>– This field indicates device Function support for the optional Completion Timeout programmability mechanism. This mechanism allows system software to modify the Completion Timeout value.</p>
+                        <dfn class="field">Completion Timeout Ranges Supported</dfn> – This field indicates device Function support for the optional Completion Timeout programmability mechanism. This mechanism allows system software to modify the Completion Timeout value.</p>
                     <p>
                         This field is applicable only to Root Ports, Endpoints that issue Requests on their own behalf, and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express. For all other Functions this field is Reserved and must be hardwired to 0000b.</p>
                     <p>
@@ -344,7 +536,7 @@
                 <td>4</td>
                 <td>
                     <p>
-                        <dfn class="field">Completion Timeout Disable Supported</dfn>– A value of 1b indicates support for the Completion Timeout Disable mechanism.</p>
+                        <dfn class="field">Completion Timeout Disable Supported</dfn> – A value of 1b indicates support for the Completion Timeout Disable mechanism.</p>
                     <p>The Completion Timeout Disable mechanism is required for Endpoints that issue Requests on their own behalf and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express.
                     </p>
                     <p>This mechanism is optional for Root Ports.</p>
@@ -357,7 +549,7 @@
                 <td>5</td>
                 <td>
                     <p>
-                        <dfn class="field">ARI Forwarding Supported</dfn>– Applicable only to Switch Downstream Ports and Root Ports; must be 0b for other Function types. This bit must be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
+                        <dfn class="field">ARI Forwarding Supported</dfn> – Applicable only to Switch Downstream Ports and Root Ports; must be 0b for other Function types. This bit must be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
                     </p>
                 </td>
                 <td>RO</td>
@@ -367,7 +559,7 @@
                 <td>6</td>
                 <td>
                     <p>
-                        <dfn class="field">AtomicOp Routing Supported</dfn>– Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; must be 0b for other Function types. This bit must be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
+                        <dfn class="field">AtomicOp Routing Supported</dfn> – Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; must be 0b for other Function types. This bit must be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
                 </td>
                 <td>RO</td>
             </tr>
@@ -377,7 +569,7 @@
                 <td>7</td>
                 <td>
                     <p>
-                        <dfn class="field">32-bit AtomicOp Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
+                        <dfn class="field">32-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
                 </td>
                 <td>RO</td>
             </tr>
@@ -387,7 +579,7 @@
                 <td>8</td>
                 <td>
                     <p>
-                        <dfn class="field">64-bit AtomicOp Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
+                        <dfn class="field">64-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
                     </p>
                 </td>
                 <td>RO</td>
@@ -398,7 +590,7 @@
                 <td>9</td>
                 <td>
                     <p>
-                        <dfn class="field">128-bit CAS Completer Supported</dfn>– Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
+                        <dfn class="field">128-bit CAS Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
                     </p>
                 </td>
                 <td>RO</td>
@@ -408,10 +600,10 @@
                 <td>10</td>
                 <td>
                     <p>
-                        <dfn class="field">No RO-enabled PR-PR Passing</dfn>– If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
+                        <dfn class="field">No RO-enabled PR-PR Passing</dfn> – If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
                     <p>
                         This bit applies only for Switches and RCs that support peer-to-peer traffic between Root Ports. This bit applies only to Posted Requests being forwarded through the Switch or RC and does not apply to traffic originating or terminating within the Switch or RC itself. All Ports on a Switch or RC must report the same value for this bit.</p>
-                    <p class="issue">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
+                    <p class="issue" title="This is an issue">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
                     <p>
                         For all other functions, this bit must be 0b
                     </p>
@@ -423,7 +615,7 @@
                 <td>11</td>
                 <td>
                     <p>
-                        <dfn class="field">LTR Mechanism Supported</dfn>– A value of 1b indicates support for the optional Latency Tolerance Reporting (LTR) mechanism.</p>
+                        <dfn class="field">LTR Mechanism Supported</dfn> – A value of 1b indicates support for the optional Latency Tolerance Reporting (LTR) mechanism.</p>
                     <p>Root Ports, Switches and Endpoints are permitted to implement this capability.</p>
                     <p>For a multi-Function device associated with an Upstream Port, each Function must report the same value for this bit.</p>
                     <p>For Bridges and other Functions that do not implement this capability, this bit must be hardwired to 0b.
@@ -437,7 +629,7 @@
                 <td>13:12</td>
                 <td>
                     <p>
-                        <dfn class="field">TPH Completer Supported</dfn>– Value indicates Completer support for TPH or Extended TPH. Applicable only to Root Ports and Endpoints. For all other Functions, this field is Reserved.</p>
+                        <dfn class="field">TPH Completer Supported</dfn> – Value indicates Completer support for TPH or Extended TPH. Applicable only to Root Ports and Endpoints. For all other Functions, this field is Reserved.</p>
                     <p>Defined Encodings are:</p>
                     <dl>
                         <dt>00b</dt>
@@ -458,7 +650,7 @@
                 <td>15:14</td>
                 <td>
                     <p>
-                        <dfn class="field">LN System CLS</dfn>– Applicable only to Root Ports and RCRBs; must be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
+                        <dfn class="field">LN System CLS</dfn> – Applicable only to Root Ports and RCRBs; must be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
                     <p>Encodings are:</p>
                     <dl>
                         <dt>00b</dt>
@@ -478,7 +670,7 @@
                 <td>19:18</td>
                 <td>
                     <p>
-                        <dfn class="field">OBFF Supported</dfn>– This field indicates if OBFF is supported and, if so, what signaling mechanism is used.</p>
+                        <dfn class="field">OBFF Supported</dfn> – This field indicates if OBFF is supported and, if so, what signaling mechanism is used.</p>
                     <dl>
                         <dt>00b</dt>
                         <dd>OBFF Not Supported</dd>
@@ -506,7 +698,7 @@
                 <td>20</td>
                 <td>
                     <p>
-                        <dfn class="field">Extended Fmt Field Supported</dfn>– If Set, the Function supports the 3-bit definition of the Fmt field. If Clear, the Function supports a 2-bit definition of the Fmt field. See Section 2.2.</p>
+                        <dfn class="field">Extended Fmt Field Supported</dfn> – If Set, the Function supports the 3-bit definition of the Fmt field. If Clear, the Function supports a 2-bit definition of the Fmt field. See Section 2.2.</p>
                     <p>Must be Set for Functions that support End-End TLP Prefixes. All Functions in an Upstream Port must have the same value for this bit. Each Downstream Port of a component may have a different value for this bit.</p>
                     <p>It is strongly recommended that Functions support the 3-bit definition of the Fmt field.
                     </p>
@@ -519,13 +711,13 @@
                 <td>21</td>
                 <td>
                     <p>
-                        <dfn class="field">End-End TLP Prefix Supported</dfn>– Indicates whether End-End TLP Prefix support is offered by a Function. Values are:</p>
+                        <dfn class="field">End-End TLP Prefix Supported</dfn> – Indicates whether End-End TLP Prefix support is offered by a Function. Values are:</p>
                     <dl>
                         <dt>0b</dt>
                         <dd>No Support</dd>
+                        <dt>1b</dt>
+                        <dd>Support is provided to receive TLPs containing End-End TLP Prefixes.</dd>
                     </dl>
-                    <dt></dt>
-                    <dd>Support is provided to receive TLPs containing End-End TLP Prefixes.</dd>
                     <p>All Ports of a Switch must have the same value for this bit.
                     </p>
                 </td>
@@ -537,7 +729,7 @@
                 <td>23:22</td>
                 <td>
                     <p>
-                        <dfn class="field">Max End-End TLP Prefixes</dfn>– Indicates the maximum number of End-End TLP Prefixes supported by this Function. See Section 2.2.10.2 for important details. Values are:</p>
+                        <dfn class="field">Max End-End TLP Prefixes</dfn> – Indicates the maximum number of End-End TLP Prefixes supported by this Function. See Section 2.2.10.2 for important details. Values are:</p>
                     <dl>
                         <dt>01b</dt>
                         <dd>1 End-End TLP Prefix</dd>
@@ -577,7 +769,7 @@
       <p class="issue" title="A real problem"> This is a problem </p>
       <p class="issue atrisk" title="A REAL problem"> This is a problem </p>
       <p class="note" title="About this"> Just a note </p>
-      <p class="impnote" title="Imp Note Test"> Body of the implementation note </p>
+      <p class="impnote" title="Imp Note Text"> Body of the implementation note </p>
     </section>
   </body>
 </html>

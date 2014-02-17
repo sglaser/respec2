@@ -67,10 +67,10 @@ define(
                                     text += " " + issueNum;
                                 }
                             }
-                            $tit.find("span").text(text);
+                            $tit.find("span").text(text + ":");
                             report.title = $inno.attr("title");
                             if (report.title) {
-                                $tit.append(doc.createTextNode(": " + report.title));
+                                $tit.append(doc.createTextNode(" " + report.title));
                                 $inno.removeAttr("title");
                             }
                             $div.append($tit);
