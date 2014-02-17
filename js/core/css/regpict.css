@@ -2,7 +2,7 @@
 text.regBitNum {
 	text-anchor: middle;
 	fill: grey;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+	font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
 	font-size: 8pt;
 }
 
@@ -42,7 +42,7 @@ text.regFieldUnused {
 
 text.regFieldName {
 	font-size: 11pt;
-	font-family: Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+	font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
 }
 
 path.regBitLine1,
