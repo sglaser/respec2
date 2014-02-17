@@ -6,7 +6,7 @@ div.issue-title, div.note-title, div.impnote-title {
 }
 div.issue-title { color: #e05252; }
 div.note-title { color: #2b2; }
-div.impnote-title { color: black; }
+div.impnote-title { color: rgb(89,24,187); }
 div.issue-title span, div.note-title span , div.impnote-title span {
     text-transform: uppercase;
 }
@@ -37,8 +37,8 @@ span.note, span.issue, span.impnote { padding: .1em .5em .15em; }
     background: #e9fbe9;
 }
 .impnote {
-    border-color: black;
-    background: #e0e0e0;
+    border-color: rgb(89,24,187);
+    background: rgb(233,222,252);
 }
 
 
