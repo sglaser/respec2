@@ -32,18 +32,6 @@ a.externalDFN {
     text-decoration:    none;
 }
 
-a.signal.internalDFN,
-dfn.signal {
-    font-style:     normal;
-    color:          blue;
-}
-
-a.pin.internalDFN,
-dfn.pin {
-    font-style:     normal;
-    color:          green;
-}
-    
 a.bibref {
     text-decoration:    none;
 }
