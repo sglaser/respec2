@@ -24,6 +24,7 @@ define(
             var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
             var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
             var cellTop             = Number(pget(reg, "cellTop", 16));
+            var figName             = String(pget(reg, "name", "???"));
             var fields              = pget(reg, "fields", [ ]); // default to empty register
             if (! Array.isArray(fields)) fields = [ ];
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
@@ -136,11 +137,9 @@ define(
                                     (f.unused ? " regFieldUnused" : "") +
                                     " regFieldName" + f.attr +
                                     " regFieldNameInternal" +
-                                    " regFieldNameInternal" + f.attr
+                                    " regFieldNameInternal" + f.attr,
+                                    "id" : (f.id ? f.id : (figName + "-" + f.name))
                             });
-                        if ("id" in f) {
-                            svg.change(text, {id: f.id});
-                        }
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
@@ -208,9 +207,20 @@ define(
                 if (!conf.noReSpecCSS) {
                     $("<style/>").appendTo($("head", $(doc))).text(css);
                 }
+                var figNum = 1;
                 $("figure.register", doc).each(function (index) {
                     var $fig = $(this);
-                    var json = null;
+                    var json = { };
+                    if ($fig.attr("id")) {
+                        json.name = $fig.attr("id");
+                    } else if ($fig.attr("title")) {
+                        json.name = $fig.attr("title").replace(/^\s+/,"").replace(/\s+$/,"").split(/\s+/).join("-");
+                        $fig.attr("id","figure-" + json.name);
+                    } else {
+                        json.name = "unnamed-" + figNum;
+                        figNum++;
+                        $fig.attr("id", "figure-" + json.figid);
+                    }
                     msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
                     var temp = $fig.attr("data-json");
@@ -220,7 +230,10 @@ define(
                     }
                     
                     $("pre.json,div.json,span.json", $fig).each(function (index) {
-                        json = $.parseJSON(this.textContent);
+                        temp = $.parseJSON(this.textContent);
+                        for (var prop in temp) {
+                            json[prop] = temp[prop];
+                        }
                         $(this).hide();
                     });
                     
