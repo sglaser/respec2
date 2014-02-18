@@ -29,6 +29,7 @@ define(
                     var title = $(this).dfnTitle();
                     if (!conf.definitionMap["field-" + title]) {
                         conf.definitionMap["field-" + title] = $(this).attr("id");
+                        conf.definitionHTML["field-" + title] = $(this).text();
                     }
                 });
                 $("a:not([href])").each(function () {
