@@ -11,7 +11,7 @@ define(
                 doc.normalize();
                 if (!conf.definitionMap) conf.definitionMap = {};
                 if (!conf.definitionHTML) conf.definitionHTML = {};
-                $("dfn").each(function () {
+                $("dfn", doc).each(function () {
                     var tag = dfnClass[0];  // default "dfn"
                     for (var i = 1; i < dfnClass.length; i++) {
                         if ($(this).hasClass(dfnClass[i])) tag = dfnClass[i];
