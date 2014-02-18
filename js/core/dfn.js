@@ -57,8 +57,9 @@ define(
                             if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
                                 $ant.html(conf.definitionHTML[tag + "-" + title]);
                         } else {
-                            $ant.attr("href", "#" + conf.definitionMap[tag.split("-")[0] + "-" + title]);
-                            var temp = "Ambiguous reference to '" + tag + "-" + title + "'";
+                            var temp = tag.split("-")[0] + "-" + title;
+                            $ant.attr("href", "#" + temp);
+                            temp = "Ambiguous reference to '" + tag + "-" + title + "', resolved as '" + temp + "'";
                             msg.pub("warn", temp);
                             $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
                         }
