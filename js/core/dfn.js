@@ -74,6 +74,15 @@ define(
                         $ant.replaceWith($ant.contents());
                     }
                 });
+                if (conf.addDefinitionMap) {
+                    msg.pub("start", "core/dfn/addDefinitionMap");
+                    var $mapsec = $("<section id='definition-map' class='appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
+                    var $tbody = $("<table><thead><tr><th>key</th><th>Map</th><th>HTML</th></tr><thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    for (var d in conf.definitionMap) {
+                        $("<tr><td>" + d + "</td><td>" + conf.definitionMap[d] + "</td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                    }
+                    msg.pub("end", "core/dfn/addDefinitionMap");
+                }
                 msg.pub("end", "core/dfn");
                 cb();
             }
