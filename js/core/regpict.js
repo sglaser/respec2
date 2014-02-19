@@ -141,7 +141,7 @@ define(
                                     " regFieldName" + f.attr +
                                     " regFieldNameInternal" +
                                     " regFieldNameInternal" + f.attr,
-                                    "id" : (f.id ? f.id : (figName + "-" + f.name))
+                                    "id" : (f.id ? f.id : ("field-" + figName + "-" + f.name))
                             });
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
