@@ -10299,9 +10299,13 @@ define(
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
                     var $mapsec = $("<section id='definition-map' class='appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-                    var $tbody = $("<table><thead><tr><th>key</th><th>Map</th><th>HTML</th></tr><thead><tbody/></table>").appendTo($mapsec).children("tbody");
-                    for (var d in conf.definitionMap) {
-                        $("<tr><td>" + d + "</td><td>" + conf.definitionMap[d] + "</td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr><thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    var keys = Object.keys(conf.definitionMap).sort();
+                    for (var i = 0; i < keys.length; i++) {
+                        var d = keys[i];
+                        var item = d.split(/-/);
+                        var kind = item.shift();
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td>" + conf.definitionMap[d] + "</td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
