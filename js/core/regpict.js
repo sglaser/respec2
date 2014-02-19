@@ -131,6 +131,9 @@ define(
                                         " regFieldBoxInternal" + f.attr
                                 });
                         }
+                        // svg.link doesn't work on Chrome, disable href for now
+                        //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
+                        //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                         var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             svg.createText().string(f.name), {
                                 class_: "regFieldName" +
