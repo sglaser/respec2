@@ -232,6 +232,16 @@ define(
                         json = $.parseJSON(temp);
                     }
                     
+                    temp = $fig.attr("data-width");
+                    if (temp != null && temp != undefined && temp != "") {
+                        json.width = temp;
+                    }
+                    
+                    temp = $fig.attr("data-unused");
+                    if (temp != null && temp != undefine && temp != "") {
+                        json.unused = temp;
+                    }
+                    
                     $("pre.json,div.json,span.json", $fig).each(function (index) {
                         temp = $.parseJSON(this.textContent);
                         for (var prop in temp) {
