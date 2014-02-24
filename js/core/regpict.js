@@ -253,7 +253,7 @@ define(
                                 var attr = td.eq(2).text().toLowerCase();
                                 var lsb, msb, match;
                                 lsb = msb = -1;
-                                if (match = /^(\d+)(:(\d+))?$/.exec(bits)) {
+                                if (match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits)) {
                                     msb = lsb = Number(match[1]);
                                     if (match[3] != null) lsb = Number(match[3]);
                                     if (lsb > msb) {
