@@ -517,7 +517,7 @@ dfn.field {
     font-weight: bold;
 }
 table.pcisig_reg td:first-child,
-table.pcisig_reg td:last-child {
+table.pcisig_reg td:nth-child(3) {
     text-align: center;
 }
 table dl {
