@@ -109,6 +109,7 @@ define(
             p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
             var nextBitLine = cellTop + cellHeight + 20; //76;
             var bitLineCount = 0;
+            var max_text_width = 0;
             svg.path(g, p, {
                 class_: "regBitNumLine",
                 fill: "none"
@@ -147,6 +148,9 @@ define(
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
                             text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                        }
+                        if (text_width > max_text_width) {
+                            max_text_width = text_width;
                         }
                         var text_height = text.clientHeight;
                         if (text_height === 0) {
@@ -200,7 +204,8 @@ define(
             }
             svg.configure({
                 height: "" + nextBitLine,
-                width: "100%"
+                width: "100%",
+                viewBox: "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine
             });
         }
 
