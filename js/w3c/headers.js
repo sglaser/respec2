@@ -314,7 +314,7 @@ define(
                 if (conf.isRec && !conf.errata)
                     msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");
-                conf.isUnofficial = conf.specStatus === "unofficial";
+                conf.isUnofficial = conf.specStatus === "unofficial" || /\.css$/.test(conf.specStatus) || conf.specStatus === "NONE";
                 conf.prependW3C = !conf.isUnofficial;
                 conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");

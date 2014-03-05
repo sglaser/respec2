@@ -31,7 +31,10 @@ define(
                     // with a PNG of the same base name. CONNEG must die.
                     css += "www.w3.org/community/src/css/spec/" + statStyle.toLowerCase() + ".css";
                 }
-                else {
+                else if (/\.css$/.test(statStyle)) {
+                    css = statStyle;
+                }
+                else if (statStyle !== "NONE") {
                     css += "www.w3.org/StyleSheets/TR/W3C-" + statStyle;
                 }
                 utils.linkCSS(doc, css);
