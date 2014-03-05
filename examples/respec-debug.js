@@ -3938,7 +3938,6 @@ define(
             }
             return new Handlebars.SafeString(ret);
         });
-        
 
         return {
             status2maturity:    {
@@ -3962,7 +3961,7 @@ define(
                 RSCND:          "w3p:RSCND"
             }
         ,   status2text: {
-                NOTE:           "Note"
+                NOTE:           "Working Group Note"
             ,   "WG-NOTE":      "Working Group Note"
             ,   "CG-NOTE":      "Co-ordination Group Note"
             ,   "IG-NOTE":      "Interest Group Note"
@@ -3999,7 +3998,6 @@ define(
         ,   noTrackStatus:  ["MO", "unofficial", "base", "finding", "draft-finding", "CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
         ,   cgbg:           ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
         ,   precededByAn:   ["ED", "IG-NOTE"]
-                        
         ,   run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/headers");
 
@@ -4068,7 +4066,7 @@ define(
                     }
                 }
                 else {
-                    if (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
+                    if (/NOTE$/.test(conf.specStatus) === false && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
                         msg.pub("error", "Document on track but no previous version.");
                     if (!conf.prevVersion) conf.prevVersion = "";
                 }
@@ -4113,7 +4111,7 @@ define(
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }
                 conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
-                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
+                conf.showPreviousVersion = (/NOTE$/.test(conf.specStatus) === false && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
                                            !conf.isNoTrack);
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
                 conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
@@ -4132,7 +4130,7 @@ define(
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate) ;
                 // configuration done - yay!
-                
+
                 // annotate html element with RFDa
                 if (conf.doRDFa) {
                     if (conf.rdfStatus) {
@@ -9971,6 +9969,7 @@ define(
             p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
             var nextBitLine = cellTop + cellHeight + 20; //76;
             var bitLineCount = 0;
+            var max_text_width = 0;
             svg.path(g, p, {
                 class_: "regBitNumLine",
                 fill: "none"
@@ -10009,6 +10008,9 @@ define(
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
                             text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                        }
+                        if (text_width > max_text_width) {
+                            max_text_width = text_width;
                         }
                         var text_height = text.clientHeight;
                         if (text_height === 0) {
@@ -10062,7 +10064,8 @@ define(
             }
             svg.configure({
                 height: "" + nextBitLine,
-                width: "100%"
+                width: "100%",
+                viewBox: "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine
             });
         }
 
