@@ -1,7 +1,7 @@
-/* ReSpec 3.2.10 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.12 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec. */
-respecVersion = '3.2.10';
+respecVersion = '3.2.12';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
@@ -6869,6 +6869,7 @@ define(
         };
         
         return {
+            stringifyRef: stringifyRef,
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/biblio");
                 var refs = getRefKeys(conf)
@@ -10744,6 +10745,7 @@ define('profile-w3c-common',[
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");
                 ui.addCommand("About ReSpec", "ui/about-respec", "Ctrl+Shift+Alt+A");
+                ui.addCommand("Search Specref DB", "ui/search-specref", "Ctrl+Shift+Alt+space");
                 runner.runAll(args);
             });
         }
