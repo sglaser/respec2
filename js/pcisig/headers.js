@@ -83,7 +83,7 @@ define(
     ,"tmpl!pcisig/templates/headers.html"
     ,"tmpl!pcisig/templates/sotd.html"
     ],
-    function (hb, utils, headersTmpl, sotdTmpl, cgbgHeadersTmpl, cgbgSotdTmpl) {
+    function (hb, utils, headersTmpl, sotdTmpl) {
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
             var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "";
@@ -134,64 +134,39 @@ define(
         
 
         return {
-            status2maturity:    {
-                FPWD:           "WD"
-            ,   LC:             "WD"
-            ,   FPLC:           "WD"
-            ,   "FPWD-NOTE":    "NOTE"
-            ,   "WD-NOTE":      "WD"
-            ,   "LC-NOTE":      "LC"
-            ,   "IG-NOTE":      "NOTE"
-            ,   "WG-NOTE":      "NOTE"
-            }
-        ,   status2rdf: {
-                NOTE:           "w3p:NOTE",
-                WD:             "w3p:WD",
-                LC:             "w3p:LastCall",
-                CR:             "w3p:CR",
-                PR:             "w3p:PR",
-                REC:            "w3p:REC",
-                PER:            "w3p:PER",
-                RSCND:          "w3p:RSCND"
-            }
-        ,   status2text: {
+            status2text: {
                 NOTE:           "Note"
-            ,   "WG-NOTE":      "Working Group Note"
-            ,   "CG-NOTE":      "Co-ordination Group Note"
-            ,   "IG-NOTE":      "Interest Group Note"
-            ,   "Member-SUBM":  "Member Submission"
-            ,   "Team-SUBM":    "Team Submission"
-            ,   MO:             "Member-Only Document"
-            ,   ED:             "Editor's Draft"
-            ,   FPWD:           "First Public Working Draft"
             ,   WD:             "Working Draft"
-            ,   "FPWD-NOTE":    "Working Group Note"
-            ,   "WD-NOTE":      "Working Draft"
-            ,   "LC-NOTE":      "Working Draft"
-            ,   FPLC:           "First Public and Last Call Working Draft"
-            ,   LC:             "Last Call Working Draft"
-            ,   CR:             "Candidate Recommendation"
-            ,   PR:             "Proposed Recommendation"
-            ,   PER:            "Proposed Edited Recommendation"
-            ,   REC:            "Recommendation"
-            ,   RSCND:          "Rescinded Recommendation"
-            ,   unofficial:     "Unofficial Draft"
+            ,   ED:             "Editor's Draft"
+            ,   RC:             "Release Candidate"
+            ,   PUBLISH:        "Published"
+            ,   TP:             "TechPubs Draft"
+            ,   confidential:   "Confidential"
+            ,   submission:     "Submission"
+            ,   unofficial:     "Unofficial"
             ,   base:           "Document"
-            ,   finding:        "TAG Finding"
-            ,   "draft-finding": "Draft TAG Finding"
-            ,   "CG-DRAFT":     "Draft Community Group Report"
-            ,   "CG-FINAL":     "Final Community Group Report"
-            ,   "BG-DRAFT":     "Draft Business Group Report"
-            ,   "BG-FINAL":     "Final Business Group Report"
+            ,   finding:        "Finding"
             }
-        ,   status2long:    {
-                "FPWD-NOTE":    "First Public Working Group Note"
-            ,   "LC-NOTE":      "Last Call Working Draft"
-            }
-        ,   recTrackStatus: ["FPWD", "WD", "FPLC", "LC", "CR", "PR", "PER", "REC"]
-        ,   noTrackStatus:  ["MO", "unofficial", "base", "finding", "draft-finding", "CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
-        ,   precededByAn:   ["ED", "IG-NOTE"]
-                        
+        ,   noTrackStatus:  ["NOTE", "confidential", "submission", "unofficial", "base", "finding"]
+        ,   review2Text: {
+                "":                 ""
+            ,   NONE:               ""
+            ,   "Review":           "Review Copy"
+            ,   "WG-Review":        "Work Group Internal Review"
+            ,   "Cross-WG-Review":  "Cross Work Group Review"
+            ,   "Member-Review":    "PCISIG Member Review"
+            ,   "Final-Review":     "Final Review"
+            ,   "Draft":            "Draft"
+        }
+        ,   level2Text: {
+                "":                 ""
+            ,   "0.1":              "0.1 Level"
+            ,   "0.3":              "0.3 Level"
+            ,   "0.5":              "0.5 Level"
+            ,   "0.7":              "0.7 Level"
+            ,   "0.9":              "0.9 Level"
+            ,   "1.0":              "Final"
+        }
         ,   run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "pcisig/headers");
 
@@ -203,6 +178,14 @@ define(
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
+                if (!conf.specReview) {
+                    var temp = conf.specStatus.split(/\//);
+                    conf.specStatus = (temp.length > 0) ? temp[0] : conf.specStatus;
+                    conf.specReview = (temp.length > 1) ? temp[1] : "";
+                    if (!conf.specLevel) {
+                        conf.specLevel = (temp.length > 2) ? temp[2] : "";
+                    }
+                }
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
@@ -215,15 +198,37 @@ define(
                 conf.publishYear = conf.publishDate.getFullYear();
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
-                conf.isRecTrack = conf.noRecTrack ? false : $.inArray(conf.specStatus, this.recTrackStatus) >= 0;
-                conf.anOrA = $.inArray(conf.specStatus, this.precededByAn) >= 0 ? "an" : "a";
-                conf.isTagFinding = conf.specStatus === "finding" || conf.specStatus === "draft-finding";
+                conf.isTagFinding = conf.specStatus === "finding";
+                if (!conf.isNoTrack) {
+                    if (!conf.specLevel || conf.specLevel == "") {
+                        msg.pub("error", "Standards Track: Missing required configuration: specLevel");
+                    }
+                    if (!conf.specReview || conf.specReview == "") {
+                        msg.pub("error", "Standards Track: Missing required configuration: specReview");
+                    }
+                }
+                if (!conf.specLevel) conf.specLevel = "";
+                if (!conf.specReview) conf.specReview = "";
+                if review2Test[conf.specReview]) {
+                    conf.specReviewLong = review2Text[conf.specReview];
+                } else {
+                    conf.specReviewLong = conf.specReview;
+                }
+                if (status2Text[conf.specStatus]) {
+                    conf.specStatusLong = stauts2Text[conf.specStatus];
+                } else {
+                    conf.specStatusLong = conf.SpecStatus];
+                }
+                if (level2Text[conf.specLevel]) {
+                    conf.specLevelLong = level2Text[conf.specLevel];
+                } else {
+                    conf.specLevelLong = conf.specLevel + " Level";
+                }
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
-                    if (conf.specStatus === "ED") msg.pub("warn", "Editor's Drafts should set edDraftURI.");
+                    /*if (conf.specStatus === "ED") msg.pub("warn", "Editor's Drafts should set edDraftURI.");*/
                 }
-                conf.maturity = (this.status2maturity[conf.specStatus]) ? this.status2maturity[conf.specStatus] : conf.specStatus;
-                var publishSpace = "TR";
+                /*var publishSpace = "TR";
                 if (conf.specStatus === "Member-SUBM") publishSpace = "Submission";
                 else if (conf.specStatus === "Team-SUBM") publishSpace = "TeamSubmission";
                 if (!conf.isCGBG) conf.thisVersion =  "http://www.w3.org/" + publishSpace + "/" +
@@ -235,8 +240,8 @@ define(
                 if (conf.isTagFinding) {
                     conf.latestVersion = "http://www.w3.org/2001/tag/doc/" + conf.shortName;
                     conf.thisVersion = conf.latestVersion + "-" + utils.concatDate(conf.publishDate, "-");
-                }
-                if (conf.previousPublishDate) {
+                }*/
+                /*if (conf.previousPublishDate) {
                     if (!conf.previousMaturity && !conf.isTagFinding)
                         msg.pub("error", "previousPublishDate is set, but not previousMaturity");
                     if (!(conf.previousPublishDate instanceof Date))
@@ -258,8 +263,8 @@ define(
                     if (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
                         msg.pub("error", "Document on track but no previous version.");
                     if (!conf.prevVersion) conf.prevVersion = "";
-                }
-                if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
+                }*/
+                /*if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;*/
                 if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
@@ -290,16 +295,11 @@ define(
                     }
                 }
                 if (conf.copyrightStart && conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
-                for (var k in this.status2text) {
-                    if (this.status2long[k]) continue;
-                    this.status2long[k] = this.status2text[k];
-                }
-                conf.longStatus = this.status2long[conf.specStatus];
                 conf.textStatus = this.status2text[conf.specStatus];
-                if (this.status2rdf[conf.specStatus]) {
+                /*if (this.status2rdf[conf.specStatus]) {
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
-                }
-                conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
+                }*/
+                /*conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
                 conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
                                            !conf.isNoTrack);
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
@@ -315,7 +315,7 @@ define(
                 conf.isCR = (conf.specStatus === "CR");
                 conf.isPR = (conf.specStatus === "PR");
                 conf.isMO = (conf.specStatus === "MO");
-                conf.isIGNote = (conf.specStatus === "IG-NOTE");
+                conf.isIGNote = (conf.specStatus === "IG-NOTE");*/
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate) ;
                 // configuration done - yay!
@@ -338,12 +338,12 @@ define(
                     $("html").attr("prefix", prefixes);
                 }
                 // insert into document and mark with microformat
-                $("body", doc).prepend($(conf.isCGBG ? cgbgHeadersTmpl(conf) : headersTmpl(conf)))
+                $("body", doc).prepend($(headersTmpl(conf)))
                               .addClass("h-entry");
 
                 // handle SotD
                 var $sotd = $("#sotd");
-                if ((conf.isCGBG || !conf.isNoTrack || conf.isTagFinding) && !$sotd.length)
+                if ((!conf.isNoTrack || conf.isTagFinding) && !$sotd.length)
                     msg.pub("error", "A custom SotD paragraph is required for your type of document.");
                 conf.sotdCustomParagraph = $sotd.html();
                 $sotd.remove();
@@ -362,7 +362,7 @@ define(
                     conf.multipleWGs = false;
                     conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
                 }
-                if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
+                /*if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
                 if (conf.specStatus === "PR" && !conf.lcEnd) msg.pub("error", "Status is PR but no lcEnd is specified (needed to indicate end of previous LC)");
                 conf.humanLCEnd = utils.humanDate(conf.lcEnd || "");
                 if (conf.specStatus === "CR" && !conf.crEnd) msg.pub("error", "Status is CR but no crEnd is specified");
@@ -377,7 +377,7 @@ define(
 
                 if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
                     msg.pub("error", "CR, PR, and REC documents need to have an implementationReportURI defined.");
-                }
+                }*/
                 if (conf.isTagFinding && !conf.sotdCustomParagraph) {
                     msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
                                      "please specify one using a <code><section></code> element with ID=sotd.");

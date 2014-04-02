@@ -1,14 +1,28 @@
 <div class='head'>
     {{#if prependPCIeLogo}}
   <p>
-      <a href='http://www.pcisig.com/'><img width='72' height='48' src='../stylesheets/pcisig/pci_express_PMS.svg' alt='PCIe'/></a>
+      <a href='http://www.pcisig.com/'>
+          <img width='72' height='48' alt='PCI Express Logo' src='../stylesheets/pcisig/pci_express_PMS.svg'/>
+      </a>
   </p>
     {{/if}}
     {{#if prependPCISIGLogo}}
   <p>
-      <a href='http://www.pcisig.com/'><img width='72' height='48' src='../stylesheets/pcisig/pci_sig_logo_PMS_273.svg' alt='PCIe'/></a>
+      <a href='http://www.pcisig.com/'>
+          <img width='72' height='48' alt='PCISIG Logo' src='../stylesheets/pcisig/pci_sig_logo_PMS_273.svg'/>
+      </a>
   </p>
     {{/if}}
+  <div id="respec-banner">
+      <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;
+      {{#if specReviewLong}}
+        <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;
+      {{/if}}
+      {{#if specLevelLong}}
+        <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;
+      {{/if}}
+      <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;
+</div>
   <h1 class='title p-name' id='title'{{#if doRDFa}} property='dcterms:title'{{/if}}>{{title}}</h1>
   {{#if subtitle}}
     <h2 {{#if doRDFa}}property='bibo:subtitle' {{/if}}id='subtitle'>{{subtitle}}</h2>
@@ -123,9 +137,7 @@
         {{{overrideCopyright}}}
       {{else}}
         <p class='copyright'>
-          This document is licensed under a
-          <a class='subfoot' href='http://creativecommons.org/licenses/by/3.0/' rel='license'>Creative Commons
-          Attribution 3.0 License</a>.
+          This document is confidential and proprietary. All Rights Reserved.
         </p>
       {{/if}}
     {{/if}}
@@ -133,53 +145,55 @@
     {{#if overrideCopyright}}
       {{{overrideCopyright}}}
     {{else}}
-    <p class='copyright'>
-        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}
-        <a href='http://www.pcisig.com/'>PCI-SIG</a>
-        <sup>&reg;</sup>
-    </p>
-    <p class='copyright'>PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks of PCI-SIG. All other product names are trademarks, registered trademarks, or servicemarks of their respective owners.</p>
-    <p class='copyright'>PCI-SIG disclaims all warranties and liability for the use of this document and the information contained herein and assumes no responsibility for any errors that may appear in this document, nor does PCI-SIG make a commitment to update the information contained herein.</p>
-  <p class='copyright'>
-    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>
-    <blockquote>
-    <p class='copyright'>
-    Questions regarding the PCI Express Base Specification or membership in PCI-SIG may be forwarded to:</p>
-    <table>
-        <tbody>
-            <tr>
-                <td align="right">Membership Services:</td>
-                <td>
-                    <a href="mailto:administration@pcisig.com">administration@pcisig.com</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">Phone:</td>
-                <td>
-                    <a href="tel:+1-503-619-0569">+1-503-619-0569</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">Fax:</td>
-                <td>
-                    <a href="tel:+1-503-644-6708">+1-503-644-6708</a>
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="right">Technical Support:</td>
-                <td>
-                    <a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</blockquote>
-    <p class='copyright'><strong>DISCLAIMER</strong></p>
-    <p class='copyright'>
-    This PCI Express Base Specification is provided “as is” with no warranties whatsoever, including any warranty of merchantability, noninfringement, fitness for any particular purpose, or any warranty otherwise arising out of any proposal, specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary rights, relating to use of information in this specification. No license, express or implied, by estoppel or otherwise, to any intellectual property rights is granted herein.</p>
+        <p class='copyright'>
+            Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}
+            <a href='http://www.pcisig.com/'>PCI-SIG</a>
+            <sup>&reg;</sup>
+        </p>
+        <p class='copyright'>PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks of PCI-SIG. All other product names are trademarks, registered trademarks, or servicemarks of their respective owners.</p>
+        <p class='copyright'>PCI-SIG disclaims all warranties and liability for the use of this document and the information contained herein and assumes no responsibility for any errors that may appear in this document, nor does PCI-SIG make a commitment to update the information contained herein.</p>
+        {{#unless isNoTrack}}
+            <p class='copyright'>
+            Contact the PCI-SIG office to obtain the latest revision of this specification.</p>
+            <blockquote>
+            <p class='copyright'>
+            Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td align="right">Membership Services:</td>
+                        <td>
+                            <a href="mailto:administration@pcisig.com">administration@pcisig.com</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Phone:</td>
+                        <td>
+                            <a href="tel:+1-503-619-0569">+1-503-619-0569</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Fax:</td>
+                        <td>
+                            <a href="tel:+1-503-644-6708">+1-503-644-6708</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="right">Technical Support:</td>
+                        <td>
+                            <a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </blockquote>
+            <p class='copyright'><strong>DISCLAIMER</strong></p>
+            <p class='copyright'>
+            This Specification is provided “as is” with no warranties whatsoever, including any warranty of merchantability, noninfringement, fitness for any particular purpose, or any warranty otherwise arising out of any proposal, specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary rights, relating to use of information in this specification. No license, express or implied, by estoppel or otherwise, to any intellectual property rights is granted herein.</p>
+        {{/unless}}
     {{/if}}
   {{/if}}
   <hr/>

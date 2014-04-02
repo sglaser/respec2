@@ -12,36 +12,34 @@
     {{else}}
       {{#if isNoTrack}}
         <p>
-          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It
-          has no official standing of any kind and does not represent consensus of the W3C
+          This document is merely a PCISIG internal document. It
+          has no official standing of any kind and does not represent consensus of the PCISIG
           Membership.
         </p>
         {{{sotdCustomParagraph}}}
       {{else}}
         <p>
           <em>This section describes the status of this document at the time of its publication.
-          Other documents may supersede this document. A list of current W3C publications and the
-          latest revision of this technical report can be found in the <a
-          href='http://www.w3.org/TR/'>W3C technical reports index</a> at
+          Other documents may supersede this document. A list of current PCISIG publications and the
+          latest revision of this specification can be found at the <a
+          href='http://www.pcisig.com/'>PCISIG website</a> at
           http://www.w3.org/TR/.</em>
         </p>
         {{{sotdCustomParagraph}}}
         <p>
           This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.
           {{#if notYetRec}}
-            This document is intended to become a W3C Recommendation.
+            This document is intended to become a PCISIG Standard.
           {{/if}}
           {{#unless isPR}}
             If you wish to make comments regarding this document, please send them to 
-            <a href='mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}'>{{wgPublicList}}@w3.org</a> 
-            (<a href='mailto:{{wgPublicList}}-request@w3.org?subject=subscribe'>subscribe</a>,
-            <a
-              href='http://lists.w3.org/Archives/Public/{{wgPublicList}}/'>archives</a>){{#if subjectPrefix}}
+            <a href='mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}'>{{wgPublicList}}@pcisig.com</a> 
+             {{#if subjectPrefix}}
               with <code>{{subjectPrefix}}</code> at the start of your email's subject{{/if}}.
           {{/unless}}
-          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}
-          {{#if isCR}}
-            W3C publishes a Candidate Recommendation to indicate that the document is believed to be
+          {{#if isReviewPeriod}}The Review period ends {{humanReviewEnd}}.{{/if}}
+          {{#if isFinal}}This specification is an official publication of the PCISIG. The PCISIG may publish errata to this specification and may develop future revisions to this specification.{{/if}}
+            PCISIG publishes a Candidate Recommendation to indicate that the document is believed to be
             stable and to encourage implementation by the developer community. This Candidate
             Recommendation is expected to advance to Proposed Recommendation no earlier than
             {{humanCREnd}}.
