@@ -209,8 +209,24 @@
         <span id="respec-banner-spec-name">PCIe &nbsp; Base &nbsp; 4.0</span>&nbsp;&nbsp;&nbsp;
         </div>
 <section id="abstract">
-      <p> This is just a very basic document. [[!REX]] Yeah for memes [[MEMES]].
+      <p> This is just a very basic document. The following items automatically generate references in the <a href="#references">References</a> Appendix. [[!REX]] Yeah for memes [[MEMES]].
         [[DOM4]], [[XML10]], [[\WHATEVER]] </p>
+    <p>Note that this example document turns on the <code>addDefinitionMap</code> flag in the <code>respecConfig</code>. This inserts the <a href="#definition-map">Definition Map</a> Appendix.</p>
+    <p>There are a number of areas that still need work. Some of them are visible in this document and some of them are background issues. The main html that users would write is pretty solid. Work areas include:</p>
+    <ol>
+        <li>Copyright needs to be updated</li>
+        <li>Move styles into an external css file</li>
+        <li>Validate external figure last modified date against the corresponding raw source file last modified date.</li>
+        <li>Better build process independent of w3c usage</li>
+        <li>Banner at left needs to be populated automatically</li>
+        <li>Populate cross reference content automatically (the "See Section 1.2.3.4" stuff)</li>
+        <li>MathML doesn't work on most browsers (exception: Firefox, Safari). Switch to <a href="http://www.mathjax.org">http://www.mathjax.org/</a></li>
+        <li>Link field names and field in the automatically generated figure</li>
+        <li>Make Table of Contents, Table of Figures, Table of Tables into sidebars that can expand and collapse</li>
+        <li>Support breaking large documents into a set of html files for faster loading</li>
+        <li>Provide diff / changebar support. This would automatically create a derived document with &lt;ins&gt; and &lt;del&gt; tags inserted to reflect differences between two commits.</li>
+        <li>PDF output: Perhaps using Prince XML <a href="http://www.princexml.com">http://www.princexml.com</a></li>
+    </ol>
 <!--      <p> [[NO-EXIST]] </p>-->
     </section>
     <section id="sotd">
@@ -232,6 +248,32 @@
     </section>
     <section>
     <h2>Terms and Acronyms</h2>
+        <p>Support has been added to automatically detect, format, and link terms and associated definitions.</p>
+        <p>
+            Terms are defined using the <code>&lt;dfn class="xxx"&gt;</code> tag.
+            Term namespaces are independent for each class (e.g. it's OK to have <code>&lt;dfn&nbsp;class="pin"&gt;foo&lt;/dfn&gt;</code> and <code>&lt;dfn&nbsp;class="signal"&gt;foo&lt;/dfn&gt;</code>.
+            Valid class values are:
+        </p>
+        <ul>
+            <li>class="dfn" <i>&nbsp; &mdash; &nbsp; the default</i></li>
+            <li>class="pin"</li>
+            <li>class="signal"</li>
+            <li>class="term"</li>
+            <li>class="field"</li>
+            <li>class="register"</li>
+            <li>class="state"</li>
+            <li>class="value"</li>
+            <li>class="parameter"</li>
+            <li>class="argument"</li>
+        </ul>
+        <p>
+            Term references use the &lt;a&gt; tag with no href attribute.
+            The class is optional and is only needed to resolve ambiguity (e.g. <code>&lt;a&nbsp;class="pin"&gt;foo&lt;/a&gt;</code> vs <code>&lt;a&nbsp;class="signal"&gt;foo&lt;/a&gt;</code>).
+            When the contents of a term definition contains HTML tags (e.g. &lt;sub&gt;, &lt;abbr&gt;), this HTML is remembered and is copied to the references.
+            This makes subscripts and abbreviations more convenient since <code>&lt;a&gt;D0active&lt;/a&gt;</code> could expand to <code>&lt;a href="#state-D0-active" class="state"&gt;D0&lt;sub&gt;active&lt;/sub&gt;</code> D0<sub>active</sub>The &lt;a&gt; references the text of the in &lt;dfn&gt; the &lt;a&gt; is the text after removing HTML tags.
+            The contents of the &lt;dfn&gt; tag is copied into these references.
+            The term  contains subscripts, these are automatically copied into the reference.
+        </p>
     <dl>
         <dt><dfn title="tErM1">Term1</dfn></dt>
         <dd>This is the definition for Term #1. It uses no markup.</dd>
@@ -244,7 +286,7 @@
         <dd>This is the definition for Term #3. It uses &lt;dfn&gt;&lt;abbr title="Term number 3"&gt;TERM3&lt;abbr&gt;&lt;/dfn&gt;</dd>
         <dt><dfn>Term number 4</dfn></dt>
         <dt><dfn title="term4"><abbr title="Term number 4">Term4</abbr></dfn></dt>
-        <dd>This is the definition for Term #4. It uses &lt;dfn&gt;&lt;acronym title="Term4"&gt;Term number 4&lt;/acronym&gt;&lt;/dfn&gt;</dd>
+        <dd>This is the definition for Term #4. It uses &lt;dfn&gt;&lt;abbr title="Term number 4"&gt;Term4&lt;/abbr&gt;&lt;/dfn&gt;</dd>
         <dt><dfn class="state">D3<sub>cold</sub></dfn></dt>
         <dd>This is the definition for D3<sub>cold</sub>. It &lt;dfn class="state"&gt;D3&lt;sub&gt;cold&lt;/sub&gt;&lt;/dfn&gt;.</dd>
         <dt><dfn class="state">Detect.Quiet</dfn></dt>
@@ -255,7 +297,7 @@
         <dd>This is the definition for Term<sub>7</sub>. It &lt;dfn&gt;&lt;abbr&gt;Term&lt;sub&gt;7&lt;/sub&gt;&lt;/abbr&gt;&lt;/dfn&gt;.</dd>
         <dt><dfn>Term number 8</dfn></dt>
         <dt><dfn title="term8"><abbr title="Term number 8">Term<sub>8</sub></abbr></dfn></dt>
-        <dd>This is the definition for Term<sub>8</sub>. It &lt;dfn&gt;&lt;acronym title="Term number 8"&gt;Term&lt;sub&gt;8&lt;/sub&gt;&lt;/acronym&gt;&lt;/dfn&gt;.</dd>
+        <dd>This is the definition for Term<sub>8</sub>. It &lt;dfn&gt;&lt;abbr title="Term number 8"&gt;Term&lt;sub&gt;8&lt;/sub&gt;&lt;/abbr&gt;&lt;/dfn&gt;.</dd>
         <dt><dfn class="pin">Term9</dfn></dt>
         <dd>This is the definition for Term #9. It uses &lt;dfn class="pin"&gt;.</dd>
         <dt><dfn class="signal">Term9</dfn></dt>
