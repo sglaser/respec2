@@ -2,43 +2,2074 @@
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec. */
 respecVersion = '3.2.14';
+/** vim: et:ts=4:sw=4:sts=4
+ * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/requirejs for details
+ */
+//Not using strict: uneven strict support in browsers, #392, and causes
+//problems with requirejs.exec()/transpiler plugins that may not be strict.
+/*jslint regexp: true, nomen: true, sloppy: true */
+/*global window, navigator, document, importScripts, setTimeout, opera */
 
-/*
- RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- Available via the MIT or new BSD license.
- see: http://github.com/jrburke/requirejs for details
-*/
-var requirejs,require,define;
-(function(Z){function H(b){return"[object Function]"===L.call(b)}function I(b){return"[object Array]"===L.call(b)}function y(b,c){if(b){var d;for(d=0;d<b.length&&(!b[d]||!c(b[d],d,b));d+=1);}}function M(b,c){if(b){var d;for(d=b.length-1;-1<d&&(!b[d]||!c(b[d],d,b));d-=1);}}function s(b,c){return ga.call(b,c)}function l(b,c){return s(b,c)&&b[c]}function F(b,c){for(var d in b)if(s(b,d)&&c(b[d],d))break}function Q(b,c,d,h){c&&F(c,function(c,j){if(d||!s(b,j))h&&"string"!==typeof c?(b[j]||(b[j]={}),Q(b[j],
-c,d,h)):b[j]=c});return b}function u(b,c){return function(){return c.apply(b,arguments)}}function aa(b){throw b;}function ba(b){if(!b)return b;var c=Z;y(b.split("."),function(b){c=c[b]});return c}function A(b,c,d,h){c=Error(c+"\nhttp://requirejs.org/docs/errors.html#"+b);c.requireType=b;c.requireModules=h;d&&(c.originalError=d);return c}function ha(b){function c(a,f,b){var e,m,c,g,d,h,j,i=f&&f.split("/");e=i;var n=k.map,p=n&&n["*"];if(a&&"."===a.charAt(0))if(f){e=l(k.pkgs,f)?i=[f]:i.slice(0,i.length-
-1);f=a=e.concat(a.split("/"));for(e=0;f[e];e+=1)if(m=f[e],"."===m)f.splice(e,1),e-=1;else if(".."===m)if(1===e&&(".."===f[2]||".."===f[0]))break;else 0<e&&(f.splice(e-1,2),e-=2);e=l(k.pkgs,f=a[0]);a=a.join("/");e&&a===f+"/"+e.main&&(a=f)}else 0===a.indexOf("./")&&(a=a.substring(2));if(b&&n&&(i||p)){f=a.split("/");for(e=f.length;0<e;e-=1){c=f.slice(0,e).join("/");if(i)for(m=i.length;0<m;m-=1)if(b=l(n,i.slice(0,m).join("/")))if(b=l(b,c)){g=b;d=e;break}if(g)break;!h&&(p&&l(p,c))&&(h=l(p,c),j=e)}!g&&
-h&&(g=h,d=j);g&&(f.splice(0,d,g),a=f.join("/"))}return a}function d(a){z&&y(document.getElementsByTagName("script"),function(f){if(f.getAttribute("data-requiremodule")===a&&f.getAttribute("data-requirecontext")===i.contextName)return f.parentNode.removeChild(f),!0})}function h(a){var f=l(k.paths,a);if(f&&I(f)&&1<f.length)return d(a),f.shift(),i.require.undef(a),i.require([a]),!0}function $(a){var f,b=a?a.indexOf("!"):-1;-1<b&&(f=a.substring(0,b),a=a.substring(b+1,a.length));return[f,a]}function n(a,
-f,b,e){var m,B,g=null,d=f?f.name:null,h=a,j=!0,k="";a||(j=!1,a="_@r"+(L+=1));a=$(a);g=a[0];a=a[1];g&&(g=c(g,d,e),B=l(r,g));a&&(g?k=B&&B.normalize?B.normalize(a,function(a){return c(a,d,e)}):c(a,d,e):(k=c(a,d,e),a=$(k),g=a[0],k=a[1],b=!0,m=i.nameToUrl(k)));b=g&&!B&&!b?"_unnormalized"+(M+=1):"";return{prefix:g,name:k,parentMap:f,unnormalized:!!b,url:m,originalName:h,isDefine:j,id:(g?g+"!"+k:k)+b}}function q(a){var f=a.id,b=l(p,f);b||(b=p[f]=new i.Module(a));return b}function t(a,f,b){var e=a.id,m=l(p,
-e);if(s(r,e)&&(!m||m.defineEmitComplete))"defined"===f&&b(r[e]);else if(m=q(a),m.error&&"error"===f)b(m.error);else m.on(f,b)}function v(a,f){var b=a.requireModules,e=!1;if(f)f(a);else if(y(b,function(f){if(f=l(p,f))f.error=a,f.events.error&&(e=!0,f.emit("error",a))}),!e)j.onError(a)}function w(){R.length&&(ia.apply(G,[G.length-1,0].concat(R)),R=[])}function x(a){delete p[a];delete T[a]}function E(a,f,b){var e=a.map.id;a.error?a.emit("error",a.error):(f[e]=!0,y(a.depMaps,function(e,c){var g=e.id,
-d=l(p,g);d&&(!a.depMatched[c]&&!b[g])&&(l(f,g)?(a.defineDep(c,r[g]),a.check()):E(d,f,b))}),b[e]=!0)}function C(){var a,f,b,e,m=(b=1E3*k.waitSeconds)&&i.startTime+b<(new Date).getTime(),c=[],g=[],j=!1,l=!0;if(!U){U=!0;F(T,function(b){a=b.map;f=a.id;if(b.enabled&&(a.isDefine||g.push(b),!b.error))if(!b.inited&&m)h(f)?j=e=!0:(c.push(f),d(f));else if(!b.inited&&(b.fetched&&a.isDefine)&&(j=!0,!a.prefix))return l=!1});if(m&&c.length)return b=A("timeout","Load timeout for modules: "+c,null,c),b.contextName=
-i.contextName,v(b);l&&y(g,function(a){E(a,{},{})});if((!m||e)&&j)if((z||da)&&!V)V=setTimeout(function(){V=0;C()},50);U=!1}}function D(a){s(r,a[0])||q(n(a[0],null,!0)).init(a[1],a[2])}function J(a){var a=a.currentTarget||a.srcElement,b=i.onScriptLoad;a.detachEvent&&!W?a.detachEvent("onreadystatechange",b):a.removeEventListener("load",b,!1);b=i.onScriptError;(!a.detachEvent||W)&&a.removeEventListener("error",b,!1);return{node:a,id:a&&a.getAttribute("data-requiremodule")}}function K(){var a;for(w();G.length;){a=
-G.shift();if(null===a[0])return v(A("mismatch","Mismatched anonymous define() module: "+a[a.length-1]));D(a)}}var U,X,i,N,V,k={waitSeconds:7,baseUrl:"./",paths:{},pkgs:{},shim:{},config:{}},p={},T={},Y={},G=[],r={},S={},L=1,M=1;N={require:function(a){return a.require?a.require:a.require=i.makeRequire(a.map)},exports:function(a){a.usingExports=!0;if(a.map.isDefine)return a.exports?a.exports:a.exports=r[a.map.id]={}},module:function(a){return a.module?a.module:a.module={id:a.map.id,uri:a.map.url,config:function(){var b=
-l(k.pkgs,a.map.id);return(b?l(k.config,a.map.id+"/"+b.main):l(k.config,a.map.id))||{}},exports:r[a.map.id]}}};X=function(a){this.events=l(Y,a.id)||{};this.map=a;this.shim=l(k.shim,a.id);this.depExports=[];this.depMaps=[];this.depMatched=[];this.pluginMaps={};this.depCount=0};X.prototype={init:function(a,b,c,e){e=e||{};if(!this.inited){this.factory=b;if(c)this.on("error",c);else this.events.error&&(c=u(this,function(a){this.emit("error",a)}));this.depMaps=a&&a.slice(0);this.errback=c;this.inited=!0;
-this.ignore=e.ignore;e.enabled||this.enabled?this.enable():this.check()}},defineDep:function(a,b){this.depMatched[a]||(this.depMatched[a]=!0,this.depCount-=1,this.depExports[a]=b)},fetch:function(){if(!this.fetched){this.fetched=!0;i.startTime=(new Date).getTime();var a=this.map;if(this.shim)i.makeRequire(this.map,{enableBuildCallback:!0})(this.shim.deps||[],u(this,function(){return a.prefix?this.callPlugin():this.load()}));else return a.prefix?this.callPlugin():this.load()}},load:function(){var a=
-this.map.url;S[a]||(S[a]=!0,i.load(this.map.id,a))},check:function(){if(this.enabled&&!this.enabling){var a,b,c=this.map.id;b=this.depExports;var e=this.exports,m=this.factory;if(this.inited)if(this.error)this.emit("error",this.error);else{if(!this.defining){this.defining=!0;if(1>this.depCount&&!this.defined){if(H(m)){if(this.events.error&&this.map.isDefine||j.onError!==aa)try{e=i.execCb(c,m,b,e)}catch(d){a=d}else e=i.execCb(c,m,b,e);this.map.isDefine&&((b=this.module)&&void 0!==b.exports&&b.exports!==
-this.exports?e=b.exports:void 0===e&&this.usingExports&&(e=this.exports));if(a)return a.requireMap=this.map,a.requireModules=this.map.isDefine?[this.map.id]:null,a.requireType=this.map.isDefine?"define":"require",v(this.error=a)}else e=m;this.exports=e;if(this.map.isDefine&&!this.ignore&&(r[c]=e,j.onResourceLoad))j.onResourceLoad(i,this.map,this.depMaps);x(c);this.defined=!0}this.defining=!1;this.defined&&!this.defineEmitted&&(this.defineEmitted=!0,this.emit("defined",this.exports),this.defineEmitComplete=
-!0)}}else this.fetch()}},callPlugin:function(){var a=this.map,b=a.id,d=n(a.prefix);this.depMaps.push(d);t(d,"defined",u(this,function(e){var m,d;d=this.map.name;var g=this.map.parentMap?this.map.parentMap.name:null,h=i.makeRequire(a.parentMap,{enableBuildCallback:!0});if(this.map.unnormalized){if(e.normalize&&(d=e.normalize(d,function(a){return c(a,g,!0)})||""),e=n(a.prefix+"!"+d,this.map.parentMap),t(e,"defined",u(this,function(a){this.init([],function(){return a},null,{enabled:!0,ignore:!0})})),
-d=l(p,e.id)){this.depMaps.push(e);if(this.events.error)d.on("error",u(this,function(a){this.emit("error",a)}));d.enable()}}else m=u(this,function(a){this.init([],function(){return a},null,{enabled:!0})}),m.error=u(this,function(a){this.inited=!0;this.error=a;a.requireModules=[b];F(p,function(a){0===a.map.id.indexOf(b+"_unnormalized")&&x(a.map.id)});v(a)}),m.fromText=u(this,function(e,c){var d=a.name,g=n(d),B=O;c&&(e=c);B&&(O=!1);q(g);s(k.config,b)&&(k.config[d]=k.config[b]);try{j.exec(e)}catch(ca){return v(A("fromtexteval",
-"fromText eval for "+b+" failed: "+ca,ca,[b]))}B&&(O=!0);this.depMaps.push(g);i.completeLoad(d);h([d],m)}),e.load(a.name,h,m,k)}));i.enable(d,this);this.pluginMaps[d.id]=d},enable:function(){T[this.map.id]=this;this.enabling=this.enabled=!0;y(this.depMaps,u(this,function(a,b){var c,e;if("string"===typeof a){a=n(a,this.map.isDefine?this.map:this.map.parentMap,!1,!this.skipMap);this.depMaps[b]=a;if(c=l(N,a.id)){this.depExports[b]=c(this);return}this.depCount+=1;t(a,"defined",u(this,function(a){this.defineDep(b,
-a);this.check()}));this.errback&&t(a,"error",u(this,this.errback))}c=a.id;e=p[c];!s(N,c)&&(e&&!e.enabled)&&i.enable(a,this)}));F(this.pluginMaps,u(this,function(a){var b=l(p,a.id);b&&!b.enabled&&i.enable(a,this)}));this.enabling=!1;this.check()},on:function(a,b){var c=this.events[a];c||(c=this.events[a]=[]);c.push(b)},emit:function(a,b){y(this.events[a],function(a){a(b)});"error"===a&&delete this.events[a]}};i={config:k,contextName:b,registry:p,defined:r,urlFetched:S,defQueue:G,Module:X,makeModuleMap:n,
-nextTick:j.nextTick,onError:v,configure:function(a){a.baseUrl&&"/"!==a.baseUrl.charAt(a.baseUrl.length-1)&&(a.baseUrl+="/");var b=k.pkgs,c=k.shim,e={paths:!0,config:!0,map:!0};F(a,function(a,b){e[b]?"map"===b?(k.map||(k.map={}),Q(k[b],a,!0,!0)):Q(k[b],a,!0):k[b]=a});a.shim&&(F(a.shim,function(a,b){I(a)&&(a={deps:a});if((a.exports||a.init)&&!a.exportsFn)a.exportsFn=i.makeShimExports(a);c[b]=a}),k.shim=c);a.packages&&(y(a.packages,function(a){a="string"===typeof a?{name:a}:a;b[a.name]={name:a.name,
-location:a.location||a.name,main:(a.main||"main").replace(ja,"").replace(ea,"")}}),k.pkgs=b);F(p,function(a,b){!a.inited&&!a.map.unnormalized&&(a.map=n(b))});if(a.deps||a.callback)i.require(a.deps||[],a.callback)},makeShimExports:function(a){return function(){var b;a.init&&(b=a.init.apply(Z,arguments));return b||a.exports&&ba(a.exports)}},makeRequire:function(a,f){function d(e,c,h){var g,k;f.enableBuildCallback&&(c&&H(c))&&(c.__requireJsBuild=!0);if("string"===typeof e){if(H(c))return v(A("requireargs",
-"Invalid require call"),h);if(a&&s(N,e))return N[e](p[a.id]);if(j.get)return j.get(i,e,a,d);g=n(e,a,!1,!0);g=g.id;return!s(r,g)?v(A("notloaded",'Module name "'+g+'" has not been loaded yet for context: '+b+(a?"":". Use require([])"))):r[g]}K();i.nextTick(function(){K();k=q(n(null,a));k.skipMap=f.skipMap;k.init(e,c,h,{enabled:!0});C()});return d}f=f||{};Q(d,{isBrowser:z,toUrl:function(b){var d,f=b.lastIndexOf("."),g=b.split("/")[0];if(-1!==f&&(!("."===g||".."===g)||1<f))d=b.substring(f,b.length),b=
-b.substring(0,f);return i.nameToUrl(c(b,a&&a.id,!0),d,!0)},defined:function(b){return s(r,n(b,a,!1,!0).id)},specified:function(b){b=n(b,a,!1,!0).id;return s(r,b)||s(p,b)}});a||(d.undef=function(b){w();var c=n(b,a,!0),f=l(p,b);delete r[b];delete S[c.url];delete Y[b];f&&(f.events.defined&&(Y[b]=f.events),x(b))});return d},enable:function(a){l(p,a.id)&&q(a).enable()},completeLoad:function(a){var b,c,e=l(k.shim,a)||{},d=e.exports;for(w();G.length;){c=G.shift();if(null===c[0]){c[0]=a;if(b)break;b=!0}else c[0]===
-a&&(b=!0);D(c)}c=l(p,a);if(!b&&!s(r,a)&&c&&!c.inited){if(k.enforceDefine&&(!d||!ba(d)))return h(a)?void 0:v(A("nodefine","No define call for "+a,null,[a]));D([a,e.deps||[],e.exportsFn])}C()},nameToUrl:function(a,b,c){var e,d,h,g,i,n;if(j.jsExtRegExp.test(a))g=a+(b||"");else{e=k.paths;d=k.pkgs;g=a.split("/");for(i=g.length;0<i;i-=1)if(n=g.slice(0,i).join("/"),h=l(d,n),n=l(e,n)){I(n)&&(n=n[0]);g.splice(0,i,n);break}else if(h){a=a===h.name?h.location+"/"+h.main:h.location;g.splice(0,i,a);break}g=g.join("/");
-g+=b||(/\?/.test(g)||c?"":".js");g=("/"===g.charAt(0)||g.match(/^[\w\+\.\-]+:/)?"":k.baseUrl)+g}return k.urlArgs?g+((-1===g.indexOf("?")?"?":"&")+k.urlArgs):g},load:function(a,b){j.load(i,a,b)},execCb:function(a,b,c,e){return b.apply(e,c)},onScriptLoad:function(a){if("load"===a.type||ka.test((a.currentTarget||a.srcElement).readyState))P=null,a=J(a),i.completeLoad(a.id)},onScriptError:function(a){var b=J(a);if(!h(b.id))return v(A("scripterror","Script error for: "+b.id,a,[b.id]))}};i.require=i.makeRequire();
-return i}var j,w,x,C,J,D,P,K,q,fa,la=/(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,ma=/[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,ea=/\.js$/,ja=/^\.\//;w=Object.prototype;var L=w.toString,ga=w.hasOwnProperty,ia=Array.prototype.splice,z=!!("undefined"!==typeof window&&navigator&&window.document),da=!z&&"undefined"!==typeof importScripts,ka=z&&"PLAYSTATION 3"===navigator.platform?/^complete$/:/^(complete|loaded)$/,W="undefined"!==typeof opera&&"[object Opera]"===opera.toString(),E={},t={},R=[],O=
-!1;if("undefined"===typeof define){if("undefined"!==typeof requirejs){if(H(requirejs))return;t=requirejs;requirejs=void 0}"undefined"!==typeof require&&!H(require)&&(t=require,require=void 0);j=requirejs=function(b,c,d,h){var q,n="_";!I(b)&&"string"!==typeof b&&(q=b,I(c)?(b=c,c=d,d=h):b=[]);q&&q.context&&(n=q.context);(h=l(E,n))||(h=E[n]=j.s.newContext(n));q&&h.configure(q);return h.require(b,c,d)};j.config=function(b){return j(b)};j.nextTick="undefined"!==typeof setTimeout?function(b){setTimeout(b,
-4)}:function(b){b()};require||(require=j);j.version="2.1.8";j.jsExtRegExp=/^\/|:|\?|\.js$/;j.isBrowser=z;w=j.s={contexts:E,newContext:ha};j({});y(["toUrl","undef","defined","specified"],function(b){j[b]=function(){var c=E._;return c.require[b].apply(c,arguments)}});if(z&&(x=w.head=document.getElementsByTagName("head")[0],C=document.getElementsByTagName("base")[0]))x=w.head=C.parentNode;j.onError=aa;j.createNode=function(b){var c=b.xhtml?document.createElementNS("http://www.w3.org/1999/xhtml","html:script"):
-document.createElement("script");c.type=b.scriptType||"text/javascript";c.charset="utf-8";c.async=!0;return c};j.load=function(b,c,d){var h=b&&b.config||{};if(z)return h=j.createNode(h,c,d),h.setAttribute("data-requirecontext",b.contextName),h.setAttribute("data-requiremodule",c),h.attachEvent&&!(h.attachEvent.toString&&0>h.attachEvent.toString().indexOf("[native code"))&&!W?(O=!0,h.attachEvent("onreadystatechange",b.onScriptLoad)):(h.addEventListener("load",b.onScriptLoad,!1),h.addEventListener("error",
-b.onScriptError,!1)),h.src=d,K=h,C?x.insertBefore(h,C):x.appendChild(h),K=null,h;if(da)try{importScripts(d),b.completeLoad(c)}catch(l){b.onError(A("importscripts","importScripts failed for "+c+" at "+d,l,[c]))}};z&&M(document.getElementsByTagName("script"),function(b){x||(x=b.parentNode);if(J=b.getAttribute("data-main"))return q=J,t.baseUrl||(D=q.split("/"),q=D.pop(),fa=D.length?D.join("/")+"/":"./",t.baseUrl=fa),q=q.replace(ea,""),j.jsExtRegExp.test(q)&&(q=J),t.deps=t.deps?t.deps.concat(q):[q],!0});
-define=function(b,c,d){var h,j;"string"!==typeof b&&(d=c,c=b,b=null);I(c)||(d=c,c=null);!c&&H(d)&&(c=[],d.length&&(d.toString().replace(la,"").replace(ma,function(b,d){c.push(d)}),c=(1===d.length?["require"]:["require","exports","module"]).concat(c)));if(O){if(!(h=K))P&&"interactive"===P.readyState||M(document.getElementsByTagName("script"),function(b){if("interactive"===b.readyState)return P=b}),h=P;h&&(b||(b=h.getAttribute("data-requiremodule")),j=E[h.getAttribute("data-requirecontext")])}(j?j.defQueue:
-R).push([b,c,d])};define.amd={jQuery:!0};j.exec=function(b){return eval(b)};j(t)}})(this);
+var requirejs, require, define;
+(function (global) {
+    var req, s, head, baseElement, dataMain, src,
+        interactiveScript, currentlyAddingScript, mainScript, subPath,
+        version = '2.1.11',
+        commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
+        cjsRequireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,
+        jsSuffixRegExp = /\.js$/,
+        currDirRegExp = /^\.\//,
+        op = Object.prototype,
+        ostring = op.toString,
+        hasOwn = op.hasOwnProperty,
+        ap = Array.prototype,
+        apsp = ap.splice,
+        isBrowser = !!(typeof window !== 'undefined' && typeof navigator !== 'undefined' && window.document),
+        isWebWorker = !isBrowser && typeof importScripts !== 'undefined',
+        //PS3 indicates loaded and complete, but need to wait for complete
+        //specifically. Sequence is 'loading', 'loaded', execution,
+        // then 'complete'. The UA check is unfortunate, but not sure how
+        //to feature test w/o causing perf issues.
+        readyRegExp = isBrowser && navigator.platform === 'PLAYSTATION 3' ?
+                      /^complete$/ : /^(complete|loaded)$/,
+        defContextName = '_',
+        //Oh the tragedy, detecting opera. See the usage of isOpera for reason.
+        isOpera = typeof opera !== 'undefined' && opera.toString() === '[object Opera]',
+        contexts = {},
+        cfg = {},
+        globalDefQueue = [],
+        useInteractive = false;
+
+    function isFunction(it) {
+        return ostring.call(it) === '[object Function]';
+    }
+
+    function isArray(it) {
+        return ostring.call(it) === '[object Array]';
+    }
+
+    /**
+     * Helper function for iterating over an array. If the func returns
+     * a true value, it will break out of the loop.
+     */
+    function each(ary, func) {
+        if (ary) {
+            var i;
+            for (i = 0; i < ary.length; i += 1) {
+                if (ary[i] && func(ary[i], i, ary)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper function for iterating over an array backwards. If the func
+     * returns a true value, it will break out of the loop.
+     */
+    function eachReverse(ary, func) {
+        if (ary) {
+            var i;
+            for (i = ary.length - 1; i > -1; i -= 1) {
+                if (ary[i] && func(ary[i], i, ary)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    function hasProp(obj, prop) {
+        return hasOwn.call(obj, prop);
+    }
+
+    function getOwn(obj, prop) {
+        return hasProp(obj, prop) && obj[prop];
+    }
+
+    /**
+     * Cycles over properties in an object and calls a function for each
+     * property value. If the function returns a truthy value, then the
+     * iteration is stopped.
+     */
+    function eachProp(obj, func) {
+        var prop;
+        for (prop in obj) {
+            if (hasProp(obj, prop)) {
+                if (func(obj[prop], prop)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Simple function to mix in properties from source into target,
+     * but only if target does not already have a property of the same name.
+     */
+    function mixin(target, source, force, deepStringMixin) {
+        if (source) {
+            eachProp(source, function (value, prop) {
+                if (force || !hasProp(target, prop)) {
+                    if (deepStringMixin && typeof value === 'object' && value &&
+                        !isArray(value) && !isFunction(value) &&
+                        !(value instanceof RegExp)) {
+
+                        if (!target[prop]) {
+                            target[prop] = {};
+                        }
+                        mixin(target[prop], value, force, deepStringMixin);
+                    } else {
+                        target[prop] = value;
+                    }
+                }
+            });
+        }
+        return target;
+    }
+
+    //Similar to Function.prototype.bind, but the 'this' object is specified
+    //first, since it is easier to read/figure out what 'this' will be.
+    function bind(obj, fn) {
+        return function () {
+            return fn.apply(obj, arguments);
+        };
+    }
+
+    function scripts() {
+        return document.getElementsByTagName('script');
+    }
+
+    function defaultOnError(err) {
+        throw err;
+    }
+
+    //Allow getting a global that is expressed in
+    //dot notation, like 'a.b.c'.
+    function getGlobal(value) {
+        if (!value) {
+            return value;
+        }
+        var g = global;
+        each(value.split('.'), function (part) {
+            g = g[part];
+        });
+        return g;
+    }
+
+    /**
+     * Constructs an error with a pointer to an URL with more information.
+     * @param {String} id the error ID that maps to an ID on a web page.
+     * @param {String} message human readable error.
+     * @param {Error} [err] the original error, if there is one.
+     *
+     * @returns {Error}
+     */
+    function makeError(id, msg, err, requireModules) {
+        var e = new Error(msg + '\nhttp://requirejs.org/docs/errors.html#' + id);
+        e.requireType = id;
+        e.requireModules = requireModules;
+        if (err) {
+            e.originalError = err;
+        }
+        return e;
+    }
+
+    if (typeof define !== 'undefined') {
+        //If a define is already in play via another AMD loader,
+        //do not overwrite.
+        return;
+    }
+
+    if (typeof requirejs !== 'undefined') {
+        if (isFunction(requirejs)) {
+            //Do not overwrite and existing requirejs instance.
+            return;
+        }
+        cfg = requirejs;
+        requirejs = undefined;
+    }
+
+    //Allow for a require config object
+    if (typeof require !== 'undefined' && !isFunction(require)) {
+        //assume it is a config object.
+        cfg = require;
+        require = undefined;
+    }
+
+    function newContext(contextName) {
+        var inCheckLoaded, Module, context, handlers,
+            checkLoadedTimeoutId,
+            config = {
+                //Defaults. Do not set a default for map
+                //config to speed up normalize(), which
+                //will run faster if there is no default.
+                waitSeconds: 7,
+                baseUrl: './',
+                paths: {},
+                bundles: {},
+                pkgs: {},
+                shim: {},
+                config: {}
+            },
+            registry = {},
+            //registry of just enabled modules, to speed
+            //cycle breaking code when lots of modules
+            //are registered, but not activated.
+            enabledRegistry = {},
+            undefEvents = {},
+            defQueue = [],
+            defined = {},
+            urlFetched = {},
+            bundlesMap = {},
+            requireCounter = 1,
+            unnormalizedCounter = 1;
+
+        /**
+         * Trims the . and .. from an array of path segments.
+         * It will keep a leading path segment if a .. will become
+         * the first path segment, to help with module name lookups,
+         * which act like paths, but can be remapped. But the end result,
+         * all paths that use this function should look normalized.
+         * NOTE: this method MODIFIES the input array.
+         * @param {Array} ary the array of path segments.
+         */
+        function trimDots(ary) {
+            var i, part, length = ary.length;
+            for (i = 0; i < length; i++) {
+                part = ary[i];
+                if (part === '.') {
+                    ary.splice(i, 1);
+                    i -= 1;
+                } else if (part === '..') {
+                    if (i === 1 && (ary[2] === '..' || ary[0] === '..')) {
+                        //End of the line. Keep at least one non-dot
+                        //path segment at the front so it can be mapped
+                        //correctly to disk. Otherwise, there is likely
+                        //no path mapping for a path starting with '..'.
+                        //This can still fail, but catches the most reasonable
+                        //uses of ..
+                        break;
+                    } else if (i > 0) {
+                        ary.splice(i - 1, 2);
+                        i -= 2;
+                    }
+                }
+            }
+        }
+
+        /**
+         * Given a relative module name, like ./something, normalize it to
+         * a real name that can be mapped to a path.
+         * @param {String} name the relative name
+         * @param {String} baseName a real name that the name arg is relative
+         * to.
+         * @param {Boolean} applyMap apply the map config to the value. Should
+         * only be done if this normalization is for a dependency ID.
+         * @returns {String} normalized name
+         */
+        function normalize(name, baseName, applyMap) {
+            var pkgMain, mapValue, nameParts, i, j, nameSegment, lastIndex,
+                foundMap, foundI, foundStarMap, starI,
+                baseParts = baseName && baseName.split('/'),
+                normalizedBaseParts = baseParts,
+                map = config.map,
+                starMap = map && map['*'];
+
+            //Adjust any relative paths.
+            if (name && name.charAt(0) === '.') {
+                //If have a base name, try to normalize against it,
+                //otherwise, assume it is a top-level require that will
+                //be relative to baseUrl in the end.
+                if (baseName) {
+                    //Convert baseName to array, and lop off the last part,
+                    //so that . matches that 'directory' and not name of the baseName's
+                    //module. For instance, baseName of 'one/two/three', maps to
+                    //'one/two/three.js', but we want the directory, 'one/two' for
+                    //this normalization.
+                    normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
+                    name = name.split('/');
+                    lastIndex = name.length - 1;
+
+                    // If wanting node ID compatibility, strip .js from end
+                    // of IDs. Have to do this here, and not in nameToUrl
+                    // because node allows either .js or non .js to map
+                    // to same file.
+                    if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
+                        name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
+                    }
+
+                    name = normalizedBaseParts.concat(name);
+                    trimDots(name);
+                    name = name.join('/');
+                } else if (name.indexOf('./') === 0) {
+                    // No baseName, so this is ID is resolved relative
+                    // to baseUrl, pull off the leading dot.
+                    name = name.substring(2);
+                }
+            }
+
+            //Apply map config if available.
+            if (applyMap && map && (baseParts || starMap)) {
+                nameParts = name.split('/');
+
+                outerLoop: for (i = nameParts.length; i > 0; i -= 1) {
+                    nameSegment = nameParts.slice(0, i).join('/');
+
+                    if (baseParts) {
+                        //Find the longest baseName segment match in the config.
+                        //So, do joins on the biggest to smallest lengths of baseParts.
+                        for (j = baseParts.length; j > 0; j -= 1) {
+                            mapValue = getOwn(map, baseParts.slice(0, j).join('/'));
+
+                            //baseName segment has config, find if it has one for
+                            //this name.
+                            if (mapValue) {
+                                mapValue = getOwn(mapValue, nameSegment);
+                                if (mapValue) {
+                                    //Match, update name to the new value.
+                                    foundMap = mapValue;
+                                    foundI = i;
+                                    break outerLoop;
+                                }
+                            }
+                        }
+                    }
+
+                    //Check for a star map match, but just hold on to it,
+                    //if there is a shorter segment match later in a matching
+                    //config, then favor over this star map.
+                    if (!foundStarMap && starMap && getOwn(starMap, nameSegment)) {
+                        foundStarMap = getOwn(starMap, nameSegment);
+                        starI = i;
+                    }
+                }
+
+                if (!foundMap && foundStarMap) {
+                    foundMap = foundStarMap;
+                    foundI = starI;
+                }
+
+                if (foundMap) {
+                    nameParts.splice(0, foundI, foundMap);
+                    name = nameParts.join('/');
+                }
+            }
+
+            // If the name points to a package's name, use
+            // the package main instead.
+            pkgMain = getOwn(config.pkgs, name);
+
+            return pkgMain ? pkgMain : name;
+        }
+
+        function removeScript(name) {
+            if (isBrowser) {
+                each(scripts(), function (scriptNode) {
+                    if (scriptNode.getAttribute('data-requiremodule') === name &&
+                            scriptNode.getAttribute('data-requirecontext') === context.contextName) {
+                        scriptNode.parentNode.removeChild(scriptNode);
+                        return true;
+                    }
+                });
+            }
+        }
+
+        function hasPathFallback(id) {
+            var pathConfig = getOwn(config.paths, id);
+            if (pathConfig && isArray(pathConfig) && pathConfig.length > 1) {
+                //Pop off the first array value, since it failed, and
+                //retry
+                pathConfig.shift();
+                context.require.undef(id);
+                context.require([id]);
+                return true;
+            }
+        }
+
+        //Turns a plugin!resource to [plugin, resource]
+        //with the plugin being undefined if the name
+        //did not have a plugin prefix.
+        function splitPrefix(name) {
+            var prefix,
+                index = name ? name.indexOf('!') : -1;
+            if (index > -1) {
+                prefix = name.substring(0, index);
+                name = name.substring(index + 1, name.length);
+            }
+            return [prefix, name];
+        }
+
+        /**
+         * Creates a module mapping that includes plugin prefix, module
+         * name, and path. If parentModuleMap is provided it will
+         * also normalize the name via require.normalize()
+         *
+         * @param {String} name the module name
+         * @param {String} [parentModuleMap] parent module map
+         * for the module name, used to resolve relative names.
+         * @param {Boolean} isNormalized: is the ID already normalized.
+         * This is true if this call is done for a define() module ID.
+         * @param {Boolean} applyMap: apply the map config to the ID.
+         * Should only be true if this map is for a dependency.
+         *
+         * @returns {Object}
+         */
+        function makeModuleMap(name, parentModuleMap, isNormalized, applyMap) {
+            var url, pluginModule, suffix, nameParts,
+                prefix = null,
+                parentName = parentModuleMap ? parentModuleMap.name : null,
+                originalName = name,
+                isDefine = true,
+                normalizedName = '';
+
+            //If no name, then it means it is a require call, generate an
+            //internal name.
+            if (!name) {
+                isDefine = false;
+                name = '_@r' + (requireCounter += 1);
+            }
+
+            nameParts = splitPrefix(name);
+            prefix = nameParts[0];
+            name = nameParts[1];
+
+            if (prefix) {
+                prefix = normalize(prefix, parentName, applyMap);
+                pluginModule = getOwn(defined, prefix);
+            }
+
+            //Account for relative paths if there is a base name.
+            if (name) {
+                if (prefix) {
+                    if (pluginModule && pluginModule.normalize) {
+                        //Plugin is loaded, use its normalize method.
+                        normalizedName = pluginModule.normalize(name, function (name) {
+                            return normalize(name, parentName, applyMap);
+                        });
+                    } else {
+                        normalizedName = normalize(name, parentName, applyMap);
+                    }
+                } else {
+                    //A regular module.
+                    normalizedName = normalize(name, parentName, applyMap);
+
+                    //Normalized name may be a plugin ID due to map config
+                    //application in normalize. The map config values must
+                    //already be normalized, so do not need to redo that part.
+                    nameParts = splitPrefix(normalizedName);
+                    prefix = nameParts[0];
+                    normalizedName = nameParts[1];
+                    isNormalized = true;
+
+                    url = context.nameToUrl(normalizedName);
+                }
+            }
+
+            //If the id is a plugin id that cannot be determined if it needs
+            //normalization, stamp it with a unique ID so two matching relative
+            //ids that may conflict can be separate.
+            suffix = prefix && !pluginModule && !isNormalized ?
+                     '_unnormalized' + (unnormalizedCounter += 1) :
+                     '';
+
+            return {
+                prefix: prefix,
+                name: normalizedName,
+                parentMap: parentModuleMap,
+                unnormalized: !!suffix,
+                url: url,
+                originalName: originalName,
+                isDefine: isDefine,
+                id: (prefix ?
+                        prefix + '!' + normalizedName :
+                        normalizedName) + suffix
+            };
+        }
+
+        function getModule(depMap) {
+            var id = depMap.id,
+                mod = getOwn(registry, id);
+
+            if (!mod) {
+                mod = registry[id] = new context.Module(depMap);
+            }
+
+            return mod;
+        }
+
+        function on(depMap, name, fn) {
+            var id = depMap.id,
+                mod = getOwn(registry, id);
+
+            if (hasProp(defined, id) &&
+                    (!mod || mod.defineEmitComplete)) {
+                if (name === 'defined') {
+                    fn(defined[id]);
+                }
+            } else {
+                mod = getModule(depMap);
+                if (mod.error && name === 'error') {
+                    fn(mod.error);
+                } else {
+                    mod.on(name, fn);
+                }
+            }
+        }
+
+        function onError(err, errback) {
+            var ids = err.requireModules,
+                notified = false;
+
+            if (errback) {
+                errback(err);
+            } else {
+                each(ids, function (id) {
+                    var mod = getOwn(registry, id);
+                    if (mod) {
+                        //Set error on module, so it skips timeout checks.
+                        mod.error = err;
+                        if (mod.events.error) {
+                            notified = true;
+                            mod.emit('error', err);
+                        }
+                    }
+                });
+
+                if (!notified) {
+                    req.onError(err);
+                }
+            }
+        }
+
+        /**
+         * Internal method to transfer globalQueue items to this context's
+         * defQueue.
+         */
+        function takeGlobalQueue() {
+            //Push all the globalDefQueue items into the context's defQueue
+            if (globalDefQueue.length) {
+                //Array splice in the values since the context code has a
+                //local var ref to defQueue, so cannot just reassign the one
+                //on context.
+                apsp.apply(defQueue,
+                           [defQueue.length, 0].concat(globalDefQueue));
+                globalDefQueue = [];
+            }
+        }
+
+        handlers = {
+            'require': function (mod) {
+                if (mod.require) {
+                    return mod.require;
+                } else {
+                    return (mod.require = context.makeRequire(mod.map));
+                }
+            },
+            'exports': function (mod) {
+                mod.usingExports = true;
+                if (mod.map.isDefine) {
+                    if (mod.exports) {
+                        return (defined[mod.map.id] = mod.exports);
+                    } else {
+                        return (mod.exports = defined[mod.map.id] = {});
+                    }
+                }
+            },
+            'module': function (mod) {
+                if (mod.module) {
+                    return mod.module;
+                } else {
+                    return (mod.module = {
+                        id: mod.map.id,
+                        uri: mod.map.url,
+                        config: function () {
+                            return  getOwn(config.config, mod.map.id) || {};
+                        },
+                        exports: mod.exports || (mod.exports = {})
+                    });
+                }
+            }
+        };
+
+        function cleanRegistry(id) {
+            //Clean up machinery used for waiting modules.
+            delete registry[id];
+            delete enabledRegistry[id];
+        }
+
+        function breakCycle(mod, traced, processed) {
+            var id = mod.map.id;
+
+            if (mod.error) {
+                mod.emit('error', mod.error);
+            } else {
+                traced[id] = true;
+                each(mod.depMaps, function (depMap, i) {
+                    var depId = depMap.id,
+                        dep = getOwn(registry, depId);
+
+                    //Only force things that have not completed
+                    //being defined, so still in the registry,
+                    //and only if it has not been matched up
+                    //in the module already.
+                    if (dep && !mod.depMatched[i] && !processed[depId]) {
+                        if (getOwn(traced, depId)) {
+                            mod.defineDep(i, defined[depId]);
+                            mod.check(); //pass false?
+                        } else {
+                            breakCycle(dep, traced, processed);
+                        }
+                    }
+                });
+                processed[id] = true;
+            }
+        }
+
+        function checkLoaded() {
+            var err, usingPathFallback,
+                waitInterval = config.waitSeconds * 1000,
+                //It is possible to disable the wait interval by using waitSeconds of 0.
+                expired = waitInterval && (context.startTime + waitInterval) < new Date().getTime(),
+                noLoads = [],
+                reqCalls = [],
+                stillLoading = false,
+                needCycleCheck = true;
+
+            //Do not bother if this call was a result of a cycle break.
+            if (inCheckLoaded) {
+                return;
+            }
+
+            inCheckLoaded = true;
+
+            //Figure out the state of all the modules.
+            eachProp(enabledRegistry, function (mod) {
+                var map = mod.map,
+                    modId = map.id;
+
+                //Skip things that are not enabled or in error state.
+                if (!mod.enabled) {
+                    return;
+                }
+
+                if (!map.isDefine) {
+                    reqCalls.push(mod);
+                }
+
+                if (!mod.error) {
+                    //If the module should be executed, and it has not
+                    //been inited and time is up, remember it.
+                    if (!mod.inited && expired) {
+                        if (hasPathFallback(modId)) {
+                            usingPathFallback = true;
+                            stillLoading = true;
+                        } else {
+                            noLoads.push(modId);
+                            removeScript(modId);
+                        }
+                    } else if (!mod.inited && mod.fetched && map.isDefine) {
+                        stillLoading = true;
+                        if (!map.prefix) {
+                            //No reason to keep looking for unfinished
+                            //loading. If the only stillLoading is a
+                            //plugin resource though, keep going,
+                            //because it may be that a plugin resource
+                            //is waiting on a non-plugin cycle.
+                            return (needCycleCheck = false);
+                        }
+                    }
+                }
+            });
+
+            if (expired && noLoads.length) {
+                //If wait time expired, throw error of unloaded modules.
+                err = makeError('timeout', 'Load timeout for modules: ' + noLoads, null, noLoads);
+                err.contextName = context.contextName;
+                return onError(err);
+            }
+
+            //Not expired, check for a cycle.
+            if (needCycleCheck) {
+                each(reqCalls, function (mod) {
+                    breakCycle(mod, {}, {});
+                });
+            }
+
+            //If still waiting on loads, and the waiting load is something
+            //other than a plugin resource, or there are still outstanding
+            //scripts, then just try back later.
+            if ((!expired || usingPathFallback) && stillLoading) {
+                //Something is still waiting to load. Wait for it, but only
+                //if a timeout is not already in effect.
+                if ((isBrowser || isWebWorker) && !checkLoadedTimeoutId) {
+                    checkLoadedTimeoutId = setTimeout(function () {
+                        checkLoadedTimeoutId = 0;
+                        checkLoaded();
+                    }, 50);
+                }
+            }
+
+            inCheckLoaded = false;
+        }
+
+        Module = function (map) {
+            this.events = getOwn(undefEvents, map.id) || {};
+            this.map = map;
+            this.shim = getOwn(config.shim, map.id);
+            this.depExports = [];
+            this.depMaps = [];
+            this.depMatched = [];
+            this.pluginMaps = {};
+            this.depCount = 0;
+
+            /* this.exports this.factory
+               this.depMaps = [],
+               this.enabled, this.fetched
+            */
+        };
+
+        Module.prototype = {
+            init: function (depMaps, factory, errback, options) {
+                options = options || {};
+
+                //Do not do more inits if already done. Can happen if there
+                //are multiple define calls for the same module. That is not
+                //a normal, common case, but it is also not unexpected.
+                if (this.inited) {
+                    return;
+                }
+
+                this.factory = factory;
+
+                if (errback) {
+                    //Register for errors on this module.
+                    this.on('error', errback);
+                } else if (this.events.error) {
+                    //If no errback already, but there are error listeners
+                    //on this module, set up an errback to pass to the deps.
+                    errback = bind(this, function (err) {
+                        this.emit('error', err);
+                    });
+                }
+
+                //Do a copy of the dependency array, so that
+                //source inputs are not modified. For example
+                //"shim" deps are passed in here directly, and
+                //doing a direct modification of the depMaps array
+                //would affect that config.
+                this.depMaps = depMaps && depMaps.slice(0);
+
+                this.errback = errback;
+
+                //Indicate this module has be initialized
+                this.inited = true;
+
+                this.ignore = options.ignore;
+
+                //Could have option to init this module in enabled mode,
+                //or could have been previously marked as enabled. However,
+                //the dependencies are not known until init is called. So
+                //if enabled previously, now trigger dependencies as enabled.
+                if (options.enabled || this.enabled) {
+                    //Enable this module and dependencies.
+                    //Will call this.check()
+                    this.enable();
+                } else {
+                    this.check();
+                }
+            },
+
+            defineDep: function (i, depExports) {
+                //Because of cycles, defined callback for a given
+                //export can be called more than once.
+                if (!this.depMatched[i]) {
+                    this.depMatched[i] = true;
+                    this.depCount -= 1;
+                    this.depExports[i] = depExports;
+                }
+            },
+
+            fetch: function () {
+                if (this.fetched) {
+                    return;
+                }
+                this.fetched = true;
+
+                context.startTime = (new Date()).getTime();
+
+                var map = this.map;
+
+                //If the manager is for a plugin managed resource,
+                //ask the plugin to load it now.
+                if (this.shim) {
+                    context.makeRequire(this.map, {
+                        enableBuildCallback: true
+                    })(this.shim.deps || [], bind(this, function () {
+                        return map.prefix ? this.callPlugin() : this.load();
+                    }));
+                } else {
+                    //Regular dependency.
+                    return map.prefix ? this.callPlugin() : this.load();
+                }
+            },
+
+            load: function () {
+                var url = this.map.url;
+
+                //Regular dependency.
+                if (!urlFetched[url]) {
+                    urlFetched[url] = true;
+                    context.load(this.map.id, url);
+                }
+            },
+
+            /**
+             * Checks if the module is ready to define itself, and if so,
+             * define it.
+             */
+            check: function () {
+                if (!this.enabled || this.enabling) {
+                    return;
+                }
+
+                var err, cjsModule,
+                    id = this.map.id,
+                    depExports = this.depExports,
+                    exports = this.exports,
+                    factory = this.factory;
+
+                if (!this.inited) {
+                    this.fetch();
+                } else if (this.error) {
+                    this.emit('error', this.error);
+                } else if (!this.defining) {
+                    //The factory could trigger another require call
+                    //that would result in checking this module to
+                    //define itself again. If already in the process
+                    //of doing that, skip this work.
+                    this.defining = true;
+
+                    if (this.depCount < 1 && !this.defined) {
+                        if (isFunction(factory)) {
+                            //If there is an error listener, favor passing
+                            //to that instead of throwing an error. However,
+                            //only do it for define()'d  modules. require
+                            //errbacks should not be called for failures in
+                            //their callbacks (#699). However if a global
+                            //onError is set, use that.
+                            if ((this.events.error && this.map.isDefine) ||
+                                req.onError !== defaultOnError) {
+                                try {
+                                    exports = context.execCb(id, factory, depExports, exports);
+                                } catch (e) {
+                                    err = e;
+                                }
+                            } else {
+                                exports = context.execCb(id, factory, depExports, exports);
+                            }
+
+                            // Favor return value over exports. If node/cjs in play,
+                            // then will not have a return value anyway. Favor
+                            // module.exports assignment over exports object.
+                            if (this.map.isDefine && exports === undefined) {
+                                cjsModule = this.module;
+                                if (cjsModule) {
+                                    exports = cjsModule.exports;
+                                } else if (this.usingExports) {
+                                    //exports already set the defined value.
+                                    exports = this.exports;
+                                }
+                            }
+
+                            if (err) {
+                                err.requireMap = this.map;
+                                err.requireModules = this.map.isDefine ? [this.map.id] : null;
+                                err.requireType = this.map.isDefine ? 'define' : 'require';
+                                return onError((this.error = err));
+                            }
+
+                        } else {
+                            //Just a literal value
+                            exports = factory;
+                        }
+
+                        this.exports = exports;
+
+                        if (this.map.isDefine && !this.ignore) {
+                            defined[id] = exports;
+
+                            if (req.onResourceLoad) {
+                                req.onResourceLoad(context, this.map, this.depMaps);
+                            }
+                        }
+
+                        //Clean up
+                        cleanRegistry(id);
+
+                        this.defined = true;
+                    }
+
+                    //Finished the define stage. Allow calling check again
+                    //to allow define notifications below in the case of a
+                    //cycle.
+                    this.defining = false;
+
+                    if (this.defined && !this.defineEmitted) {
+                        this.defineEmitted = true;
+                        this.emit('defined', this.exports);
+                        this.defineEmitComplete = true;
+                    }
+
+                }
+            },
+
+            callPlugin: function () {
+                var map = this.map,
+                    id = map.id,
+                    //Map already normalized the prefix.
+                    pluginMap = makeModuleMap(map.prefix);
+
+                //Mark this as a dependency for this plugin, so it
+                //can be traced for cycles.
+                this.depMaps.push(pluginMap);
+
+                on(pluginMap, 'defined', bind(this, function (plugin) {
+                    var load, normalizedMap, normalizedMod,
+                        bundleId = getOwn(bundlesMap, this.map.id),
+                        name = this.map.name,
+                        parentName = this.map.parentMap ? this.map.parentMap.name : null,
+                        localRequire = context.makeRequire(map.parentMap, {
+                            enableBuildCallback: true
+                        });
+
+                    //If current map is not normalized, wait for that
+                    //normalized name to load instead of continuing.
+                    if (this.map.unnormalized) {
+                        //Normalize the ID if the plugin allows it.
+                        if (plugin.normalize) {
+                            name = plugin.normalize(name, function (name) {
+                                return normalize(name, parentName, true);
+                            }) || '';
+                        }
+
+                        //prefix and name should already be normalized, no need
+                        //for applying map config again either.
+                        normalizedMap = makeModuleMap(map.prefix + '!' + name,
+                                                      this.map.parentMap);
+                        on(normalizedMap,
+                            'defined', bind(this, function (value) {
+                                this.init([], function () { return value; }, null, {
+                                    enabled: true,
+                                    ignore: true
+                                });
+                            }));
+
+                        normalizedMod = getOwn(registry, normalizedMap.id);
+                        if (normalizedMod) {
+                            //Mark this as a dependency for this plugin, so it
+                            //can be traced for cycles.
+                            this.depMaps.push(normalizedMap);
+
+                            if (this.events.error) {
+                                normalizedMod.on('error', bind(this, function (err) {
+                                    this.emit('error', err);
+                                }));
+                            }
+                            normalizedMod.enable();
+                        }
+
+                        return;
+                    }
+
+                    //If a paths config, then just load that file instead to
+                    //resolve the plugin, as it is built into that paths layer.
+                    if (bundleId) {
+                        this.map.url = context.nameToUrl(bundleId);
+                        this.load();
+                        return;
+                    }
+
+                    load = bind(this, function (value) {
+                        this.init([], function () { return value; }, null, {
+                            enabled: true
+                        });
+                    });
+
+                    load.error = bind(this, function (err) {
+                        this.inited = true;
+                        this.error = err;
+                        err.requireModules = [id];
+
+                        //Remove temp unnormalized modules for this module,
+                        //since they will never be resolved otherwise now.
+                        eachProp(registry, function (mod) {
+                            if (mod.map.id.indexOf(id + '_unnormalized') === 0) {
+                                cleanRegistry(mod.map.id);
+                            }
+                        });
+
+                        onError(err);
+                    });
+
+                    //Allow plugins to load other code without having to know the
+                    //context or how to 'complete' the load.
+                    load.fromText = bind(this, function (text, textAlt) {
+                        /*jslint evil: true */
+                        var moduleName = map.name,
+                            moduleMap = makeModuleMap(moduleName),
+                            hasInteractive = useInteractive;
+
+                        //As of 2.1.0, support just passing the text, to reinforce
+                        //fromText only being called once per resource. Still
+                        //support old style of passing moduleName but discard
+                        //that moduleName in favor of the internal ref.
+                        if (textAlt) {
+                            text = textAlt;
+                        }
+
+                        //Turn off interactive script matching for IE for any define
+                        //calls in the text, then turn it back on at the end.
+                        if (hasInteractive) {
+                            useInteractive = false;
+                        }
+
+                        //Prime the system by creating a module instance for
+                        //it.
+                        getModule(moduleMap);
+
+                        //Transfer any config to this other module.
+                        if (hasProp(config.config, id)) {
+                            config.config[moduleName] = config.config[id];
+                        }
+
+                        try {
+                            req.exec(text);
+                        } catch (e) {
+                            return onError(makeError('fromtexteval',
+                                             'fromText eval for ' + id +
+                                            ' failed: ' + e,
+                                             e,
+                                             [id]));
+                        }
+
+                        if (hasInteractive) {
+                            useInteractive = true;
+                        }
+
+                        //Mark this as a dependency for the plugin
+                        //resource
+                        this.depMaps.push(moduleMap);
+
+                        //Support anonymous modules.
+                        context.completeLoad(moduleName);
+
+                        //Bind the value of that module to the value for this
+                        //resource ID.
+                        localRequire([moduleName], load);
+                    });
+
+                    //Use parentName here since the plugin's name is not reliable,
+                    //could be some weird string with no path that actually wants to
+                    //reference the parentName's path.
+                    plugin.load(map.name, localRequire, load, config);
+                }));
+
+                context.enable(pluginMap, this);
+                this.pluginMaps[pluginMap.id] = pluginMap;
+            },
+
+            enable: function () {
+                enabledRegistry[this.map.id] = this;
+                this.enabled = true;
+
+                //Set flag mentioning that the module is enabling,
+                //so that immediate calls to the defined callbacks
+                //for dependencies do not trigger inadvertent load
+                //with the depCount still being zero.
+                this.enabling = true;
+
+                //Enable each dependency
+                each(this.depMaps, bind(this, function (depMap, i) {
+                    var id, mod, handler;
+
+                    if (typeof depMap === 'string') {
+                        //Dependency needs to be converted to a depMap
+                        //and wired up to this module.
+                        depMap = makeModuleMap(depMap,
+                                               (this.map.isDefine ? this.map : this.map.parentMap),
+                                               false,
+                                               !this.skipMap);
+                        this.depMaps[i] = depMap;
+
+                        handler = getOwn(handlers, depMap.id);
+
+                        if (handler) {
+                            this.depExports[i] = handler(this);
+                            return;
+                        }
+
+                        this.depCount += 1;
+
+                        on(depMap, 'defined', bind(this, function (depExports) {
+                            this.defineDep(i, depExports);
+                            this.check();
+                        }));
+
+                        if (this.errback) {
+                            on(depMap, 'error', bind(this, this.errback));
+                        }
+                    }
+
+                    id = depMap.id;
+                    mod = registry[id];
+
+                    //Skip special modules like 'require', 'exports', 'module'
+                    //Also, don't call enable if it is already enabled,
+                    //important in circular dependency cases.
+                    if (!hasProp(handlers, id) && mod && !mod.enabled) {
+                        context.enable(depMap, this);
+                    }
+                }));
+
+                //Enable each plugin that is used in
+                //a dependency
+                eachProp(this.pluginMaps, bind(this, function (pluginMap) {
+                    var mod = getOwn(registry, pluginMap.id);
+                    if (mod && !mod.enabled) {
+                        context.enable(pluginMap, this);
+                    }
+                }));
+
+                this.enabling = false;
+
+                this.check();
+            },
+
+            on: function (name, cb) {
+                var cbs = this.events[name];
+                if (!cbs) {
+                    cbs = this.events[name] = [];
+                }
+                cbs.push(cb);
+            },
+
+            emit: function (name, evt) {
+                each(this.events[name], function (cb) {
+                    cb(evt);
+                });
+                if (name === 'error') {
+                    //Now that the error handler was triggered, remove
+                    //the listeners, since this broken Module instance
+                    //can stay around for a while in the registry.
+                    delete this.events[name];
+                }
+            }
+        };
+
+        function callGetModule(args) {
+            //Skip modules already defined.
+            if (!hasProp(defined, args[0])) {
+                getModule(makeModuleMap(args[0], null, true)).init(args[1], args[2]);
+            }
+        }
+
+        function removeListener(node, func, name, ieName) {
+            //Favor detachEvent because of IE9
+            //issue, see attachEvent/addEventListener comment elsewhere
+            //in this file.
+            if (node.detachEvent && !isOpera) {
+                //Probably IE. If not it will throw an error, which will be
+                //useful to know.
+                if (ieName) {
+                    node.detachEvent(ieName, func);
+                }
+            } else {
+                node.removeEventListener(name, func, false);
+            }
+        }
+
+        /**
+         * Given an event from a script node, get the requirejs info from it,
+         * and then removes the event listeners on the node.
+         * @param {Event} evt
+         * @returns {Object}
+         */
+        function getScriptData(evt) {
+            //Using currentTarget instead of target for Firefox 2.0's sake. Not
+            //all old browsers will be supported, but this one was easy enough
+            //to support and still makes sense.
+            var node = evt.currentTarget || evt.srcElement;
+
+            //Remove the listeners once here.
+            removeListener(node, context.onScriptLoad, 'load', 'onreadystatechange');
+            removeListener(node, context.onScriptError, 'error');
+
+            return {
+                node: node,
+                id: node && node.getAttribute('data-requiremodule')
+            };
+        }
+
+        function intakeDefines() {
+            var args;
+
+            //Any defined modules in the global queue, intake them now.
+            takeGlobalQueue();
+
+            //Make sure any remaining defQueue items get properly processed.
+            while (defQueue.length) {
+                args = defQueue.shift();
+                if (args[0] === null) {
+                    return onError(makeError('mismatch', 'Mismatched anonymous define() module: ' + args[args.length - 1]));
+                } else {
+                    //args are id, deps, factory. Should be normalized by the
+                    //define() function.
+                    callGetModule(args);
+                }
+            }
+        }
+
+        context = {
+            config: config,
+            contextName: contextName,
+            registry: registry,
+            defined: defined,
+            urlFetched: urlFetched,
+            defQueue: defQueue,
+            Module: Module,
+            makeModuleMap: makeModuleMap,
+            nextTick: req.nextTick,
+            onError: onError,
+
+            /**
+             * Set a configuration for the context.
+             * @param {Object} cfg config object to integrate.
+             */
+            configure: function (cfg) {
+                //Make sure the baseUrl ends in a slash.
+                if (cfg.baseUrl) {
+                    if (cfg.baseUrl.charAt(cfg.baseUrl.length - 1) !== '/') {
+                        cfg.baseUrl += '/';
+                    }
+                }
+
+                //Save off the paths since they require special processing,
+                //they are additive.
+                var shim = config.shim,
+                    objs = {
+                        paths: true,
+                        bundles: true,
+                        config: true,
+                        map: true
+                    };
+
+                eachProp(cfg, function (value, prop) {
+                    if (objs[prop]) {
+                        if (!config[prop]) {
+                            config[prop] = {};
+                        }
+                        mixin(config[prop], value, true, true);
+                    } else {
+                        config[prop] = value;
+                    }
+                });
+
+                //Reverse map the bundles
+                if (cfg.bundles) {
+                    eachProp(cfg.bundles, function (value, prop) {
+                        each(value, function (v) {
+                            if (v !== prop) {
+                                bundlesMap[v] = prop;
+                            }
+                        });
+                    });
+                }
+
+                //Merge shim
+                if (cfg.shim) {
+                    eachProp(cfg.shim, function (value, id) {
+                        //Normalize the structure
+                        if (isArray(value)) {
+                            value = {
+                                deps: value
+                            };
+                        }
+                        if ((value.exports || value.init) && !value.exportsFn) {
+                            value.exportsFn = context.makeShimExports(value);
+                        }
+                        shim[id] = value;
+                    });
+                    config.shim = shim;
+                }
+
+                //Adjust packages if necessary.
+                if (cfg.packages) {
+                    each(cfg.packages, function (pkgObj) {
+                        var location, name;
+
+                        pkgObj = typeof pkgObj === 'string' ? { name: pkgObj } : pkgObj;
+
+                        name = pkgObj.name;
+                        location = pkgObj.location;
+                        if (location) {
+                            config.paths[name] = pkgObj.location;
+                        }
+
+                        //Save pointer to main module ID for pkg name.
+                        //Remove leading dot in main, so main paths are normalized,
+                        //and remove any trailing .js, since different package
+                        //envs have different conventions: some use a module name,
+                        //some use a file name.
+                        config.pkgs[name] = pkgObj.name + '/' + (pkgObj.main || 'main')
+                                     .replace(currDirRegExp, '')
+                                     .replace(jsSuffixRegExp, '');
+                    });
+                }
+
+                //If there are any "waiting to execute" modules in the registry,
+                //update the maps for them, since their info, like URLs to load,
+                //may have changed.
+                eachProp(registry, function (mod, id) {
+                    //If module already has init called, since it is too
+                    //late to modify them, and ignore unnormalized ones
+                    //since they are transient.
+                    if (!mod.inited && !mod.map.unnormalized) {
+                        mod.map = makeModuleMap(id);
+                    }
+                });
+
+                //If a deps array or a config callback is specified, then call
+                //require with those args. This is useful when require is defined as a
+                //config object before require.js is loaded.
+                if (cfg.deps || cfg.callback) {
+                    context.require(cfg.deps || [], cfg.callback);
+                }
+            },
+
+            makeShimExports: function (value) {
+                function fn() {
+                    var ret;
+                    if (value.init) {
+                        ret = value.init.apply(global, arguments);
+                    }
+                    return ret || (value.exports && getGlobal(value.exports));
+                }
+                return fn;
+            },
+
+            makeRequire: function (relMap, options) {
+                options = options || {};
+
+                function localRequire(deps, callback, errback) {
+                    var id, map, requireMod;
+
+                    if (options.enableBuildCallback && callback && isFunction(callback)) {
+                        callback.__requireJsBuild = true;
+                    }
+
+                    if (typeof deps === 'string') {
+                        if (isFunction(callback)) {
+                            //Invalid call
+                            return onError(makeError('requireargs', 'Invalid require call'), errback);
+                        }
+
+                        //If require|exports|module are requested, get the
+                        //value for them from the special handlers. Caveat:
+                        //this only works while module is being defined.
+                        if (relMap && hasProp(handlers, deps)) {
+                            return handlers[deps](registry[relMap.id]);
+                        }
+
+                        //Synchronous access to one module. If require.get is
+                        //available (as in the Node adapter), prefer that.
+                        if (req.get) {
+                            return req.get(context, deps, relMap, localRequire);
+                        }
+
+                        //Normalize module name, if it contains . or ..
+                        map = makeModuleMap(deps, relMap, false, true);
+                        id = map.id;
+
+                        if (!hasProp(defined, id)) {
+                            return onError(makeError('notloaded', 'Module name "' +
+                                        id +
+                                        '" has not been loaded yet for context: ' +
+                                        contextName +
+                                        (relMap ? '' : '. Use require([])')));
+                        }
+                        return defined[id];
+                    }
+
+                    //Grab defines waiting in the global queue.
+                    intakeDefines();
+
+                    //Mark all the dependencies as needing to be loaded.
+                    context.nextTick(function () {
+                        //Some defines could have been added since the
+                        //require call, collect them.
+                        intakeDefines();
+
+                        requireMod = getModule(makeModuleMap(null, relMap));
+
+                        //Store if map config should be applied to this require
+                        //call for dependencies.
+                        requireMod.skipMap = options.skipMap;
+
+                        requireMod.init(deps, callback, errback, {
+                            enabled: true
+                        });
+
+                        checkLoaded();
+                    });
+
+                    return localRequire;
+                }
+
+                mixin(localRequire, {
+                    isBrowser: isBrowser,
+
+                    /**
+                     * Converts a module name + .extension into an URL path.
+                     * *Requires* the use of a module name. It does not support using
+                     * plain URLs like nameToUrl.
+                     */
+                    toUrl: function (moduleNamePlusExt) {
+                        var ext,
+                            index = moduleNamePlusExt.lastIndexOf('.'),
+                            segment = moduleNamePlusExt.split('/')[0],
+                            isRelative = segment === '.' || segment === '..';
+
+                        //Have a file extension alias, and it is not the
+                        //dots from a relative path.
+                        if (index !== -1 && (!isRelative || index > 1)) {
+                            ext = moduleNamePlusExt.substring(index, moduleNamePlusExt.length);
+                            moduleNamePlusExt = moduleNamePlusExt.substring(0, index);
+                        }
+
+                        return context.nameToUrl(normalize(moduleNamePlusExt,
+                                                relMap && relMap.id, true), ext,  true);
+                    },
+
+                    defined: function (id) {
+                        return hasProp(defined, makeModuleMap(id, relMap, false, true).id);
+                    },
+
+                    specified: function (id) {
+                        id = makeModuleMap(id, relMap, false, true).id;
+                        return hasProp(defined, id) || hasProp(registry, id);
+                    }
+                });
+
+                //Only allow undef on top level require calls
+                if (!relMap) {
+                    localRequire.undef = function (id) {
+                        //Bind any waiting define() calls to this context,
+                        //fix for #408
+                        takeGlobalQueue();
+
+                        var map = makeModuleMap(id, relMap, true),
+                            mod = getOwn(registry, id);
+
+                        removeScript(id);
+
+                        delete defined[id];
+                        delete urlFetched[map.url];
+                        delete undefEvents[id];
+
+                        //Clean queued defines too. Go backwards
+                        //in array so that the splices do not
+                        //mess up the iteration.
+                        eachReverse(defQueue, function(args, i) {
+                            if(args[0] === id) {
+                                defQueue.splice(i, 1);
+                            }
+                        });
+
+                        if (mod) {
+                            //Hold on to listeners in case the
+                            //module will be attempted to be reloaded
+                            //using a different config.
+                            if (mod.events.defined) {
+                                undefEvents[id] = mod.events;
+                            }
+
+                            cleanRegistry(id);
+                        }
+                    };
+                }
+
+                return localRequire;
+            },
+
+            /**
+             * Called to enable a module if it is still in the registry
+             * awaiting enablement. A second arg, parent, the parent module,
+             * is passed in for context, when this method is overridden by
+             * the optimizer. Not shown here to keep code compact.
+             */
+            enable: function (depMap) {
+                var mod = getOwn(registry, depMap.id);
+                if (mod) {
+                    getModule(depMap).enable();
+                }
+            },
+
+            /**
+             * Internal method used by environment adapters to complete a load event.
+             * A load event could be a script load or just a load pass from a synchronous
+             * load call.
+             * @param {String} moduleName the name of the module to potentially complete.
+             */
+            completeLoad: function (moduleName) {
+                var found, args, mod,
+                    shim = getOwn(config.shim, moduleName) || {},
+                    shExports = shim.exports;
+
+                takeGlobalQueue();
+
+                while (defQueue.length) {
+                    args = defQueue.shift();
+                    if (args[0] === null) {
+                        args[0] = moduleName;
+                        //If already found an anonymous module and bound it
+                        //to this name, then this is some other anon module
+                        //waiting for its completeLoad to fire.
+                        if (found) {
+                            break;
+                        }
+                        found = true;
+                    } else if (args[0] === moduleName) {
+                        //Found matching define call for this script!
+                        found = true;
+                    }
+
+                    callGetModule(args);
+                }
+
+                //Do this after the cycle of callGetModule in case the result
+                //of those calls/init calls changes the registry.
+                mod = getOwn(registry, moduleName);
+
+                if (!found && !hasProp(defined, moduleName) && mod && !mod.inited) {
+                    if (config.enforceDefine && (!shExports || !getGlobal(shExports))) {
+                        if (hasPathFallback(moduleName)) {
+                            return;
+                        } else {
+                            return onError(makeError('nodefine',
+                                             'No define call for ' + moduleName,
+                                             null,
+                                             [moduleName]));
+                        }
+                    } else {
+                        //A script that does not call define(), so just simulate
+                        //the call for it.
+                        callGetModule([moduleName, (shim.deps || []), shim.exportsFn]);
+                    }
+                }
+
+                checkLoaded();
+            },
+
+            /**
+             * Converts a module name to a file path. Supports cases where
+             * moduleName may actually be just an URL.
+             * Note that it **does not** call normalize on the moduleName,
+             * it is assumed to have already been normalized. This is an
+             * internal API, not a public one. Use toUrl for the public API.
+             */
+            nameToUrl: function (moduleName, ext, skipExt) {
+                var paths, syms, i, parentModule, url,
+                    parentPath, bundleId,
+                    pkgMain = getOwn(config.pkgs, moduleName);
+
+                if (pkgMain) {
+                    moduleName = pkgMain;
+                }
+
+                bundleId = getOwn(bundlesMap, moduleName);
+
+                if (bundleId) {
+                    return context.nameToUrl(bundleId, ext, skipExt);
+                }
+
+                //If a colon is in the URL, it indicates a protocol is used and it is just
+                //an URL to a file, or if it starts with a slash, contains a query arg (i.e. ?)
+                //or ends with .js, then assume the user meant to use an url and not a module id.
+                //The slash is important for protocol-less URLs as well as full paths.
+                if (req.jsExtRegExp.test(moduleName)) {
+                    //Just a plain path, not module name lookup, so just return it.
+                    //Add extension if it is included. This is a bit wonky, only non-.js things pass
+                    //an extension, this method probably needs to be reworked.
+                    url = moduleName + (ext || '');
+                } else {
+                    //A module that needs to be converted to a path.
+                    paths = config.paths;
+
+                    syms = moduleName.split('/');
+                    //For each module name segment, see if there is a path
+                    //registered for it. Start with most specific name
+                    //and work up from it.
+                    for (i = syms.length; i > 0; i -= 1) {
+                        parentModule = syms.slice(0, i).join('/');
+
+                        parentPath = getOwn(paths, parentModule);
+                        if (parentPath) {
+                            //If an array, it means there are a few choices,
+                            //Choose the one that is desired
+                            if (isArray(parentPath)) {
+                                parentPath = parentPath[0];
+                            }
+                            syms.splice(0, i, parentPath);
+                            break;
+                        }
+                    }
+
+                    //Join the path parts together, then figure out if baseUrl is needed.
+                    url = syms.join('/');
+                    url += (ext || (/^data\:|\?/.test(url) || skipExt ? '' : '.js'));
+                    url = (url.charAt(0) === '/' || url.match(/^[\w\+\.\-]+:/) ? '' : config.baseUrl) + url;
+                }
+
+                return config.urlArgs ? url +
+                                        ((url.indexOf('?') === -1 ? '?' : '&') +
+                                         config.urlArgs) : url;
+            },
+
+            //Delegates to req.load. Broken out as a separate function to
+            //allow overriding in the optimizer.
+            load: function (id, url) {
+                req.load(context, id, url);
+            },
+
+            /**
+             * Executes a module callback function. Broken out as a separate function
+             * solely to allow the build system to sequence the files in the built
+             * layer in the right sequence.
+             *
+             * @private
+             */
+            execCb: function (name, callback, args, exports) {
+                return callback.apply(exports, args);
+            },
+
+            /**
+             * callback for script loads, used to check status of loading.
+             *
+             * @param {Event} evt the event from the browser for the script
+             * that was loaded.
+             */
+            onScriptLoad: function (evt) {
+                //Using currentTarget instead of target for Firefox 2.0's sake. Not
+                //all old browsers will be supported, but this one was easy enough
+                //to support and still makes sense.
+                if (evt.type === 'load' ||
+                        (readyRegExp.test((evt.currentTarget || evt.srcElement).readyState))) {
+                    //Reset interactive script so a script node is not held onto for
+                    //to long.
+                    interactiveScript = null;
+
+                    //Pull out the name of the module and the context.
+                    var data = getScriptData(evt);
+                    context.completeLoad(data.id);
+                }
+            },
+
+            /**
+             * Callback for script errors.
+             */
+            onScriptError: function (evt) {
+                var data = getScriptData(evt);
+                if (!hasPathFallback(data.id)) {
+                    return onError(makeError('scripterror', 'Script error for: ' + data.id, evt, [data.id]));
+                }
+            }
+        };
+
+        context.require = context.makeRequire();
+        return context;
+    }
+
+    /**
+     * Main entry point.
+     *
+     * If the only argument to require is a string, then the module that
+     * is represented by that string is fetched for the appropriate context.
+     *
+     * If the first argument is an array, then it will be treated as an array
+     * of dependency string names to fetch. An optional function callback can
+     * be specified to execute when all of those dependencies are available.
+     *
+     * Make a local req variable to help Caja compliance (it assumes things
+     * on a require that are not standardized), and to give a short
+     * name for minification/local scope use.
+     */
+    req = requirejs = function (deps, callback, errback, optional) {
+
+        //Find the right context, use default
+        var context, config,
+            contextName = defContextName;
+
+        // Determine if have config object in the call.
+        if (!isArray(deps) && typeof deps !== 'string') {
+            // deps is a config object
+            config = deps;
+            if (isArray(callback)) {
+                // Adjust args if there are dependencies
+                deps = callback;
+                callback = errback;
+                errback = optional;
+            } else {
+                deps = [];
+            }
+        }
+
+        if (config && config.context) {
+            contextName = config.context;
+        }
+
+        context = getOwn(contexts, contextName);
+        if (!context) {
+            context = contexts[contextName] = req.s.newContext(contextName);
+        }
+
+        if (config) {
+            context.configure(config);
+        }
+
+        return context.require(deps, callback, errback);
+    };
+
+    /**
+     * Support require.config() to make it easier to cooperate with other
+     * AMD loaders on globally agreed names.
+     */
+    req.config = function (config) {
+        return req(config);
+    };
+
+    /**
+     * Execute something after the current tick
+     * of the event loop. Override for other envs
+     * that have a better solution than setTimeout.
+     * @param  {Function} fn function to execute later.
+     */
+    req.nextTick = typeof setTimeout !== 'undefined' ? function (fn) {
+        setTimeout(fn, 4);
+    } : function (fn) { fn(); };
+
+    /**
+     * Export require as a global, but only if it does not already exist.
+     */
+    if (!require) {
+        require = req;
+    }
+
+    req.version = version;
+
+    //Used to filter out dependencies that are already paths.
+    req.jsExtRegExp = /^\/|:|\?|\.js$/;
+    req.isBrowser = isBrowser;
+    s = req.s = {
+        contexts: contexts,
+        newContext: newContext
+    };
+
+    //Create default context.
+    req({});
+
+    //Exports some context-sensitive methods on global require.
+    each([
+        'toUrl',
+        'undef',
+        'defined',
+        'specified'
+    ], function (prop) {
+        //Reference from contexts instead of early binding to default context,
+        //so that during builds, the latest instance of the default context
+        //with its config gets used.
+        req[prop] = function () {
+            var ctx = contexts[defContextName];
+            return ctx.require[prop].apply(ctx, arguments);
+        };
+    });
+
+    if (isBrowser) {
+        head = s.head = document.getElementsByTagName('head')[0];
+        //If BASE tag is in play, using appendChild is a problem for IE6.
+        //When that browser dies, this can be removed. Details in this jQuery bug:
+        //http://dev.jquery.com/ticket/2709
+        baseElement = document.getElementsByTagName('base')[0];
+        if (baseElement) {
+            head = s.head = baseElement.parentNode;
+        }
+    }
+
+    /**
+     * Any errors that require explicitly generates will be passed to this
+     * function. Intercept/override it if you want custom error handling.
+     * @param {Error} err the error object.
+     */
+    req.onError = defaultOnError;
+
+    /**
+     * Creates the node for the load command. Only used in browser envs.
+     */
+    req.createNode = function (config, moduleName, url) {
+        var node = config.xhtml ?
+                document.createElementNS('http://www.w3.org/1999/xhtml', 'html:script') :
+                document.createElement('script');
+        node.type = config.scriptType || 'text/javascript';
+        node.charset = 'utf-8';
+        node.async = true;
+        return node;
+    };
+
+    /**
+     * Does the request to load a module for the browser case.
+     * Make this a separate function to allow other environments
+     * to override it.
+     *
+     * @param {Object} context the require context to find state.
+     * @param {String} moduleName the name of the module.
+     * @param {Object} url the URL to the module.
+     */
+    req.load = function (context, moduleName, url) {
+        var config = (context && context.config) || {},
+            node;
+        if (isBrowser) {
+            //In the browser so use a script tag
+            node = req.createNode(config, moduleName, url);
+
+            node.setAttribute('data-requirecontext', context.contextName);
+            node.setAttribute('data-requiremodule', moduleName);
+
+            //Set up load listener. Test attachEvent first because IE9 has
+            //a subtle issue in its addEventListener and script onload firings
+            //that do not match the behavior of all other browsers with
+            //addEventListener support, which fire the onload event for a
+            //script right after the script execution. See:
+            //https://connect.microsoft.com/IE/feedback/details/648057/script-onload-event-is-not-fired-immediately-after-script-execution
+            //UNFORTUNATELY Opera implements attachEvent but does not follow the script
+            //script execution mode.
+            if (node.attachEvent &&
+                    //Check if node.attachEvent is artificially added by custom script or
+                    //natively supported by browser
+                    //read https://github.com/jrburke/requirejs/issues/187
+                    //if we can NOT find [native code] then it must NOT natively supported.
+                    //in IE8, node.attachEvent does not have toString()
+                    //Note the test for "[native code" with no closing brace, see:
+                    //https://github.com/jrburke/requirejs/issues/273
+                    !(node.attachEvent.toString && node.attachEvent.toString().indexOf('[native code') < 0) &&
+                    !isOpera) {
+                //Probably IE. IE (at least 6-8) do not fire
+                //script onload right after executing the script, so
+                //we cannot tie the anonymous define call to a name.
+                //However, IE reports the script as being in 'interactive'
+                //readyState at the time of the define call.
+                useInteractive = true;
+
+                node.attachEvent('onreadystatechange', context.onScriptLoad);
+                //It would be great to add an error handler here to catch
+                //404s in IE9+. However, onreadystatechange will fire before
+                //the error handler, so that does not help. If addEventListener
+                //is used, then IE will fire error before load, but we cannot
+                //use that pathway given the connect.microsoft.com issue
+                //mentioned above about not doing the 'script execute,
+                //then fire the script load event listener before execute
+                //next script' that other browsers do.
+                //Best hope: IE10 fixes the issues,
+                //and then destroys all installs of IE 6-9.
+                //node.attachEvent('onerror', context.onScriptError);
+            } else {
+                node.addEventListener('load', context.onScriptLoad, false);
+                node.addEventListener('error', context.onScriptError, false);
+            }
+            node.src = url;
+
+            //For some cache cases in IE 6-8, the script executes before the end
+            //of the appendChild execution, so to tie an anonymous define
+            //call to the module name (which is stored on the node), hold on
+            //to a reference to this node, but clear after the DOM insertion.
+            currentlyAddingScript = node;
+            if (baseElement) {
+                head.insertBefore(node, baseElement);
+            } else {
+                head.appendChild(node);
+            }
+            currentlyAddingScript = null;
+
+            return node;
+        } else if (isWebWorker) {
+            try {
+                //In a web worker, use importScripts. This is not a very
+                //efficient use of importScripts, importScripts will block until
+                //its script is downloaded and evaluated. However, if web workers
+                //are in play, the expectation that a build has been done so that
+                //only one script needs to be loaded anyway. This may need to be
+                //reevaluated if other use cases become common.
+                importScripts(url);
+
+                //Account for anonymous modules
+                context.completeLoad(moduleName);
+            } catch (e) {
+                context.onError(makeError('importscripts',
+                                'importScripts failed for ' +
+                                    moduleName + ' at ' + url,
+                                e,
+                                [moduleName]));
+            }
+        }
+    };
+
+    function getInteractiveScript() {
+        if (interactiveScript && interactiveScript.readyState === 'interactive') {
+            return interactiveScript;
+        }
+
+        eachReverse(scripts(), function (script) {
+            if (script.readyState === 'interactive') {
+                return (interactiveScript = script);
+            }
+        });
+        return interactiveScript;
+    }
+
+    //Look for a data-main script attribute, which could also adjust the baseUrl.
+    if (isBrowser && !cfg.skipDataMain) {
+        //Figure out baseUrl. Get it from the script tag with require.js in it.
+        eachReverse(scripts(), function (script) {
+            //Set the 'head' where we can append children by
+            //using the script's parent.
+            if (!head) {
+                head = script.parentNode;
+            }
+
+            //Look for a data-main attribute to set main script for the page
+            //to load. If it is there, the path to data main becomes the
+            //baseUrl, if it is not already set.
+            dataMain = script.getAttribute('data-main');
+            if (dataMain) {
+                //Preserve dataMain in case it is a path (i.e. contains '?')
+                mainScript = dataMain;
+
+                //Set final baseUrl if there is not already an explicit one.
+                if (!cfg.baseUrl) {
+                    //Pull off the directory of data-main for use as the
+                    //baseUrl.
+                    src = mainScript.split('/');
+                    mainScript = src.pop();
+                    subPath = src.length ? src.join('/')  + '/' : './';
+
+                    cfg.baseUrl = subPath;
+                }
+
+                //Strip off any trailing .js since mainScript is now
+                //like a module name.
+                mainScript = mainScript.replace(jsSuffixRegExp, '');
+
+                 //If mainScript is still a path, fall back to dataMain
+                if (req.jsExtRegExp.test(mainScript)) {
+                    mainScript = dataMain;
+                }
+
+                //Put the data-main script in the files to load.
+                cfg.deps = cfg.deps ? cfg.deps.concat(mainScript) : [mainScript];
+
+                return true;
+            }
+        });
+    }
+
+    /**
+     * The function that handles definitions of modules. Differs from
+     * require() in that a string for the module should be the first argument,
+     * and the function to execute after dependencies are loaded should
+     * return a value to define the module corresponding to the first argument's
+     * name.
+     */
+    define = function (name, deps, callback) {
+        var node, context;
+
+        //Allow for anonymous modules
+        if (typeof name !== 'string') {
+            //Adjust args appropriately
+            callback = deps;
+            deps = name;
+            name = null;
+        }
+
+        //This module may not have dependencies
+        if (!isArray(deps)) {
+            callback = deps;
+            deps = null;
+        }
+
+        //If no name, and callback is a function, then figure out if it a
+        //CommonJS thing with dependencies.
+        if (!deps && isFunction(callback)) {
+            deps = [];
+            //Remove comments from the callback string,
+            //look for require calls, and pull them into the dependencies,
+            //but only if there are function args.
+            if (callback.length) {
+                callback
+                    .toString()
+                    .replace(commentRegExp, '')
+                    .replace(cjsRequireRegExp, function (match, dep) {
+                        deps.push(dep);
+                    });
+
+                //May be a CommonJS thing even without require calls, but still
+                //could use exports, and module. Avoid doing exports and module
+                //work though if it just needs require.
+                //REQUIRES the function to expect the CommonJS variables in the
+                //order listed below.
+                deps = (callback.length === 1 ? ['require'] : ['require', 'exports', 'module']).concat(deps);
+            }
+        }
+
+        //If in IE 6-8 and hit an anonymous define() call, do the interactive
+        //work.
+        if (useInteractive) {
+            node = currentlyAddingScript || getInteractiveScript();
+            if (node) {
+                if (!name) {
+                    name = node.getAttribute('data-requiremodule');
+                }
+                context = contexts[node.getAttribute('data-requirecontext')];
+            }
+        }
+
+        //Always save off evaluating the def call until the script onload handler.
+        //This allows multiple modules to be in a file without prematurely
+        //tracing dependencies, and allows for anonymous module support,
+        //where the module name is not known until the script onload event
+        //occurs. If no context, use the global queue, and get it processed
+        //in the onscript load callback.
+        (context ? context.defQueue : globalDefQueue).push([name, deps, callback]);
+    };
+
+    define.amd = {
+        jQuery: true
+    };
+
+
+    /**
+     * Executes the text. Normally just uses eval, but can be modified
+     * to use a better, environment-specific call. Only used for transpiling
+     * loader plugins, not for plain JS modules.
+     * @param {String} text the text to execute/evaluate.
+     */
+    req.exec = function (text) {
+        /*jslint evil: true */
+        return eval(text);
+    };
+
+    //Set up with config info.
+    req(cfg);
+}(this));
 
 define("requireLib", function(){});
 
@@ -11097,6 +13128,7 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
+
 define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    color:              #900;\n}\n\nh1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a {\n    text-decoration:    none;\n}\n\na .secno, a .figno, a .tblno {\n    color:  #000;\n}\n\nul.tof, ol.tof, ul.tot, ol.tot {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
@@ -12982,11 +15014,15 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
+
 define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    {{#if prependW3C}}\n      <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n    {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>Bug tracker:</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{else}}\n        All Rights Reserved.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr/>\n</div>\n');});
+
 
 define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication.\n          Other documents may supersede this document. A list of current W3C publications and the\n          latest revision of this technical report can be found in the <a\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\n          http://www.w3.org/TR/.</em>\n        </p>\n        {{{sotdCustomParagraph}}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            All comments are welcome.\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isRec}}\n          <p>\n            This document has been reviewed by W3C Members, by software developers, and by other W3C\n            groups and interested parties, and is endorsed by the Director as a W3C Recommendation.\n            It is a stable document and may be used as reference material or cited from another\n            document. W3C\'s role in making the Recommendation is to draw attention to the\n            specification and to promote its widespread deployment. This enhances the functionality\n            and interoperability of the Web.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
 
+
 define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'/></a>\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}>{{longStatus}} <time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#if thisVersion}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    {{/if}}\n    {{#if latestVersion}}\n      <dt>Latest published version:</dt>\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\n    {{/if}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if prevVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#unless isCGFinal}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/unless}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n  </dl>\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats: \n      {{else}}\n        This document is also available in this non-normative format: \n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  <p class=\'copyright\'>\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n    the Contributors to the {{title}} Specification, published by the\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\n    {{#if isCGFinal}}\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\n    {{else}}\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\n    {{/if}}\n  </p>\n  <hr/>\n</div>\n');});
+
 
 define('tmpl!w3c/templates/cgbg-sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  <p>\n    This specification was published by the <a href=\'{{wgURI}}\'>{{wg}}</a>.\n    It is not a W3C Standard nor is it on the W3C Standards Track.\n    {{#if isCGFinal}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/final/">W3C Community Final Specification Agreement (FSA)</a> \n      other conditions apply.\n    {{else}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>\n      there is a limited opt-out and other conditions apply.\n    {{/if}}\n    Learn more about \n    <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.\n  </p>\n  {{{sotdCustomParagraph}}}\n</section>\n');});
 
@@ -13419,6 +15455,7 @@ define(
     }
 );
 
+
 define('tmpl!w3c/templates/conformance.html', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n  and notes in this specification are non-normative. Everything else in this specification is\n  normative.\n</p>\n<p>\n  The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,\n  and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n');});
 
 
@@ -13687,6 +15724,7 @@ define(
     }
 );
 
+
 define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
 
@@ -13762,6 +15800,7 @@ define(
         };
     }
 );
+
 
 define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title     { color: #e05252; }\ndiv.note-title      { color: #2b2; }\ndiv.impnote-title   { color: #0060A9; }\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue, div.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue, .note, .impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note, div.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n\n.issue {\n    border-color: #e05252;\n    background:   #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background:   #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9; \n    background:   #E5F4FF;\n}\n\n\n';});
 
@@ -13913,6 +15952,7 @@ define(
         };
     }
 );
+
 define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
 
 // Copyright (C) 2006 Google Inc.
@@ -15618,6 +17658,7 @@ define(
     }
 );
 
+
 define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
 
@@ -16141,41 +18182,60 @@ define(
     }
 );
 
+
 define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
+
 
 define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\n{{idn indent}}};</span>\n');});
 
+
 define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\n');});
+
 
 define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\n');});
 
+
 define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\n');});
+
 
 define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}};</span>\n');});
 
+
 define('tmpl!core/templates/webidl/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj.refId}}" class="idlEnumItem">{{obj.id}}</a>"');});
+
 
 define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
 
+
 define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\n');});
+
 
 define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
 
+
 define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\n');});
+
 
 define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\n');});
 
+
 define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+
 
 define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
 
+
 define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+
 
 define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\n}}{{idn indent}}// {{comment}}</span>\n');});
 
+
 define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
 
+
 define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
 
 define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
 
@@ -17655,6 +19715,7 @@ window.simpleNode.prototype = {
         return id;
     }
 };
+
 
 define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNum {\n\ttext-anchor: middle;\n\tfill: grey;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n\tfont-size: 8pt;\n}\n\npath.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\nrect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\nrect.regFieldBoxrsvdp,\nrect.regFieldBoxrsvdz,\nrect.regFieldBoxReserved,\nrect.regFieldRsvd {\n\tfill: white;\n}\n\nline.regFieldBoxInternal {\n\tstroke: black;\n}\n\nline.regFieldBoxUnused {\n\tstroke: grey;\n}\n\ntext.regFieldNameInternal {\n\ttext-anchor: middle;\n}\n\ntext.regFieldUnused {\n\tfill: grey;\n}\n\ntext.regFieldName {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\npath.regBitLine1,\npath.regBitBracket1 {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\npath.regBitLine0 {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\npath.regBitBracket0 {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\n.svg_error {\n\tcolor: red;\n\tfont-weight: bold;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}';});
 
@@ -19699,6 +21760,7 @@ define(
     }
 );
 
+
 define('tmpl!w3c/templates/permalinks.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\nsection > *:hover > span.permalink { visibility: visible; } \n{{/if}}\n\n.permalink {\n    width: 1px;\n    height: 1px;\n    overflow: visible;\n    font-size: 10pt;\n    font-style: normal;\n    vertical-align: middle;\n    margin-left: 4px;\n    {{#if permalinkEdge}}\n\tfloat: right;\n    {{/if}}\n    {{#if permalinkHide}}\n    visibility: hidden;\n    {{/if}}\n}\n\n.permalink a, .permalink a:link, .permalink a:visited, .permalink a:hover, .permalink a:focus, .permalink a:active \n{\n\tbackground:transparent !important;\n\ttext-decoration:none;\n    font-weight: bold;\n\tcolor:#666 !important;\n}\n\n.permalink abbr {\n\tborder:0;\n}\n');});
 
 // Module w3c/permalinks
@@ -20017,5 +22079,6 @@ define('profile-w3c-common',[
             });
         }
 );
+
 
 require(['profile-w3c-common']);
