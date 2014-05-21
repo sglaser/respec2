@@ -1,4 +1,6 @@
-
+/* jshint browser: true */
+/* jshint jquery: true */
+/* global define */
 // Module core/dfn
 // Handles the processing and linking of <dfn> and <a> elements.
 define(
@@ -43,7 +45,7 @@ define(
                                 tag = dfnClass[i];
                             }
                             else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
-                                if (tag == null) {
+                                if (tag === null) {
                                     tag = dfnClass[i];
                                 }
                                 else if (!$ant.hasClass(tag)) {
@@ -52,7 +54,7 @@ define(
                             }
                         }
                     }
-                    if (tag != null) {
+                    if (tag !== null) {
                         if (conf.definitionMap[tag + "-" + title]) {
                             $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
                             if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
@@ -77,7 +79,7 @@ define(
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
                     var $mapsec = $("<section id='definition-map' class='appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr><thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
                     var keys = Object.keys(conf.definitionMap).sort();
                     for (var i = 0; i < keys.length; i++) {
                         var d = keys[i];
