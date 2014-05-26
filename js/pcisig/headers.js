@@ -74,14 +74,14 @@
 //          - href: a URL for the value (e.g., "http://foo.com/issues"). Optional.
 //          - class: a string representing CSS classes. Optional.
 //  - license: can either be "pcisig" (for the currently default, restrictive license) or "cc-by" for
-//      the friendly persmissive dual license that nice people use (if they are participating in the
+//      the friendly permissive dual license that nice people use (if they are participating in the
 //      HTML WG licensing experiment)
 
 define(
     ["handlebars"
     ,"core/utils"
-    ,"tmpl!pcisig/templates/headers.html"
-    ,"tmpl!pcisig/templates/sotd.html"
+    ,"tmpl!pcisig/templates/headers.handlebars"
+    ,"tmpl!pcisig/templates/sotd.handlebars"
     ],
     function (hb, utils, headersTmpl, sotdTmpl) {
         Handlebars.registerHelper("showPeople", function (name, items) {
@@ -193,7 +193,8 @@ define(
                     conf.publishDate = utils.parseLastModified(doc.lastModified);
                 }
                 else {
-                    if (!(conf.publishDate instanceof Date)) conf.publishDate = utils.parseSimpleDate(conf.publishDate);
+                    if (!(conf.publishDate instanceof Date))
+                        conf.publishDate = utils.parseSimpleDate(conf.publishDate);
                 }
                 conf.publishYear = conf.publishDate.getFullYear();
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
@@ -209,7 +210,7 @@ define(
                 }
                 if (!conf.specLevel) conf.specLevel = "";
                 if (!conf.specReview) conf.specReview = "";
-                if review2Test[conf.specReview]) {
+                if (review2Test[conf.specReview]) {
                     conf.specReviewLong = review2Text[conf.specReview];
                 } else {
                     conf.specReviewLong = conf.specReview;
@@ -217,7 +218,7 @@ define(
                 if (status2Text[conf.specStatus]) {
                     conf.specStatusLong = stauts2Text[conf.specStatus];
                 } else {
-                    conf.specStatusLong = conf.SpecStatus];
+                    conf.specStatusLong = conf.SpecStatus;
                 }
                 if (level2Text[conf.specLevel]) {
                     conf.specLevelLong = level2Text[conf.specLevel];
@@ -322,20 +323,21 @@ define(
                 
                 // annotate html element with RFDa
                 if (conf.doRDFa) {
+                    var $html = $("html");
                     if (conf.rdfStatus) {
-                        $("html").attr("typeof", "bibo:Document "+conf.rdfStatus ) ;
+                        $html.attr("typeof", "bibo:Document "+conf.rdfStatus ) ;
                     } else {
-                        $("html").attr("typeof", "bibo:Document ") ;
+                        $html.attr("typeof", "bibo:Document ") ;
                     }
-                    $("html").attr("about", "") ;
-                    $("html").attr("property", "dcterms:language") ;
-                    $("html").attr("content", "en") ;
+                    $html.attr("about", "") ;
+                    $html.attr("property", "dcterms:language") ;
+                    $html.attr("content", "en") ;
                     var prefixes = "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
                     if (conf.doRDFa != '1.1') {
-                        $("html").attr("version", "XHTML+RDFa 1.0") ;
+                        $html.attr("version", "XHTML+RDFa 1.0") ;
                         prefixes += " dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ xsd: http://www.w3.org/2001/XMLSchema#";
                     }
-                    $("html").attr("prefix", prefixes);
+                    $html.attr("prefix", prefixes);
                 }
                 // insert into document and mark with microformat
                 $("body", doc).prepend($(headersTmpl(conf)))
