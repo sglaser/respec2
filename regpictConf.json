@@ -51,19 +51,19 @@
         // no line are shown if this is null or the empty string
         // values can be expressions in parenthesis
         // the operators "+", "-", "*", and "/" are supported
-        // arguments can be nested expresions, numbers, or the values: h or w
-        // For this path, coordinant (0,0) is the upper left corner of the bit number area.
-        // All SVG <path> items can be used. Absolute coordinants will be adjusted in the generated SVG Element.
+        // arguments can be nested expressions, numbers, or the values: h or w
+        // For this path, coordinate (0,0) is the upper left corner of the bit number area.
+        // All SVG <path> items can be used. Absolute coordinates will be adjusted in the generated SVG Element.
         // h is the value of the register's cellHeight
         // w is the value of the register's cellWidth
         "linePath": "...",
         // position of the text within the bit number cell
         // x and y are integers or expressions in parenthesis (see linePath)
-        "textPosition": [x, y]
-        // position of the text pin location withn the text string
+        "textPosition": [x, y],
+        // position of the text pin location within the text string
         // x and y are integers or expressions.
         // h or w represent the bounding box of the text
-        // The "textPinIn" point will concide with the "textPositionIn"
+        // The "textPinIn" point will coincide with the "textPositionIn"
         "textPin": [x, y]
     },
     // describes a possible field rule that can be applied using applyRules
@@ -79,14 +79,14 @@
         // no line are shown if this is null or the empty string
         // values can be expressions in parenthesis
         // the operators "+", "-", "*", and "/" are supported
-        // arguments can be nested expresions, numbers, or the values: h or w
-        // For this path, coordinant (0,0) is the upper left corner of the bit box area.
-        // All SVG <path> items can be used. Absolute coordinants will be adjusted in the generated SVG Element.
+        // arguments can be nested expressions, numbers, or the values: h or w
+        // For this path, coordinate (0,0) is the upper left corner of the bit box area.
+        // All SVG <path> items can be used. Absolute coordinates will be adjusted in the generated SVG Element.
         // h is the value of the register's cellHeight
         // w is the value of the register's cellWidth
-        // n is the number of field names (1 if name is a string, N if name is an array of legnth N)
-        // x is the x coordinant of the upper left corner of the field name area
-        // y is the y coordinant of the upper left corner of the field name area
+        // n is the number of field names (1 if name is a string, N if name is an array of length N)
+        // x is the x coordinate of the upper left corner of the field name area
+        // y is the y coordinate of the upper left corner of the field name area
         // if the field name fits in the bit box, x and y are both 0.
         // if the field name doesn't fit in the bit box, x and y are non-zero (and may be positive or negative)
         "linePath*": "...",
@@ -100,21 +100,21 @@
         "textPositionIn": [x, y],
         // applies when the field names do not fit in the bit box
         "textPositionOut": [x, y],
-        // Position of the text pin location withn each field name
+        // Position of the text pin location within each field name
         // x and y are integers or expressions and represent the position of this field name
         // h or w represent the bounding box of this field name
         // H or W represent the bounding box of the longest field name for this field
         // Applies when field names fit in the bit box
-        // The "textPinIn" point will concide with the "textPositionIn"
+        // The "textPinIn" point will coincide with the "textPositionIn"
         "textPinIn": [x, y],
         // Applies when field names do not fit in the bit box
-        // The "textPinout" point will concide with the "textPositionOut"
+        // The "textPinout" point will coincide with the "textPositionOut"
         "textPinOut": [x, y],
         // Offset from the a specific field name to the next field name for this field
-        // Applies when fied names fit in the bit box
+        // Applies when field names fit in the bit box
         "textOffsetIn": [x, y],
         // Offset from the a specific field name to the next field name for this field
-        // Applies when fied names do not fit in the bit box
+        // Applies when field names do not fit in the bit box
         "textOffsetOut": [x, y]
     },
     "useNumberRules": ["0", "1", "2"],
@@ -123,7 +123,7 @@
         {
             "msb": 0,
             "lsb": 0,
-            "attr": ro,
+            "attr": "ro",
             "name": "Z"
         },
         {
