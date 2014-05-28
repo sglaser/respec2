@@ -1,17 +1,17 @@
-<div class='head'>
+<div class="head">
 {{#if prependPCIeLogo}}
 <p>
-    <a href='http://www.pcisig.com/'>
-        <img width='72' height='48' alt='PCI Express Logo'
-             src='../stylesheets/pcisig/pci_express_PMS.svg'/>
+    <a href="http://www.pcisig.com/">
+        <img width="72" height="48" alt="PCI Express Logo"
+             src="../stylesheets/pcisig/pci_express_PMS.svg"/>
     </a>
 </p>
 {{/if}}
 {{#if prependPCISIGLogo}}
 <p>
-    <a href='http://www.pcisig.com/'>
-        <img width='72' height='48' alt='PCISIG Logo'
-             src='../stylesheets/pcisig/pci_sig_logo_PMS_273.svg'/>
+    <a href="http://www.pcisig.com/">
+        <img width="72" height="48" alt="PCISIG Logo"
+             src="../stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>
     </a>
 </p>
 {{/if}}
@@ -25,33 +25,33 @@
     {{/if}}
     <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;
 </div>
-<h1 class='title p-name' id='title'{{#if doRDFa}} property='dcterms:title'{{/if}}>{{title}}</h1>
+<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>
 {{#if subtitle}}
-<h2 {{#if doRDFa}}property='bibo:subtitle' {{/if}}id='subtitle'>{{subtitle}}</h2>
+<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle">{{subtitle}}</h2>
 {{/if}}
 <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"
 content="{{publishISODate}}"{{/if}}>{{textStatus}}
-<time class='dt-published' datetime='{{dashDate}}'>{{publishHumanDate}}</time>
+<time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>
 </h2>
 <dl>
     {{#unless isNoTrack}}
     <dt>This version:</dt>
-    <dd><a class='u-url' href='{{thisVersion}}'>{{thisVersion}}</a></dd>
+    <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>
     <dt>Latest published version:</dt>
-    <dd>{{#if latestVersion}}<a href='{{latestVersion}}'>{{latestVersion}}</a>{{else}}none{{/if}}
+    <dd>{{#if latestVersion}}<a href="{{latestVersion}}">{{latestVersion}}</a>{{else}}none{{/if}}
     </dd>
     {{/unless}}
     {{#if edDraftURI}}
-    <dt>Latest editor's draft:</dt>
-    <dd><a href='{{edDraftURI}}'>{{edDraftURI}}</a></dd>
+    <dt>Latest editor"s draft:</dt>
+    <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>
     {{/if}}
     {{#if testSuiteURI}}
     <dt>Test suite:</dt>
-    <dd><a href='{{testSuiteURI}}'>{{testSuiteURI}}</a></dd>
+    <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>
     {{/if}}
     {{#if implementationReportURI}}
     <dt>Implementation report:</dt>
-    <dd><a href='{{implementationReportURI}}'>{{implementationReportURI}}</a></dd>
+    <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>
     {{/if}}
     {{#if bugTrackerHTML}}
     <dt>Bug tracker:</dt>
@@ -59,23 +59,23 @@ content="{{publishISODate}}"{{/if}}>{{textStatus}}
     {{/if}}
     {{#if isED}}
     {{#if prevED}}
-    <dt>Previous editor's draft:</dt>
-    <dd><a href='{{prevED}}'>{{prevED}}</a></dd>
+    <dt>Previous editor"s draft:</dt>
+    <dd><a href="{{prevED}}">{{prevED}}</a></dd>
     {{/if}}
     {{/if}}
     {{#if showPreviousVersion}}
     <dt>Previous version:</dt>
     <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}
-        href='{{prevVersion}}'>{{prevVersion}}</a></dd>
+        href="{{prevVersion}}">{{prevVersion}}</a></dd>
     {{/if}}
     {{#if prevRecURI}}
     {{#if isRec}}
     <dt>Previous Recommendation:</dt>
-    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href='{{prevRecURI}}'>{{prevRecURI}}</a>
+    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href="{{prevRecURI}}">{{prevRecURI}}</a>
     </dd>
     {{else}}
     <dt>Latest Recommendation:</dt>
-    <dd><a href='{{prevRecURI}}'>{{prevRecURI}}</a></dd>
+    <dd><a href="{{prevRecURI}}">{{prevRecURI}}</a></dd>
     {{/if}}
     {{/if}}
     <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>
@@ -143,12 +143,12 @@ content="{{publishISODate}}"{{/if}}>{{textStatus}}
 {{/if}}
 {{#if isUnofficial}}
 {{#if additionalCopyrightHolders}}
-<p class='copyright'>{{{additionalCopyrightHolders}}}</p>
+<p class="copyright">{{{additionalCopyrightHolders}}}</p>
 {{else}}
 {{#if overrideCopyright}}
 {{{overrideCopyright}}}
 {{else}}
-<p class='copyright'>
+<p class="copyright">
     This document is confidential and proprietary. All Rights Reserved.
 </p>
 {{/if}}
@@ -157,30 +157,30 @@ content="{{publishISODate}}"{{/if}}>{{textStatus}}
 {{#if overrideCopyright}}
 {{{overrideCopyright}}}
 {{else}}
-<p class='copyright'>
+<p class="copyright">
     Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if
     additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}
-    <a href='http://www.pcisig.com/'>PCI-SIG</a>
+    <a href="http://www.pcisig.com/">PCI-SIG</a>
     <sup>&reg;</sup>
 </p>
 
-<p class='copyright'>PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks
+<p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks
     of PCI-SIG. All
     other product names are trademarks, registered trademarks, or servicemarks of their
     respective owners.</p>
 
-<p class='copyright'>PCI-SIG disclaims all warranties and liability for the use of this document
+<p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document
     and the information
     contained herein and assumes no responsibility for any errors that may appear in this
     document, nor does PCI-SIG
     make a commitment to update the information contained herein.</p>
 {{#unless isNoTrack}}
-<p class='copyright'>
+<p class="copyright">
     Contact the PCI-SIG office to obtain the latest revision of this specification.</p>
 <blockquote>
-    <p class='copyright'>
+    <p class="copyright">
         Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>
-    <table>
+    <table class="head">
         <tbody>
         <tr>
             <td align="right">Membership Services:</td>
@@ -212,9 +212,9 @@ content="{{publishISODate}}"{{/if}}>{{textStatus}}
         </tbody>
     </table>
 </blockquote>
-<p class='copyright'><strong>DISCLAIMER</strong></p>
+<p class="copyright"><strong>DISCLAIMER</strong></p>
 
-<p class='copyright'>
+<p class="copyright">
     This Specification is provided “as is” with no warranties whatsoever, including any warranty
     of merchantability,
     noninfringement, fitness for any particular purpose, or any warranty otherwise arising out

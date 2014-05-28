@@ -13166,267 +13166,6 @@ define(
     }
 );
 
-/*global respecEvents */
-
-// Module core/utils
-// As the name implies, this contains a ragtag gang of methods that just don't fit
-// anywhere else.
-
-define(
-    'core/utils',["jquery"],
-    function ($) {
-        // --- JQUERY EXTRAS -----------------------------------------------------------------------
-        // Applies to any jQuery object containing elements, changes their name to the one give, and
-        // return a jQuery object containing the new elements
-        $.fn.renameElement = function (name) {
-            var arr = [];
-            this.each(function () {
-                var $newEl = $(this.ownerDocument.createElement(name));
-                // I forget why this didn't work, maybe try again
-                // $newEl.attr($(this).attr());
-                for (var i = 0, n = this.attributes.length; i < n; i++) {
-                    var at = this.attributes[i];
-                    $newEl[0].setAttributeNS(at.namespaceURI, at.name, at.value);
-                }
-                $(this).contents().appendTo($newEl);
-                $(this).replaceWith($newEl);
-                arr.push($newEl[0]);
-            });
-            return $(arr);
-        };
-
-        // For any element, returns a title string that applies the algorithm used for determining the
-        // actual title of a <dfn> element (but can apply to other as well).
-        $.fn.dfnTitle = function () {
-            var title;
-            if (this.attr("title")) title = this.attr("title");
-            else if (this.contents().length == 1 && this.children("abbr, acronym").length == 1 &&
-                     this.find(":first-child").attr("title")) title = this.find(":first-child").attr("title");
-            else title = this.text();
-            return title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
-        };
-
-
-        // Applied to an element, sets an ID for it (and returns it), using a specific prefix
-        // if provided, and a specific text if given.
-        $.fn.makeID = function (pfx, txt, noLC) {
-            if (this.attr("id")) return this.attr("id");
-            if (!txt) txt = this.attr("title") ? this.attr("title") : this.text();
-            txt = txt.replace(/^\s+/, "").replace(/\s+$/, "");
-            var id = noLC ? txt : txt.toLowerCase();
-            id = id.split(/[^\-.0-9a-z_]+/i).join("-").replace(/^-+/, "").replace(/-+$/, "");
-            if (/\.$/.test(id)) id += "x"; // trailing . doesn't play well with jQuery
-            if (id.length > 0 && /^[^a-z]/i.test(id)) id = "x" + id;
-            if (id.length === 0) id = "generatedID";
-            if (pfx) id = pfx + "-" + id;
-            var inc = 1
-            ,   doc = this[0].ownerDocument;
-            if ($("#" + id, doc).length) {
-                while ($("#" + id + "-" + inc, doc).length) inc++;
-                id += "-" + inc;
-            }
-            this.attr("id", id);
-            return id;
-        };
-
-        // Returns all the descendant text nodes of an element. Note that those nodes aren't
-        // returned as a jQuery array since I'm not sure if that would make too much sense.
-        $.fn.allTextNodes = function (exclusions) {
-            var textNodes = [],
-                excl = {};
-            for (var i = 0, n = exclusions.length; i < n; i++) excl[exclusions[i]] = true;
-            function getTextNodes (node) {
-                if (node.nodeType === 1 && excl[node.localName.toLowerCase()]) return;
-                if (node.nodeType === 3) textNodes.push(node);
-                else {
-                    for (var i = 0, len = node.childNodes.length; i < len; ++i) getTextNodes(node.childNodes[i]);
-                }
-            }
-            getTextNodes(this[0]);
-            return textNodes;
-        };
-        
-        
-        var utils = {
-            // --- SET UP
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/utils");
-                msg.pub("end", "core/utils");
-                cb();
-            }
-
-            // --- RESPEC STUFF -------------------------------------------------------------------------------
-        ,   removeReSpec:   function (doc) {
-                $(".remove, script[data-requiremodule]", doc).remove();
-            }
-
-            // --- STRING HELPERS -----------------------------------------------------------------------------
-            // Takes an array and returns a string that separates each of its items with the proper commas and
-            // "and". The second argument is a mapping function that can convert the items before they are
-            // joined
-        ,   joinAnd:    function (arr, mapper) {
-                if (!arr || !arr.length) return "";
-                mapper = mapper || function (ret) { return ret; };
-                var ret = "";
-                if (arr.length === 1) return mapper(arr[0], 0);
-                for (var i = 0, n = arr.length; i < n; i++) {
-                    if (i > 0) {
-                        if (n === 2) ret += ' ';
-                        else         ret += ', ';
-                        if (i == n - 1) ret += 'and ';
-                    }
-                    ret += mapper(arr[i], i);
-                }
-                return ret;
-            }
-
-            // Takes a string, applies some XML escapes, and returns the escaped string.
-            // Note that overall using either Handlebars' escaped output or jQuery is much
-            // preferred to operating on strings directly.
-        ,   xmlEscape:    function (s) {
-                return s.replace(/&/g, "&amp;")
-                        .replace(/>/g, "&gt;")
-                        .replace(/"/g, "&quot;")
-                        .replace(/</g, "&lt;");
-            }
-
-            // Trims string at both ends and replaces all other white space with a single space
-        ,   norm:   function (str) {
-                return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
-            }
-
-            
-            // --- DATE HELPERS -------------------------------------------------------------------------------
-            // Takes a Date object and an optional separator and returns the year,month,day representation with
-            // the custom separator (defaulting to none) and proper 0-padding
-        ,   concatDate: function (date, sep) {
-                if (!sep) sep = "";
-                return "" + date.getFullYear() + sep + this.lead0(date.getMonth() + 1) + sep + this.lead0(date.getDate());
-            }
-
-            // takes a string, prepends a "0" if it is of length 1, does nothing otherwise
-        ,   lead0:  function (str) {
-                str = "" + str;
-                return (str.length == 1) ? "0" + str : str;
-            }
-            
-            // takes a YYYY-MM-DD date and returns a Date object for it
-        ,   parseSimpleDate:    function (str) {
-                return new Date(str.substr(0, 4), (str.substr(5, 2) - 1), str.substr(8, 2));
-            }
-
-            // takes what document.lastModified returns and produces a Date object for it
-        ,   parseLastModified:    function (str) {
-                if (!str) return new Date();
-                return new Date(Date.parse(str));
-                // return new Date(str.substr(6, 4), (str.substr(0, 2) - 1), str.substr(3, 2));
-            }
-
-            // list of human names for months (in English)
-        ,   humanMonths: ["January", "February", "March", "April", "May", "June", "July",
-                          "August", "September", "October", "November", "December"]
-        
-            // given either a Date object or a date in YYYY-MM-DD format, return a human-formatted
-            // date suitable for use in a W3C specification
-        ,   humanDate:  function (date) {
-                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
-                return this.lead0(date.getDate()) + " " + this.humanMonths[date.getMonth()] + " " + date.getFullYear();
-            }
-            // given either a Date object or a date in YYYY-MM-DD format, return an ISO formatted
-            // date suitable for use in a xsd:datetime item
-        ,   isoDate:    function (date) {
-                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
-                // return "" + date.getUTCFullYear() +'-'+ this.lead0(date.getUTCMonth() + 1)+'-' + this.lead0(date.getUTCDate()) +'T'+this.lead0(date.getUTCHours())+':'+this.lead0(date.getUTCMinutes()) +":"+this.lead0(date.getUTCSeconds())+'+0000';
-                return date.toISOString() ;
-            }
-            
-            
-            // --- STYLE HELPERS ------------------------------------------------------------------------------
-            // take a document and either a link or an array of links to CSS and appends a <link/> element
-            // to the head pointing to each
-        ,   linkCSS:  function (doc, styles) {
-                if (!$.isArray(styles)) styles = [styles];
-                $.each(styles, function (i, css) {
-                    $('head', doc).append($("<link/>").attr({ rel: 'stylesheet', href: css }));
-                });
-            }
-
-            // --- APPENDIX NUMBERING --------------------------------------------------------------------------
-            // take a a number and return the corresponding Appendix String. 0 means 'A', ... 25 means 'Z, 26
-            // means 'AA', 26**26-1 means 'ZZ, 26**26 means 'AAA', etc.
-        ,   appendixMap: function(n) {
-        	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                if (n < alphabet.length) {
-                	return alphabet.charAt(n);
-                } else {
-                	return this.appendixMap(floor(n/alphabet.length)) + alphabet.charAt(mod(n,alphabet.length));
-                }
-            }
-
-            // --- TRANSFORMATIONS ------------------------------------------------------------------------------
-            // Run list of transforms over content and return result.
-            // Please note that this is a legacy method that is only kept in order to maintain compatibility
-            // with RSv1. It is therefore not tested and not actively supported.
-        ,   runTransforms: function (content, flist) {
-                var args = [this, content]
-                ,   funcArgs = Array.prototype.slice.call(arguments)
-                ;
-                funcArgs.shift(); funcArgs.shift();
-                args = args.concat(funcArgs);
-                if (flist) {
-                    var methods = flist.split(/\s+/);
-                    for (var j = 0; j < methods.length; j++) {
-                        var meth = methods[j];
-                        if (window[meth]) {
-                            // the initial call passed |this| directly, so we keep it that way
-                            try {
-                                content = window[meth].apply(this, args);
-                            }
-                            catch (e) {
-                                respecEvents.pub("warn", "call to " + meth + "() failed with " + e) ;
-                            }
-                        }
-                    }
-                }
-                return content;
-            }
-        };
-        return utils;
-    }
-);
-
-
-// Module pcisig/style
-// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
-// CONFIGURATION
-//  - specStatus: the short code for the specification's maturity level or type (required)
-
-define(
-    'pcisig/style',["core/utils"],
-    function (utils) {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/style");
-                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for pcisig/style");
-                var statStyle = conf.specStatus;
-                var css = "https://";
-                if (statStyle === "unofficial") {
-                    css += "sglaser.github.io/respec/StyleSheets/unofficial";
-                }
-                else if (statStyle === "base") {
-                    css += "sglaser.github.io/respec/StyleSheets/base";
-                }
-                else {
-                    css += "sglaser.github.io/respec/StyleSheets/pcisig-" + statStyle;
-                }
-                utils.linkCSS(doc, css);
-                msg.pub("end", "pcisig/style");
-                cb();
-            }
-        };
-    }
-);
-
 // lib/handlebars/base.js
 var Handlebars = {};
 
@@ -14980,6 +14719,235 @@ Handlebars.template = Handlebars.VM.template;
 
 define("handlebars", function(){});
 
+/*global respecEvents */
+
+// Module core/utils
+// As the name implies, this contains a ragtag gang of methods that just don't fit
+// anywhere else.
+
+define(
+    'core/utils',["jquery"],
+    function ($) {
+        // --- JQUERY EXTRAS -----------------------------------------------------------------------
+        // Applies to any jQuery object containing elements, changes their name to the one give, and
+        // return a jQuery object containing the new elements
+        $.fn.renameElement = function (name) {
+            var arr = [];
+            this.each(function () {
+                var $newEl = $(this.ownerDocument.createElement(name));
+                // I forget why this didn't work, maybe try again
+                // $newEl.attr($(this).attr());
+                for (var i = 0, n = this.attributes.length; i < n; i++) {
+                    var at = this.attributes[i];
+                    $newEl[0].setAttributeNS(at.namespaceURI, at.name, at.value);
+                }
+                $(this).contents().appendTo($newEl);
+                $(this).replaceWith($newEl);
+                arr.push($newEl[0]);
+            });
+            return $(arr);
+        };
+
+        // For any element, returns a title string that applies the algorithm used for determining the
+        // actual title of a <dfn> element (but can apply to other as well).
+        $.fn.dfnTitle = function () {
+            var title;
+            if (this.attr("title")) title = this.attr("title");
+            else if (this.contents().length == 1 && this.children("abbr, acronym").length == 1 &&
+                     this.find(":first-child").attr("title")) title = this.find(":first-child").attr("title");
+            else title = this.text();
+            return title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+        };
+
+
+        // Applied to an element, sets an ID for it (and returns it), using a specific prefix
+        // if provided, and a specific text if given.
+        $.fn.makeID = function (pfx, txt, noLC) {
+            if (this.attr("id")) return this.attr("id");
+            if (!txt) txt = this.attr("title") ? this.attr("title") : this.text();
+            txt = txt.replace(/^\s+/, "").replace(/\s+$/, "");
+            var id = noLC ? txt : txt.toLowerCase();
+            id = id.split(/[^\-.0-9a-z_]+/i).join("-").replace(/^-+/, "").replace(/-+$/, "");
+            if (/\.$/.test(id)) id += "x"; // trailing . doesn't play well with jQuery
+            if (id.length > 0 && /^[^a-z]/i.test(id)) id = "x" + id;
+            if (id.length === 0) id = "generatedID";
+            if (pfx) id = pfx + "-" + id;
+            var inc = 1
+            ,   doc = this[0].ownerDocument;
+            if ($("#" + id, doc).length) {
+                while ($("#" + id + "-" + inc, doc).length) inc++;
+                id += "-" + inc;
+            }
+            this.attr("id", id);
+            return id;
+        };
+
+        // Returns all the descendant text nodes of an element. Note that those nodes aren't
+        // returned as a jQuery array since I'm not sure if that would make too much sense.
+        $.fn.allTextNodes = function (exclusions) {
+            var textNodes = [],
+                excl = {};
+            for (var i = 0, n = exclusions.length; i < n; i++) excl[exclusions[i]] = true;
+            function getTextNodes (node) {
+                if (node.nodeType === 1 && excl[node.localName.toLowerCase()]) return;
+                if (node.nodeType === 3) textNodes.push(node);
+                else {
+                    for (var i = 0, len = node.childNodes.length; i < len; ++i) getTextNodes(node.childNodes[i]);
+                }
+            }
+            getTextNodes(this[0]);
+            return textNodes;
+        };
+        
+        
+        var utils = {
+            // --- SET UP
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/utils");
+                msg.pub("end", "core/utils");
+                cb();
+            }
+
+            // --- RESPEC STUFF -------------------------------------------------------------------------------
+        ,   removeReSpec:   function (doc) {
+                $(".remove, script[data-requiremodule]", doc).remove();
+            }
+
+            // --- STRING HELPERS -----------------------------------------------------------------------------
+            // Takes an array and returns a string that separates each of its items with the proper commas and
+            // "and". The second argument is a mapping function that can convert the items before they are
+            // joined
+        ,   joinAnd:    function (arr, mapper) {
+                if (!arr || !arr.length) return "";
+                mapper = mapper || function (ret) { return ret; };
+                var ret = "";
+                if (arr.length === 1) return mapper(arr[0], 0);
+                for (var i = 0, n = arr.length; i < n; i++) {
+                    if (i > 0) {
+                        if (n === 2) ret += ' ';
+                        else         ret += ', ';
+                        if (i == n - 1) ret += 'and ';
+                    }
+                    ret += mapper(arr[i], i);
+                }
+                return ret;
+            }
+
+            // Takes a string, applies some XML escapes, and returns the escaped string.
+            // Note that overall using either Handlebars' escaped output or jQuery is much
+            // preferred to operating on strings directly.
+        ,   xmlEscape:    function (s) {
+                return s.replace(/&/g, "&amp;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/</g, "&lt;");
+            }
+
+            // Trims string at both ends and replaces all other white space with a single space
+        ,   norm:   function (str) {
+                return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            }
+
+            
+            // --- DATE HELPERS -------------------------------------------------------------------------------
+            // Takes a Date object and an optional separator and returns the year,month,day representation with
+            // the custom separator (defaulting to none) and proper 0-padding
+        ,   concatDate: function (date, sep) {
+                if (!sep) sep = "";
+                return "" + date.getFullYear() + sep + this.lead0(date.getMonth() + 1) + sep + this.lead0(date.getDate());
+            }
+
+            // takes a string, prepends a "0" if it is of length 1, does nothing otherwise
+        ,   lead0:  function (str) {
+                str = "" + str;
+                return (str.length == 1) ? "0" + str : str;
+            }
+            
+            // takes a YYYY-MM-DD date and returns a Date object for it
+        ,   parseSimpleDate:    function (str) {
+                return new Date(str.substr(0, 4), (str.substr(5, 2) - 1), str.substr(8, 2));
+            }
+
+            // takes what document.lastModified returns and produces a Date object for it
+        ,   parseLastModified:    function (str) {
+                if (!str) return new Date();
+                return new Date(Date.parse(str));
+                // return new Date(str.substr(6, 4), (str.substr(0, 2) - 1), str.substr(3, 2));
+            }
+
+            // list of human names for months (in English)
+        ,   humanMonths: ["January", "February", "March", "April", "May", "June", "July",
+                          "August", "September", "October", "November", "December"]
+        
+            // given either a Date object or a date in YYYY-MM-DD format, return a human-formatted
+            // date suitable for use in a W3C specification
+        ,   humanDate:  function (date) {
+                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
+                return this.lead0(date.getDate()) + " " + this.humanMonths[date.getMonth()] + " " + date.getFullYear();
+            }
+            // given either a Date object or a date in YYYY-MM-DD format, return an ISO formatted
+            // date suitable for use in a xsd:datetime item
+        ,   isoDate:    function (date) {
+                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
+                // return "" + date.getUTCFullYear() +'-'+ this.lead0(date.getUTCMonth() + 1)+'-' + this.lead0(date.getUTCDate()) +'T'+this.lead0(date.getUTCHours())+':'+this.lead0(date.getUTCMinutes()) +":"+this.lead0(date.getUTCSeconds())+'+0000';
+                return date.toISOString() ;
+            }
+            
+            
+            // --- STYLE HELPERS ------------------------------------------------------------------------------
+            // take a document and either a link or an array of links to CSS and appends a <link/> element
+            // to the head pointing to each
+        ,   linkCSS:  function (doc, styles) {
+                if (!$.isArray(styles)) styles = [styles];
+                $.each(styles, function (i, css) {
+                    $('head', doc).append($("<link/>").attr({ rel: 'stylesheet', href: css }));
+                });
+            }
+
+            // --- APPENDIX NUMBERING --------------------------------------------------------------------------
+            // take a a number and return the corresponding Appendix String. 0 means 'A', ... 25 means 'Z, 26
+            // means 'AA', 26**26-1 means 'ZZ, 26**26 means 'AAA', etc.
+        ,   appendixMap: function(n) {
+        	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                if (n < alphabet.length) {
+                	return alphabet.charAt(n);
+                } else {
+                	return this.appendixMap(floor(n/alphabet.length)) + alphabet.charAt(mod(n,alphabet.length));
+                }
+            }
+
+            // --- TRANSFORMATIONS ------------------------------------------------------------------------------
+            // Run list of transforms over content and return result.
+            // Please note that this is a legacy method that is only kept in order to maintain compatibility
+            // with RSv1. It is therefore not tested and not actively supported.
+        ,   runTransforms: function (content, flist) {
+                var args = [this, content]
+                ,   funcArgs = Array.prototype.slice.call(arguments)
+                ;
+                funcArgs.shift(); funcArgs.shift();
+                args = args.concat(funcArgs);
+                if (flist) {
+                    var methods = flist.split(/\s+/);
+                    for (var j = 0; j < methods.length; j++) {
+                        var meth = methods[j];
+                        if (window[meth]) {
+                            // the initial call passed |this| directly, so we keep it that way
+                            try {
+                                content = window[meth].apply(this, args);
+                            }
+                            catch (e) {
+                                respecEvents.pub("warn", "call to " + meth + "() failed with " + e) ;
+                            }
+                        }
+                    }
+                }
+                return content;
+            }
+        };
+        return utils;
+    }
+);
+
 /*global Handlebars*/
 
 define('tmpl',["handlebars", "text"], function (hb, text) {
@@ -15002,7 +14970,7 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
 });
 
 
-define('tmpl!pcisig/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n{{#if prependPCIeLogo}}\n<p>\n    <a href=\'http://www.pcisig.com/\'>\n        <img width=\'72\' height=\'48\' alt=\'PCI Express Logo\'\n             src=\'../stylesheets/pcisig/pci_express_PMS.svg\'/>\n    </a>\n</p>\n{{/if}}\n{{#if prependPCISIGLogo}}\n<p>\n    <a href=\'http://www.pcisig.com/\'>\n        <img width=\'72\' height=\'48\' alt=\'PCISIG Logo\'\n             src=\'../stylesheets/pcisig/pci_sig_logo_PMS_273.svg\'/>\n    </a>\n</p>\n{{/if}}\n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if specReviewLong}}\n    <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    {{#if specLevelLong}}\n    <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n<h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n{{#if subtitle}}\n<h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n{{/if}}\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\ncontent="{{publishISODate}}"{{/if}}>{{textStatus}}\n<time class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time>\n</h2>\n<dl>\n    {{#unless isNoTrack}}\n    <dt>This version:</dt>\n    <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    <dt>Latest published version:</dt>\n    <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}\n    </dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n    <dt>Latest editor\'s draft:</dt>\n    <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n    <dt>Test suite:</dt>\n    <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n    <dt>Implementation report:</dt>\n    <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n    <dt>Bug tracker:</dt>\n    <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n    {{#if prevED}}\n    <dt>Previous editor\'s draft:</dt>\n    <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n    <dt>Previous version:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}\n        href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n    {{#if isRec}}\n    <dt>Previous Recommendation:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a>\n    </dd>\n    {{else}}\n    <dt>Latest Recommendation:</dt>\n    <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n    {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n    <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n    {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n    {{#each otherLinks}}\n    {{#if key}}\n    <dt\n    {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n    {{#if data}}\n    {{#each data}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd><a href="{{href}}">{{href}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{else}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    <a href="{{href}}">{{href}}</a>\n    </dd>\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{/if}}\n</dl>\n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n{{#if isUnofficial}}\n{{#if additionalCopyrightHolders}}\n<p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class=\'copyright\'>\n    This document is confidential and proprietary. All Rights Reserved.\n</p>\n{{/if}}\n{{/if}}\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class=\'copyright\'>\n    Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n    additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n    <a href=\'http://www.pcisig.com/\'>PCI-SIG</a>\n    <sup>&reg;</sup>\n</p>\n\n<p class=\'copyright\'>PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks\n    of PCI-SIG. All\n    other product names are trademarks, registered trademarks, or servicemarks of their\n    respective owners.</p>\n\n<p class=\'copyright\'>PCI-SIG disclaims all warranties and liability for the use of this document\n    and the information\n    contained herein and assumes no responsibility for any errors that may appear in this\n    document, nor does PCI-SIG\n    make a commitment to update the information contained herein.</p>\n{{#unless isNoTrack}}\n<p class=\'copyright\'>\n    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>\n<blockquote>\n    <p class=\'copyright\'>\n        Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>\n    <table>\n        <tbody>\n        <tr>\n            <td align="right">Membership Services:</td>\n            <td>\n                <a href="mailto:administration@pcisig.com">administration@pcisig.com</a>\n            </td>\n        </tr>\n        <tr>\n            <td align="right">Phone:</td>\n            <td>\n                <a href="tel:+1-503-619-0569">+1-503-619-0569</a>\n            </td>\n        </tr>\n        <tr>\n            <td align="right">Fax:</td>\n            <td>\n                <a href="tel:+1-503-644-6708">+1-503-644-6708</a>\n            </td>\n        </tr>\n        <tr>\n            <td>&nbsp;</td>\n        </tr>\n        <tr>\n            <td align="right">Technical Support:</td>\n            <td>\n                <a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a>\n            </td>\n        </tr>\n        </tbody>\n    </table>\n</blockquote>\n<p class=\'copyright\'><strong>DISCLAIMER</strong></p>\n\n<p class=\'copyright\'>\n    This Specification is provided “as is” with no warranties whatsoever, including any warranty\n    of merchantability,\n    noninfringement, fitness for any particular purpose, or any warranty otherwise arising out\n    of any proposal,\n    specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary\n    rights, relating to\n    use of information in this specification. No license, express or implied, by estoppel or\n    otherwise, to any\n    intellectual property rights is granted herein.</p>\n{{/unless}}\n{{/if}}\n{{/if}}\n<hr/>\n</div>\n');});
+define('tmpl!pcisig/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if prependPCIeLogo}}\n<p>\n    <a href="http://www.pcisig.com/">\n        <img width="72" height="48" alt="PCI Express Logo"\n             src="../stylesheets/pcisig/pci_express_PMS.svg"/>\n    </a>\n</p>\n{{/if}}\n{{#if prependPCISIGLogo}}\n<p>\n    <a href="http://www.pcisig.com/">\n        <img width="72" height="48" alt="PCISIG Logo"\n             src="../stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>\n    </a>\n</p>\n{{/if}}\n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if specReviewLong}}\n    <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    {{#if specLevelLong}}\n    <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n{{#if subtitle}}\n<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle">{{subtitle}}</h2>\n{{/if}}\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\ncontent="{{publishISODate}}"{{/if}}>{{textStatus}}\n<time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n<dl>\n    {{#unless isNoTrack}}\n    <dt>This version:</dt>\n    <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    <dt>Latest published version:</dt>\n    <dd>{{#if latestVersion}}<a href="{{latestVersion}}">{{latestVersion}}</a>{{else}}none{{/if}}\n    </dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n    <dt>Latest editor"s draft:</dt>\n    <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n    <dt>Test suite:</dt>\n    <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n    <dt>Implementation report:</dt>\n    <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n    <dt>Bug tracker:</dt>\n    <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n    {{#if prevED}}\n    <dt>Previous editor"s draft:</dt>\n    <dd><a href="{{prevED}}">{{prevED}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n    <dt>Previous version:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}\n        href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n    {{#if isRec}}\n    <dt>Previous Recommendation:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href="{{prevRecURI}}">{{prevRecURI}}</a>\n    </dd>\n    {{else}}\n    <dt>Latest Recommendation:</dt>\n    <dd><a href="{{prevRecURI}}">{{prevRecURI}}</a></dd>\n    {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n    <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n    {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n    {{#each otherLinks}}\n    {{#if key}}\n    <dt\n    {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n    {{#if data}}\n    {{#each data}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd><a href="{{href}}">{{href}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{else}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    <a href="{{href}}">{{href}}</a>\n    </dd>\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{/if}}\n</dl>\n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n{{#if isUnofficial}}\n{{#if additionalCopyrightHolders}}\n<p class="copyright">{{{additionalCopyrightHolders}}}</p>\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class="copyright">\n    This document is confidential and proprietary. All Rights Reserved.\n</p>\n{{/if}}\n{{/if}}\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class="copyright">\n    Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n    additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n    <a href="http://www.pcisig.com/">PCI-SIG</a>\n    <sup>&reg;</sup>\n</p>\n\n<p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks\n    of PCI-SIG. All\n    other product names are trademarks, registered trademarks, or servicemarks of their\n    respective owners.</p>\n\n<p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document\n    and the information\n    contained herein and assumes no responsibility for any errors that may appear in this\n    document, nor does PCI-SIG\n    make a commitment to update the information contained herein.</p>\n{{#unless isNoTrack}}\n<p class="copyright">\n    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>\n<blockquote>\n    <p class="copyright">\n        Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>\n    <table class="head">\n        <tbody>\n        <tr>\n            <td align="right">Membership Services:</td>\n            <td>\n                <a href="mailto:administration@pcisig.com">administration@pcisig.com</a>\n            </td>\n        </tr>\n        <tr>\n            <td align="right">Phone:</td>\n            <td>\n                <a href="tel:+1-503-619-0569">+1-503-619-0569</a>\n            </td>\n        </tr>\n        <tr>\n            <td align="right">Fax:</td>\n            <td>\n                <a href="tel:+1-503-644-6708">+1-503-644-6708</a>\n            </td>\n        </tr>\n        <tr>\n            <td>&nbsp;</td>\n        </tr>\n        <tr>\n            <td align="right">Technical Support:</td>\n            <td>\n                <a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a>\n            </td>\n        </tr>\n        </tbody>\n    </table>\n</blockquote>\n<p class="copyright"><strong>DISCLAIMER</strong></p>\n\n<p class="copyright">\n    This Specification is provided “as is” with no warranties whatsoever, including any warranty\n    of merchantability,\n    noninfringement, fitness for any particular purpose, or any warranty otherwise arising out\n    of any proposal,\n    specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary\n    rights, relating to\n    use of information in this specification. No license, express or implied, by estoppel or\n    otherwise, to any\n    intellectual property rights is granted herein.</p>\n{{/unless}}\n{{/if}}\n{{/if}}\n<hr/>\n</div>\n');});
 
 
 define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    {{#if isUnofficial}}\n    <p>\n        This document is merely a public working draft of a potential specification. It has\n        no official standing of any kind and does not represent the support or consensus of any\n        standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n    {{else}}\n    {{#if isTagFinding}}\n    {{{sotdCustomParagraph}}}\n    {{else}}\n    {{#if isNoTrack}}\n    <p>\n        This document is merely a PCISIG internal document. It\n        has no official standing of any kind and does not represent consensus of the PCISIG\n        Membership.\n    </p>\n    {{{sotdCustomParagraph}}}\n    {{else}}\n    <p>\n        <em>This section describes the status of this document at the time of its publication.\n            Other documents may supersede this document. A list of current PCISIG publications\n            and the\n            latest revision of this specification can be found at the <a\n                    href=\'http://www.pcisig.com/\'>PCISIG website</a> at\n            http://www.w3.org/TR/.</em>\n    </p>\n    {{{sotdCustomParagraph}}}\n    <p>\n        This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n        {{#if notYetRec}}\n        This document is intended to become a PCISIG Standard.\n        {{/if}}\n        {{#unless isPR}}\n        If you wish to make comments regarding this document, please send them to\n        <a href=\'mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}@pcisig.com</a>\n        {{#if subjectPrefix}}\n        with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n        {{/unless}}\n        {{#if isReviewPeriod}}The Review period ends {{humanReviewEnd}}.{{/if}}\n        {{#if isFinal}}This specification is an official publication of the PCISIG. The PCISIG\n        may publish errata to\n        this specification and may develop future revisions to this specification.{{/if}}\n        PCISIG publishes a Candidate Recommendation to indicate that the document is believed to\n        be\n        stable and to encourage implementation by the developer community. This Candidate\n        Recommendation is expected to advance to Proposed Recommendation no earlier than\n        {{humanCREnd}}.\n        {{/if}}\n        {{#if isPR}}\n        The W3C Membership and other interested parties are invited to review the document and\n        send comments to\n        <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a>\n        (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n        <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n        through {{humanPREnd}}. Advisory Committee Representatives should consult their\n        <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>.\n        Note that substantive technical comments were expected during the Last Call review\n        period that ended {{humanLCEnd}}.\n        {{else}}\n        All comments are welcome.\n        {{/if}}\n    </p>\n    {{#if implementationReportURI}}\n    <p>\n        Please see the Working Group\'s <a href=\'{{implementationReportURI}}\'>implementation\n        report</a>.\n    </p>\n    {{/if}}\n    {{#if notRec}}\n    <p>\n        Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n        Membership. This is a draft document and may be updated, replaced or obsoleted by other\n        documents at any time. It is inappropriate to cite this document as other than work in\n        progress.\n    </p>\n    {{/if}}\n    {{#if isRec}}\n    <p>\n        This document has been reviewed by W3C Members, by software developers, and by other W3C\n        groups and interested parties, and is endorsed by the Director as a W3C Recommendation.\n        It is a stable document and may be used as reference material or cited from another\n        document. W3C\'s role in making the Recommendation is to draw attention to the\n        specification and to promote its widespread deployment. This enhances the functionality\n        and interoperability of the Web.\n    </p>\n    {{/if}}\n    {{#if isLC}}\n    <p>\n        This is a Last Call Working Draft and thus the Working Group has determined that this\n        document has satisfied the relevant technical requirements and is sufficiently stable to\n        advance through the Technical Recommendation process.\n    </p>\n    {{/if}}\n    <p>\n        {{#unless isIGNote}}\n        This document was produced by a group operating under the\n        <a{{#if doRDFa}} id="sotd_patent" about=\'\' rel=\'w3p:patentRules\'{{/if}}\n        href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n        Policy</a>.\n        {{/unless}}\n        {{#if recNotExpected}}\n        The group does not expect this document to become a W3C Recommendation.\n        {{/if}}\n        {{#unless isIGNote}}\n        {{#if multipleWGs}}\n        W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n        {{else}}\n        W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n        disclosures</a>\n        {{/if}}\n        made in connection with the deliverables of the group; that page also includes\n        instructions for disclosing a patent. An individual who has actual knowledge of a patent\n        which the individual believes contains\n        <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n        <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n        {{/unless}}\n        {{#if isIGNote}}\n        The disclosure obligations of the Participants of this group are described in the\n        <a href=\'{{charterDisclosureURI}}\'>charter</a>.\n        {{/if}}\n    </p>\n    {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n    {{/if}}\n    {{/if}}\n</section>\n');});
@@ -15143,7 +15111,7 @@ define(
         
 
         return {
-            status2text: {
+           status2Text: {
                 NOTE:           "Note"
             ,   WD:             "Working Draft"
             ,   ED:             "Editor's Draft"
@@ -15160,8 +15128,8 @@ define(
         ,   review2Text: {
                 "":                 ""
             ,   NONE:               ""
-            ,   "Review":           "Review Copy"
-            ,   "WG-Review":        "Work Group Internal Review"
+            ,   "Author-Review":    "Author Review"
+            ,   "WG-Review":        "Work Group Review"
             ,   "Cross-WG-Review":  "Cross Work Group Review"
             ,   "Member-Review":    "PCISIG Member Review"
             ,   "Final-Review":     "Final Review"
@@ -15169,11 +15137,11 @@ define(
         }
         ,   level2Text: {
                 "":                 ""
-            ,   "0.1":              "0.1 Level"
-            ,   "0.3":              "0.3 Level"
-            ,   "0.5":              "0.5 Level"
-            ,   "0.7":              "0.7 Level"
-            ,   "0.9":              "0.9 Level"
+            ,   "0.1":              "0.1 Maturity Level"
+            ,   "0.3":              "0.3 Maturity Level"
+            ,   "0.5":              "0.5 Maturity Level"
+            ,   "0.7":              "0.7 Maturity Level"
+            ,   "0.9":              "0.9 Maturity Level"
             ,   "1.0":              "Final"
         }
         ,   run:    function (conf, doc, cb, msg) {
@@ -15187,14 +15155,23 @@ define(
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
+                console.log("initial conf.specStatus = \"" + conf.specStatus + "\"");
+                console.log("initial conf.specReview = \"" + conf.specReview + "\"");
+                console.log("initial conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.specReview) {
                     var temp = conf.specStatus.split(/\//);
+                    console.log("split(specStatus).length = " + temp.length);
                     conf.specStatus = (temp.length > 0) ? temp[0] : conf.specStatus;
                     conf.specReview = (temp.length > 1) ? temp[1] : "";
                     if (!conf.specLevel) {
                         conf.specLevel = (temp.length > 2) ? temp[2] : "";
                     }
+                } else {
+                    console.log("!conf.specReview conf.specReview = \"" + !conf.specReview + "\"");
                 }
+                console.log("final conf.specStatus = \"" + conf.specStatus + "\"");
+                console.log("final conf.specReview = \"" + conf.specReview + "\"");
+                console.log("final conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
@@ -15219,20 +15196,20 @@ define(
                 }
                 if (!conf.specLevel) conf.specLevel = "";
                 if (!conf.specReview) conf.specReview = "";
-                if (review2Test[conf.specReview]) {
-                    conf.specReviewLong = review2Text[conf.specReview];
+                if (this.review2Text[conf.specReview]) {
+                    conf.specReviewLong = this.review2Text[conf.specReview];
                 } else {
                     conf.specReviewLong = conf.specReview;
                 }
-                if (status2Text[conf.specStatus]) {
-                    conf.specStatusLong = stauts2Text[conf.specStatus];
+                if (conf.specStatus in this.status2Text) {
+                    conf.specStatusLong = this.status2Text[conf.specStatus];
                 } else {
-                    conf.specStatusLong = conf.SpecStatus;
+                    conf.specStatusLong = conf.specStatus;
                 }
-                if (level2Text[conf.specLevel]) {
-                    conf.specLevelLong = level2Text[conf.specLevel];
+                if (this.level2Text[conf.specLevel]) {
+                    conf.specLevelLong = this.level2Text[conf.specLevel];
                 } else {
-                    conf.specLevelLong = conf.specLevel + " Level";
+                    conf.specLevelLong = conf.specLevel + " Maturity Level";
                 }
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
@@ -15305,7 +15282,6 @@ define(
                     }
                 }
                 if (conf.copyrightStart && conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
-                conf.textStatus = this.status2text[conf.specStatus];
                 /*if (this.status2rdf[conf.specStatus]) {
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }*/
@@ -15317,10 +15293,10 @@ define(
                 conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
                 if (conf.isRec && !conf.errata)
                     msg.pub("error", "Recommendations must have an errata link.");
-                conf.notRec = (conf.specStatus !== "REC");
+                conf.notRec = (conf.specStatus !== "REC");*/
                 conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependPCIeLogo = !conf.isUnofficial;
-                conf.isED = (conf.specStatus === "ED");
+                /*conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
                 conf.isCR = (conf.specStatus === "CR");
                 conf.isPR = (conf.specStatus === "PR");
@@ -18091,7 +18067,7 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
-                if (refs.length) {
+                /*if (refs.length) {
                     var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
                     $.ajax({
                         dataType:   "json"
@@ -18111,7 +18087,7 @@ define(
                         }
                     });
                 }
-                else finish();
+                else*/ finish();
             }
         };
     }
@@ -21100,7 +21076,7 @@ define("jquery-svg/jquery.svg.js", function(){});
 define(
     'core/regpict',["core/utils",
      "text!core/css/regpict.css",
-     "jquery-svg/jquery.svg.js"],
+     "../jquery-svg/jquery.svg.js"],
     function (utils, css) {
         
         function pget(obj, prop, def) {
@@ -21924,6 +21900,45 @@ define(
 );
 
 
+define('text!pcisig/../../stylesheets/unofficial.css',[],function () { return '/* w3c-unofficial.css */\n\n/* Style for an Unofficial Draft Proposal */\n\n/*\n   Copyright 1997-2003 W3C (MIT, ERCIM, Keio). All Rights Reserved.\n   The following software licensing rules apply:\n   http://www.w3.org/Consortium/Legal/copyright-software */\n\n\nbody {\n    padding: 2em 1em 2em 70px;\n    margin: 0;\n    font-family: sans-serif;\n    color: black;\n    background: white;\n    background-position: top left;\n    background-attachment: fixed;\n    background-repeat: no-repeat;\n}\n:link { color: #00C; background: transparent }\n:visited { color: #609; background: transparent }\na:active { color: #C00; background: transparent }\n\na:link img, a:visited img { border-style: none } /* no border on img links */\n\na img { color: white; }        /* trick to hide the border in Netscape 4 */\n@media all {                   /* hide the next rule from Netscape 4 */\n  a img { color: inherit; }    /* undo the color change above */\n}\n\nth, td { /* ns 4 */\n    font-family: sans-serif;\n}\n\nh1, h2, h3, h4, h5, h6 { text-align: left }\n/* background should be transparent, but WebTV has a bug */\nh1, h2, h3 { color: #005A9C; }\nh1 { font: 170% sans-serif }\nh2 { font: 140% sans-serif }\nh3 { font: 120% sans-serif }\nh4 { font: bold 100% sans-serif }\nh5 { font: italic 100% sans-serif }\nh6 { font: small-caps 100% sans-serif }\n\n.hide { display: none }\n\ndiv.head { margin-bottom: 1em }\ndiv.head h1 { margin-top: 2em; clear: both }\ndiv.head table.head { margin-left: 2em; margin-top: 2em; border: none; }\ndiv.head table.head td { border: none; font-size: small; padding: 1px 3px;}\ndiv.head table.head td small { border: none;font-size: small; padding: 1px 3px;}\n\np.copyright { font-size: small }\np.copyright small { font-size: small }\n\n@media screen {  /* hide from IE3 */\na[href]:hover { background: #ffa }\n}\n\npre { margin-left: 2em }\n/*\np {\n  margin-top: 0.6em;\n  margin-bottom: 0.6em;\n}\n*/\ndt, dd { margin-top: 0; margin-bottom: 0 } /* opera 3.50 */\ndt { font-weight: bold }\n\npre, code { font-family: monospace } /* navigator 4 requires this */\n\nul.toc, ol.toc {\n  list-style: disc;\t\t/* Mac NS has problem with \'none\' */\n  list-style: none;\n}\n\n@media aural {\n  h1, h2, h3 { stress: 20; richness: 90 }\n  .hide { speak: none }\n  p.copyright { volume: x-soft; speech-rate: x-fast }\n  dt { pause-before: 63ms }\n  pre { speak-punctuation: code } \n}\n\n\n\nbody {\n    background-image: url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png);\n}\n\n\n.content {\n    background-image: url(http://www.w3.org/StyleSheets/TR/watermark-unoffficial.png);\n    background-repeat: repeat;\n    background-attachment: fixed;\n}\n\n.disclaimer {\n    font-weight: bold;\n    font-style: italic;\n    color: red;\n}\n\n.diff-new {\n    background-color: yellow;\n}\n.diff-chg {\n    background-color: lime;\n}\n.diff-new:before,\n.diff-new:after {\n    content: "\\2191";\n}\n.diff-chg:before,\n.diff-chg:after {\n    content: "\\2195";\n}\n.diff-old {\n    text-decoration: line-through;\n    background-color: #FBB;\n}\n.diff-old:before,\n.diff-old:after {\n    content: "\\2193";\n}\n/*****************************************************************/\n\n/* issues-notes.css (builtin to respec) */\n\n/* --- ISSUES/NOTES --- */\n\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right: 1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title {\n    color: #e05252;\n}\ndiv.note-title {\n    color: #2b2;\n}\ndiv.impnote-title {\n    color: #0060A9;\n}\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note,\ndiv.issue,\ndiv.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue,\n.note,\n.impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue,\ndiv.note,\ndiv.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n.issue {\n    border-color: #e05252;\n    background: #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background: #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9;\n    background: #E5F4FF;\n}\n/*****************************************************************/\n\n/* respec2.css (builtin to respec) */\n\n/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\n\nem.rfc2119 {\n    text-transform: lowercase;\n    font-variant: small-caps;\n    font-style: normal;\n    color: #900;\n}\nh1 acronym,\nh2 acronym,\nh3 acronym,\nh4 acronym,\nh5 acronym,\nh6 acronym,\na acronym,\nh1 abbr,\nh2 abbr,\nh3 abbr,\nh4 abbr,\nh5 abbr,\nh6 abbr,\na abbr {\n    border: none;\n}\ndfn {\n    font-weight: bold;\n}\na.internalDFN {\n    color: inherit;\n    border-bottom: 1px solid #99c;\n    text-decoration: none;\n}\na.externalDFN {\n    color: inherit;\n    border-bottom: 1px dotted #ccc;\n    text-decoration: none;\n}\na.bibref {\n    text-decoration: none;\n}\ncite .bibref {\n    font-style: normal;\n}\ncode {\n    color: #ff4500;\n}\n/* --- TOC --- */\n\n.toc a,\n.tof a {\n    text-decoration: none;\n}\na .secno,\na .figno,\na .tblno {\n    color: #000;\n}\nul.tof,\nol.tof,\nul.tot,\nol.tot {\n    list-style: none outside none;\n}\n.caption {\n    margin-top: 0.5em;\n    font-style: italic;\n}\n/* --- TABLE --- */\n\ntable.simple {\n    border-spacing: 0;\n    border-collapse: collapse;\n    border-bottom: 3px solid #0060A9;\n    /* #38197a; pcisig purple */\n    /* respec orig #005a9c;*/\n}\n.simple th {\n    background: #0060A9;\n    /* #38197a; /*#005a9c;*/\n    color: #fff;\n    padding: 3px 5px;\n    text-align: left;\n}\n.simple th[scope="row"] {\n    background: inherit;\n    color: inherit;\n    border-top: 1px solid #ddd;\n}\n.simple td {\n    padding: 3px 10px;\n    border-top: 1px solid #ddd;\n}\n.simple tr:nth-child(even) {\n    background: #E5F4FF;\n    /* ß#F6F1FE; /*#f0f6ff;*/\n}\n/* --- DL --- */\n\n.section dd > p:first-child {\n    margin-top: 0;\n}\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n.section dd {\n    margin-bottom: 1em;\n}\n.section dl.attrs dd,\n.section dl.eldef dd {\n    margin-bottom: 0;\n}\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n/*****************************************************************/\n\n/* examples.css (builtin to respec) */\n\n/* --- EXAMPLES --- */\n\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;\n}\naside.example,\ndiv.example,\ndiv.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example {\n    color: red\n}\ndiv.illegal-example p {\n    color: black\n}\naside.example,\ndiv.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;\n}\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n/*****************************************************************/\n\n/* regpict.css (builtin to respec) */\n\n/* --- REGPICT --- */\n\ntext.regBitNum {\n    text-anchor: middle;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\npath.regBitNumLine {\n    stroke: grey;\n    stroke-width: 1px;\n}\nrect.regFieldBox {\n    fill: white;\n    stroke: black;\n    stroke-width: 1.5px;\n}\nrect.regFieldBoxrsvdp,\nrect.regFieldBoxrsvdz,\nrect.regFieldBoxReserved,\nrect.regFieldRsvd {\n    fill: white;\n}\nline.regFieldBoxInternal {\n    stroke: black;\n}\nline.regFieldBoxUnused {\n    stroke: grey;\n}\ntext.regFieldNameInternal {\n    text-anchor: middle;\n}\ntext.regFieldUnused {\n    fill: grey;\n}\ntext.regFieldName {\n    font-size: 11pt;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\npath.regBitLine1,\npath.regBitBracket1 {\n    stroke: black;\n    stroke-width: 1px;\n}\npath.regBitLine0 {\n    stroke: green;\n    stroke-dasharray: 4, 2;\n    stroke-width: 1px;\n}\npath.regBitBracket0 {\n    stroke: green;\n    stroke-width: 1px;\n}\nsvg.regpict {\n    color: green;\n}\n.svg_error {\n    color: red;\n    font-weight: bold;\n}\nfigure div.json,\nfigure pre.json {\n    color: rgb(0, 90, 156);\n    display: inherit;\n}\n/*****************************************************************/\n\n/* pcisig style stuff (from xxx.html) */\n\ndl + * {\n    clear: left;\n}\ndl.left {\n    display: block;\n    clear: left;\n}\ndl.left dt {\n    display: block;\n    overflow: hidden;\n    float: left;\n    clear: left;\n    width: 12%;\n}\ndl.left dd {\n    display: block;\n    overflow: hidden;\n    float: left;\n    width: 85%;\n    margin-left: 1em;\n}\ndl dd {\n    margin-bottom: 0.75em;\n}\ndl dt {\n    margin-bottom: 0.25em;\n}\ntable {\n    border-collapse: collapse;\n    border-bottom: 3px solid #0060A9;\n}\ntable th {\n    background: #0060A9;\n    color: white;\n}\ntable caption {\n    margin: 12px 0;\n}\nfigcaption {\n    margin: 12px 0;\n    text-align: center;\n}\nth p,\ntd p {\n    margin: 5px 0;\n}\nth p:first-child,\ntd p:first-child {\n    margin-top: 0;\n}\nth p:last-child,\ntd p:last-child {\n    margin-bottom: 0;\n}\nth,\ntd {\n    border: 1px solid gray;\n}\nth {\n    padding: 5px;\n    vertical-align: middle;\n}\ntd {\n    padding: 5px;\n    vertical-align: top;\n}\nth:first-child,\ntd:first-child,\nth:last-child,\ntd:last-child {\n    border-left: none;\n    border-right: none;\n}\ndfn.field {\n    font-style: normal;\n    font-weight: bold;\n}\ntable.pcisig_reg td:first-child,\ntable.pcisig_reg td:nth-child(3) {\n    text-align: center;\n}\ntable dl {\n    width: 100%;\n}\ntable dt {\n    float: left;\n    width: 12%;\n    margin-left: 6px;\n    font-weight: bold;\n}\ntd dl dd {\n    overflow: hidden;\n    margin-bottom: 0.5em;\n}\ntd dl {\n    margin-top: 0;\n    margin-bottom: 0;\n}\ntd dl + p {\n    margin-top: 0;\n}\nli {\n    margin: 0.25em 0;\n}\n/*uxl li:before {\n    content: "❑\\02751  ≥\\02265  ⧫\\029EB  \\026A1 \\000A0\\000A0";\n}*/\na.state,\ndfn.state {\n    color: #0060A9;\n}\na.pin.internalDFN,\ndfn.pin {\n    text-transform: uppercase;\n}\na.signal.internalDFN,\ndfn.signal {\n    text-transform: uppercase;\n    color: #0060A9;\n}\ndfn.pin,\ndfn.signal,\na.internalDFN.pin,\na.internalDFN.signal {\n    font-weight: normal;\n    font-style: normal;\n    font-family: "Courier", monospace;\n}\nbody {\n    padding: 2em 1em 2em 36px;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    background-image: none;\n}\n#respecHeader > p:first-child::before {\n    content: url(../stylesheets/pcisig/pci_express_PMS.svg);\n}\n#respec-banner {\n    position: fixed;\n    top: -15px;\n    height: 20px;\n    left: -595px;\n    width: 600px;\n    margin: 0 0 0 0;\n    text-align: right;\n    padding: 4px 4px 4px 4px;\n    /* W3C */\n    transform: rotate(270deg);\n    transform-origin: right center;\n    /* Safari, Chrome */\n    -webkit-transform: rotate(270deg);\n    -webkit-transform-origin: right center;\n}\n#respec-banner {\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 17px;\n    color: white;\n    background-color: #0060A9;\n    /*#38197a; /* PCIe Logo Blue */\n}\ncaption,\nfigcaption,\nthead,\nh1,\nh2,\nh3,\nh4,\nh5 {\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    color: #0060A9;\n    /* PCIe Logo Blue */\n}\ntd,\nth {\n    font-family: "Lato", "Source Sans Pro", sans-serif;\n    font-size: 15px;\n}\nth {\n    font-size: 17px;\n    font-weight: normal;\n}\npath.regBitLine0 {\n    stroke: #0060A9;\n    stroke-dasharray: 4, 2;\n    stroke-width: 1px;\n}\npath.regBitBracket0 {\n    stroke: #0060A9;\n    stroke-width: 1px;\n}\n/*<style type="text/css" scoped="scoped">*/\n\ndl + * { clear: left;}\ndl.left {\n    display: block;\n    clear: left;\n}\ndl.left dt {\n    display: block;\n    overflow: hidden;\n    float: left;\n    clear: left;\n    width: 12%;\n}\n\ndl.left dd {\n    display: block;\n    overflow: hidden;\n    float: left;\n    width: 85%;\n    margin-left: 1em;\n}\ndl dd {\n    margin-bottom: 0.75em;\n}\n\ndl dt {\n    margin-bottom: 0.25em;\n}\n\ntable {\n    border-collapse: collapse;\n    border-bottom: 3px solid #0060A9;\n}\ntable th {\n    background: #0060A9;\n    color: white;\n}\ntable caption {\n    margin: 12px 0;\n}\nfigcaption {\n    margin: 12px 0;\n    text-align: center;\n}\nth p,\ntd p              { margin: 5px 0; }\nth p:first-child,\ntd p:first-child  { margin-top: 0; }\nth p:last-child,\ntd p:last-child   { margin-bottom: 0; }\nth,\ntd                { border: 1px solid gray; }\n\nth { padding: 5px; vertical-align: middle; }\ntd { padding: 5px; vertical-align: top; }\n\nth:first-child,\ntd:first-child,\nth:last-child,\ntd:last-child {\n    border-left: none;\n    border-right: none;\n}\n\ndfn.field {\n    font-style: normal;\n    font-weight: bold;\n}\n\ntable.pcisig_reg td:first-child,\ntable.pcisig_reg td:last-child {\n    text-align: center;\n}\ntable dl { width: 100%;}\ntable dt {\n    float: left;\n    width: 12%;\n    margin-left: 6px;\n    font-weight: bold;\n}\ntd dl dd {\n    overflow: hidden;\n    margin-bottom: 0.5em;\n}\ntd dl     { margin-top: 0; margin-bottom: 0; }\ntd dl + p { margin-top: 0; }\nli        { margin: 0.25em 0;}\n\na.state,\ndfn.state { color: #0060A9; }\n\na.pin.internalDFN,\ndfn.pin {\n    text-transform: uppercase;\n}\n\na.signal.internalDFN,\ndfn.signal    {\n    text-transform: uppercase;\n    color: #0060A9;\n}\n\ndfn.pin,\ndfn.signal,\na.internalDFN.pin,\na.internalDFN.signal {\n    font-weight: normal;\n    font-style: normal;\n    font-family: "Courier", monospace;\n}\nbody {\n    padding: 2em 1em 2em 36px;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    background-image: none;\n}\n\n#respecHeader > p:first-child::before { content: url(../stylesheets/pcisig/pci_express_PMS.svg);}\n\n#respec-banner {\n    position: fixed;\n    top: -15px;\n    height: 20px;\n    left: -595px;\n    width: 600px;\n    margin: 0 0 0 0;\n    text-align: right;\n    padding: 4px 4px 4px 4px;\n    /* W3C */\n    transform: rotate(270deg);\n    transform-origin: right center;\n    /* Safari, Chrome */\n    -webkit-transform: rotate(270deg);\n    -webkit-transform-origin: right center;\n}\n\n#respec-banner {\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 17px;\n    color: white;\n    background-color: #0060A9; /*#38197a; /* PCIe Logo Blue */\n}\n\ncaption, figcaption, thead, h1, h2, h3, h4, h5 {\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    color: #0060A9; /* PCIe Logo Blue */\n}\n\ntd,\nth {\n    font-family: "Lato", "Source Sans Pro", sans-serif;\n    font-size: 15px;\n}\nth {\n    font-size: 17px;\n    font-weight: normal;\n}\n\npath.regBitLine0 {\n    stroke: #0060A9;\n    stroke-dasharray: 4,2;\n    stroke-width: 1px;\n}\n\npath.regBitBracket0 {\n    stroke: #0060A9;\n    stroke-width: 1px;\n}\n\n/*</style>*/\n';});
+
+
+// Module pcisig/style
+// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
+// CONFIGURATION
+//  - specStatus: the short code for the specification's maturity level or type (required)
+
+define(
+    'pcisig/style',["core/utils",
+     "text!../../stylesheets/unofficial.css"],
+    function (utils, inlinecss) {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "pcisig/style");
+                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for pcisig/style");
+                var statStyle = conf.specStatus;
+                var css = "https://";
+                if (statStyle === "unofficial") {
+                    css += "sglaser.github.io/respec/stylesheets/unofficial";
+                }
+                else if (statStyle === "base") {
+                    css += "sglaser.github.io/respec/stylesheets/base";
+                }
+                else {
+                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle;
+                }
+                //utils.linkCSS(doc, css);
+                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
+                console.log("inlinecss.length = " + inlinecss.length);
+
+                msg.pub("end", "pcisig/style");
+                cb();
+            }
+        };
+    }
+);
+
+
 // Module core/shiv
 // Injects the HTML5 shiv conditional comment
 
@@ -22019,7 +22034,6 @@ define('profile-pcisig-common',[
         ,   "core/default-root-attr"
         ,   "core/markdown"
         ,   "core/style"
-        ,   "pcisig/style"
         ,   "pcisig/headers"
         ,   "w3c/abstract"
         ,   "pcisig/conformance"
@@ -22044,6 +22058,7 @@ define('profile-pcisig-common',[
         ,   "w3c/permalinks"
         ,   "core/id-headers"
         ,   "w3c/aria"
+        ,   "pcisig/style"
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"

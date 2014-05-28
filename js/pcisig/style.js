@@ -5,8 +5,9 @@
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
 define(
-    ["core/utils"],
-    function (utils) {
+    ["core/utils",
+     "text!../../stylesheets/unofficial.css"],
+    function (utils, inlinecss) {
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "pcisig/style");
@@ -14,15 +15,18 @@ define(
                 var statStyle = conf.specStatus;
                 var css = "https://";
                 if (statStyle === "unofficial") {
-                    css += "sglaser.github.io/respec/StyleSheets/unofficial";
+                    css += "sglaser.github.io/respec/stylesheets/unofficial";
                 }
                 else if (statStyle === "base") {
-                    css += "sglaser.github.io/respec/StyleSheets/base";
+                    css += "sglaser.github.io/respec/stylesheets/base";
                 }
                 else {
-                    css += "sglaser.github.io/respec/StyleSheets/pcisig-" + statStyle;
+                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle;
                 }
-                utils.linkCSS(doc, css);
+                //utils.linkCSS(doc, css);
+                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
+                console.log("inlinecss.length = " + inlinecss.length);
+
                 msg.pub("end", "pcisig/style");
                 cb();
             }

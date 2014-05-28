@@ -134,7 +134,7 @@ define(
         
 
         return {
-            status2text: {
+           status2Text: {
                 NOTE:           "Note"
             ,   WD:             "Working Draft"
             ,   ED:             "Editor's Draft"
@@ -151,8 +151,8 @@ define(
         ,   review2Text: {
                 "":                 ""
             ,   NONE:               ""
-            ,   "Review":           "Review Copy"
-            ,   "WG-Review":        "Work Group Internal Review"
+            ,   "Author-Review":    "Author Review"
+            ,   "WG-Review":        "Work Group Review"
             ,   "Cross-WG-Review":  "Cross Work Group Review"
             ,   "Member-Review":    "PCISIG Member Review"
             ,   "Final-Review":     "Final Review"
@@ -160,11 +160,11 @@ define(
         }
         ,   level2Text: {
                 "":                 ""
-            ,   "0.1":              "0.1 Level"
-            ,   "0.3":              "0.3 Level"
-            ,   "0.5":              "0.5 Level"
-            ,   "0.7":              "0.7 Level"
-            ,   "0.9":              "0.9 Level"
+            ,   "0.1":              "0.1 Maturity Level"
+            ,   "0.3":              "0.3 Maturity Level"
+            ,   "0.5":              "0.5 Maturity Level"
+            ,   "0.7":              "0.7 Maturity Level"
+            ,   "0.9":              "0.9 Maturity Level"
             ,   "1.0":              "Final"
         }
         ,   run:    function (conf, doc, cb, msg) {
@@ -178,14 +178,23 @@ define(
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
+                console.log("initial conf.specStatus = \"" + conf.specStatus + "\"");
+                console.log("initial conf.specReview = \"" + conf.specReview + "\"");
+                console.log("initial conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.specReview) {
                     var temp = conf.specStatus.split(/\//);
+                    console.log("split(specStatus).length = " + temp.length);
                     conf.specStatus = (temp.length > 0) ? temp[0] : conf.specStatus;
                     conf.specReview = (temp.length > 1) ? temp[1] : "";
                     if (!conf.specLevel) {
                         conf.specLevel = (temp.length > 2) ? temp[2] : "";
                     }
+                } else {
+                    console.log("!conf.specReview conf.specReview = \"" + !conf.specReview + "\"");
                 }
+                console.log("final conf.specStatus = \"" + conf.specStatus + "\"");
+                console.log("final conf.specReview = \"" + conf.specReview + "\"");
+                console.log("final conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
@@ -210,20 +219,20 @@ define(
                 }
                 if (!conf.specLevel) conf.specLevel = "";
                 if (!conf.specReview) conf.specReview = "";
-                if (review2Test[conf.specReview]) {
-                    conf.specReviewLong = review2Text[conf.specReview];
+                if (this.review2Text[conf.specReview]) {
+                    conf.specReviewLong = this.review2Text[conf.specReview];
                 } else {
                     conf.specReviewLong = conf.specReview;
                 }
-                if (status2Text[conf.specStatus]) {
-                    conf.specStatusLong = stauts2Text[conf.specStatus];
+                if (conf.specStatus in this.status2Text) {
+                    conf.specStatusLong = this.status2Text[conf.specStatus];
                 } else {
-                    conf.specStatusLong = conf.SpecStatus;
+                    conf.specStatusLong = conf.specStatus;
                 }
-                if (level2Text[conf.specLevel]) {
-                    conf.specLevelLong = level2Text[conf.specLevel];
+                if (this.level2Text[conf.specLevel]) {
+                    conf.specLevelLong = this.level2Text[conf.specLevel];
                 } else {
-                    conf.specLevelLong = conf.specLevel + " Level";
+                    conf.specLevelLong = conf.specLevel + " Maturity Level";
                 }
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
@@ -296,7 +305,6 @@ define(
                     }
                 }
                 if (conf.copyrightStart && conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
-                conf.textStatus = this.status2text[conf.specStatus];
                 /*if (this.status2rdf[conf.specStatus]) {
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }*/
@@ -308,10 +316,10 @@ define(
                 conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
                 if (conf.isRec && !conf.errata)
                     msg.pub("error", "Recommendations must have an errata link.");
-                conf.notRec = (conf.specStatus !== "REC");
+                conf.notRec = (conf.specStatus !== "REC");*/
                 conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependPCIeLogo = !conf.isUnofficial;
-                conf.isED = (conf.specStatus === "ED");
+                /*conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
                 conf.isCR = (conf.specStatus === "CR");
                 conf.isPR = (conf.specStatus === "PR");
