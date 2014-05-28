@@ -10,6 +10,11 @@ var fs   = require("fs")
 // ,   versioned = pth.join(builds, "respec-common-" + versionPCISIG + ".js")
 ;
 
+function gitToURL(url) {
+    url = url.replace(/^git:/, "https:");
+    url = url.replace(/\.git$/, "");
+    return url;
+}
 // options:
 //  optimize:   none || uglify || uglify2
 //  out:        /path/to/output
@@ -17,7 +22,7 @@ function build (options, cb) {
     // optimisation settings
     // note that the paths/includes below will need to change in when we drop those
     // older dependencies
-    version = options.version || versionPCISIG;
+    version = options.version || version;
     var config = {
         baseUrl:    pth.join(__dirname, "../js")
     ,   optimize:   options.optimize || "uglify2"
@@ -37,13 +42,14 @@ function build (options, cb) {
     };
     r.optimize(config, function () {
         // add header
+
         try {
             fs.writeFileSync(config.out
                         ,   "/* ReSpec " + version +
                             " - Robin Berjon, http://berjon.com/ (@robinberjon) */\n" +
                             "/* Documentation: http://w3.org/respec/. */\n" +
-                            "/* See original source for licenses: " + pkg.repository.url + " */\n" +
-                            "/* See also PCISIG source: " + pkg.repositoryPCISIG.url + " */\n" +
+                            "/* See original source for licenses: " + gitToURL(pkg.repository.url) + " */\n" +
+                            "/* See also PCISIG source: " + gitToURL(pkg.repositoryPCISIG.url) + " */\n" +
                             "respecVersion = '" + version + "';\n" +
                             "respecVersionPCISIG = '" + versionPCISIG + "';\n" +
                             fs.readFileSync(config.out, "utf8") + "\nrequire(['profile-pcisig-common']);\n");
