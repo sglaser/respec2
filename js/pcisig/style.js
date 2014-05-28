@@ -1,6 +1,6 @@
 
 // Module pcisig/style
-// Inserts a link to the appropriate pcisig style for the specification's maturity level.
+// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
