@@ -47,7 +47,7 @@ h6 { font: small-caps 100% sans-serif }
 
 div.head { margin-bottom: 1em }
 div.head h1 { margin-top: 2em; clear: both }
-div.head table.head { margin-left: 2em; margin-top: 2em; border: none; }
+div.head table.head { margin-left: 0; margin-top: 0; border: none; }
 div.head table.head td { border: none; font-size: small; padding: 1px 3px;}
 div.head table.head td small { border: none;font-size: small; padding: 1px 3px;}
 
