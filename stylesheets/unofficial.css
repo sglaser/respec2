@@ -574,9 +574,6 @@ body {
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     background-image: none;
 }
-#respecHeader > p:first-child::before {
-    content: url(../stylesheets/pcisig/pci_express_PMS.svg);
-}
 #respec-banner {
     position: fixed;
     top: -15px;
@@ -746,8 +743,6 @@ body {
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     background-image: none;
 }
-
-#respecHeader > p:first-child::before { content: url(../stylesheets/pcisig/pci_express_PMS.svg);}
 
 #respec-banner {
     position: fixed;
