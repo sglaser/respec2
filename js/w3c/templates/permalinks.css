@@ -24,7 +24,7 @@ section > *:hover > span.permalink { visibility: visible; }
 	background:transparent !important;
 	text-decoration:none;
     font-weight: bold;
-	color:#666 !important;
+	color:grey !important;
 }
 
 .permalink abbr {
