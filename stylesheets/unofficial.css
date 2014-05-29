@@ -794,4 +794,13 @@ path.regBitBracket0 {
     stroke-width: 1px;
 }
 
+ins {
+    text-decoration: replace-underline;
+    color: #00C;
+}
+
+del {
+    text-decoration: line-through;
+    color: #ff4500;
+}
 /*</style>*/
