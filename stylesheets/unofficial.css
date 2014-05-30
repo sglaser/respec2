@@ -950,7 +950,7 @@ path.regBitBracket0 {
 
 @media print {
     @page {
-        size: letter portrait;
+        size: US-Letter portrait;
         margin: 20mm;
         padding: 5mm 0;
         border-top: thin solid black;
