@@ -21,17 +21,16 @@
                 </p>
             {{else}}
                 <p>
-                    This specification is intended to become a PCISIG Standard. At this time it is a {{specStatusLong}}
-                    version{{#if specLevelLong}} of the {{specLevelLong}} document{{#if specReviewLong}} for
-                    {{specReviewLong}}{{/if}}{{/if}}.
-                </p>
-                {{#if specReviewLong}}
-                    {{#if humanReviewEndDate}}
-                        <p>
-                            The {{specReviewLong}} period ends {{humanReviewEndDate}}.
-                        </p>
+                    This specification is intended to become a PCISIG Standard.
+                    This particular document is a <strong>{{specStatusLong}}</strong> {{#if specLevelLong}} of the
+                    <strong>{{specLevelLong}}</strong>> document{{#if specReviewLong}} for
+                        <strong>{{specReviewLong}}</strong>>{{/if}}{{/if}}.
+                    {{#if specReviewLong}}
+                        {{#if humanReviewEndDate}}
+                            The {{specReviewLong}} period ends 5:00 PM US Pacific Time on <b>{{humanReviewEndDate}}</b>.
+                        {{/if}}
                     {{/if}}
-                {{/if}}
+                </p>
             {{/if}}
         {{/if}}
     {{/if}}
