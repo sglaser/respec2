@@ -953,37 +953,56 @@ path.regBitBracket0 {
         size: US-Letter portrait;
         margin: 20mm;
         padding: 5mm 0;
-        border-top: thin solid black;
-        border-bottom: thin solid black;
+        /*border-top: thin solid black;*/
+        border-bottom: thin solid #0060A9;
         @top-left {
             font-size: 10pt;
             vertical-align: bottom;
-            margin: 2mm;
+            margin: 0;
         }
         @top-right {
             font-size: 10pt;
             vertical-align: bottom;
-            margin: 2mm;
+            margin: 0;
         }
         @bottom {
-            font-size: 10pt;
             content: "Page " counter(page) " of " counter(pages);
             vertical-align: top;
-            text-align: outside;
-            margin: 2mm;
+            height: 20px;
+            left: auto;
+            width: 100%;
+            margin: 0;
+            padding: 4px;
+            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+            font-size: 9pt;
+            background-color: white;
+            color: #0060A9;
         }
 
     }
 
     #respec-banner {
+        position: static;
+        top: auto;
+        height: 20px;
+        left: auto;
+        width: 100%;
+        margin: 0 0 0 0;
+        text-align: center;
         padding: 4px 4px 4px 4px;
+        /* W3C */
+        transform: rotate(0deg);
+        transform-origin: right center;
+        /* Safari, Chrome */
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: right center;
         flow: static(header);
+        font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+        font-size: 17px;
+        color: white;
+        background-color: #0060A9;
+        /*#38197a; /* PCIe Logo Blue */
     }
-
-    @page {
-        @top { content: flow(header) }
-    }
-    h1 { flow: static(header) }
 
     #respec-banner-status { string-set: respec-banner-status content(); }
 
@@ -996,20 +1015,18 @@ path.regBitBracket0 {
     @page :left {
         @top-left {
             content: flow(header);
-            /*content: string(respec-banner-status) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);*/
         }
-        @top-right {
-            content: string(respec-banner-spec-name);
+        @bottom {
+            text-align: left;
         }
     }
 
     @page :right {
         @top-right {
             content: flow(header);
-            /*content: string(respec-banner-status) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);*/
         }
-        @top-left {
-            content: string(respec-banner-spec-name);
+        @bottom {
+            text-align: right;
         }
     }
 
@@ -1017,12 +1034,6 @@ path.regBitBracket0 {
     @page :first {
         border-top: none;
         border-bottom: none;
-        @top-right {
-            content: normal;
-        }
-        @top-left {
-            content: normal;
-        }
         @bottom {
             content: normal;
         }
@@ -1031,10 +1042,6 @@ path.regBitBracket0 {
     /* general statements which perhaps should be part of the UA style sheet? */
     h1, h2, h3, h4, h5, h6, dt {
         page-break-after: avoid;
-    }
-
-    * {
-        text-decoration: none;
     }
 
     ins {
@@ -1082,9 +1089,9 @@ path.regBitBracket0 {
     }
 
     html, body {
-        font: 10pt serif;
-        padding: 0;
-        margin: 0;
+        font-size: 9pt;
+        /*padding: 0;*/
+        /*margin: 0;*/
     }
 
     img {
