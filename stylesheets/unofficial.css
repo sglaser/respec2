@@ -10,10 +10,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     color: black;
-    background: white;
-    background-position: top left;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background: white no-repeat fixed top left;
 }
 
 :link { color: #00C; background: transparent }
@@ -95,9 +92,7 @@ ol.toc {
 }
 
 .content {
-    background-image: url(http://www.w3.org/StyleSheets/TR/watermark-unoffficial.png);
-    background-repeat: repeat;
-    background-attachment: fixed;
+    background: url(http://www.w3.org/StyleSheets/TR/watermark-unoffficial.png) repeat fixed;
 }
 
 .disclaimer {
@@ -204,8 +199,7 @@ div.impnote {
 .note,
 .impnote {
     padding: .5em;
-    border-left-width: .5em;
-    border-left-style: solid;
+    border-left: .5em solid;
 }
 
 div.issue,
@@ -429,9 +423,8 @@ div.illegal-example p {
 aside.example,
 div.example {
     padding: .5em;
-    border-left-width: .5em;
-    border-left-style: solid;
     border-color: #e0cb52;
+    border-left: .5em solid;
     background: #fcfaee;
 }
 
