@@ -76,7 +76,7 @@ dd { margin-top: 0; margin-bottom: 0 }
 dt { font-weight: bold }
 
 pre,
-code { font-family: monospace }
+code { font-family: monospace; font-size: larger; }
  /* navigator 4 requires this */
 ul.toc,
 ol.toc {
