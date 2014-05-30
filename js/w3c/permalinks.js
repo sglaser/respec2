@@ -16,8 +16,12 @@
 //     permalinkHide:      Boolean. The symbol will be hidden until the header is 
 //                         hovered over.  Defaults to false.
 
+/*global define, self, respecEvents, respecConfig */
+
+"use strict";
+
 define(
-    ["tmpl!w3c/templates/permalinks.css", "core/utils"], // load this to be sure that the jQuery extensions are loaded
+    ["tmpl!w3c/templates/permalinks.handlebars", "core/utils"], // load this to be sure that the jQuery extensions are loaded
     function (css, utils) {
         return {
             run:    function (conf, doc, cb, msg) {
@@ -43,7 +47,7 @@ define(
                             }
 
                             // if we still have resourceID
-                            if (resourceID != null) {
+                            if (resourceID !== null) {
                                 // we have an id.  add a permalink
                                 // right after the h* element
                                 var type = conf.doRDFa ? "typeof='bookmark' " : "";
@@ -61,7 +65,7 @@ define(
                             }
                         }
                     });
-                };
+                }
                 msg.pub("end", "w3c/permalinks");
                 cb();
             }

@@ -30,3 +30,8 @@ section > *:hover > span.permalink { visibility: visible; }
 .permalink abbr {
 	border:0;
 }
+
+@media print {
+    .permalink,
+    section > *:hover > span.permalink { visibility: hidden; }
+}
