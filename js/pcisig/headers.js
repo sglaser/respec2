@@ -212,6 +212,9 @@ define(
                 }
                 conf.publishYear = conf.publishDate.getFullYear();
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
+                if (conf.reviewEndDate) {
+                    conf.humanReviewEndDate = utils.humanDate(conf.reviewEndDate);
+                }
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
                 conf.isTagFinding = conf.specStatus === "finding";
                 if (!conf.isNoTrack) {
@@ -323,7 +326,10 @@ define(
                     msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");*/
                 conf.isUnofficial = conf.specStatus === "unofficial";
-                conf.prependPCIeLogo = !conf.isUnofficial;
+                conf.prependPCIeLogo = conf.isUnofficial || !conf.isNoTrack;
+                conf.isFinal = (conf.specStatus === "PUBLISH") && (conf.specLevel === "1.0") &&
+                    ((conf.specReview === "NONE") || (conf.specReview === ""));
+                conf.isPublished = conf.specStatus === "PUBLISH";
                 /*conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
                 conf.isCR = (conf.specStatus === "CR");
@@ -393,6 +399,7 @@ define(
                 if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
                     msg.pub("error", "CR, PR, and REC documents need to have an implementationReportURI defined.");
                 }*/
+                $(sotdTmpl(conf)).insertAfter($("#abstract"));
                 if (conf.isTagFinding && !conf.sotdCustomParagraph) {
                     msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
                                      "please specify one using a <code><section></code> element with ID=sotd.");
