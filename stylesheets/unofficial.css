@@ -102,27 +102,62 @@ body {
     color: red;
 }
 
+/*ins {
+    text-decoration: underline;
+    color: #00C;
+    background-color: lightgoldenrodyellow;
+}
+
+del {
+    text-decoration: line-through;
+    color: #ff4500;
+    background-color: lightgoldenrodyellow;
+}*/
+
+ins,
 .diff-new {
     background-color: yellow;
 }
+
 .diff-chg {
     background-color: lime;
 }
-.diff-new:before,
-.diff-new:after {
-    content: "\2191";
-}
-.diff-chg:before,
-.diff-chg:after {
-    content: "\2195";
-}
+
+del,
 .diff-old {
-    text-decoration: line-through;
     background-color: #FBB;
+    color: gray;
 }
-.diff-old:before,
-.diff-old:after {
-    content: "\2193";
+
+ins,
+.diff-new {
+    text-decoration: underline; /* dotted; */
+}
+
+ins::before,
+ins::after,
+.diff-new::before,
+.diff-new::after {
+    content: "\2191"; /* &uparrow; */
+    text-decoration: overline;
+}
+
+.diff-chg::before,
+.diff-chg::after {
+    content: "\2195"; /* &updownarrow; */
+}
+
+del,
+.diff-old {
+    text-decoration: line-through; /* dotted; */
+}
+
+del::before,
+del::after,
+.diff-old::before,
+.diff-old::after {
+    content: "\2193"; /* &downarrow; */
+    text-decoration: overline;
 }
 /*****************************************************************/
 
@@ -794,13 +829,3 @@ path.regBitBracket0 {
     stroke-width: 1px;
 }
 
-ins {
-    text-decoration: replace-underline;
-    color: #00C;
-}
-
-del {
-    text-decoration: line-through;
-    color: #ff4500;
-}
-/*</style>*/
