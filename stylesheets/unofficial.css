@@ -1,8 +1,5 @@
-/* w3c-unofficial.css */
-
-/* Style for an Unofficial Draft Proposal */
-
-/*
+/* Based on: w3c-unofficial.css
+   Style for an Unofficial Draft Proposal
    Copyright 1997-2003 W3C (MIT, ERCIM, Keio). All Rights Reserved.
    The following software licensing rules apply:
    http://www.w3.org/Consortium/Legal/copyright-software */
@@ -18,24 +15,37 @@ body {
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
+
 :link { color: #00C; background: transparent }
+
 :visited { color: #609; background: transparent }
+
 a:active { color: #C00; background: transparent }
 
-a:link img, a:visited img { border-style: none } /* no border on img links */
+a:link img,
+a:visited img { border-style: none }    /* no border on img links */
 
-a img { color: white; }        /* trick to hide the border in Netscape 4 */
-@media all {                   /* hide the next rule from Netscape 4 */
-  a img { color: inherit; }    /* undo the color change above */
+a img { color: white; }                 /* trick to hide the border in Netscape 4 */
+@media all {                            /* hide the next rule from Netscape 4 */
+    a img { color: inherit; }           /* undo the color change above */
 }
 
-th, td { /* ns 4 */
+th,
+td { /* ns 4 */
     font-family: sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 { text-align: left }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { text-align: left }
+
 /* background should be transparent, but WebTV has a bug */
-h1, h2, h3 { color: #005A9C; }
+h1,
+h2,
+h3 { color: #005A9C; }
 h1 { font: 170% sans-serif }
 h2 { font: 140% sans-serif }
 h3 { font: 120% sans-serif }
@@ -55,40 +65,34 @@ p.copyright { font-size: small }
 p.copyright small { font-size: small }
 
 @media screen {  /* hide from IE3 */
-a[href]:hover { background: #ffa }
+    a[href]:hover { background: #ffa }
 }
 
 pre { margin-left: 2em }
-/*
-p {
-  margin-top: 0.6em;
-  margin-bottom: 0.6em;
-}
-*/
-dt, dd { margin-top: 0; margin-bottom: 0 } /* opera 3.50 */
+
+dt,
+dd { margin-top: 0; margin-bottom: 0 }
+ /* opera 3.50 */
 dt { font-weight: bold }
 
-pre, code { font-family: monospace } /* navigator 4 requires this */
-
-ul.toc, ol.toc {
-  list-style: disc;		/* Mac NS has problem with 'none' */
-  list-style: none;
+pre,
+code { font-family: monospace }
+ /* navigator 4 requires this */
+ul.toc,
+ol.toc {
+    list-style: disc;    /* Mac NS has problem with 'none' */
+    list-style: none;
 }
 
 @media aural {
-  h1, h2, h3 { stress: 20; richness: 90 }
-  .hide { speak: none }
-  p.copyright { volume: x-soft; speech-rate: x-fast }
-  dt { pause-before: 63ms }
-  pre { speak-punctuation: code } 
+    h1,
+    h2,
+    h3 { stress: 20; richness: 90 }
+    .hide { speak: none }
+    p.copyright { volume: x-soft; speech-rate: x-fast }
+    dt { pause-before: 63ms }
+    pre { speak-punctuation: code }
 }
-
-
-
-body {
-    background-image: url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png);
-}
-
 
 .content {
     background-image: url(http://www.w3.org/StyleSheets/TR/watermark-unoffficial.png);
@@ -102,21 +106,10 @@ body {
     color: red;
 }
 
-/*ins {
-    text-decoration: underline;
-    color: #00C;
-    background-color: lightgoldenrodyellow;
-}
-
-del {
-    text-decoration: line-through;
-    color: #ff4500;
-    background-color: lightgoldenrodyellow;
-}*/
-
 ins,
 .diff-new {
     background-color: yellow;
+    color: mediumblue;
 }
 
 .diff-chg {
@@ -125,8 +118,9 @@ ins,
 
 del,
 .diff-old {
-    background-color: #FBB;
+    background-color: lightyellow;/*#FBB;*/
     color: gray;
+    font-weight: lighter;
 }
 
 ins,
@@ -139,12 +133,12 @@ ins::after,
 .diff-new::before,
 .diff-new::after {
     content: "\2191"; /* &uparrow; */
-    text-decoration: overline;
+    color: mediumblue;
 }
 
 .diff-chg::before,
 .diff-chg::after {
-    content: "\2195"; /* &updownarrow; */
+    /*content: "\2195"; /* &updownarrow; */
 }
 
 del,
@@ -157,7 +151,8 @@ del::after,
 .diff-old::before,
 .diff-old::after {
     content: "\2193"; /* &downarrow; */
-    text-decoration: overline;
+    color: red;
+    font-weight: normal;
 }
 /*****************************************************************/
 
@@ -172,31 +167,38 @@ div.impnote-title {
     min-width: 7.5em;
     color: #b9ab2d;
 }
+
 div.issue-title {
     color: #e05252;
 }
+
 div.note-title {
     color: #2b2;
 }
+
 div.impnote-title {
     color: #0060A9;
 }
+
 div.issue-title span,
 div.note-title span,
 div.impnote-title span {
     text-transform: uppercase;
 }
+
 div.note,
 div.issue,
 div.impnote {
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
 .note > p:first-child,
 .issue > p:first-child,
 .impnote > p:first-child {
     margin-top: 0;
 }
+
 .issue,
 .note,
 .impnote {
@@ -204,6 +206,7 @@ div.impnote {
     border-left-width: .5em;
     border-left-style: solid;
 }
+
 div.issue,
 div.note,
 div.impnote {
@@ -212,23 +215,28 @@ div.impnote {
     position: relative;
     clear: both;
 }
+
 span.note,
 span.issue,
 span.impnote {
     padding: .1em .5em .15em;
 }
+
 .issue {
     border-color: #e05252;
     background: #fbe9e9;
 }
+
 .note {
     border-color: #52e052;
     background: #e9fbe9;
 }
+
 .impnote {
     border-color: #0060A9;
     background: #E5F4FF;
 }
+
 /*****************************************************************/
 
 /* respec2.css (builtin to respec) */
@@ -246,6 +254,7 @@ em.rfc2119 {
     font-style: normal;
     color: #900;
 }
+
 h1 acronym,
 h2 acronym,
 h3 acronym,
@@ -262,49 +271,60 @@ h6 abbr,
 a abbr {
     border: none;
 }
+
 dfn {
     font-weight: bold;
 }
+
 a.internalDFN {
     color: inherit;
     border-bottom: 1px solid #99c;
     text-decoration: none;
 }
+
 a.externalDFN {
     color: inherit;
     border-bottom: 1px dotted #ccc;
     text-decoration: none;
 }
+
 a.bibref {
     text-decoration: none;
 }
+
 cite .bibref {
     font-style: normal;
 }
+
 code {
     color: #ff4500;
 }
+
 /* --- TOC --- */
 
 .toc a,
 .tof a {
     text-decoration: none;
 }
+
 a .secno,
 a .figno,
 a .tblno {
     color: #000;
 }
+
 ul.tof,
 ol.tof,
 ul.tot,
 ol.tot {
     list-style: none outside none;
 }
+
 .caption {
     margin-top: 0.5em;
     font-style: italic;
 }
+
 /* --- TABLE --- */
 
 table.simple {
@@ -314,6 +334,7 @@ table.simple {
     /* #38197a; pcisig purple */
     /* respec orig #005a9c;*/
 }
+
 .simple th {
     background: #0060A9;
     /* #38197a; /*#005a9c;*/
@@ -321,45 +342,56 @@ table.simple {
     padding: 3px 5px;
     text-align: left;
 }
+
 .simple th[scope="row"] {
     background: inherit;
     color: inherit;
     border-top: 1px solid #ddd;
 }
+
 .simple td {
     padding: 3px 10px;
     border-top: 1px solid #ddd;
 }
+
 .simple tr:nth-child(even) {
     background: #E5F4FF;
     /* ß#F6F1FE; /*#f0f6ff;*/
 }
+
 /* --- DL --- */
 
 .section dd > p:first-child {
     margin-top: 0;
 }
+
 .section dd > p:last-child {
     margin-bottom: 0;
 }
+
 .section dd {
     margin-bottom: 1em;
 }
+
 .section dl.attrs dd,
 .section dl.eldef dd {
     margin-bottom: 0;
 }
+
 span.respec-error {
     color: red;
     font-size: 12pt;
     font-weight: bold;
     font-family: monospace;
 }
+
 @media print {
     .removeOnSave {
         display: none;
     }
+
 }
+
 /*****************************************************************/
 
 /* examples.css (builtin to respec) */
@@ -370,9 +402,11 @@ div.example-title {
     min-width: 7.5em;
     color: #b9ab2d;
 }
+
 div.example-title span {
     text-transform: uppercase;
 }
+
 aside.example,
 div.example,
 div.illegal-example {
@@ -381,12 +415,15 @@ div.illegal-example {
     position: relative;
     clear: both;
 }
+
 div.illegal-example {
     color: red
 }
+
 div.illegal-example p {
     color: black
 }
+
 aside.example,
 div.example {
     padding: .5em;
@@ -395,14 +432,17 @@ div.example {
     border-color: #e0cb52;
     background: #fcfaee;
 }
+
 aside.example div.example {
     border-left-width: .1em;
     border-color: #999;
     background: #fff;
 }
+
 aside.example div.example div.example-title {
     color: #999;
 }
+
 /*****************************************************************/
 
 /* regpict.css (builtin to respec) */
@@ -415,63 +455,78 @@ text.regBitNum {
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     font-size: 8pt;
 }
+
 path.regBitNumLine {
     stroke: grey;
     stroke-width: 1px;
 }
+
 rect.regFieldBox {
     fill: white;
     stroke: black;
     stroke-width: 1.5px;
 }
+
 rect.regFieldBoxrsvdp,
 rect.regFieldBoxrsvdz,
 rect.regFieldBoxReserved,
 rect.regFieldRsvd {
     fill: white;
 }
+
 line.regFieldBoxInternal {
     stroke: black;
 }
+
 line.regFieldBoxUnused {
     stroke: grey;
 }
+
 text.regFieldNameInternal {
     text-anchor: middle;
 }
+
 text.regFieldUnused {
     fill: grey;
 }
+
 text.regFieldName {
     font-size: 11pt;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
 }
+
 path.regBitLine1,
 path.regBitBracket1 {
     stroke: black;
     stroke-width: 1px;
 }
+
 path.regBitLine0 {
     stroke: green;
     stroke-dasharray: 4, 2;
     stroke-width: 1px;
 }
+
 path.regBitBracket0 {
     stroke: green;
     stroke-width: 1px;
 }
+
 svg.regpict {
     color: green;
 }
+
 .svg_error {
     color: red;
     font-weight: bold;
 }
+
 figure div.json,
 figure pre.json {
     color: rgb(0, 90, 156);
     display: inherit;
 }
+
 /*****************************************************************/
 
 /* pcisig style stuff (from xxx.html) */
@@ -479,10 +534,12 @@ figure pre.json {
 dl + * {
     clear: left;
 }
+
 dl.left {
     display: block;
     clear: left;
 }
+
 dl.left dt {
     display: block;
     overflow: hidden;
@@ -490,6 +547,7 @@ dl.left dt {
     clear: left;
     width: 12%;
 }
+
 dl.left dd {
     display: block;
     overflow: hidden;
@@ -497,51 +555,64 @@ dl.left dd {
     width: 85%;
     margin-left: 1em;
 }
+
 dl dd {
     margin-bottom: 0.75em;
 }
+
 dl dt {
     margin-bottom: 0.25em;
 }
+
 table {
     border-collapse: collapse;
     border-bottom: 3px solid #0060A9;
 }
+
 table th {
     background: #0060A9;
     color: white;
 }
+
 table caption {
     margin: 12px 0;
 }
+
 figcaption {
     margin: 12px 0;
     text-align: center;
 }
+
 th p,
 td p {
     margin: 5px 0;
 }
+
 th p:first-child,
 td p:first-child {
     margin-top: 0;
 }
+
 th p:last-child,
 td p:last-child {
     margin-bottom: 0;
 }
+
 th,
 td {
     border: 1px solid gray;
 }
+
 th {
     padding: 5px;
     vertical-align: middle;
 }
+
 td {
     padding: 5px;
     vertical-align: top;
 }
+
 th:first-child,
 td:first-child,
 th:last-child,
@@ -549,53 +620,66 @@ td:last-child {
     border-left: none;
     border-right: none;
 }
+
 dfn.field {
     font-style: normal;
     font-weight: bold;
 }
+
 table.pcisig_reg td:first-child,
 table.pcisig_reg td:nth-child(3) {
     text-align: center;
 }
+
 table dl {
     width: 100%;
 }
+
 table dt {
     float: left;
     width: 12%;
     margin-left: 6px;
     font-weight: bold;
 }
+
 td dl dd {
     overflow: hidden;
     margin-bottom: 0.5em;
 }
+
 td dl {
     margin-top: 0;
     margin-bottom: 0;
 }
+
 td dl + p {
     margin-top: 0;
 }
+
 li {
     margin: 0.25em 0;
 }
+
 /*uxl li:before {
     content: "❑\02751  ≥\02265  ⧫\029EB  \026A1 \000A0\000A0";
 }*/
+
 a.state,
 dfn.state {
     color: #0060A9;
 }
+
 a.pin.internalDFN,
 dfn.pin {
     text-transform: uppercase;
 }
+
 a.signal.internalDFN,
 dfn.signal {
     text-transform: uppercase;
     color: #0060A9;
 }
+
 dfn.pin,
 dfn.signal,
 a.internalDFN.pin,
@@ -604,11 +688,13 @@ a.internalDFN.signal {
     font-style: normal;
     font-family: "Courier", monospace;
 }
+
 body {
     padding: 2em 1em 2em 36px;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     background-image: none;
 }
+
 #respec-banner {
     position: fixed;
     top: -15px;
@@ -625,6 +711,7 @@ body {
     -webkit-transform: rotate(270deg);
     -webkit-transform-origin: right center;
 }
+
 #respec-banner {
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     font-size: 17px;
@@ -632,6 +719,7 @@ body {
     background-color: #0060A9;
     /*#38197a; /* PCIe Logo Blue */
 }
+
 caption,
 figcaption,
 thead,
@@ -644,31 +732,38 @@ h5 {
     color: #0060A9;
     /* PCIe Logo Blue */
 }
+
 td,
 th {
     font-family: "Lato", "Source Sans Pro", sans-serif;
     font-size: 15px;
 }
+
 th {
     font-size: 17px;
     font-weight: normal;
 }
+
 path.regBitLine0 {
     stroke: #0060A9;
     stroke-dasharray: 4, 2;
     stroke-width: 1px;
 }
+
 path.regBitBracket0 {
     stroke: #0060A9;
     stroke-width: 1px;
 }
+
 /*<style type="text/css" scoped="scoped">*/
 
 dl + * { clear: left;}
+
 dl.left {
     display: block;
     clear: left;
 }
+
 dl.left dt {
     display: block;
     overflow: hidden;
@@ -684,6 +779,7 @@ dl.left dd {
     width: 85%;
     margin-left: 1em;
 }
+
 dl dd {
     margin-bottom: 0.75em;
 }
@@ -696,27 +792,35 @@ table {
     border-collapse: collapse;
     border-bottom: 3px solid #0060A9;
 }
+
 table th {
     background: #0060A9;
     color: white;
 }
+
 table caption {
     margin: 12px 0;
 }
+
 figcaption {
     margin: 12px 0;
     text-align: center;
 }
+
 th p,
 td p              { margin: 5px 0; }
+
 th p:first-child,
 td p:first-child  { margin-top: 0; }
+
 th p:last-child,
 td p:last-child   { margin-bottom: 0; }
+
 th,
 td                { border: 1px solid gray; }
 
 th { padding: 5px; vertical-align: middle; }
+
 td { padding: 5px; vertical-align: top; }
 
 th:first-child,
@@ -736,19 +840,25 @@ table.pcisig_reg td:first-child,
 table.pcisig_reg td:last-child {
     text-align: center;
 }
+
 table dl { width: 100%;}
+
 table dt {
     float: left;
     width: 12%;
     margin-left: 6px;
     font-weight: bold;
 }
+
 td dl dd {
     overflow: hidden;
     margin-bottom: 0.5em;
 }
+
 td dl     { margin-top: 0; margin-bottom: 0; }
+
 td dl + p { margin-top: 0; }
+
 li        { margin: 0.25em 0;}
 
 a.state,
@@ -773,6 +883,7 @@ a.internalDFN.signal {
     font-style: normal;
     font-family: "Courier", monospace;
 }
+
 body {
     padding: 2em 1em 2em 36px;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
@@ -803,7 +914,14 @@ body {
     background-color: #0060A9; /*#38197a; /* PCIe Logo Blue */
 }
 
-caption, figcaption, thead, h1, h2, h3, h4, h5 {
+caption,
+figcaption,
+thead,
+h1,
+h2,
+h3,
+h4,
+h5 {
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     color: #0060A9; /* PCIe Logo Blue */
 }
@@ -813,6 +931,7 @@ th {
     font-family: "Lato", "Source Sans Pro", sans-serif;
     font-size: 15px;
 }
+
 th {
     font-size: 17px;
     font-weight: normal;
