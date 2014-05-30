@@ -7,8 +7,10 @@
     <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
     <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script>-->
     <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
+
     <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
     <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
+
     <style>
         /*****************************************************************
  * ReSpec 3 CSS
@@ -199,894 +201,7 @@
             display: inherit;
         }
     </style>
-    <style>
-        /* Based on: w3c-unofficial.css
-   Style for an Unofficial Draft Proposal
-   Copyright 1997-2003 W3C (MIT, ERCIM, Keio). All Rights Reserved.
-   The following software licensing rules apply:
-   http://www.w3.org/Consortium/Legal/copyright-software */
-        body {
-            padding: 2em 1em 2em 70px;
-            margin: 0;
-            font-family: sans-serif;
-            color: black;
-            background: white;
-            background-position: top left;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-        }
-        :link {
-            color: #00C;
-            background: transparent
-        }
-        :visited {
-            color: #609;
-            background: transparent
-        }
-        a:active {
-            color: #C00;
-            background: transparent
-        }
-        a:link img,
-        a:visited img {
-            border-style: none
-        }
-        /* no border on img links */
-        a img {
-            color: white;
-        }
-        /* trick to hide the border in Netscape 4 */
-        @media all {
-            /* hide the next rule from Netscape 4 */
-            a img {
-                color: inherit;
-            }
-            /* undo the color change above */
-        }
-        th,
-        td {
-            /* ns 4 */
-            font-family: sans-serif;
-        }
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            text-align: left
-        }
-        /* background should be transparent, but WebTV has a bug */
-        h1,
-        h2,
-        h3 {
-            color: #005A9C;
-        }
-        h1 {
-            font: 170% sans-serif
-        }
-        h2 {
-            font: 140% sans-serif
-        }
-        h3 {
-            font: 120% sans-serif
-        }
-        h4 {
-            font: bold 100% sans-serif
-        }
-        h5 {
-            font: italic 100% sans-serif
-        }
-        h6 {
-            font: small-caps 100% sans-serif
-        }
-        .hide {
-            display: none
-        }
-        div.head {
-            margin-bottom: 1em
-        }
-        div.head h1 {
-            margin-top: 2em;
-            clear: both
-        }
-        div.head table.head {
-            margin-left: 0;
-            margin-top: 0;
-            border: none;
-        }
-        div.head table.head td {
-            border: none;
-            font-size: small;
-            padding: 1px 3px;
-        }
-        div.head table.head td small {
-            border: none;
-            font-size: small;
-            padding: 1px 3px;
-        }
-        p.copyright {
-            font-size: small
-        }
-        p.copyright small {
-            font-size: small
-        }
-        @media screen {
-            /* hide from IE3 */
-            a[href]:hover {
-                background: #ffa
-            }
-        }
-        pre {
-            margin-left: 2em
-        }
-        dt,
-        dd {
-            margin-top: 0;
-            margin-bottom: 0
-        }
-        /* opera 3.50 */
-        dt {
-            font-weight: bold
-        }
-        pre,
-        code {
-            font-family: monospace
-        }
-        /* navigator 4 requires this */
-        ul.toc,
-        ol.toc {
-            list-style: disc;
-            /* Mac NS has problem with 'none' */
-            list-style: none;
-        }
-        @media aural {
-            h1,
-            h2,
-            h3 {
-                stress: 20;
-                richness: 90
-            }
-            .hide {
-                speak: none
-            }
-            p.copyright {
-                volume: x-soft;
-                speech-rate: x-fast
-            }
-            dt {
-                pause-before: 63ms
-            }
-            pre {
-                speak-punctuation: code
-            }
-        }
-        .content {
-            background-image: url(http://www.w3.org/StyleSheets/TR/watermark-unoffficial.png);
-            background-repeat: repeat;
-            background-attachment: fixed;
-        }
-        .disclaimer {
-            font-weight: bold;
-            font-style: italic;
-            color: red;
-        }
-        ins,
-        .diff-new {
-            background-color: yellow;
-            color: mediumblue;
-        }
-        .diff-chg {
-            background-color: lime;
-        }
-        del,
-        .diff-old {
-            background-color: lightyellow;
-            /*#FBB;*/
-            color: gray;
-            font-weight: lighter;
-        }
-        ins,
-        .diff-new {
-            text-decoration: underline;
-            /* dotted; */
-        }
-        ins::before,
-        ins::after,
-        .diff-new::before,
-        .diff-new::after {
-            content: "\2191";
-            /* &uparrow; */
-            color: mediumblue;
-        }
-        .diff-chg::before,
-        .diff-chg::after {
-            /*content: "\2195"; /* &updownarrow; */
-        }
-        del,
-        .diff-old {
-            text-decoration: line-through;
-            /* dotted; */
-        }
-        del::before,
-        del::after,
-        .diff-old::before,
-        .diff-old::after {
-            content: "\2193";
-            /* &downarrow; */
-            color: red;
-            font-weight: normal;
-        }
-        /*****************************************************************/
-        /* issues-notes.css (builtin to respec) */
-        /* --- ISSUES/NOTES --- */
-        div.issue-title,
-        div.note-title,
-        div.impnote-title {
-            padding-right: 1em;
-            min-width: 7.5em;
-            color: #b9ab2d;
-        }
-        div.issue-title {
-            color: #e05252;
-        }
-        div.note-title {
-            color: #2b2;
-        }
-        div.impnote-title {
-            color: #0060A9;
-        }
-        div.issue-title span,
-        div.note-title span,
-        div.impnote-title span {
-            text-transform: uppercase;
-        }
-        div.note,
-        div.issue,
-        div.impnote {
-            margin-top: 1em;
-            margin-bottom: 1em;
-        }
-        .note > p:first-child,
-        .issue > p:first-child,
-        .impnote > p:first-child {
-            margin-top: 0;
-        }
-        .issue,
-        .note,
-        .impnote {
-            padding: .5em;
-            border-left-width: .5em;
-            border-left-style: solid;
-        }
-        div.issue,
-        div.note,
-        div.impnote {
-            padding: 1em 1.2em 0.5em;
-            margin: 1em 0;
-            position: relative;
-            clear: both;
-        }
-        span.note,
-        span.issue,
-        span.impnote {
-            padding: .1em .5em .15em;
-        }
-        .issue {
-            border-color: #e05252;
-            background: #fbe9e9;
-        }
-        .note {
-            border-color: #52e052;
-            background: #e9fbe9;
-        }
-        .impnote {
-            border-color: #0060A9;
-            background: #E5F4FF;
-        }
-        /*****************************************************************/
-        /* respec2.css (builtin to respec) */
-        /*****************************************************************
- * ReSpec 3 CSS
- * Robin Berjon - http://berjon.com/
- *****************************************************************/
-        /* --- INLINES --- */
-        em.rfc2119 {
-            text-transform: lowercase;
-            font-variant: small-caps;
-            font-style: normal;
-            color: #900;
-        }
-        h1 acronym,
-        h2 acronym,
-        h3 acronym,
-        h4 acronym,
-        h5 acronym,
-        h6 acronym,
-        a acronym,
-        h1 abbr,
-        h2 abbr,
-        h3 abbr,
-        h4 abbr,
-        h5 abbr,
-        h6 abbr,
-        a abbr {
-            border: none;
-        }
-        dfn {
-            font-weight: bold;
-        }
-        a.internalDFN {
-            color: inherit;
-            border-bottom: 1px solid #99c;
-            text-decoration: none;
-        }
-        a.externalDFN {
-            color: inherit;
-            border-bottom: 1px dotted #ccc;
-            text-decoration: none;
-        }
-        a.bibref {
-            text-decoration: none;
-        }
-        cite .bibref {
-            font-style: normal;
-        }
-        code {
-            color: #ff4500;
-        }
-        /* --- TOC --- */
-        .toc a,
-        .tof a {
-            text-decoration: none;
-        }
-        a .secno,
-        a .figno,
-        a .tblno {
-            color: #000;
-        }
-        ul.tof,
-        ol.tof,
-        ul.tot,
-        ol.tot {
-            list-style: none outside none;
-        }
-        .caption {
-            margin-top: 0.5em;
-            font-style: italic;
-        }
-        /* --- TABLE --- */
-        table.simple {
-            border-spacing: 0;
-            border-collapse: collapse;
-            border-bottom: 3px solid #0060A9;
-            /* #38197a; pcisig purple */
-            /* respec orig #005a9c;*/
-        }
-        .simple th {
-            background: #0060A9;
-            /* #38197a; /*#005a9c;*/
-            color: #fff;
-            padding: 3px 5px;
-            text-align: left;
-        }
-        .simple th[scope="row"] {
-            background: inherit;
-            color: inherit;
-            border-top: 1px solid #ddd;
-        }
-        .simple td {
-            padding: 3px 10px;
-            border-top: 1px solid #ddd;
-        }
-        .simple tr:nth-child(even) {
-            background: #E5F4FF;
-            /* ß#F6F1FE; /*#f0f6ff;*/
-        }
-        /* --- DL --- */
-        .section dd > p:first-child {
-            margin-top: 0;
-        }
-        .section dd > p:last-child {
-            margin-bottom: 0;
-        }
-        .section dd {
-            margin-bottom: 1em;
-        }
-        .section dl.attrs dd,
-        .section dl.eldef dd {
-            margin-bottom: 0;
-        }
-        span.respec-error {
-            color: red;
-            font-size: 12pt;
-            font-weight: bold;
-            font-family: monospace;
-        }
-        @media print {
-            .removeOnSave {
-                display: none;
-            }
-        }
-        /*****************************************************************/
-        /* examples.css (builtin to respec) */
-        /* --- EXAMPLES --- */
-        div.example-title {
-            min-width: 7.5em;
-            color: #b9ab2d;
-        }
-        div.example-title span {
-            text-transform: uppercase;
-        }
-        aside.example,
-        div.example,
-        div.illegal-example {
-            padding: 0.5em;
-            margin: 1em 0;
-            position: relative;
-            clear: both;
-        }
-        div.illegal-example {
-            color: red
-        }
-        div.illegal-example p {
-            color: black
-        }
-        aside.example,
-        div.example {
-            padding: .5em;
-            border-left-width: .5em;
-            border-left-style: solid;
-            border-color: #e0cb52;
-            background: #fcfaee;
-        }
-        aside.example div.example {
-            border-left-width: .1em;
-            border-color: #999;
-            background: #fff;
-        }
-        aside.example div.example div.example-title {
-            color: #999;
-        }
-        /*****************************************************************/
-        /* regpict.css (builtin to respec) */
-        /* --- REGPICT --- */
-        text.regBitNum {
-            text-anchor: middle;
-            fill: grey;
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            font-size: 8pt;
-        }
-        path.regBitNumLine {
-            stroke: grey;
-            stroke-width: 1px;
-        }
-        rect.regFieldBox {
-            fill: white;
-            stroke: black;
-            stroke-width: 1.5px;
-        }
-        rect.regFieldBoxrsvdp,
-        rect.regFieldBoxrsvdz,
-        rect.regFieldBoxReserved,
-        rect.regFieldRsvd {
-            fill: white;
-        }
-        line.regFieldBoxInternal {
-            stroke: black;
-        }
-        line.regFieldBoxUnused {
-            stroke: grey;
-        }
-        text.regFieldNameInternal {
-            text-anchor: middle;
-        }
-        text.regFieldUnused {
-            fill: grey;
-        }
-        text.regFieldName {
-            font-size: 11pt;
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-        }
-        path.regBitLine1,
-        path.regBitBracket1 {
-            stroke: black;
-            stroke-width: 1px;
-        }
-        path.regBitLine0 {
-            stroke: green;
-            stroke-dasharray: 4, 2;
-            stroke-width: 1px;
-        }
-        path.regBitBracket0 {
-            stroke: green;
-            stroke-width: 1px;
-        }
-        svg.regpict {
-            color: green;
-        }
-        .svg_error {
-            color: red;
-            font-weight: bold;
-        }
-        figure div.json,
-        figure pre.json {
-            color: rgb(0, 90, 156);
-            display: inherit;
-        }
-        /*****************************************************************/
-        /* pcisig style stuff (from xxx.html) */
-        dl + * {
-            clear: left;
-        }
-        dl.left {
-            display: block;
-            clear: left;
-        }
-        dl.left dt {
-            display: block;
-            overflow: hidden;
-            float: left;
-            clear: left;
-            width: 12%;
-        }
-        dl.left dd {
-            display: block;
-            overflow: hidden;
-            float: left;
-            width: 85%;
-            margin-left: 1em;
-        }
-        dl dd {
-            margin-bottom: 0.75em;
-        }
-        dl dt {
-            margin-bottom: 0.25em;
-        }
-        table {
-            border-collapse: collapse;
-            border-bottom: 3px solid #0060A9;
-        }
-        table th {
-            background: #0060A9;
-            color: white;
-        }
-        table caption {
-            margin: 12px 0;
-        }
-        figcaption {
-            margin: 12px 0;
-            text-align: center;
-        }
-        th p,
-        td p {
-            margin: 5px 0;
-        }
-        th p:first-child,
-        td p:first-child {
-            margin-top: 0;
-        }
-        th p:last-child,
-        td p:last-child {
-            margin-bottom: 0;
-        }
-        th,
-        td {
-            border: 1px solid gray;
-        }
-        th {
-            padding: 5px;
-            vertical-align: middle;
-        }
-        td {
-            padding: 5px;
-            vertical-align: top;
-        }
-        th:first-child,
-        td:first-child,
-        th:last-child,
-        td:last-child {
-            border-left: none;
-            border-right: none;
-        }
-        dfn.field {
-            font-style: normal;
-            font-weight: bold;
-        }
-        table.pcisig_reg td:first-child,
-        table.pcisig_reg td:nth-child(3) {
-            text-align: center;
-        }
-        table dl {
-            width: 100%;
-        }
-        table dt {
-            float: left;
-            width: 12%;
-            margin-left: 6px;
-            font-weight: bold;
-        }
-        td dl dd {
-            overflow: hidden;
-            margin-bottom: 0.5em;
-        }
-        td dl {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        td dl + p {
-            margin-top: 0;
-        }
-        li {
-            margin: 0.25em 0;
-        }
-        /*uxl li:before {
-    content: "❑\02751  ≥\02265  ⧫\029EB  \026A1 \000A0\000A0";
-}*/
-        a.state,
-        dfn.state {
-            color: #0060A9;
-        }
-        a.pin.internalDFN,
-        dfn.pin {
-            text-transform: uppercase;
-        }
-        a.signal.internalDFN,
-        dfn.signal {
-            text-transform: uppercase;
-            color: #0060A9;
-        }
-        dfn.pin,
-        dfn.signal,
-        a.internalDFN.pin,
-        a.internalDFN.signal {
-            font-weight: normal;
-            font-style: normal;
-            font-family: "Courier", monospace;
-        }
-        body {
-            padding: 2em 1em 2em 36px;
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            background-image: none;
-        }
-        #respec-banner {
-            position: fixed;
-            top: -15px;
-            height: 20px;
-            left: -595px;
-            width: 600px;
-            margin: 0 0 0 0;
-            text-align: right;
-            padding: 4px 4px 4px 4px;
-            /* W3C */
-            transform: rotate(270deg);
-            transform-origin: right center;
-            /* Safari, Chrome */
-            -webkit-transform: rotate(270deg);
-            -webkit-transform-origin: right center;
-        }
-        #respec-banner {
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            font-size: 17px;
-            color: white;
-            background-color: #0060A9;
-            /*#38197a; /* PCIe Logo Blue */
-        }
-        caption,
-        figcaption,
-        thead,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            color: #0060A9;
-            /* PCIe Logo Blue */
-        }
-        td,
-        th {
-            font-family: "Lato", "Source Sans Pro", sans-serif;
-            font-size: 15px;
-        }
-        th {
-            font-size: 17px;
-            font-weight: normal;
-        }
-        path.regBitLine0 {
-            stroke: #0060A9;
-            stroke-dasharray: 4, 2;
-            stroke-width: 1px;
-        }
-        path.regBitBracket0 {
-            stroke: #0060A9;
-            stroke-width: 1px;
-        }
-        /*<style type="text/css" scoped="scoped">*/
-        dl + * {
-            clear: left;
-        }
-        dl.left {
-            display: block;
-            clear: left;
-        }
-        dl.left dt {
-            display: block;
-            overflow: hidden;
-            float: left;
-            clear: left;
-            width: 12%;
-        }
-        dl.left dd {
-            display: block;
-            overflow: hidden;
-            float: left;
-            width: 85%;
-            margin-left: 1em;
-        }
-        dl dd {
-            margin-bottom: 0.75em;
-        }
-        dl dt {
-            margin-bottom: 0.25em;
-        }
-        table {
-            border-collapse: collapse;
-            border-bottom: 3px solid #0060A9;
-        }
-        table th {
-            background: #0060A9;
-            color: white;
-        }
-        table caption {
-            margin: 12px 0;
-        }
-        figcaption {
-            margin: 12px 0;
-            text-align: center;
-        }
-        th p,
-        td p {
-            margin: 5px 0;
-        }
-        th p:first-child,
-        td p:first-child {
-            margin-top: 0;
-        }
-        th p:last-child,
-        td p:last-child {
-            margin-bottom: 0;
-        }
-        th,
-        td {
-            border: 1px solid gray;
-        }
-        th {
-            padding: 5px;
-            vertical-align: middle;
-        }
-        td {
-            padding: 5px;
-            vertical-align: top;
-        }
-        th:first-child,
-        td:first-child,
-        th:last-child,
-        td:last-child {
-            border-left: none;
-            border-right: none;
-        }
-        dfn.field {
-            font-style: normal;
-            font-weight: bold;
-        }
-        table.pcisig_reg td:first-child,
-        table.pcisig_reg td:last-child {
-            text-align: center;
-        }
-        table dl {
-            width: 100%;
-        }
-        table dt {
-            float: left;
-            width: 12%;
-            margin-left: 6px;
-            font-weight: bold;
-        }
-        td dl dd {
-            overflow: hidden;
-            margin-bottom: 0.5em;
-        }
-        td dl {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        td dl + p {
-            margin-top: 0;
-        }
-        li {
-            margin: 0.25em 0;
-        }
-        a.state,
-        dfn.state {
-            color: #0060A9;
-        }
-        a.pin.internalDFN,
-        dfn.pin {
-            text-transform: uppercase;
-        }
-        a.signal.internalDFN,
-        dfn.signal {
-            text-transform: uppercase;
-            color: #0060A9;
-        }
-        dfn.pin,
-        dfn.signal,
-        a.internalDFN.pin,
-        a.internalDFN.signal {
-            font-weight: normal;
-            font-style: normal;
-            font-family: "Courier", monospace;
-        }
-        body {
-            padding: 2em 1em 2em 36px;
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            background-image: none;
-        }
-        #respec-banner {
-            position: fixed;
-            top: -15px;
-            height: 20px;
-            left: -595px;
-            width: 600px;
-            margin: 0 0 0 0;
-            text-align: right;
-            padding: 4px 4px 4px 4px;
-            /* W3C */
-            transform: rotate(270deg);
-            transform-origin: right center;
-            /* Safari, Chrome */
-            -webkit-transform: rotate(270deg);
-            -webkit-transform-origin: right center;
-        }
-        #respec-banner {
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            font-size: 17px;
-            color: white;
-            background-color: #0060A9;
-            /*#38197a; /* PCIe Logo Blue */
-        }
-        caption,
-        figcaption,
-        thead,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
-            color: #0060A9;
-            /* PCIe Logo Blue */
-        }
-        td,
-        th {
-            font-family: "Lato", "Source Sans Pro", sans-serif;
-            font-size: 15px;
-        }
-        th {
-            font-size: 17px;
-            font-weight: normal;
-        }
-        path.regBitLine0 {
-            stroke: #0060A9;
-            stroke-dasharray: 4, 2;
-            stroke-width: 1px;
-        }
-        path.regBitBracket0 {
-            stroke: #0060A9;
-            stroke-width: 1px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://sglaser.github.io/respec/stylesheets/unofficial.css">
     <!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
 </head>
 
@@ -1094,10 +209,12 @@
     <div class="head" role="contentinfo" id="respecHeader">
 
         <p>
-            <a href="http://www.pcisig.com/">
-                <img width="210" height="80" alt="PCI Express Logo" src="http://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg">
+            <a href="https://www.pcisig.com/">
+                <img width="210" height="80" alt="PCI Express Logo" src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg">
             </a>
         </p>
+
+
         <div id="respec-banner">
             <span id="respec-banner-status">Working Draft</span>&nbsp;—&nbsp;
 
@@ -1109,10 +226,12 @@
             <span id="respec-banner-spec-name">PCISIG ReSpec Example</span>&nbsp;&nbsp;&nbsp;
         </div>
         <h1 class="title p-name" id="title" property="dcterms:title">PCISIG ReSpec Example</h1>
-        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-30T13:23:34.000Z" id="x30-may-2014">
-        <time class="dt-published" datetime="2014-05-30">30 May 2014</time>
-    </h2>
+
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-30T15:07:48.000Z" id="x30-may-2014">
+<time class="dt-published" datetime="2014-05-30">30 May 2014</time>
+</h2>
         <dl>
+
             <dt>This version:</dt>
             <dd>
                 <a class="u-url" href=""></a>
@@ -1120,20 +239,39 @@
             <dt>Latest published version:</dt>
             <dd>none
             </dd>
+
+
             <dt>Latest editor"s draft:</dt>
             <dd><a href="http://sglaser.github.io/respec/examples/xxx.html">http://sglaser.github.io/respec/examples/xxx.html</a>
             </dd>
+
+
+
+
+
+
+
             <dt>Editor:</dt>
             <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Steve Glaser</span></span>
             </dd>
+
+
+
         </dl>
+
+
+
+
         <p class="copyright">
             Copyright © 2014
-            <a href="http://www.pcisig.com/">PCI-SIG</a>
+            <a href="https://www.pcisig.com/">PCI-SIG</a>
             <sup>®</sup>
         </p>
+
         <p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks of PCI-SIG. All other product names are trademarks, registered trademarks, or servicemarks of their respective owners.</p>
+
         <p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document and the information contained herein and assumes no responsibility for any errors that may appear in this document, nor does PCI-SIG make a commitment to update the information contained herein.</p>
+
         <p class="copyright">
             Contact the PCI-SIG office to obtain the latest revision of this specification.</p>
         <blockquote>
@@ -1170,8 +308,12 @@
         </blockquote>
         <p class="copyright"><strong>DISCLAIMER</strong>
         </p>
+
         <p class="copyright">
             This Specification is provided “as is” with no warranties whatsoever, including any warranty of merchantability, noninfringement, fitness for any particular purpose, or any warranty otherwise arising out of any proposal, specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary rights, relating to use of information in this specification. No license, express or implied, by estoppel or otherwise, to any intellectual property rights is granted herein.</p>
+
+
+
         <hr>
     </div>
     <section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#abstract" rel="bibo:Chapter">
@@ -1239,6 +381,7 @@
             </li>
         </ul>
     </section>
+
     <section id="tof" class="introductory" typeof="bibo:Chapter" resource="#tof" rel="bibo:Chapter">
         <h2 aria-level="1" role="heading" id="h2_tof">Table of Figures</h2>
         <ul class="tof" role="directory" id="respecFigures">
@@ -1405,6 +548,7 @@
                 </msup>
             </math>
         </p>
+
     </section>
     <section id="json-example-register-figure">
         <!--OddPage-->
@@ -1422,7 +566,7 @@
                     "msb": 7,
                     "lsb": 6,
                     "name": "Very long name that will never fit",
-                    "href": "Very-long-name-that-will-never-fit"
+                    "href": "Very-long-name-that-will-never-fit"                
                 }, {
                     "msb": 9,
                     "name": "bit9"
@@ -1553,6 +697,7 @@
             <li><a href="#field-json-register-bit13" class="internalDFN field">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit13&lt;/a&gt;</li>
             <li><a href="#field-bit13">Bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#field-bit13"&gt;Bit 13&lt;/a&gt;</li>
         </ul>
+
     </section>
     <section id="pcisig-style-registers">
         <!--OddPage-->
@@ -2004,6 +1149,7 @@
                     </td>
                     <td>HwInit</td>
                 </tr>
+
                 <tr>
                     <td>4</td>
                     <td>
@@ -2016,6 +1162,7 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
                 <tr>
                     <td>5</td>
                     <td>
@@ -2025,6 +1172,7 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
                 <tr>
                     <td>6</td>
                     <td>
@@ -2033,6 +1181,8 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
+
                 <tr>
                     <td>7</td>
                     <td>
@@ -2041,6 +1191,8 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
+
                 <tr>
                     <td>8</td>
                     <td>
@@ -2050,6 +1202,8 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
+
                 <tr>
                     <td>9</td>
                     <td>
@@ -2059,6 +1213,7 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
                 <tr>
                     <td>10</td>
                     <td>
@@ -2076,6 +1231,7 @@
                     </td>
                     <td>HwInit</td>
                 </tr>
+
                 <tr>
                     <td>11</td>
                     <td>
@@ -2088,6 +1244,8 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
+
                 <tr>
                     <td>13:12</td>
                     <td>
@@ -2108,6 +1266,7 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
                 <tr>
                     <td>15:14</td>
                     <td>
@@ -2127,6 +1286,7 @@
                     </td>
                     <td>HWInit</td>
                 </tr>
+
                 <tr>
                     <td>19:18</td>
                     <td>
@@ -2154,6 +1314,7 @@
                     </td>
                     <td>Hwinit</td>
                 </tr>
+
                 <tr>
                     <td>20</td>
                     <td>
@@ -2165,6 +1326,8 @@
                     </td>
                     <td>RO</td>
                 </tr>
+
+
                 <tr>
                     <td>21</td>
                     <td>
@@ -2181,6 +1344,8 @@
                     </td>
                     <td>HwInit</td>
                 </tr>
+
+
                 <tr>
                     <td>23:22</td>
                     <td>
@@ -2203,6 +1368,7 @@
                     </td>
                     <td>HwInit</td>
                 </tr>
+
                 <tr>
                     <td>31</td>
                     <td>
@@ -2241,6 +1407,8 @@
             <p class="">Body of the implementation note</p>
         </div>
     </section>
+
+
     <section id="definition-map" class="appendix">
         <!--OddPage-->
         <h2 aria-level="1" role="heading" id="h2_definition-map"><span class="secno">A. </span>Definition Map<span typeof="bookmark" class="permalink">&nbsp;<a href="#definition-map" property="url" aria-label="Permalink for definition-map" title="Permalink for definition-map"><span property="title" content="A. Definition Map">§</span></a></span></h2>
