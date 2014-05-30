@@ -40,7 +40,7 @@ define(
                 // PROCESSING
                 var txts = $("body", doc).allTextNodes(["pre"]);
                 var rx = new RegExp("(\\bMUST(?:\\s+NOT)?\\b|\\bSHOULD(?:\\s+NOT)?\\b|\\bSHALL(?:\\s+NOT)?\\b|" +
-                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b" +
+                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b|" +
                                     "(?:\\[\\[(?:!|\\\\)?[A-Za-z0-9-]+\\]\\])" + ( abbrRx ? "|" + abbrRx : "") + ")");
                 for (var i = 0; i < txts.length; i++) {
                     var txt = txts[i];
