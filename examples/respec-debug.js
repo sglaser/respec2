@@ -15625,7 +15625,7 @@ define(
                 // PROCESSING
                 var txts = $("body", doc).allTextNodes(["pre"]);
                 var rx = new RegExp("(\\bMUST(?:\\s+NOT)?\\b|\\bSHOULD(?:\\s+NOT)?\\b|\\bSHALL(?:\\s+NOT)?\\b|" +
-                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b" +
+                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b|" +
                                     "(?:\\[\\[(?:!|\\\\)?[A-Za-z0-9-]+\\]\\])" + ( abbrRx ? "|" + abbrRx : "") + ")");
                 for (var i = 0; i < txts.length; i++) {
                     var txt = txts[i];
@@ -21729,7 +21729,7 @@ define(
 );
 
 
-define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\nsection > *:hover > span.permalink { visibility: visible; } \n{{/if}}\n\n.permalink {\n    width: 1px;\n    height: 1px;\n    overflow: visible;\n    font-size: 10pt;\n    font-style: normal;\n    vertical-align: middle;\n    margin-left: 4px;\n    {{#if permalinkEdge}}\n\tfloat: right;\n    {{/if}}\n    {{#if permalinkHide}}\n    visibility: hidden;\n    {{/if}}\n}\n\n.permalink a, .permalink a:link, .permalink a:visited, .permalink a:hover, .permalink a:focus, .permalink a:active \n{\n\tbackground:transparent !important;\n\ttext-decoration:none;\n    font-weight: bold;\n\tcolor:grey !important;\n}\n\n.permalink abbr {\n\tborder:0;\n}\n\n@media print {\n    .permalink,\n    section > *:hover > span.permalink { visibility: hidden; }\n}\n');});
+define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\n    section > *:hover > span.permalink {\n        visibility: visible;\n    }\n{{/if}}\n\n.permalink {\n    width:          1px;\n    height:         1px;\n    overflow:       visible;\n    font-size:      10pt;\n    font-style:     normal;\n    vertical-align: middle;\n    margin-left:    4px;\n    {{#if permalinkEdge}}\n        float:      right;\n    {{/if}}\n    {{#if permalinkHide}}\n        visibility: hidden;\n    {{/if}}\n}\n\nspan.permalink > a,\nspan.permalink > a:link,\nspan.permalink > a:visited,\nspan.permalink > a:hover,\nspan.permalink > a:focus,\nspan.permalink > a:active\n{\n    background:       transparent !important;\n    text-decoration:  none;\n    font-weight:      normal;\n    color:            grey !important;\n}\n\n.permalink abbr {\n    border:0;\n}\n\n{{#if permalinkHide}}\n    @media print {\n        .permalink,\n        section > *:hover > span.permalink {\n            visibility: hidden;\n        }\n    }\n{{/if}}');});
 
 // Module w3c/permalinks
 // Adds "permalinks" into the document at sections with explicit IDs
