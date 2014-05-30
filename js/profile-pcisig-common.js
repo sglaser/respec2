@@ -48,7 +48,6 @@ define([
         ,   "core/id-headers"
         ,   "w3c/aria"
         ,   "pcisig/style"
-        ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
         ],
