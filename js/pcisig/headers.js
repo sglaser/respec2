@@ -3,6 +3,10 @@
 */
 /*global Handlebars*/
 
+/*global define, self, respecEvents, respecConfig */
+
+"use strict";
+
 // Module pcisig/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
@@ -76,6 +80,7 @@
 //  - license: can either be "pcisig" (for the currently default, restrictive license) or "cc-by" for
 //      the friendly permissive dual license that nice people use (if they are participating in the
 //      HTML WG licensing experiment)
+
 
 define(
     ["handlebars"
@@ -210,10 +215,10 @@ define(
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
                 conf.isTagFinding = conf.specStatus === "finding";
                 if (!conf.isNoTrack) {
-                    if (!conf.specLevel || conf.specLevel == "") {
+                    if (!conf.specLevel || conf.specLevel === "") {
                         msg.pub("error", "Standards Track: Missing required configuration: specLevel");
                     }
-                    if (!conf.specReview || conf.specReview == "") {
+                    if (!conf.specReview || conf.specReview === "") {
                         msg.pub("error", "Standards Track: Missing required configuration: specReview");
                     }
                 }
@@ -304,7 +309,7 @@ define(
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker["new"] + "'>file a bug</a>";
                     }
                 }
-                if (conf.copyrightStart && conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
+                if (conf.copyrightStart && conf.copyrightStart === conf.publishYear) conf.copyrightStart = "";
                 /*if (this.status2rdf[conf.specStatus]) {
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }*/
@@ -341,7 +346,7 @@ define(
                     $html.attr("property", "dcterms:language") ;
                     $html.attr("content", "en") ;
                     var prefixes = "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
-                    if (conf.doRDFa != '1.1') {
+                    if (conf.doRDFa !== '1.1') {
                         $html.attr("version", "XHTML+RDFa 1.0") ;
                         prefixes += " dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ xsd: http://www.w3.org/2001/XMLSchema#";
                     }
