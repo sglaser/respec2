@@ -252,6 +252,7 @@ em.rfc2119 {
     text-transform: lowercase;
     font-variant: small-caps;
     font-style: normal;
+    font-size: larger;
     color: #900;
 }
 
