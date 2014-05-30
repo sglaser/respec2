@@ -975,17 +975,17 @@ path.regBitBracket0 {
 
     }
 
-    #respec-banner-status { string-set: respec-banner-status content() }
+    #respec-banner-status { string-set: respec-banner-status content(); }
 
-    #respec-banner-next-state { string-set: respec-banner-next-state content() }
+    #respec-banner-next-state { string-set: respec-banner-next-state content(); }
 
-    #respec-banner-maturity { string-set: respec-banner-maturity content() }
+    #respec-banner-maturity { string-set: respec-banner-maturity content(); }
 
-    #respec-banner-spec-name { string-set: respec-banner-spec-name content() }
+    #respec-banner-spec-name { string-set: respec-banner-spec-name content(); }
 
     @page :left {
         @top-left {
-            content: string(respec-banner-state) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);
+            content: string(respec-banner-status) "&nbsp;&mdash;&nbsp;" string(respec-banner-next-state) "&nbsp;&mdash;&nbsp;" string(respec-banner-maturity);
         }
         @top-right {
             content: string(respec-banner-spec-name);
@@ -994,7 +994,7 @@ path.regBitBracket0 {
 
     @page :right {
         @top-right {
-            content: string(respec-banner-state) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);
+            content: string(respec-banner-status) "&nbsp;&mdash;&nbsp;" string(respec-banner-next-state) "&nbsp;&mdash;&nbsp;" string(respec-banner-maturity);
         }
         @top-left {
             content: string(respec-banner-spec-name);
