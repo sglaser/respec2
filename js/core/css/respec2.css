@@ -44,7 +44,7 @@ code {
 }
 
 /* --- TOC --- */
-.toc a, .tof a {
+.toc a, .tof a, .tot a {
     text-decoration:    none;
 }
 
