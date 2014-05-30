@@ -1041,12 +1041,13 @@ path.regBitBracket0 {
 
     ins {
         text-decoration: underline;
-        color: mediumblue;
+        color: limegreen;
     }
 
     del {
         text-decoration: line-through;
         color: red;
+        font-weight: lighter;
     }
 
     /* add page numbers to TOC which is already there */
