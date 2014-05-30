@@ -133,7 +133,8 @@ ins::after,
 .diff-new::before,
 .diff-new::after {
     content: "\2191"; /* &uparrow; */
-    color: mediumblue;
+    color: green;
+    font-weight: lighter;
 }
 
 .diff-chg::before,
