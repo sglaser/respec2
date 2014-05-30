@@ -15155,23 +15155,23 @@ define(
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
-                console.log("initial conf.specStatus = \"" + conf.specStatus + "\"");
-                console.log("initial conf.specReview = \"" + conf.specReview + "\"");
-                console.log("initial conf.specLevel = \"" + conf.specLevel + "\"");
+//                console.log("initial conf.specStatus = \"" + conf.specStatus + "\"");
+//                console.log("initial conf.specReview = \"" + conf.specReview + "\"");
+//                console.log("initial conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.specReview) {
                     var temp = conf.specStatus.split(/\//);
-                    console.log("split(specStatus).length = " + temp.length);
+//                    console.log("split(specStatus).length = " + temp.length);
                     conf.specStatus = (temp.length > 0) ? temp[0] : conf.specStatus;
                     conf.specReview = (temp.length > 1) ? temp[1] : "";
                     if (!conf.specLevel) {
                         conf.specLevel = (temp.length > 2) ? temp[2] : "";
                     }
-                } else {
-                    console.log("!conf.specReview conf.specReview = \"" + !conf.specReview + "\"");
+//                } else {
+//                    console.log("!conf.specReview conf.specReview = \"" + !conf.specReview + "\"");
                 }
-                console.log("final conf.specStatus = \"" + conf.specStatus + "\"");
-                console.log("final conf.specReview = \"" + conf.specReview + "\"");
-                console.log("final conf.specLevel = \"" + conf.specLevel + "\"");
+//                console.log("final conf.specStatus = \"" + conf.specStatus + "\"");
+//                console.log("final conf.specReview = \"" + conf.specReview + "\"");
+//                console.log("final conf.specLevel = \"" + conf.specLevel + "\"");
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
