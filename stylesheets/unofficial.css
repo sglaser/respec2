@@ -102,7 +102,7 @@ ol.toc {
 ins,
 .diff-new {
     background-color: yellow;
-    color: limegreen;
+    color: green;
     text-decoration: underline; /* dotted; */
 }
 
@@ -110,8 +110,8 @@ ins::before,
 ins::after,
 .diff-new::before,
 .diff-new::after {
-    content: "\2191"; /* &uparrow; */
-    color: limegreen;
+    /* content: "\2191"; /* &uparrow; */
+    color: green;
     font-weight: lighter;
 }
 
@@ -470,7 +470,7 @@ path.regBitBracket0 {
 
     ins {
         text-decoration: underline;
-        color: limegreen;
+        color: green;
     }
 
     del {
