@@ -39,7 +39,7 @@ define(
                 // PROCESSING
                 var txts = $("body", doc).allTextNodes(["pre"]);
                 var rx = new RegExp("(\\bMUST(?:\\s+NOT)?\\b|\\bSHOULD(?:\\s+NOT)?\\b|\\bSHALL(?:\\s+NOT)?\\b|" +
-                                    "\\bMAY\\b|\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:NOT\\s+)?RECOMMENDED\\b|\\bOPTIONAL\\b|" +
+                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b" +
                                     "(?:\\[\\[(?:!|\\\\)?[A-Za-z0-9-]+\\]\\])" + ( abbrRx ? "|" + abbrRx : "") + ")");
                 for (var i = 0; i < txts.length; i++) {
                     var txt = txts[i];
@@ -54,7 +54,7 @@ define(
                         df.appendChild(doc.createTextNode(t));
                         if (matched) {
                             // RFC 2119
-                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|MAY|(?:NOT\s+)?REQUIRED|(?:NOT\s+)?RECOMMENDED|OPTIONAL/.test(matched)) {
+                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|(?:NOT\s+)?REQUIRED|(?:STRONGLY\s+)?(?:NOT\s+)?RECOMMENDED|(?:INDEPENDENTLY\s+)?OPTIONAL|(?:NOT\s+)?PERMITTED/.test(matched)) {
                                 df.appendChild($("<em/>").attr({ "class": "rfc2119", title: matched }).text(matched)[0]);
                             }
                             // BIBREF
