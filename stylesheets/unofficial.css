@@ -104,7 +104,7 @@ ol.toc {
 ins,
 .diff-new {
     background-color: yellow;
-    color: mediumblue;
+    color: limegreen;
 }
 
 .diff-chg {
@@ -128,7 +128,7 @@ ins::after,
 .diff-new::before,
 .diff-new::after {
     content: "\2191"; /* &uparrow; */
-    color: green;
+    color: limegreen;
     font-weight: lighter;
 }
 
