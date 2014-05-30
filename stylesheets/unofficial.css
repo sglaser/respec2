@@ -967,7 +967,7 @@ path.regBitBracket0 {
         }
         @bottom {
             font-size: 10pt;
-            content: counter(page);
+            content: "Page " counter(page) " of " counter(pages);
             vertical-align: top;
             text-align: outside;
             margin: 2mm;
@@ -975,21 +975,29 @@ path.regBitBracket0 {
 
     }
 
+    #respec-banner-status { string-set: respec-banner-status content() }
+
+    #respec-banner-next-state { string-set: respec-banner-next-state content() }
+
+    #respec-banner-maturity { string-set: respec-banner-maturity content() }
+
+    #respec-banner-spec-name { string-set: respec-banner-spec-name content() }
+
     @page :left {
         @top-left {
-            content: "W3C Recommendation 15 December 2004";
+            content: string(respec-banner-state) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);
         }
         @top-right {
-            content: "Architecture of the World Wide Web, Volume One";
+            content: string(respec-banner-spec-name);
         }
     }
 
     @page :right {
         @top-right {
-            content: "W3C Recommendation 15 December 2004";
+            content: string(respec-banner-state) "-" string(respec-banner-next-state) "-" string(respec-banner-maturity);
         }
         @top-left {
-            content: "Architecture of the World Wide Web, Volume One";
+            content: string(respec-banner-spec-name);
         }
     }
 
@@ -1028,6 +1036,8 @@ path.regBitBracket0 {
     }
 
     /* add page numbers to TOC which is already there */
+    ul.tot, ul.tot li,
+    ul.tof, ul.tof li,
     ul.toc, ul.toc li {
         font-weight: normal;
         margin-left: 0;
@@ -1038,6 +1048,8 @@ path.regBitBracket0 {
         margin-left: 2em;
     }
 
+    ul.tot a::after,
+    ul.tof a::after,
     ul.toc a::after {
         content: leader('.') target-counter(attr(href), page);
     }
