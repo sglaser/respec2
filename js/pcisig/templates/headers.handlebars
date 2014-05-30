@@ -27,10 +27,10 @@
 </div>
 <h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>
 {{#if subtitle}}
-<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle">{{subtitle}}</h2>
+<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>
 {{/if}}
 <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"
-content="{{publishISODate}}"{{/if}}>{{textStatus}}
+content="{{publishISODate}}"{{/if}} class="nolink">{{textStatus}}
 <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>
 </h2>
 <dl>
