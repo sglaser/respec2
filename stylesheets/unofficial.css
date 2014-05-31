@@ -385,8 +385,7 @@ path.regBitBracket0 {
             vertical-align: bottom;
             margin: 0;
         }
-        /*noinspection CssInvalidAtRule*/
-        @bottom {
+        @bottom-center {
             content: "Page " counter(page) " of " counter(pages);
             vertical-align: top;
             height: 20px;
@@ -437,8 +436,7 @@ path.regBitBracket0 {
         @top-left {
             content: flow(header);
         }
-        /*noinspection CssInvalidAtRule*/
-        @bottom {
+        @bottom-center {
             text-align: left;
         }
     }
@@ -447,8 +445,7 @@ path.regBitBracket0 {
         @top-right {
             content: flow(header);
         }
-        /*noinspection CssInvalidAtRule*/
-        @bottom {
+        @bottom-center {
             text-align: right;
         }
     }
@@ -457,8 +454,7 @@ path.regBitBracket0 {
     @page :first {
         border-top: none;
         border-bottom: none;
-        /*noinspection CssInvalidAtRule*/
-        @bottom {
+        @bottom-center {
             content: normal;
         }
     }
