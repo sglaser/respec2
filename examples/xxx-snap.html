@@ -21,15 +21,9 @@
             text-transform: lowercase;
             font-variant: small-caps;
             font-style: normal;
+            font-size: larger;
             color: #900;
         }
-        h1 acronym,
-        h2 acronym,
-        h3 acronym,
-        h4 acronym,
-        h5 acronym,
-        h6 acronym,
-        a acronym,
         h1 abbr,
         h2 abbr,
         h3 abbr,
@@ -63,7 +57,8 @@
         }
         /* --- TOC --- */
         .toc a,
-        .tof a {
+        .tof a,
+        .tot a {
             text-decoration: none;
         }
         a .secno,
@@ -136,6 +131,73 @@
         }
     </style>
     <style>
+        /* --- ISSUES/NOTES --- */
+        div.issue-title,
+        div.note-title,
+        div.impnote-title {
+            padding-right: 1em;
+            min-width: 7.5em;
+            color: #b9ab2d;
+        }
+        div.issue-title {
+            color: #e05252;
+        }
+        div.note-title {
+            color: #2b2;
+        }
+        div.impnote-title {
+            color: #0060A9;
+        }
+        div.issue-title span,
+        div.note-title span,
+        div.impnote-title span {
+            text-transform: uppercase;
+        }
+        div.note,
+        div.issue,
+        div.impnote {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        .note > p:first-child,
+        .issue > p:first-child,
+        .impnote > p:first-child {
+            margin-top: 0;
+        }
+        .issue,
+        .note,
+        .impnote {
+            padding: .5em;
+            border-left-width: .5em;
+            border-left-style: solid;
+        }
+        div.issue,
+        div.note,
+        div.impnote {
+            padding: 1em 1.2em 0.5em;
+            margin: 1em 0;
+            position: relative;
+            clear: both;
+        }
+        span.note,
+        span.issue,
+        span.impnote {
+            padding: .1em .5em .15em;
+        }
+        .issue {
+            border-color: #e05252;
+            background: #fbe9e9;
+        }
+        .note {
+            border-color: #52e052;
+            background: #e9fbe9;
+        }
+        .impnote {
+            border-color: #0060A9;
+            background: #E5F4FF;
+        }
+    </style>
+    <style>
         /* --- REGPICT --- */
         text.regBitNum {
             text-anchor: middle;
@@ -201,8 +263,34 @@
             display: inherit;
         }
     </style>
+    <style>
+        /* --- PERMALINKS --- */
+        .permalink {
+            width: 1px;
+            height: 1px;
+            overflow: visible;
+            font-size: 10pt;
+            font-style: normal;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        span.permalink > a,
+        span.permalink > a:link,
+        span.permalink > a:visited,
+        span.permalink > a:hover,
+        span.permalink > a:focus,
+        span.permalink > a:active {
+            background: transparent !important;
+            text-decoration: none;
+            font-weight: normal;
+            color: grey !important;
+        }
+        .permalink abbr {
+            border: 0;
+        }
+    </style>
     <link rel="stylesheet" href="https://sglaser.github.io/respec/stylesheets/unofficial.css">
-    <!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+    <!--<link rel="stylesheet" href="unofficial.css">-->
 </head>
 
 <body class="h-entry" role="document" id="respecDocument">
@@ -227,8 +315,8 @@
         </div>
         <h1 class="title p-name" id="title" property="dcterms:title">PCISIG ReSpec Example</h1>
 
-        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-30T15:07:48.000Z" id="x30-may-2014">
-<time class="dt-published" datetime="2014-05-30">30 May 2014</time>
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-31T10:22:41.000Z" class="nolink" id="x31-may-2014">
+<time class="dt-published" datetime="2014-05-31">31 May 2014</time>
 </h2>
         <dl>
 
@@ -328,27 +416,45 @@
             <li><del>Move styles into an external css file</del>  <b>Done</b>
             </li>
             <li>Validate external figure last modified date against the corresponding raw source file last modified date.</li>
-            <li>Better build process independent of w3c usage</li>
+            <li><del>Better build process independent of w3c usage</del>  <b>Done</b>
+            </li>
             <li><del>Banner at left needs to be populated automatically</del>  <b>Done</b>
             </li>
             <li>Populate cross reference content automatically (the "See Section 1.2.3.4" stuff)</li>
-            <li>MathML doesn't work on most browsers (exception: Firefox, Safari). Switch to <a href="http://www.mathjax.org">http://www.mathjax.org/</a>
+            <li>MathML doesn't work on most browsers (exception: Firefox, Safari). Switch to
+                <a href="http://www.mathjax.org">http://www.mathjax.org/</a>
             </li>
             <li>Link field names and field in the automatically generated figure</li>
             <li>Make Table of Contents, Table of Figures, Table of Tables into sidebars that can expand and collapse</li>
             <li>Support breaking large documents into a set of html files for faster loading</li>
             <li>Provide diff / changebar support. This would automatically create a derived document with &lt;ins&gt; and &lt;del&gt; tags inserted to reflect differences between two commits.</li>
-            <li>
-                <p>PDF output:
-                    <del>Perhaps u</del><ins>U</ins>sing Prince XML <a href="http://www.princexml.com">http://www.princexml.com</a>  <b>In Progress</b>
-                </p>
-                <div class="issue">
-                    <div class="issue-title" aria-level="2" role="heading" id="h_issue_1"><span>Issue 1:</span> PDF Output Status</div>
-                    <p class="">The princexml tool works on a spec snapshot. It can't handle the raw spec input because it doesn't implement the setTimeout function (defined for browsers, but not part of ECMAScript). The css file needs work; it donesn't have any @print rules.</p>
-                </div>
+            <li>PDF output: <del>Perhaps u</del><ins>U</ins>sing Prince XML
+                <a href="http://www.princexml.com">http://www.princexml.com</a>  <b>Done</b>
+                <i>Note: The princexml tool works on a spec snapshot. It can't handle the raw spec input because it doesn't
+                implement the setTimeout function (defined for browsers, but not part of ECMAScript).</i>
             </li>
         </ol>
         <!--      <p> [[NO-EXIST]] </p>-->
+    </section>
+    <section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#sotd" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
+
+
+
+        <p>
+            This specification is intended to become a PCISIG Standard. This particular document is a <strong>Working Draft</strong>
+            of the <strong>0.1 Maturity Level</strong> document for <strong>Author Review</strong>
+            .
+
+
+
+        </p>
+
+
+
+
+
+
     </section>
     <section id="toc">
         <h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents<span typeof="bookmark" class="permalink">&nbsp;<a href="#toc" property="url" aria-label="Permalink for toc" title="Permalink for toc"><span property="title" content="Table of Contents">§</span></a></span></h2>
@@ -438,7 +544,7 @@
             <li>class="argument"</li>
         </ul>
         <p>
-            Term references use the &lt;a&gt; tag with no href attribute. The class is optional and is only needed to resolve ambiguity (e.g. <code>&lt;a&nbsp;class="pin"&gt;foo&lt;/a&gt;</code> vs <code>&lt;a&nbsp;class="signal"&gt;foo&lt;/a&gt;</code>). When the contents of a term definition contains HTML tags (e.g. &lt;sub&gt;, &lt;abbr&gt;), this HTML is remembered and is copied to the references. This makes subscripts and abbreviations more convenient since <code>&lt;a&gt;D0active&lt;/a&gt;</code> could expand to <code>&lt;a href="#state-D0-active" class="state"&gt;D0&lt;sub&gt;active&lt;/sub&gt;</code> D0<sub>active</sub>The &lt;a&gt; references the text of the in &lt;dfn&gt; the &lt;a&gt; is the text after removing HTML tags. The contents of the &lt;dfn&gt; tag is copied into these references. The term contains subscripts, these are automatically copied into the reference.
+            Term references use the &lt;a&gt; tag with no href attribute. The class is <em class="rfc2119" title="OPTIONAL">OPTIONAL</em> and is only needed to resolve ambiguity (e.g. <code>&lt;a&nbsp;class="pin"&gt;foo&lt;/a&gt;</code> vs <code>&lt;a&nbsp;class="signal"&gt;foo&lt;/a&gt;</code>). When the contents of a term definition contains HTML tags (e.g. &lt;sub&gt;, &lt;abbr&gt;), this HTML is remembered and is copied to the references. This makes subscripts and abbreviations more convenient since <code>&lt;a&gt;D0active&lt;/a&gt;</code> could expand to <code>&lt;a href="#state-D0-active" class="state"&gt;D0&lt;sub&gt;active&lt;/sub&gt;</code> D0<sub>active</sub>The &lt;a&gt; references the text of the in &lt;dfn&gt; the &lt;a&gt; is the text after removing HTML tags. The contents of the &lt;dfn&gt; tag is copied into these references. The term contains subscripts, these are automatically copied into the reference.
         </p>
         <dl>
             <dt><dfn title="tErM1" id="dfn-term1">Term1</dfn></dt>
@@ -589,7 +695,7 @@
                 } ] }
         </pre>
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="194" viewBox="0 0 736 194">
+                <svg version="1.1" width="100%" height="194" viewBox="0 0 754 194">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="448" y="12" class="regBitNum">4</text>
@@ -604,7 +710,7 @@
                         <text x="384" y="12" class="regBitNum">8</text>
                         <text x="288" y="12" class="regBitNum">14</text>
                         <text x="16" y="12" class="regBitNum">31</text>
-                        <path d="M520,2l0,16M424,2l0,16M376,2l0,16M360,2l0,16M344,2l0,16M328,2l0,16M312,2l0,16M440,2l0,16M392,2l0,16M296,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,-3l0,16M424,-3l0,16M376,-3l0,16M360,-3l0,16M344,-3l0,16M328,-3l0,16M312,-3l0,16M440,-3l0,16M392,-3l0,16M296,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="440" y="16" width="80" height="32" class="regFieldBox regFieldBoxro"></rect>
@@ -704,7 +810,7 @@
         <h2 aria-level="1" role="heading" id="h2_pcisig-style-registers"><span class="secno">5. </span>PCISIG style Registers<span typeof="bookmark" class="permalink">&nbsp;<a href="#pcisig-style-registers" property="url" aria-label="Permalink for pcisig-style-registers" title="Permalink for pcisig-style-registers"><span property="title" content="5. PCISIG style Registers">§</span></a></span></h2>
         <figure class="register pcisig_reg" data-table="#reg1" id="fig-pcisig-style-register-1">
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="257" viewBox="0 0 578 257">
+                <svg version="1.1" width="100%" height="257" viewBox="0 0 580 257">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="496" y="12" class="regBitNum">1</text>
@@ -721,7 +827,7 @@
                         <text x="304" y="12" class="regBitNum">13</text>
                         <text x="272" y="12" class="regBitNum">15</text>
                         <text x="16" y="12" class="regBitNum">31</text>
-                        <path d="M520,2l0,16M504,2l0,16M472,2l0,16M456,2l0,16M440,2l0,16M424,2l0,16M408,2l0,16M392,2l0,16M376,2l0,16M296,2l0,16M360,2l0,16M280,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,-3l0,16M504,-3l0,16M472,-3l0,16M456,-3l0,16M440,-3l0,16M424,-3l0,16M408,-3l0,16M392,-3l0,16M376,-3l0,16M296,-3l0,16M360,-3l0,16M280,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="504" y="16" width="16" height="32" class="regFieldBox regFieldBoxro"></rect>
@@ -943,7 +1049,7 @@
         <h2 aria-level="1" role="heading" id="h2_device-capabilities-2-register-offset-24h"><span class="secno">6. </span>Device Capabilities 2 Register (Offset 24h)<span typeof="bookmark" class="permalink">&nbsp;<a href="#device-capabilities-2-register-offset-24h" property="url" aria-label="Permalink for device-capabilities-2-register-offset-24h" title="Permalink for device-capabilities-2-register-offset-24h"><span property="title" content="6. Device Capabilities 2 Register (Offset 24h)">§</span></a></span></h2>
         <figure class="register pcisig_reg" data-table="#reg_pcie_capability__device_capability_2" id="fig-device-capabilities-2-register">
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="404" viewBox="0 0 778 404">
+                <svg version="1.1" width="100%" height="404" viewBox="0 0 793 404">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="464" y="12" class="regBitNum">3</text>
@@ -970,7 +1076,7 @@
                         <text x="240" y="12" class="regBitNum">17</text>
                         <text x="128" y="12" class="regBitNum">24</text>
                         <text x="32" y="12" class="regBitNum">30</text>
-                        <path d="M520,2l0,16M456,2l0,16M440,2l0,16M424,2l0,16M408,2l0,16M392,2l0,16M376,2l0,16M360,2l0,16M344,2l0,16M328,2l0,16M296,2l0,16M232,2l0,16M200,2l0,16M184,2l0,16M168,2l0,16M24,2l0,16M264,2l0,16M136,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,-3l0,16M456,-3l0,16M440,-3l0,16M424,-3l0,16M408,-3l0,16M392,-3l0,16M376,-3l0,16M360,-3l0,16M344,-3l0,16M328,-3l0,16M296,-3l0,16M232,-3l0,16M200,-3l0,16M184,-3l0,16M168,-3l0,16M24,-3l0,16M264,-3l0,16M136,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="456" y="16" width="64" height="32" class="regFieldBox regFieldBoxhwinit"></rect>
@@ -1112,7 +1218,7 @@
                         <p>
                             <dfn class="field" id="field-completion-timeout-ranges-supported">Completion Timeout Ranges Supported</dfn> – This field indicates device Function support for the optional Completion Timeout programmability mechanism. This mechanism allows system software to modify the Completion Timeout value.</p>
                         <p>
-                            This field is applicable only to Root Ports, Endpoints that issue Requests on their own behalf, and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express. For all other Functions this field is Reserved and must be hardwired to 0000b.</p>
+                            This field is applicable only to Root Ports, Endpoints that issue Requests on their own behalf, and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express. For all other Functions this field is Reserved and <em class="rfc2119" title="MUST">MUST</em> be hardwired to 0000b.</p>
                         <p>
                             Four time value ranges are defined:</p>
                         <dl>
@@ -1128,7 +1234,7 @@
                         <p>Bits are set according to the table below to show timeout value ranges supported.</p>
                         <dl>
                             <dt>0000b</dt>
-                            <dd>Completion Timeout programming not supported – the Function must implement a timeout value in the range 50 μs to 50 ms.</dd>
+                            <dd>Completion Timeout programming not supported – the Function <em class="rfc2119" title="MUST">MUST</em> implement a timeout value in the range 50 μs to 50 ms.</dd>
                             <dt>0001b</dt>
                             <dd>Range A</dd>
                             <dt>0010b</dt>
@@ -1145,7 +1251,7 @@
                             <dd>Ranges A, B, C, and D</dd>
                         </dl>
                         <p>All other values are Reserved.</p>
-                        <p>It is strongly recommended that the Completion Timeout mechanism not expire in less than 10 ms.</p>
+                        <p>It is <em class="rfc2119" title="STRONGLY RECOMMENDED">STRONGLY RECOMMENDED</em> that the Completion Timeout mechanism not expire in less than 10 ms.</p>
                     </td>
                     <td>HwInit</td>
                 </tr>
@@ -1155,10 +1261,10 @@
                     <td>
                         <p>
                             <dfn class="field" id="field-completion-timeout-disable-supported">Completion Timeout Disable Supported</dfn> – A value of 1b indicates support for the Completion Timeout Disable mechanism.</p>
-                        <p>The Completion Timeout Disable mechanism is required for Endpoints that issue Requests on their own behalf and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express.
+                        <p>The Completion Timeout Disable mechanism is <em class="rfc2119" title="REQUIRED">REQUIRED</em> for Endpoints that issue Requests on their own behalf and PCI Express to PCI/PCI-X Bridges that take ownership of Requests issued on PCI Express.
                         </p>
-                        <p>This mechanism is optional for Root Ports.</p>
-                        <p>For all other Functions this field is Reserved and must be hardwired to 0b.</p>
+                        <p>This mechanism is <em class="rfc2119" title="OPTIONAL">OPTIONAL</em> for Root Ports.</p>
+                        <p>For all other Functions this field is Reserved and <em class="rfc2119" title="MUST">MUST</em> be hardwired to 0b.</p>
                     </td>
                     <td>RO</td>
                 </tr>
@@ -1167,7 +1273,7 @@
                     <td>5</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-ari-forwarding-supported">ARI Forwarding Supported</dfn> – Applicable only to Switch Downstream Ports and Root Ports; must be 0b for other Function types. This bit must be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
+                            <dfn class="field" id="field-ari-forwarding-supported">ARI Forwarding Supported</dfn> – Applicable only to Switch Downstream Ports and Root Ports; <em class="rfc2119" title="MUST">MUST</em> be 0b for other Function types. This bit <em class="rfc2119" title="MUST">MUST</em> be set to 1b if a Switch Downstream Port or Root Port supports this optional capability. See Section 6.13 for additional details.
                         </p>
                     </td>
                     <td>RO</td>
@@ -1177,7 +1283,7 @@
                     <td>6</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-atomicop-routing-supported">AtomicOp Routing Supported</dfn> – Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; must be 0b for other Function types. This bit must be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
+                            <dfn class="field" id="field-atomicop-routing-supported">AtomicOp Routing Supported</dfn> – Applicable only to Switch Upstream Ports, Switch Downstream Ports, and Root Ports; <em class="rfc2119" title="MUST">MUST</em> be 0b for other Function types. This bit <em class="rfc2119" title="MUST">MUST</em> be set to 1b if the Port supports this optional capability. See Section 6.15 for additional details.</p>
                     </td>
                     <td>RO</td>
                 </tr>
@@ -1187,7 +1293,7 @@
                     <td>7</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-x32-bit-atomicop-completer-supported">32-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
+                            <dfn class="field" id="field-x32-bit-atomicop-completer-supported">32-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; <em class="rfc2119" title="MUST">MUST</em> be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit <em class="rfc2119" title="MUST">MUST</em> be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.</p>
                     </td>
                     <td>RO</td>
                 </tr>
@@ -1197,7 +1303,7 @@
                     <td>8</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-x64-bit-atomicop-completer-supported">64-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
+                            <dfn class="field" id="field-x64-bit-atomicop-completer-supported">64-bit AtomicOp Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; <em class="rfc2119" title="MUST">MUST</em> be 0b otherwise. Includes FetchAdd, Swap, and CAS AtomicOps. This bit <em class="rfc2119" title="MUST">MUST</em> be set to 1b if the Function supports this optional capability. See Section 6.15.3.1 for additional RC requirements.
                         </p>
                     </td>
                     <td>RO</td>
@@ -1208,7 +1314,7 @@
                     <td>9</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-x128-bit-cas-completer-supported">128-bit CAS Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; must be 0b otherwise. This bit must be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
+                            <dfn class="field" id="field-x128-bit-cas-completer-supported">128-bit CAS Completer Supported</dfn> – Applicable to Functions with Memory Space BARs as well as all Root Ports; <em class="rfc2119" title="MUST">MUST</em> be 0b otherwise. This bit <em class="rfc2119" title="MUST">MUST</em> be set to 1b if the Function supports this optional capability. See Section 6.15 for additional details.
                         </p>
                     </td>
                     <td>RO</td>
@@ -1220,13 +1326,13 @@
                         <p>
                             <dfn class="field" id="field-no-ro-enabled-pr-pr-passing">No RO-enabled PR-PR Passing</dfn> – If this bit is Set, the routing element never carries out the passing permitted by Table 2-39 entry A2b that is associated with the Relaxed Ordering Attribute field being Set.</p>
                         <p>
-                            This bit applies only for Switches and RCs that support peer-to-peer traffic between Root Ports. This bit applies only to Posted Requests being forwarded through the Switch or RC and does not apply to traffic originating or terminating within the Switch or RC itself. All Ports on a Switch or RC must report the same value for this bit.</p>
+                            This bit applies only for Switches and RCs that support peer-to-peer traffic between Root Ports. This bit applies only to Posted Requests being forwarded through the Switch or RC and does not apply to traffic originating or terminating within the Switch or RC itself. All Ports on a Switch or RC <em class="rfc2119" title="MUST">MUST</em> report the same value for this bit.</p>
                         <div class="issue">
-                            <div class="issue-title" aria-level="2" role="heading" id="h_issue_2"><span>Issue 2:</span> This is an issue</div>
+                            <div class="issue-title" aria-level="2" role="heading" id="h_issue_1"><span>Issue 1:</span> This is an issue</div>
                             <p class="">Clearly this applies when both requests are forwarded. What about when only one of the requests is forwarded?</p>
                         </div>
                         <p>
-                            For all other functions, this bit must be 0b
+                            For all other functions, this bit <em class="rfc2119" title="MUST">MUST</em> be 0b
                         </p>
                     </td>
                     <td>HwInit</td>
@@ -1237,9 +1343,9 @@
                     <td>
                         <p>
                             <dfn class="field" id="field-ltr-mechanism-supported">LTR Mechanism Supported</dfn> – A value of 1b indicates support for the optional Latency Tolerance Reporting (LTR) mechanism.</p>
-                        <p>Root Ports, Switches and Endpoints are permitted to implement this capability.</p>
-                        <p>For a multi-Function device associated with an Upstream Port, each Function must report the same value for this bit.</p>
-                        <p>For Bridges and other Functions that do not implement this capability, this bit must be hardwired to 0b.
+                        <p>Root Ports, Switches and Endpoints are <em class="rfc2119" title="PERMITTED">PERMITTED</em> to implement this capability.</p>
+                        <p>For a multi-Function device associated with an Upstream Port, each Function <em class="rfc2119" title="MUST">MUST</em> report the same value for this bit.</p>
+                        <p>For Bridges and other Functions that do not implement this capability, this bit <em class="rfc2119" title="MUST">MUST</em> be hardwired to 0b.
                         </p>
                     </td>
                     <td>RO</td>
@@ -1271,7 +1377,7 @@
                     <td>15:14</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-ln-system-cls">LN System CLS</dfn> – Applicable only to Root Ports and RCRBs; must be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
+                            <dfn class="field" id="field-ln-system-cls">LN System CLS</dfn> – Applicable only to Root Ports and RCRBs; <em class="rfc2119" title="MUST">MUST</em> be 00b for all other Function types. This field indicates if the Root Port or RCRB supports LN protocol as an LN Completer, and if so, what cacheline size is in effect.</p>
                         <p>Encodings are:</p>
                         <dl>
                             <dt>00b</dt>
@@ -1302,15 +1408,15 @@
                             <dt>11b</dt>
                             <dd>OBFF supported using WAKE# and Message signaling</dd>
                         </dl>
-                        <p>The value reported in this field must indicate support for WAKE# signaling only if:</p>
+                        <p>The value reported in this field <em class="rfc2119" title="MUST">MUST</em> indicate support for WAKE# signaling only if:</p>
                         <ul>
                             <li>for a Downstream Port, driving the WAKE# signal for OBFF is supported and the connector or component connected Downstream is known to receive that same WAKE# signal</li>
                             <li>for an Upstream Port, receiving the WAKE# signal for OBFF is supported and, if the component is on an add-in-card, that the component is connected to the WAKE# signal on the connector.
                             </li>
                         </ul>
-                        <p>Root Ports, Switch Ports, and Endpoints are permitted to implement this capability.</p>
-                        <p>For a multi-Function device associated with an Upstream Port, each Function must report the same value for this field.</p>
-                        <p>For Bridges and Ports that do not implement this capability, this field must be hardwired to 00b.</p>
+                        <p>Root Ports, Switch Ports, and Endpoints are <em class="rfc2119" title="PERMITTED">PERMITTED</em> to implement this capability.</p>
+                        <p>For a multi-Function device associated with an Upstream Port, each Function <em class="rfc2119" title="MUST">MUST</em> report the same value for this field.</p>
+                        <p>For Bridges and Ports that do not implement this capability, this field <em class="rfc2119" title="MUST">MUST</em> be hardwired to 00b.</p>
                     </td>
                     <td>Hwinit</td>
                 </tr>
@@ -1320,8 +1426,8 @@
                     <td>
                         <p>
                             <dfn class="field" id="field-extended-fmt-field-supported">Extended Fmt Field Supported</dfn> – If Set, the Function supports the 3-bit definition of the Fmt field. If Clear, the Function supports a 2-bit definition of the Fmt field. See Section 2.2.</p>
-                        <p>Must be Set for Functions that support End-End TLP Prefixes. All Functions in an Upstream Port must have the same value for this bit. Each Downstream Port of a component may have a different value for this bit.</p>
-                        <p>It is strongly recommended that Functions support the 3-bit definition of the Fmt field.
+                        <p><em class="rfc2119" title="MUST">MUST</em> be Set for Functions that support End-End TLP Prefixes. All Functions in an Upstream Port <em class="rfc2119" title="MUST">MUST</em> have the same value for this bit. Each Downstream Port of a component <del>MAY</del><ins>is <em class="rfc2119" title="PERMITTED">PERMITTED</em> to</ins> have a different value for this bit.</p>
+                        <p>It is <em class="rfc2119" title="STRONGLY RECOMMENDED">STRONGLY RECOMMENDED</em> that Functions support the 3-bit definition of the Fmt field.
                         </p>
                     </td>
                     <td>RO</td>
@@ -1339,7 +1445,7 @@
                             <dt>1b</dt>
                             <dd>Support is provided to receive TLPs containing End-End TLP Prefixes.</dd>
                         </dl>
-                        <p>All Ports of a Switch must have the same value for this bit.
+                        <p>All Ports of a Switch <em class="rfc2119" title="MUST">MUST</em> have the same value for this bit.
                         </p>
                     </td>
                     <td>HwInit</td>
@@ -1362,7 +1468,7 @@
                             <dd>4 End-End TLP Prefixes</dd>
                         </dl>
                         <p>If End-End TLP Prefix Supported is Clear, this field is RsvdP.</p>
-                        <p>Different Root Ports that have the End-End TLP Prefix Supported bit Set <em class="rfc2119" title="MAY">MAY</em> are permitted to report different values for this field.</p>
+                        <p>Different Root Ports that have the End-End TLP Prefix Supported bit Set <del>MAY</del><ins>are <em class="rfc2119" title="PERMITTED">PERMITTED</em> to</ins> report different values for this field.</p>
                         <p>For Switches where End-End TLP Prefix Supported is Set, this field <em class="rfc2119" title="MUST">MUST</em> be 00b indicating support for up to four End-End TLP Prefixes.
                         </p>
                     </td>
@@ -1373,7 +1479,7 @@
                     <td>31</td>
                     <td>
                         <p>
-                            <dfn class="field" id="field-frs-supported">FRS Supported</dfn> – When Set, indicates support for the optional Function Readiness Status (FRS) capability. Must be Set for all Functions that support generation or receipt capabilities of FRS Messages. Must not be Set by Switch Functions that do not generate FRS Messages on their own behalf.
+                            <dfn class="field" id="field-frs-supported">FRS Supported</dfn> – When Set, indicates support for the optional Function Readiness Status (FRS) capability. <em class="rfc2119" title="MUST">MUST</em> be Set for all Functions that support generation or receipt capabilities of FRS Messages. <em class="rfc2119" title="MUST NOT">MUST NOT</em> be Set by Switch Functions that do not generate FRS Messages on their own behalf.
                         </p>
                     </td>
                     <td>HwInit</td>
@@ -1390,12 +1496,27 @@
         <!--OddPage-->
         <h2 aria-level="1" role="heading" id="h2_name-clashes-after-and-deep-stuff"><span class="secno">7. </span>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/">deep</a> stuff</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#name-clashes-after-and-deep-stuff" property="url" aria-label="Permalink for name-clashes-after-and-deep-stuff" title="Permalink for name-clashes-after-and-deep-stuff"><span property="title" content="7. Name clashes after and deep stuff">§</span></a></span></h2>
         <p>Something <em class="rfc2119" title="MUST">MUST</em> happen.</p>
+        <p>Something <em class="rfc2119" title="MUST NOT">MUST NOT</em> happen.</p>
+        <p>Something <em class="rfc2119" title="SHOULD">SHOULD</em> happen.</p>
+        <p>Something <em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em> happen.</p>
+        <p>Something <em class="rfc2119" title="SHALL">SHALL</em> happen.</p>
+        <p>Something <em class="rfc2119" title="SHALL NOT">SHALL NOT</em> happen.</p>
+        <p>Something is <em class="rfc2119" title="REQUIRED">REQUIRED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="NOT REQUIRED">NOT REQUIRED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="NOT RECOMMENDED">NOT RECOMMENDED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="STRONGLY RECOMMENDED">STRONGLY RECOMMENDED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="STRONGLY NOT RECOMMENDED">STRONGLY NOT RECOMMENDED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="OPTIONAL">OPTIONAL</em>.</p>
+        <p>Something is <em class="rfc2119" title="INDEPENDENTLY OPTIONAL">INDEPENDENTLY OPTIONAL</em>.</p>
+        <p>Something is <em class="rfc2119" title="PERMITTED">PERMITTED</em> to happen.</p>
+        <p>Something is <em class="rfc2119" title="NOT PERMITTED">NOT PERMITTED</em> to happen.</p>
         <div class="issue">
-            <div class="issue-title" aria-level="2" role="heading" id="h_issue_3"><span>Issue 3:</span> A real problem</div>
+            <div class="issue-title" aria-level="2" role="heading" id="h_issue_2"><span>Issue 2:</span> A real problem</div>
             <p class="">This is a problem</p>
         </div>
         <div class="issue atrisk">
-            <div class="issue-title" aria-level="2" role="heading" id="h_issue_4"><span>Feature at Risk 4:</span> A REAL problem</div>
+            <div class="issue-title" aria-level="2" role="heading" id="h_issue_3"><span>Feature at Risk 3:</span> A REAL problem</div>
             <p class="atrisk">This is a problem</p>
         </div>
         <div class="note">
