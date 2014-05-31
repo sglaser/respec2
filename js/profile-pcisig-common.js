@@ -23,6 +23,7 @@ define([
         ,   "core/default-root-attr"
         ,   "core/markdown"
         ,   "core/style"
+        ,   "pcisig/style"
         ,   "pcisig/headers"
         ,   "w3c/abstract"
         ,   "pcisig/conformance"
@@ -47,7 +48,6 @@ define([
         ,   "w3c/permalinks"
         ,   "core/id-headers"
         ,   "w3c/aria"
-        ,   "pcisig/style"
         ,   "core/remove-respec"
         ,   "core/location-hash"
         ],
