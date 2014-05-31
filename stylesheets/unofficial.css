@@ -69,14 +69,6 @@ code {
     font-weight: normal;
     font-style: normal;
     font-family: "Courier", monospace;
-    font-size: larger;
-}
-
- /* navigator 4 requires this */
-ul.toc,
-ol.toc {
-    list-style: disc;    /* Mac NS has problem with 'none' */
-    list-style: none;
 }
 
 @media aural {
@@ -195,6 +187,56 @@ table caption {
 figcaption {
     margin: 12px 0;
     text-align: center;
+}
+
+ul > li {
+    list-style: square;
+}
+
+ul > li > ul > li {
+    list-style: circle;
+}
+
+ul > li > ul > li > ul > li {
+    list-style: disc;
+}
+
+ul > li > ul > li > ul > li > ul > li {
+    list-style: square;
+}
+
+ul > li > ul > li > ul > li > ul > li > ul > li {
+    list-style: circle;
+}
+
+ul > li > ul > li > ul > li > ul > li > ul > li >ul > li {
+    list-style: disc;
+}
+
+ol > li {
+    list-style: decimal;
+}
+
+ol > li > ol > li {
+    list-style: lower-alpha;
+}
+
+ol > li > ol > li > ol > li {
+    list-style: lower-roman outside;
+}
+ol > li > ol > li > ol > li > ol > li {
+    list-style: decimal;
+}
+
+ol > li > ol > li > ol > li > ol > li {
+    list-style: decimal;
+}
+ol > li > ol > li > ol > li > ol > li > ol > li {
+    list-style: lower-alpha;
+}
+
+ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
+    list-style: lower-roman outside;
 }
 
 td p,

@@ -53,7 +53,9 @@ a .secno, a .figno, a .tblno {
     color:  #000;
 }
 
-ul.tof, ol.tof, ul.tot, ol.tot {
+ul.tot, ol.tot,
+ul.tof, ol.tof,
+ul.tot, ol.tot {
     list-style: none outside none;
 }
 
