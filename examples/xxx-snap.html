@@ -66,10 +66,9 @@
         a .tblno {
             color: #000;
         }
-        ul.tof,
-        ol.tof,
-        ul.tot,
-        ol.tot {
+        ul.toc > li.tocline,
+        ul.tof > li.tofline,
+        ul.tot > li.totline {
             list-style: none outside none;
         }
         .caption {
@@ -290,7 +289,6 @@
         }
     </style>
     <link rel="stylesheet" href="https://sglaser.github.io/respec/stylesheets/unofficial.css">
-    <!--<link rel="stylesheet" href="unofficial.css">-->
 </head>
 
 <body class="h-entry" role="document" id="respecDocument">
@@ -315,7 +313,7 @@
         </div>
         <h1 class="title p-name" id="title" property="dcterms:title">PCISIG ReSpec Example</h1>
 
-        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-31T10:22:41.000Z" class="nolink" id="x31-may-2014">
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-31T14:10:32.000Z" class="nolink" id="x31-may-2014">
 <time class="dt-published" datetime="2014-05-31">31 May 2014</time>
 </h2>
         <dl>
@@ -501,7 +499,7 @@
     </section>
     <section id="tot" class="introductory" typeof="bibo:Chapter" resource="#tot" rel="bibo:Chapter">
         <h2 aria-level="1" role="heading" id="h2_tot">Table of Tables</h2>
-        <ul class="tof" role="directory" id="respecTables">
+        <ul class="tot" role="directory" id="respecTables">
             <li class="totline"><a class="tocxref" href="#reg1">Table <span class="tblno">5-1</span>: <span class="tbltitle">PCISIG-Style Register #1</span></a>
             </li>
             <li class="totline"><a class="tocxref" href="#reg_pcie_capability__device_capability_2">Table <span class="tblno">6-1</span>: <span class="tbltitle">Device Capabilities 2 Register</span></a>
