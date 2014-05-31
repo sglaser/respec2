@@ -17955,7 +17955,7 @@ define(
                         }
                     }
                     $tot.append($("<h2>Table of Tables</h2>"));
-                    $tot.append($("<ul class='tof'/>"));
+                    $tot.append($("<ul class='tot'/>"));
                     var $ul = $tot.find("ul");
                     while (tot.length) $ul.append(tot.shift());
                 }
