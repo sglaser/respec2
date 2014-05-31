@@ -21333,7 +21333,7 @@ define(
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
                 if (!conf.noReSpecCSS) {
-                    $("<style/>").appendTo($("head", $(doc))).text(css);
+                    $(doc).find("head link").first().before($("<style/>").text(css));
                 }
                 var figNum = 1;
                 $("figure.register", doc).each(function (index) {
