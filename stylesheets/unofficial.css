@@ -19,6 +19,10 @@ body {
 
 a:active { color: #C00; background: transparent; }
 
+a.sec-ref,
+a.fig-ref,
+a.tbl-ref { text-decoration: none; }
+
 a:link img,
 a:visited img { border-style: none; }    /* no border on img links */
 a img { color: inherit; }
@@ -537,6 +541,10 @@ path.regBitBracket0 {
         text-decoration: line-through;
         color: red;
         font-weight: lighter;
+    }
+
+    .section-level-1 {
+        page-break-before: right;
     }
 
     /* add page numbers to TOC which is already there */
