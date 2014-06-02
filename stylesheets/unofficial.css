@@ -580,4 +580,8 @@ path.regBitBracket0 {
         max-width: 100%;
     }
 
+    .fn {
+        /*noinspection CssInvalidElement*/ float: footnote;
+    }
+
 }
