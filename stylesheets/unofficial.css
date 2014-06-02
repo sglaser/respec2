@@ -281,10 +281,12 @@ td {
 }
 
 td:first-child,
-th:first-child,
+th:first-child {
+    border-left: none;
+}
+
 td:last-child,
 th:last-child {
-    border-left: none;
     border-right: none;
 }
 
