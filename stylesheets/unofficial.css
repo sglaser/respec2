@@ -363,6 +363,11 @@ a.internalDFN.signal {
     font-family: "Courier", monospace;
 }
 
+.internalDFN {
+    border-bottom: none;
+    text-decoration: none;
+}
+
 body {
     padding: 2em 1em 2em 36px;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
