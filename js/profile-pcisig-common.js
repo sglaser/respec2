@@ -25,6 +25,7 @@ define([
         ,   "core/style"
         ,   "pcisig/style"
         ,   "pcisig/headers"
+        ,   "core/footnotes"
         ,   "w3c/abstract"
         ,   "pcisig/conformance"
         ,   "core/data-transform"

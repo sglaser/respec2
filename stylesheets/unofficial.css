@@ -416,6 +416,20 @@ path.regBitBracket0 {
     stroke-width: 1px;
 }
 
+@media screen {
+    span.footnote-contents {
+        display: none;
+        font-style: italic;
+        font-size: smaller;
+        color: #0060A9;
+    }
+
+    span.footnote > input {
+        vertical-align: super;
+        color: #0060A9;
+    }
+}
+
 /*<style type="text/css" scoped="scoped">*/
 
 @media print {
@@ -580,8 +594,12 @@ path.regBitBracket0 {
         max-width: 100%;
     }
 
-    .fn {
+    span.footnote {
         /*noinspection CssInvalidElement*/ float: footnote;
     }
+
+    span.footnote > input { display: none; }
+
+    span.footnote-online { display: none; }
 
 }
