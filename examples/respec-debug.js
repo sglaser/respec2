@@ -13131,7 +13131,7 @@ b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET"
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\na .secno, a .figno, a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -21656,6 +21656,8 @@ define(
     }
 );
 
+/*globals define*/
+/*jshint browser: true*/
 
 // Module core/structure
 //  Handles producing the ToC and numbering sections across the document.
@@ -21669,6 +21671,7 @@ define(
 define(
     'core/structure',["core/utils"],
     function (utils) {
+        
         var i18n = {
                     en: { toc: "Table of Contents" },
                     fr: { toc: "Sommaire" }
@@ -21694,8 +21697,8 @@ define(
                     ;
                     $kidsHolder.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
                     $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
-                    var id = $sec.makeID(null, title);
-                    
+                    var id = $sec.makeID("sect", title);
+
                     if (!isIntro) current[current.length - 1]++;
                     var secnos = current.slice();
                     if ($sec.hasClass("appendix") && current.length === 1 && !appendixMode) {
@@ -21704,7 +21707,7 @@ define(
                     }
                     if (appendixMode) secnos[0] = utils.appendixMap(current[0] - lastNonAppendix);
                     var secno = secnos.join(".")
-                    ,   isTopLevel = secnos.length == 1;
+                    ,   isTopLevel = secnos.length === 1;
                     if (isTopLevel) {
                         secno = secno + ".";
                         // if this is a top level item, insert
@@ -21712,16 +21715,26 @@ define(
                         // paginate the output
                         $(h).before(document.createComment('OddPage'));
                     }
+                    $(h).addClass("section-level-" + secnos.length);
+                    $(h).wrapInner("<span class='sec-title'></span>");
                     var $span = $("<span class='secno'></span>").text(secno + " ");
                     if (!isIntro) $(h).prepend($span);
-                    secMap[id] = (isIntro ? "" : "<span class='secno'>" + secno + "</span> ") +
-                                "<span class='sec-title'>" + title + "</span>";
+                    var map = "";
+                    if (!isIntro) {
+                        map += "<span class='sec-prefix'>" + (appendixMode ? "Appendix" : (isTopLevel ? "Chapter" : "Section")) + " </span>";
+                        map += "<span class='secno secno-level-" + secnos.length + "'>" + secno + "</span>";
+                    }
+                    map += "<span class='sec-title'> " + title + "</span>";
+                    secMap[id] = map;
+//                    (isIntro ? "" : ("<span class='sec-prefix'>"+ kind + "</span>") +
+//                        ("<span class='secno' data-level='" + secnos.length + "'>" + secno + "</span> ")) +
+//                        ("<span class='sec-title'>" + title + "</span>");
 
                     var $a = $("<a/>").attr({ href: "#" + id, 'class' : 'tocxref' })
                                       .append(isIntro ? "" : $span.clone())
                                       .append($kidsHolder.contents());
                     var $item = $("<li class='tocline'/>").append($a);
-                    if (conf.maxTocLevel == 0 || level <= conf.maxTocLevel) {
+                    if (conf.maxTocLevel === 0 || level <= conf.maxTocLevel) {
                     	$ul.append($item);
                     }
                     current.push(0);
@@ -21732,11 +21745,12 @@ define(
                 return $ul;
             }
         ;
-        
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/structure");
                 if (!conf.tocIntroductory) conf.tocIntroductory = false;
+                if (!conf.sectionRef) conf.sectionRef = "section #";
                 if (!conf.maxTocLevel) conf.maxTocLevel = 0;
                 var $secs = $("section:not(.introductory)", doc)
                                 .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first")
@@ -21750,20 +21764,25 @@ define(
                     var depth = $(this).parents("section").length + 1;
                     if (depth > 6) depth = 6;
                     var h = "h" + depth;
-                    if (this.localName.toLowerCase() != h) $(this).renameElement(h);
+                    if (this.localName.toLowerCase() !== h) $(this).renameElement(h);
                 });
 
                 // makeTOC
                 if (!conf.noTOC) {
                     var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
                     if (!$ul) return;
-                    var $sec = $("<section id='toc'/>").append("<h2 class='introductory'>" + i18n[conf.lang || "en"].toc + "</h2>")
+                    var $sec = $("<section class='introductory' id='toc'/>").append("<h2>" + i18n[conf.lang || "en"].toc + "</h2>")
                                                        .append($ul);
                     var $ref = $("#toc", doc), replace = false;
                     if ($ref.length) replace = true;
                     if (!$ref.length) $ref = $("#sotd", doc);
                     if (!$ref.length) $ref = $("#abstract", doc);
-                    replace ? $ref.replaceWith($sec) : $ref.after($sec);
+                    if (replace) {
+                        $ref.replaceWith($sec);
+                    }
+                    else {
+                        $ref.after($sec);
+                    }
                 }
 
                 // Update all anchors with empty content that reference a section ID
@@ -21773,7 +21792,7 @@ define(
                     var id = $a.attr("href").slice(1);
                     if (secMap[id]) {
                         $a.addClass('sec-ref');
-                        $a.html(($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
+                        $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
                     }
                 });
 
