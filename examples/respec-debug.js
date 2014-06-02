@@ -13412,7 +13412,9 @@ define(
                 var statStyle = conf.specStatus;
                 var css = "https://";
 //                if (statStyle === "unofficial") {
-                    css += "sglaser.github.io/respec/stylesheets/unofficial.css";
+                css += "sglaser.github.io/";
+                css += "respec/stylesheets/unofficial.css";
+                css = "respec/stylesheets/unofficial.css";
 //                }
 //                else if (statStyle === "base") {
 //                    css += "sglaser.github.io/respec/stylesheets/base.css";
@@ -15419,6 +15421,42 @@ define(
                 }
 
                 msg.pub("end", "pcisig/headers");
+                cb();
+            }
+        };
+    }
+);
+
+/*global define */
+
+/* jshint browser: true */
+
+// Module core/footnotes
+//  Handles footnotes.
+
+// CONFIGURATION:
+
+define(
+    'core/footnotes',[],function () {
+        
+
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/footnotes");
+                var $footnotes= $("span.footnote", doc);
+                if ($footnotes.length) {
+                    $footnotes.each(function(index) {
+                        $(this).prepend("<span class='footnote-online'> [Footnote: </span>")
+                            .append("<span class='footnote-online'>] </span>");
+                        var id = "footnote-" + (index+1);
+                        var span = "<span class='footnote-contents' id='footnote-" + (index+1) + "'></span>";
+                        var input = "<input type='checkbox' name='footnote-" + (index+1) +
+                                                       "' value='#footnote-" + (index+1) + "'></input>";
+                        $(this).wrapInner(span)
+                            .prepend(input);
+                    });
+                }
+                msg.pub("end", "core/footnotes");
                 cb();
             }
         };
@@ -22031,6 +22069,7 @@ define('profile-pcisig-common',[
         ,   "core/style"
         ,   "pcisig/style"
         ,   "pcisig/headers"
+        ,   "core/footnotes"
         ,   "w3c/abstract"
         ,   "pcisig/conformance"
         ,   "core/data-transform"
