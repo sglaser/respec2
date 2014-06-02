@@ -13,14 +13,14 @@ body {
     background: white no-repeat fixed top left;
 }
 
-:link { color: #00C; background: transparent }
+:link { color: #00C; background: transparent; }
 
-:visited { color: #609; background: transparent }
+:visited { color: #609; background: transparent; }
 
-a:active { color: #C00; background: transparent }
+a:active { color: #C00; background: transparent; }
 
 a:link img,
-a:visited img { border-style: none }    /* no border on img links */
+a:visited img { border-style: none; }    /* no border on img links */
 a img { color: inherit; }
 
 h1,
@@ -28,41 +28,41 @@ h2,
 h3,
 h4,
 h5,
-h6 { text-align: left }
+h6 { text-align: left; }
 
 /* background should be transparent, but WebTV has a bug */
 h1,
 h2,
 h3 { color: #005A9C; }
-h1 { font: 170% sans-serif }
-h2 { font: 140% sans-serif }
-h3 { font: 120% sans-serif }
-h4 { font: bold 100% sans-serif }
-h5 { font: italic 100% sans-serif }
-h6 { font: small-caps 100% sans-serif }
+h1 { font: 170% sans-serif; }
+h2 { font: 140% sans-serif; }
+h3 { font: 120% sans-serif; }
+h4 { font: bold 100% sans-serif; }
+h5 { font: italic 100% sans-serif; }
+h6 { font: small-caps 100% sans-serif; }
 
-.hide { display: none }
+.hide { display: none; }
 
 /* document head material (disclaimer, etc) */
-div.head { margin-bottom: 1em }
-div.head h1 { margin-top: 2em; clear: both }
+div.head { margin-bottom: 1em; }
+div.head h1 { margin-top: 2em; clear: both; }
 div.head table.head { margin-left: 0; margin-top: 0; border: none; }
 div.head table.head td { border: none; font-size: small; padding: 1px 3px;}
 div.head table.head td small { border: none; font-size: small; padding: 1px 3px;}
 
-p.copyright { font-size: small }
-p.copyright small { font-size: small }
+p.copyright { font-size: small; }
+p.copyright small { font-size: small; }
 
 @media screen {  /* hide from IE3 */
-    a[href]:hover { background: #ffa }
+    a[href]:hover { background: #ffa; }
 }
 
-pre { margin-left: 2em }
+pre { margin-left: 2em; }
 
 dt,
-dd { margin-top: 0; margin-bottom: 0 }
+dd { margin-top: 0; margin-bottom: 0; }
  /* opera 3.50 */
-dt { font-weight: bold }
+dt { font-weight: bold; }
 
 pre,
 code {
@@ -74,11 +74,11 @@ code {
 @media aural {
     h1,
     h2,
-    h3 { stress: 20; richness: 90 }
-    .hide { speak: none }
-    p.copyright { volume: x-soft; speech-rate: x-fast }
-    dt { pause-before: 63ms }
-    pre { speak-punctuation: code }
+    h3 { stress: 20; richness: 90; }
+    .hide { speak: none; }
+    p.copyright { volume: x-soft; speech-rate: x-fast; }
+    dt { pause-before: 63ms; }
+    pre { speak-punctuation: code; }
 }
 
 .content {
@@ -577,7 +577,7 @@ path.regBitBracket0 {
 
 
     img {
-        max-width: 100%
+        max-width: 100%;
     }
 
 }
