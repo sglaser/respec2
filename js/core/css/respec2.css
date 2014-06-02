@@ -49,7 +49,9 @@ code {
     text-decoration:    none;
 }
 
-a .secno, a .figno, a .tblno {
+.tocline a .secno,
+.tofline a .figno,
+.totline a .tblno {
     color:  #000;
 }
 
