@@ -175,10 +175,10 @@ table {
     border-bottom: 3px solid #0060A9;
 }
 
-table th {
+/*table th {
     background: #0060A9;
     color: white;
-}
+}*/
 
 table caption {
     margin: 12px 0;
