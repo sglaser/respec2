@@ -180,6 +180,10 @@ define(
                         conf.doRDFa = '1.1';
                     }
                 }
+
+                if (!conf.figFmt) conf.figFmt = "Figure %(%1%c-%#%)<span class='fig-title'>: </span>%t";
+                if (!conf.tblFmt) conf.tblFmt = "Table %(%1%c-%#%)<span class='tbl-title'>: </span>%t";
+
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
