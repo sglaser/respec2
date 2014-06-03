@@ -8,42 +8,64 @@ define(
     ["core/utils"],
     function (utils) {
         "use strict";
-        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
-            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+        var make_fig_num = function (fmt, doc, chapter, $cap, label, num) {
+            //console.log("\n\nmake_"+label+"_num(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap[0].outerHTML + "' label='" + label + "' num='" + num + "'");
             if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
                 $cap.wrapInner($("<span class='" + label + "title'/>"));
                 return num;
             }
-            var $num = $("<span class='" + label + "no'/>");
-            var $title = $cap.clone().renameElement("span").addClass(label + "title");
-            //console.log("title='" + $title.html() + "'");
+            var $title = $cap.clone().renameElement("span").attr("class", label + "title");
+            //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $cap;
+            var $cur = $("<span class='" + label + "decoration'/>");
             $cap.html("");
-            //console.log("$cur='"+$cur.html()+"'");
+            //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
+            var added = 0;
             for (var i = 0; i < sfmt.length; i++) {
                 var s = sfmt[i];
                 switch (s.substr(0,1)) {
                     case " ": break;
-                    case "(": $cur = $num; break;
-                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "(":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "no'/>");
+                        break;
+                    case ")":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
                     case "c": $cur.append(doc.createTextNode(chapter)); break;
                     case "1": if (num[1] !== chapter) num = [1, chapter]; break;
-                    case "t": $cur.append($title); break;
-                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                    case "t":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cap.append($title);
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
+                    default:
+                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
+                        break;
                 }
                 $cur.append(doc.createTextNode(s.substr(1)));
-                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur.html=\"" + $cur[0].outerHTML + "\"");
+            }
+            if ($cur.text() !== "") {
+                $cap.append($cur);
             }
             num[0]++;
-            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+            //console.log("returning $cap='" + $cap[0].outerHTML + "' num='" + num + "'");
 
             return num;
         };
+
         return {
             run:        function (conf, doc, cb, msg) {
                 msg.pub("start", "core/tables");
@@ -67,7 +89,7 @@ define(
 						,   id = $tbl.makeID("tbl", $cap.text());
 						if ($cap.length) {
 							// if caption exists, add Table # and class
-							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
+							num = make_fig_num(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
 							tblMap[id] = $cap.contents().clone();
                             var $totCap = $cap.clone();
                             $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
