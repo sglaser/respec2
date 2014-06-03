@@ -15195,6 +15195,10 @@ define(
                         conf.doRDFa = '1.1';
                     }
                 }
+
+                if (!conf.figFmt) conf.figFmt = "%(Figure %1%c-%#%): %t";
+                if (!conf.tblFmt) conf.tblFmt = "%(Table %1%c-%#%): %t";
+
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
@@ -17742,6 +17746,7 @@ define(
     }
 );
 
+/*globals define*/
 
 // Module core/figure
 // Handles figures in the document. This encompasses two primary operations. One is
@@ -17753,39 +17758,61 @@ define(
 define(
     'core/figures',["core/utils"],
     function (utils) {
-        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
-            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+        
+        var make_fig_num = function (fmt, doc, chapter, $cap, label, num) {
+            //console.log("\n\nmake_"+label+"_num(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap[0].outerHTML + "' label='" + label + "' num='" + num + "'");
             if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
                 $cap.wrapInner($("<span class='" + label + "title'/>"));
                 return num;
             }
-            var $num = $("<span class='" + label + "no'/>");
-            var $title = $cap.clone().renameElement("span").addClass(label + "title");
-            //console.log("title='" + $title.html() + "'");
+            var $title = $cap.clone().renameElement("span").attr("class", label + "title");
+            //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $cap;
+            var $cur = $("<span class='" + label + "decoration'/>");
             $cap.html("");
-            //console.log("$cur='"+$cur.html()+"'");
+            //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
+            var added = 0;
             for (var i = 0; i < sfmt.length; i++) {
                 var s = sfmt[i];
                 switch (s.substr(0,1)) {
                     case " ": break;
-                    case "(": $cur = $num; break;
-                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "(":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "no'/>");
+                        break;
+                    case ")":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
                     case "c": $cur.append(doc.createTextNode(chapter)); break;
-                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
-                    case "t": $cur.append($title); break;
-                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                    case "1": if (num[1] !== chapter) num = [1, chapter]; break;
+                    case "t":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cap.append($title);
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
+                    default:
+                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
+                        break;
                 }
                 $cur.append(doc.createTextNode(s.substr(1)));
-                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur.html=\"" + $cur[0].outerHTML + "\"");
+            }
+            if ($cur.text() !== "") {
+                $cap.append($cur);
             }
             num[0]++;
-            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+            //console.log("returning $cap='" + $cap[0].outerHTML + "' num='" + num + "'");
 
             return num;
         };
@@ -17794,7 +17821,7 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
                 if (!conf.figFmt) conf.figFmt = "Fig. %(%#%) %t"; //"%1Figure %(%c-%#%): %t";
-                
+
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
                     var $figure = $(figure)
@@ -17837,10 +17864,11 @@ define(
 						if ($cap.length > 1) msg.pub("warn", "A <figure> should not have more than one <figcaption>.");
                     
 						// set proper caption title
-						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
+						num = make_fig_num(conf.figFmt, doc, chapter ,$cap, "fig", num);
 						figMap[id] = $cap.contents().clone();
                         var $tofCap = $cap.clone();
-                        $tofCap.find("a").renameElement("span").removeAttr("href");
+                        $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+                        $tofCap.find("dfn").renameElement("span").removeAttr("id");
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
                                 .append($tofCap.contents())
@@ -17868,7 +17896,7 @@ define(
                     // if all the preceding section siblings are introductory, make it introductory
                     // if there is a preceding section sibling which is an appendix, make it appendix
                     if (!$tof.hasClass("appendix") && !$tof.hasClass("introductory") && !$tof.parents("section").length) {
-                        if ($tof.prevAll("section.introductory").length == $tof.prevAll("section").length) {
+                        if ($tof.prevAll("section.introductory").length === $tof.prevAll("section").length) {
                             $tof.addClass("introductory");
                         }
                         else if ($tof.prevAll("appendix").length) {
@@ -17887,6 +17915,7 @@ define(
     }
 );
 
+/*globals define */
 
 // Module core/table
 // Handles tables in the document. This enables enable the generation of a Table of Tables wherever there is a #tot element
@@ -17895,42 +17924,65 @@ define(
 define(
     'core/tables',["core/utils"],
     function (utils) {
-        var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
-            //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
+        
+        var make_fig_num = function (fmt, doc, chapter, $cap, label, num) {
+            //console.log("\n\nmake_"+label+"_num(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap[0].outerHTML + "' label='" + label + "' num='" + num + "'");
             if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
                 $cap.wrapInner($("<span class='" + label + "title'/>"));
                 return num;
             }
-            var $num = $("<span class='" + label + "no'/>");
-            var $title = $cap.clone().renameElement("span").addClass(label + "title");
-            //console.log("title='" + $title.html() + "'");
+            var $title = $cap.clone().renameElement("span").attr("class", label + "title");
+            //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $cap;
+            var $cur = $("<span class='" + label + "decoration'/>");
             $cap.html("");
-            //console.log("$cur='"+$cur.html()+"'");
+            //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
+            var added = 0;
             for (var i = 0; i < sfmt.length; i++) {
                 var s = sfmt[i];
                 switch (s.substr(0,1)) {
                     case " ": break;
-                    case "(": $cur = $num; break;
-                    case ")": $cur = $cap; $cur.append($num); $num = $("<span class='"+label+"no'/>"); break;
+                    case "(":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "no'/>");
+                        break;
+                    case ")":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
                     case "c": $cur.append(doc.createTextNode(chapter)); break;
-                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
-                    case "t": $cur.append($title); break;
-                    default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
+                    case "1": if (num[1] !== chapter) num = [1, chapter]; break;
+                    case "t":
+                        if ($cur.text() !== "") {
+                            $cap.append($cur);
+                        }
+                        $cap.append($title);
+                        $cur = $("<span class='" + label + "decoration'/>");
+                        break;
+                    default:
+                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
+                        break;
                 }
                 $cur.append(doc.createTextNode(s.substr(1)));
-                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur=\""+$cur.html()+"\"");
+                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur.html=\"" + $cur[0].outerHTML + "\"");
+            }
+            if ($cur.text() !== "") {
+                $cap.append($cur);
             }
             num[0]++;
-            //console.log("returning $cap='" + $cap.html() + "' num='" + num + "'");
+            //console.log("returning $cap='" + $cap[0].outerHTML + "' num='" + num + "'");
 
             return num;
         };
+
         return {
             run:        function (conf, doc, cb, msg) {
                 msg.pub("start", "core/tables");
@@ -17938,26 +17990,27 @@ define(
                 //conf.tblFmt = "";
 
                 // process all tables
-                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;;
+                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;
                 var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
-			        if ($sec.hasClass("appendix") && !appendixMode) {
-	                        lastNonAppendix = i;
-	                        appendixMode = true;
-	                }
-	                var chapter = i + 1;
-	                if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
+                    if ($sec.hasClass("appendix") && !appendixMode) {
+                        lastNonAppendix = i;
+                        appendixMode = true;
+                    }
+                    var chapter = i + 1;
+                    if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
                     $("table", $sec).each(function () {
 						var $tbl = $(this)
 						,   $cap = $tbl.find("caption")
 						,   id = $tbl.makeID("tbl", $cap.text());
 						if ($cap.length) {
 							// if caption exists, add Table # and class
-							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
+							num = make_fig_num(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
 							tblMap[id] = $cap.contents().clone();
                             var $totCap = $cap.clone();
-                            $totCap.find("a").renameElement("span").removeAttr("href");
+                            $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+                            $totCap.find("dfn").renameElement("span").removeAttr("id");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
 									.append($totCap.contents())
@@ -17986,7 +18039,7 @@ define(
                     // if all the preceding section siblings are introductory, make it introductory
                     // if there is a preceding section sibling which is an appendix, make it appendix
                     if (! $tot.hasClass("appendix") && ! $tot.hasClass("introductory") && ! $tot.parents("section").length) {
-                        if ($tot.prevAll("section.introductory").length == $tot.prevAll("section").length) {
+                        if ($tot.prevAll("section.introductory").length === $tot.prevAll("section").length) {
                             $tot.addClass("introductory");
                         } else if ($tot.prevAll("appendix").length) {
                             $tot.addClass("appendix");
@@ -22061,7 +22114,8 @@ define(
     }
 );
 
-/*global respecVersion */
+/*global define, respecVersion */
+
 
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
