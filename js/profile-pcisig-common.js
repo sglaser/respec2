@@ -1,5 +1,6 @@
-/*global respecVersion */
+/*global define, respecVersion */
 
+"use strict";
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
     shim:   {

@@ -1,3 +1,4 @@
+/*globals define*/
 
 // Module core/figure
 // Handles figures in the document. This encompasses two primary operations. One is
@@ -9,6 +10,7 @@
 define(
     ["core/utils"],
     function (utils) {
+        "use strict";
         var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
             //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
             if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
@@ -33,7 +35,7 @@ define(
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
                     case "c": $cur.append(doc.createTextNode(chapter)); break;
-                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "1": if (num[1] !== chapter) num = [1, chapter]; break;
                     case "t": $cur.append($title); break;
                     default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
                 }
@@ -124,7 +126,7 @@ define(
                     // if all the preceding section siblings are introductory, make it introductory
                     // if there is a preceding section sibling which is an appendix, make it appendix
                     if (!$tof.hasClass("appendix") && !$tof.hasClass("introductory") && !$tof.parents("section").length) {
-                        if ($tof.prevAll("section.introductory").length == $tof.prevAll("section").length) {
+                        if ($tof.prevAll("section.introductory").length === $tof.prevAll("section").length) {
                             $tof.addClass("introductory");
                         }
                         else if ($tof.prevAll("appendix").length) {

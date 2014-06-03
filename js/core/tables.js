@@ -1,3 +1,4 @@
+/*globals define */
 
 // Module core/table
 // Handles tables in the document. This enables enable the generation of a Table of Tables wherever there is a #tot element
@@ -6,6 +7,7 @@
 define(
     ["core/utils"],
     function (utils) {
+        "use strict";
         var makeFigNum = function (fmt, doc, chapter, $cap, label, num) {
             //console.log("makefigNum(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap.html() + "' label='" + label + "' num='" + num + "'");
             if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
@@ -30,7 +32,7 @@ define(
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
                     case "c": $cur.append(doc.createTextNode(chapter)); break;
-                    case "1": if (num[1] != chapter) num = [1, chapter]; break;
+                    case "1": if (num[1] !== chapter) num = [1, chapter]; break;
                     case "t": $cur.append($title); break;
                     default: $cur.append(doc.createTextNode("?{%"+s.substr(0,1)+"}")); break;
                 }
@@ -49,7 +51,7 @@ define(
                 //conf.tblFmt = "";
 
                 // process all tables
-                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;;
+                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;
                 var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
@@ -97,7 +99,7 @@ define(
                     // if all the preceding section siblings are introductory, make it introductory
                     // if there is a preceding section sibling which is an appendix, make it appendix
                     if (! $tot.hasClass("appendix") && ! $tot.hasClass("introductory") && ! $tot.parents("section").length) {
-                        if ($tot.prevAll("section.introductory").length == $tot.prevAll("section").length) {
+                        if ($tot.prevAll("section.introductory").length === $tot.prevAll("section").length) {
                             $tot.addClass("introductory");
                         } else if ($tot.prevAll("appendix").length) {
                             $tot.addClass("appendix");
