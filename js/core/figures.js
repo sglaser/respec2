@@ -52,7 +52,7 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
                 if (!conf.figFmt) conf.figFmt = "Fig. %(%#%) %t"; //"%1Figure %(%c-%#%): %t";
-                
+
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
                     var $figure = $(figure)
@@ -98,7 +98,8 @@ define(
 						num = makeFigNum(conf.figFmt, doc, chapter ,$cap, "fig", num);
 						figMap[id] = $cap.contents().clone();
                         var $tofCap = $cap.clone();
-                        $tofCap.find("a").renameElement("span").removeAttr("href");
+                        $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+                        $tofCap.find("dfn").renameElement("span").removeAttr("id");
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
                                 .append($tofCap.contents())

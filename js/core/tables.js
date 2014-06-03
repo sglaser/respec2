@@ -55,12 +55,12 @@ define(
                 var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
-			        if ($sec.hasClass("appendix") && !appendixMode) {
-	                        lastNonAppendix = i;
-	                        appendixMode = true;
-	                }
-	                var chapter = i + 1;
-	                if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
+                    if ($sec.hasClass("appendix") && !appendixMode) {
+                        lastNonAppendix = i;
+                        appendixMode = true;
+                    }
+                    var chapter = i + 1;
+                    if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
                     $("table", $sec).each(function () {
 						var $tbl = $(this)
 						,   $cap = $tbl.find("caption")
@@ -70,7 +70,8 @@ define(
 							num = makeFigNum(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
 							tblMap[id] = $cap.contents().clone();
                             var $totCap = $cap.clone();
-                            $totCap.find("a").renameElement("span").removeAttr("href");
+                            $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+                            $totCap.find("dfn").renameElement("span").removeAttr("id");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
 									.append($totCap.contents())
