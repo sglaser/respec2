@@ -61,9 +61,9 @@
         .tot a {
             text-decoration: none;
         }
-        a .secno,
-        a .figno,
-        a .tblno {
+        .tocline a .secno,
+        .tofline a .figno,
+        .totline a .tblno {
             color: #000;
         }
         ul.toc > li.tocline,
@@ -288,7 +288,7 @@
             border: 0;
         }
     </style>
-    <link rel="stylesheet" href="https://sglaser.github.io/respec/stylesheets/unofficial.css">
+    <link rel="stylesheet" href="respec/stylesheets/unofficial.css">
 </head>
 
 <body class="h-entry" role="document" id="respecDocument">
@@ -313,8 +313,8 @@
         </div>
         <h1 class="title p-name" id="title" property="dcterms:title">PCISIG ReSpec Example</h1>
 
-        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-05-31T14:10:32.000Z" class="nolink" id="x31-may-2014">
-<time class="dt-published" datetime="2014-05-31">31 May 2014</time>
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-06-04T08:37:35.000Z" class="nolink" id="x04-june-2014">
+<time class="dt-published" datetime="2014-06-04">04 June 2014</time>
 </h2>
         <dl>
 
@@ -454,32 +454,32 @@
 
 
     </section>
-    <section id="toc">
-        <h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents<span typeof="bookmark" class="permalink">&nbsp;<a href="#toc" property="url" aria-label="Permalink for toc" title="Permalink for toc"><span property="title" content="Table of Contents">§</span></a></span></h2>
+    <section class="introductory" id="toc">
+        <h2 aria-level="1" role="heading" id="h2_toc">Table of Contents</h2>
         <ul class="toc" role="directory" id="respecContents">
-            <li class="tocline"><a href="#informative-section" class="tocxref"><span class="secno">1. </span>Informative section</a>
+            <li class="tocline"><a href="#sect-informative-section" class="tocxref"><span class="secno">1. </span>Informative section</a>
                 <ul class="toc">
-                    <li class="tocline"><a href="#inner-section" class="tocxref"><span class="secno">1.1 </span>Inner section</a>
+                    <li class="tocline"><a href="#sect-inner-section" class="tocxref"><span class="secno">1.1 </span>Inner section</a>
                     </li>
-                    <li class="tocline"><a href="#other-inner-section" class="tocxref"><span class="secno">1.2 </span>Other inner section</a>
+                    <li class="tocline"><a href="#sect-other-inner-section" class="tocxref"><span class="secno">1.2 </span>Other inner section</a>
                     </li>
                 </ul>
             </li>
-            <li class="tocline"><a href="#terms-and-acronyms" class="tocxref"><span class="secno">2. </span>Terms and Acronyms</a>
+            <li class="tocline"><a href="#sect-terms-and-acronyms" class="tocxref"><span class="secno">2. </span>Terms and Acronyms</a>
                 <ul class="toc">
-                    <li class="tocline"><a href="#references" class="tocxref"><span class="secno">2.1 </span>References:</a>
+                    <li class="tocline"><a href="#sect-references" class="tocxref"><span class="secno">2.1 </span>References:</a>
                     </li>
                 </ul>
             </li>
-            <li class="tocline"><a href="#mathml-test" class="tocxref"><span class="secno">3. </span>MathML Test</a>
+            <li class="tocline"><a href="#sect-mathml-test" class="tocxref"><span class="secno">3. </span>MathML Test</a>
             </li>
-            <li class="tocline"><a href="#json-example-register-figure" class="tocxref"><span class="secno">4. </span>JSON Example Register Figure</a>
+            <li class="tocline"><a href="#sect-json-example-register-figure" class="tocxref"><span class="secno">4. </span>JSON Example Register Figure</a>
             </li>
-            <li class="tocline"><a href="#pcisig-style-registers" class="tocxref"><span class="secno">5. </span>PCISIG style Registers</a>
+            <li class="tocline"><a href="#sect-pcisig-style-registers" class="tocxref"><span class="secno">5. </span>PCISIG style Registers</a>
             </li>
-            <li class="tocline"><a href="#device-capabilities-2-register-offset-24h" class="tocxref"><span class="secno">6. </span>Device Capabilities 2 Register (Offset 24h)</a>
+            <li class="tocline"><a href="#sect-device-capabilities-2-register-offset-24h" class="tocxref"><span class="secno">6. </span>Device Capabilities 2 Register (Offset 24h)</a>
             </li>
-            <li class="tocline"><a href="#name-clashes-after-and-deep-stuff" class="tocxref"><span class="secno">7. </span>Name <span class="formerLink">clashes</span> after <span>and <span class="formerLink">deep</span> stuff</span></a>
+            <li class="tocline"><a href="#sect-name-clashes-after-and-deep-stuff" class="tocxref"><span class="secno">7. </span>Name <span class="formerLink">clashes</span> after <span>and <span class="formerLink">deep</span> stuff</span></a>
             </li>
             <li class="tocline"><a href="#definition-map" class="tocxref"><span class="secno">A. </span>Definition Map</a>
             </li>
@@ -489,41 +489,41 @@
     <section id="tof" class="introductory" typeof="bibo:Chapter" resource="#tof" rel="bibo:Chapter">
         <h2 aria-level="1" role="heading" id="h2_tof">Table of Figures</h2>
         <ul class="tof" role="directory" id="respecFigures">
-            <li class="tofline"><a class="tocxref" href="#json-register">Figure <span class="figno">4-1</span>: <span class="figtitle">Graph for JSON Defined Register Example</span></a>
+            <li class="tofline"><a class="tocxref" href="#json-register"><span class="figdecoration">Figure </span><span class="figno">4-1</span><span class="figdecoration">: </span><span class="figtitle">Graph for JSON Defined Register Example</span></a>
             </li>
-            <li class="tofline"><a class="tocxref" href="#fig-pcisig-style-register-1">Figure <span class="figno">5-1</span>: <span class="figtitle">PCISIG-Style Register #1</span></a>
+            <li class="tofline"><a class="tocxref" href="#fig-pcisig-style-register-1"><span class="figdecoration">Figure </span><span class="figno">5-1</span><span class="figdecoration">: </span><span class="figtitle">PCISIG-Style Register #1</span></a>
             </li>
-            <li class="tofline"><a class="tocxref" href="#fig-device-capabilities-2-register">Figure <span class="figno">6-1</span>: <span class="figtitle">Device Capabilities 2 Register</span></a>
+            <li class="tofline"><a class="tocxref" href="#fig-device-capabilities-2-register"><span class="figdecoration">Figure </span><span class="figno">6-1</span><span class="figdecoration">: </span><span class="figtitle">Device Capabilities 2 Register</span></a>
             </li>
         </ul>
     </section>
     <section id="tot" class="introductory" typeof="bibo:Chapter" resource="#tot" rel="bibo:Chapter">
         <h2 aria-level="1" role="heading" id="h2_tot">Table of Tables</h2>
         <ul class="tot" role="directory" id="respecTables">
-            <li class="totline"><a class="tocxref" href="#reg1">Table <span class="tblno">5-1</span>: <span class="tbltitle">PCISIG-Style Register #1</span></a>
+            <li class="totline"><a class="tocxref" href="#reg1"><span class="tbldecoration">Table </span><span class="tblno">5-1</span><span class="tbldecoration">: </span><span class="tbltitle">PCISIG-Style Register #1</span></a>
             </li>
-            <li class="totline"><a class="tocxref" href="#reg_pcie_capability__device_capability_2">Table <span class="tblno">6-1</span>: <span class="tbltitle">Device Capabilities 2 Register</span></a>
+            <li class="totline"><a class="tocxref" href="#reg_pcie_capability__device_capability_2"><span class="tbldecoration">Table </span><span class="tblno">6-1</span><span class="tbldecoration">: </span><span class="tbltitle">Device Capabilities 2 Register</span></a>
             </li>
         </ul>
     </section>
-    <section class="informative" id="informative-section">
+    <section class="informative" id="sect-informative-section">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_informative-section"><span class="secno">1. </span>Informative section<span typeof="bookmark" class="permalink">&nbsp;<a href="#informative-section" property="url" aria-label="Permalink for informative-section" title="Permalink for informative-section"><span property="title" content="1. Informative section">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-informative-section"><span class="secno">1. </span><span class="sec-title">Informative section</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-informative-section" property="url" aria-label="Permalink for sect-informative-section" title="Permalink for sect-informative-section"><span property="title" content="1. Informative section">§</span></a></span></h2>
         <p><em>This section is non-normative.</em>
         </p>
         <p>blah</p>
-        <section id="inner-section">
-            <h3 aria-level="2" role="heading" id="h3_inner-section"><span class="secno">1.1 </span>Inner section<span typeof="bookmark" class="permalink">&nbsp;<a href="#inner-section" property="url" aria-label="Permalink for inner-section" title="Permalink for inner-section"><span property="title" content="1.1 Inner section">§</span></a></span></h3>
+        <section id="sect-inner-section">
+            <h3 class="section-level-2" aria-level="2" role="heading" id="h3_sect-inner-section"><span class="secno">1.1 </span><span class="sec-title">Inner section</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-inner-section" property="url" aria-label="Permalink for sect-inner-section" title="Permalink for sect-inner-section"><span property="title" content="1.1 Inner section">§</span></a></span></h3>
             <p>blahblah</p>
         </section>
-        <section id="other-inner-section">
-            <h3 aria-level="2" role="heading" id="h3_other-inner-section"><span class="secno">1.2 </span>Other inner section<span typeof="bookmark" class="permalink">&nbsp;<a href="#other-inner-section" property="url" aria-label="Permalink for other-inner-section" title="Permalink for other-inner-section"><span property="title" content="1.2 Other inner section">§</span></a></span></h3>
+        <section id="sect-other-inner-section">
+            <h3 class="section-level-2" aria-level="2" role="heading" id="h3_sect-other-inner-section"><span class="secno">1.2 </span><span class="sec-title">Other inner section</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-other-inner-section" property="url" aria-label="Permalink for sect-other-inner-section" title="Permalink for sect-other-inner-section"><span property="title" content="1.2 Other inner section">§</span></a></span></h3>
             <p>blahblah</p>
         </section>
     </section>
-    <section id="terms-and-acronyms">
+    <section id="sect-terms-and-acronyms">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_terms-and-acronyms"><span class="secno">2. </span>Terms and Acronyms<span typeof="bookmark" class="permalink">&nbsp;<a href="#terms-and-acronyms" property="url" aria-label="Permalink for terms-and-acronyms" title="Permalink for terms-and-acronyms"><span property="title" content="2. Terms and Acronyms">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-terms-and-acronyms"><span class="secno">2. </span><span class="sec-title">Terms and Acronyms</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-terms-and-acronyms" property="url" aria-label="Permalink for sect-terms-and-acronyms" title="Permalink for sect-terms-and-acronyms"><span property="title" content="2. Terms and Acronyms">§</span></a></span></h2>
         <p>Support has been added to automatically detect, format, and link terms and associated definitions.</p>
         <p>
             Terms are defined using the <code>&lt;dfn class="xxx"&gt;</code> tag. Term namespaces are independent for each class (e.g. it's OK to have <code>&lt;dfn&nbsp;class="pin"&gt;foo&lt;/dfn&gt;</code> and <code>&lt;dfn&nbsp;class="signal"&gt;foo&lt;/dfn&gt;</code>. Valid class values are:
@@ -577,8 +577,8 @@
             <dt><dfn class="term" id="term-term-9">Term 9</dfn></dt>
             <dd>This is the definition for Term #9. It uses &lt;dfn class="term"&gt;.</dd>
         </dl>
-        <section id="references">
-            <h3 aria-level="2" role="heading" id="h3_references"><span class="secno">2.1 </span>References:<span typeof="bookmark" class="permalink">&nbsp;<a href="#references" property="url" aria-label="Permalink for references" title="Permalink for references"><span property="title" content="2.1 References:">§</span></a></span></h3>
+        <section id="sect-references">
+            <h3 class="section-level-2" aria-level="2" role="heading" id="h3_sect-references"><span class="secno">2.1 </span><span class="sec-title">References:</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-references" property="url" aria-label="Permalink for sect-references" title="Permalink for sect-references"><span property="title" content="2.1 References:">§</span></a></span></h3>
             <ul>
                 <li>Term1 <a href="#dfn-term1" class="internalDFN dfn">Term1</a>
                 </li>
@@ -635,9 +635,9 @@
             </ul>
         </section>
     </section>
-    <section id="mathml-test">
+    <section id="sect-mathml-test">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_mathml-test"><span class="secno">3. </span>MathML Test<span typeof="bookmark" class="permalink">&nbsp;<a href="#mathml-test" property="url" aria-label="Permalink for mathml-test" title="Permalink for mathml-test"><span property="title" content="3. MathML Test">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-mathml-test"><span class="secno">3. </span><span class="sec-title">MathML Test</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-mathml-test" property="url" aria-label="Permalink for sect-mathml-test" title="Permalink for sect-mathml-test"><span property="title" content="3. MathML Test">§</span></a></span></h2>
         <p>This is a simple MathML equation (pi times r squared).
             <math>
                 <mi>π
@@ -654,9 +654,9 @@
         </p>
 
     </section>
-    <section id="json-example-register-figure">
+    <section id="sect-json-example-register-figure">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_json-example-register-figure"><span class="secno">4. </span>JSON Example Register Figure<span typeof="bookmark" class="permalink">&nbsp;<a href="#json-example-register-figure" property="url" aria-label="Permalink for json-example-register-figure" title="Permalink for json-example-register-figure"><span property="title" content="4. JSON Example Register Figure">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-json-example-register-figure"><span class="secno">4. </span><span class="sec-title">JSON Example Register Figure</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-json-example-register-figure" property="url" aria-label="Permalink for sect-json-example-register-figure" title="Permalink for sect-json-example-register-figure"><span property="title" content="4. JSON Example Register Figure">§</span></a></span></h2>
         <figure id="json-register" class="register">
             <pre class="json" style="display: none;">            { "width" : 32,
               "unused" : "Bogus",
@@ -693,7 +693,7 @@
                 } ] }
         </pre>
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="194" viewBox="0 0 754 194">
+                <svg version="1.1" width="100%" height="194" viewBox="0 0 736 194">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="448" y="12" class="regBitNum">4</text>
@@ -708,7 +708,7 @@
                         <text x="384" y="12" class="regBitNum">8</text>
                         <text x="288" y="12" class="regBitNum">14</text>
                         <text x="16" y="12" class="regBitNum">31</text>
-                        <path d="M520,-3l0,16M424,-3l0,16M376,-3l0,16M360,-3l0,16M344,-3l0,16M328,-3l0,16M312,-3l0,16M440,-3l0,16M392,-3l0,16M296,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,2l0,16M424,2l0,16M376,2l0,16M360,2l0,16M344,2l0,16M328,2l0,16M312,2l0,16M440,2l0,16M392,2l0,16M296,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="440" y="16" width="80" height="32" class="regFieldBox regFieldBoxro"></rect>
@@ -786,7 +786,7 @@
                     </g>
                 </svg>
             </div>
-            <figcaption>Figure <span class="figno">4-1</span>: <span class="figtitle">Graph for JSON Defined Register Example</span>
+            <figcaption><span class="figdecoration">Figure </span><span class="figno">4-1</span><span class="figdecoration">: </span><span class="figtitle">Graph for JSON Defined Register Example</span>
             </figcaption>
         </figure>
         <p>These are references to fields that were defined as terms in this JSON example.</p>
@@ -803,12 +803,12 @@
         </ul>
 
     </section>
-    <section id="pcisig-style-registers">
+    <section id="sect-pcisig-style-registers">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_pcisig-style-registers"><span class="secno">5. </span>PCISIG style Registers<span typeof="bookmark" class="permalink">&nbsp;<a href="#pcisig-style-registers" property="url" aria-label="Permalink for pcisig-style-registers" title="Permalink for pcisig-style-registers"><span property="title" content="5. PCISIG style Registers">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-pcisig-style-registers"><span class="secno">5. </span><span class="sec-title">PCISIG style Registers</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-pcisig-style-registers" property="url" aria-label="Permalink for sect-pcisig-style-registers" title="Permalink for sect-pcisig-style-registers"><span property="title" content="5. PCISIG style Registers">§</span></a></span></h2>
         <figure class="register pcisig_reg" data-table="#reg1" id="fig-pcisig-style-register-1">
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="257" viewBox="0 0 580 257">
+                <svg version="1.1" width="100%" height="257" viewBox="0 0 578 257">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="496" y="12" class="regBitNum">1</text>
@@ -825,7 +825,7 @@
                         <text x="304" y="12" class="regBitNum">13</text>
                         <text x="272" y="12" class="regBitNum">15</text>
                         <text x="16" y="12" class="regBitNum">31</text>
-                        <path d="M520,-3l0,16M504,-3l0,16M472,-3l0,16M456,-3l0,16M440,-3l0,16M424,-3l0,16M408,-3l0,16M392,-3l0,16M376,-3l0,16M296,-3l0,16M360,-3l0,16M280,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,2l0,16M504,2l0,16M472,2l0,16M456,2l0,16M440,2l0,16M424,2l0,16M408,2l0,16M392,2l0,16M376,2l0,16M296,2l0,16M360,2l0,16M280,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="504" y="16" width="16" height="32" class="regFieldBox regFieldBoxro"></rect>
@@ -915,11 +915,11 @@
                     </g>
                 </svg>
             </div>
-            <figcaption>Figure <span class="figno">5-1</span>: <span class="figtitle">PCISIG-Style Register #1</span>
+            <figcaption><span class="figdecoration">Figure </span><span class="figno">5-1</span><span class="figdecoration">: </span><span class="figtitle">PCISIG-Style Register #1</span>
             </figcaption>
         </figure>
         <table class="pcisig_reg" id="reg1">
-            <caption>Table <span class="tblno">5-1</span>: <span class="tbltitle">PCISIG-Style Register #1</span>
+            <caption><span class="tbldecoration">Table </span><span class="tblno">5-1</span><span class="tbldecoration">: </span><span class="tbltitle">PCISIG-Style Register #1</span>
             </caption>
             <thead>
                 <tr>
@@ -1042,12 +1042,12 @@
             </tbody>
         </table>
     </section>
-    <section id="device-capabilities-2-register-offset-24h">
+    <section id="sect-device-capabilities-2-register-offset-24h">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_device-capabilities-2-register-offset-24h"><span class="secno">6. </span>Device Capabilities 2 Register (Offset 24h)<span typeof="bookmark" class="permalink">&nbsp;<a href="#device-capabilities-2-register-offset-24h" property="url" aria-label="Permalink for device-capabilities-2-register-offset-24h" title="Permalink for device-capabilities-2-register-offset-24h"><span property="title" content="6. Device Capabilities 2 Register (Offset 24h)">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-device-capabilities-2-register-offset-24h"><span class="secno">6. </span><span class="sec-title">Device Capabilities 2 Register (Offset 24h)</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-device-capabilities-2-register-offset-24h" property="url" aria-label="Permalink for sect-device-capabilities-2-register-offset-24h" title="Permalink for sect-device-capabilities-2-register-offset-24h"><span property="title" content="6. Device Capabilities 2 Register (Offset 24h)">§</span></a></span></h2>
         <figure class="register pcisig_reg" data-table="#reg_pcie_capability__device_capability_2" id="fig-device-capabilities-2-register">
             <div class="svg hasSVG">
-                <svg version="1.1" width="100%" height="404" viewBox="0 0 793 404">
+                <svg version="1.1" width="100%" height="404" viewBox="0 0 778 404">
                     <g>
                         <text x="512" y="12" class="regBitNum">0</text>
                         <text x="464" y="12" class="regBitNum">3</text>
@@ -1074,7 +1074,7 @@
                         <text x="240" y="12" class="regBitNum">17</text>
                         <text x="128" y="12" class="regBitNum">24</text>
                         <text x="32" y="12" class="regBitNum">30</text>
-                        <path d="M520,-3l0,16M456,-3l0,16M440,-3l0,16M424,-3l0,16M408,-3l0,16M392,-3l0,16M376,-3l0,16M360,-3l0,16M344,-3l0,16M328,-3l0,16M296,-3l0,16M232,-3l0,16M200,-3l0,16M184,-3l0,16M168,-3l0,16M24,-3l0,16M264,-3l0,16M136,-3l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
+                        <path d="M520,2l0,16M456,2l0,16M440,2l0,16M424,2l0,16M408,2l0,16M392,2l0,16M376,2l0,16M360,2l0,16M344,2l0,16M328,2l0,16M296,2l0,16M232,2l0,16M200,2l0,16M184,2l0,16M168,2l0,16M24,2l0,16M264,2l0,16M136,2l0,16M8,5.333333333333333l0,16" class="regBitNumLine" fill="none"></path>
                     </g>
                     <g>
                         <rect x="456" y="16" width="64" height="32" class="regFieldBox regFieldBoxhwinit"></rect>
@@ -1196,11 +1196,11 @@
                     </g>
                 </svg>
             </div>
-            <figcaption>Figure <span class="figno">6-1</span>: <span class="figtitle">Device Capabilities 2 Register</span>
+            <figcaption><span class="figdecoration">Figure </span><span class="figno">6-1</span><span class="figdecoration">: </span><span class="figtitle">Device Capabilities 2 Register</span>
             </figcaption>
         </figure>
         <table class="pcisig_reg" id="reg_pcie_capability__device_capability_2">
-            <caption>Table <span class="tblno">6-1</span>: <span class="tbltitle">Device Capabilities 2 Register</span>
+            <caption><span class="tbldecoration">Table </span><span class="tblno">6-1</span><span class="tbldecoration">: </span><span class="tbltitle">Device Capabilities 2 Register</span>
             </caption>
             <thead>
                 <tr>
@@ -1490,9 +1490,9 @@
                 The No RO-enabled PR-PR Passing bit allows platforms to utilize PCI Express switching elements on the path between a requester and completer for requesters that could benefit from a slightly less 5 relaxed ordering model. An example is a device that cannot ensure that multiple overlapping posted writes to the same address are outstanding at the same time. The method by which such a device is enabled to utilize this mode is beyond the scope of this specification.</p>
         </div>
     </section>
-    <section id="name-clashes-after-and-deep-stuff">
+    <section id="sect-name-clashes-after-and-deep-stuff">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_name-clashes-after-and-deep-stuff"><span class="secno">7. </span>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/">deep</a> stuff</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#name-clashes-after-and-deep-stuff" property="url" aria-label="Permalink for name-clashes-after-and-deep-stuff" title="Permalink for name-clashes-after-and-deep-stuff"><span property="title" content="7. Name clashes after and deep stuff">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-name-clashes-after-and-deep-stuff"><span class="secno">7. </span><span class="sec-title">Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/">deep</a> stuff</span></span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-name-clashes-after-and-deep-stuff" property="url" aria-label="Permalink for sect-name-clashes-after-and-deep-stuff" title="Permalink for sect-name-clashes-after-and-deep-stuff"><span property="title" content="7. Name clashes after and deep stuff">§</span></a></span></h2>
         <p>Something <em class="rfc2119" title="MUST">MUST</em> happen.</p>
         <p>Something <em class="rfc2119" title="MUST NOT">MUST NOT</em> happen.</p>
         <p>Something <em class="rfc2119" title="SHOULD">SHOULD</em> happen.</p>
@@ -1530,7 +1530,7 @@
 
     <section id="definition-map" class="appendix">
         <!--OddPage-->
-        <h2 aria-level="1" role="heading" id="h2_definition-map"><span class="secno">A. </span>Definition Map<span typeof="bookmark" class="permalink">&nbsp;<a href="#definition-map" property="url" aria-label="Permalink for definition-map" title="Permalink for definition-map"><span property="title" content="A. Definition Map">§</span></a></span></h2>
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_definition-map"><span class="secno">A. </span><span class="sec-title">Definition Map</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#definition-map" property="url" aria-label="Permalink for definition-map" title="Permalink for definition-map"><span property="title" content="A. Definition Map">§</span></a></span></h2>
         <table>
             <thead>
                 <tr>
