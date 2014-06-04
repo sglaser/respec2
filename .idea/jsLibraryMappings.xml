@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{global node_modules, respec-sglaser node_modules}" />
+    <file url="file://$PROJECT_DIR$/js/pcisig/style.js" libraries="{jquery}" />
+    <file url="PROJECT" libraries="{Node.js v0.10.21 Core Modules, global node_modules, jquery, respec-sglaser node_modules}" />
+    <includedPredefinedLibrary name="Node.js Globals" />
+  </component>
+</project>
+
