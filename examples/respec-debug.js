@@ -1,8 +1,8 @@
-/* ReSpec 3.2.14 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.15 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec */
 /* See also PCISIG source: https://github.com/sglaser/respec */
-respecVersion = '3.2.14';
+respecVersion = '3.2.15';
 respecVersionPCISIG = '0.0.1';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
@@ -15478,18 +15478,22 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/abstract");
                 var $abs = $("#abstract");
-                if (!$abs) return msg.pub("error", "Document must have one element with ID 'abstract'");
-                if ($abs.find("p").length === 0) $abs.contents().wrapAll($("<p></p>"));
-                $abs.prepend("<h2>Abstract</h2>");
-                $abs.addClass("introductory");
-                if (this.doRDFa !== false) {
-                    var rel = "dcterms:abstract"
-                    ,   ref = $abs.attr("property");
-                    if (ref) rel = ref + " " + rel;
-                    $abs.attr({
-                        "property": rel
-                    ,   "datatype": ""
-                    });
+                if ($abs.length) {
+                    if ($abs.find("p").length === 0) $abs.contents().wrapAll($("<p></p>"));
+                    $abs.prepend("<h2>Abstract</h2>");
+                    $abs.addClass("introductory");
+                    if (this.doRDFa !== false) {
+                        var rel = "dcterms:abstract"
+                        ,   ref = $abs.attr("property");
+                        if (ref) rel = ref + " " + rel;
+                        $abs.attr({
+                            "property": rel
+                        ,   "datatype": ""
+                        });
+                    }
+                }
+                else {
+                    msg.pub("error", "Document must have one element with ID 'abstract'");
                 }
                 msg.pub("end", "w3c/abstract");
                 cb();
