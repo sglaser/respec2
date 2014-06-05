@@ -13395,6 +13395,8 @@ define(
     }
 );
 
+/*globals define */
+/*jshint browser: true */
 
 // Module pcisig/style
 // Inserts a link to the appropriate PCISIG style for the specification's maturity level.
@@ -13405,6 +13407,7 @@ define(
     'pcisig/style',["core/utils"/*,
      "text!../../stylesheets/unofficial.css"*/],
     function (utils/*, inlinecss*/) {
+        
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "pcisig/style");
@@ -13414,7 +13417,7 @@ define(
 //                if (statStyle === "unofficial") {
                 css += "sglaser.github.io/";
                 css += "respec/stylesheets/unofficial.css";
-                css = "respec/stylesheets/unofficial.css";
+//                css = "respec/stylesheets/unofficial.css";
 //                }
 //                else if (statStyle === "base") {
 //                    css += "sglaser.github.io/respec/stylesheets/base.css";
