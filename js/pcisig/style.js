@@ -1,3 +1,5 @@
+/*globals define */
+/*jshint browser: true */
 
 // Module pcisig/style
 // Inserts a link to the appropriate PCISIG style for the specification's maturity level.
@@ -8,6 +10,7 @@ define(
     ["core/utils"/*,
      "text!../../stylesheets/unofficial.css"*/],
     function (utils/*, inlinecss*/) {
+        "use strict";
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "pcisig/style");
