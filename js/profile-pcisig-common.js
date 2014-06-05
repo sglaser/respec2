@@ -11,7 +11,7 @@ var requireConfig = {
 };
 if ("respecVersion" in window && respecVersion) {
     requireConfig.paths = {
-        "ui":   "https://raw.github.com/sglaser/respec/gh-pages/js/ui"
+        "ui":   "https://sglaser.github.io/respec/js/ui"
     };
 }
 require.config(requireConfig);
