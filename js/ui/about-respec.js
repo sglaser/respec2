@@ -10,8 +10,11 @@ define(
                 var $halp = $("<div><p>ReSpec is a document production toolchain, with a notable focus on PCISIG specifications.</p></div>");
                 $("<p>You can find more information in the <a href='http://sglaser.github.io/respec-docs/'>documentation</a>.</p>").appendTo($halp);
                 $("<p>Found a bug in ReSpec? <a href='https://github.com/sglaser/respec/issues'>File it!</a>.</p>").appendTo($halp);
-                $("<p>This is a PCISIG fork of the W3C oriented tool. You can find more about that version from the information in the <a href='http://w3.org/respec/'>documentation</a>.</p>").appendTo($halp);
-                $("<p>Bugs in that version may be reported in <a href='https://github.com/darobin/respec/issues'>File it!</a>.</p>").appendTo($halp);
+                $("<p>This is a PCISIG fork of the W3C oriented tool." +
+                  " You can find more about the W3C version from the information in the" +
+                  " <a href='http://w3.org/respec/'>documentation</a>." +
+                  " Bugs in the W3C version may be reported in" +
+                  " <a href='https://github.com/darobin/respec/issues'>File it!</a>.</p>").appendTo($halp);
 
                 ui.freshModal("About ReSpec", $halp);
             }
