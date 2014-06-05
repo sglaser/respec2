@@ -17,6 +17,7 @@ define(
 //                if (statStyle === "unofficial") {
                 css += "sglaser.github.io/";
                 css += "respec/stylesheets/unofficial.css";
+                css = "respec/stylesheets/unofficial.css";
 //                }
 //                else if (statStyle === "base") {
 //                    css += "sglaser.github.io/respec/stylesheets/base.css";
