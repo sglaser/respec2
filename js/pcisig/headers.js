@@ -354,7 +354,7 @@ define(
                     $html.attr("about", "") ;
                     $html.attr("property", "dcterms:language") ;
                     $html.attr("content", "en") ;
-                    var prefixes = "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
+                    var prefixes = "bibo: http://purl.org/ontology/bibo/";
                     if (conf.doRDFa !== '1.1') {
                         $html.attr("version", "XHTML+RDFa 1.0") ;
                         prefixes += " dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ xsd: http://www.w3.org/2001/XMLSchema#";
