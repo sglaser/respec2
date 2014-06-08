@@ -1,51 +1,56 @@
 <section id='sotd' class='introductory'><h2>Status of This Document</h2>
+    
     {{#if isUnofficial}}
-        <p>
-            This document is a working draft of a potential specification. It has
-            no official standing of any kind and does not represent the support or consensus of any
-            standards organisation.
-        </p>
+    <p>
+        This document is a working draft.
+        It has no official standing of any kind and does not represent the support or consensus of any group.
+    </p>
     {{else}}
         {{#if isNoTrack}}
-            <p>
-                This document is a PCISIG internal document. It
-                has no official standing of any kind and does not represent consensus of the PCISIG
-                Membership.
-            </p>
+        <p>
+            This document is a Nvidia internal document.
+            It has no official standing of any kind and does not represent consensus of any group.
+        </p>
         {{else}}
             {{#if isFinal}}
-                <p>
-                    This specification is an official publication of the PCISIG. The PCISIG
-                    may publish errata to this specification and may develop future revisions to this
-                    specification.
-                </p>
+            <p>
+                This document is considered a final publication.
+                Nvidia may publish errata to this document and may develop future revisions to this document.
+            </p>
             {{else}}
-                <p>
-                    This specification is intended to become a PCISIG Standard.
-                    This particular document is a <strong>{{specStatusLong}}</strong>
-                    {{#if specLevelLong}}
-                        of the <strong>{{specLevelLong}}</strong> document
-                        {{#if specReviewLong}}
-                            for <strong>{{specReviewLong}}</strong>
-                        {{/if}}
-                    {{/if}}.
-                    {{#if specReviewLong}}
-                        {{#if humanReviewEndDate}}
-                            The {{specReviewLong}} period ends 5:00 PM US Pacific Time on <b>{{humanReviewEndDate}}</b>.
-                        {{/if}}
-                    {{/if}}
-                </p>
+            <p>
+                This document is intended to become a part of the specification for an Nvidia product.
+                This particular document is a <strong>{{specStatusLong}}</strong> document.
+            </p>
             {{/if}}
         {{/if}}
     {{/if}}
-    {{{sotdCustomParagraph}}}
-    {{#if wgPublicList}}
-        <p>If you wish to make comments regarding this document, please send them to
-            <a href='mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}'>{{wgPublicList}}
-                @pcisig.com</a>
-            {{#if subjectPrefix}}
-                with <code>{{subjectPrefix}}</code> at the start of your email's subject{{/if}}.
-        </p>
+
+    {{#if humanReviewEndDate}}
+    <p>
+        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.
+    </p>
     {{/if}}
-    {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}
+
+    {{#if commentsNVBugs}}
+    <p>
+        Comments should be filed using <a href='http://nvbugs'>http://nvbugs</a> against {{commentsNVBugs}}.
+    </p>
+    {{/if}}
+
+    {{#if commentsPDF}}
+    <p>
+        Comments should be added to the PDF review associated with {{commentsPDF}}.
+    </p>
+    {{/if}}
+
+    {{#if commentsEmail}}
+    <p>
+        Comments should be sent to <a href='mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}'>{{commentsEmail}}@exchange.nvidia.com</a>
+        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email's subject{{/if}}.
+    </p>
+    {{/if}}
+
+{{{sotdCustomParagraph}}}
+
 </section>

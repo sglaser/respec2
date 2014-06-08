@@ -1,18 +1,18 @@
 /*globals define*/
 /*jshint browser:true, jquery:true */
 
-// Module pcisig/conformance
+// Module nvidia/conformance
 // Handle the conformance section properly.
 
 define(
-    ["tmpl!pcisig/templates/conformance.handlebars"],
+    ["tmpl!nvidia/templates/conformance.handlebars"],
     function (confoTmpl) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/conformance");
+                msg.pub("start", "nvidia/conformance");
                 var $confo = $("#conformance");
                 if ($confo.length) $confo.prepend(confoTmpl(conf));
-                msg.pub("end", "pcisig/conformance");
+                msg.pub("end", "nvidia/conformance");
                 cb();
             }
         };

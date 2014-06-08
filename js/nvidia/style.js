@@ -1,8 +1,8 @@
 /*globals define */
 /*jshint browser: true */
 
-// Module pcisig/style
-// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
+// Module nvidia/style
+// Inserts a link to the appropriate Nvidia style for the specification's maturity level.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
@@ -13,8 +13,8 @@ define(
         "use strict";
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/style");
-                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for pcisig/style");
+                msg.pub("start", "nvidia/style");
+                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for nvidia/style");
                 var statStyle = conf.specStatus;
                 var css = "https://";
 //                if (statStyle === "unofficial") {
@@ -26,13 +26,13 @@ define(
 //                    css += "sglaser.github.io/respec/stylesheets/base.css";
 //                }
 //                else {
-//                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle + ".css";
+//                    css += "sglaser.github.io/respec/stylesheets/nvidia-" + statStyle + ".css";
 //                }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
 //                console.log("inlinecss.length = " + inlinecss.length);
 
-                msg.pub("end", "pcisig/style");
+                msg.pub("end", "nvidia/style");
                 cb();
             }
         };
