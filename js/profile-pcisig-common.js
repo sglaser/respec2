@@ -1,6 +1,6 @@
-/*global define, respecVersion */
+/*global define, respecVersion, require */
+/*jshint laxcomma:true, browser:true */
 
-"use strict";
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
     shim:   {
@@ -54,6 +54,7 @@ define([
         ,   "core/location-hash"
         ],
         function (domReady, runner, ui) {
+            "use strict";
             var args = Array.prototype.slice.call(arguments);
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");

@@ -1,11 +1,9 @@
 /*jshint
-    forin: false
+    forin: false, laxcomma:true, jquery:true
 */
 /*global Handlebars*/
 
 /*global define, self, respecEvents, respecConfig */
-
-"use strict";
 
 // Module pcisig/headers
 // Generate the headers material based on the provided configuration.
@@ -89,6 +87,7 @@ define(
     ,"tmpl!pcisig/templates/sotd.handlebars"
     ],
     function (hb, utils, headersTmpl, sotdTmpl) {
+        "use strict";
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
             var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "";

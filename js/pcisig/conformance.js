@@ -1,3 +1,5 @@
+/*globals define*/
+/*jshint browser:true, jquery:true */
 
 // Module pcisig/conformance
 // Handle the conformance section properly.
