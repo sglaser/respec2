@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8"/>
+    <title>NV RefmanExample</title>
+    <script src="respec-debug.js" async="async" class="remove"></script>
+    <!--<script src='http://sglaser.github.io/respec/builds/respec-pcisig-common.js' async class='remove'></script>-->
+    <script class="remove">
+        var respecConfig = {
+            specStatus: "WD/Author-Review/0.1", shortName: "pcisig-example", editors: [
+                { name: "Steve Glaser", email: "sglaser@nvidia.com"}
+            ], wg:      "Nvidia", wgURI: "http://www.nvidia.com/", edDraftURI: "http://sglaser.github.io/respec/examples/test-nv-ref.html", trace: true, includePermalinks: true, figFmt: "%1Figure %(%c-%#%): %t", tblFmt: "%1Table %(%c-%#%): %t", ajaxIsLocal: true, addDefinitionMap: true
+        };
+    </script>
+</head>
+<body>
+<section>
+    <h2>JSON Example Register Figure</h2>
+    <figure id="json-register" class="register">
+
+        <!-- for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields -->
+
+        <!-- any nested div.json, pre.json, or span.json within figure.register is parsed for json content -->
+        <!-- the width argument describes the register width (defaults to 32 bits) -->
+        <!-- the unused item is name used for bit fields that are not otherwise defined (defaults "RsvdP" -->
+        <!-- var width               = Number(pget(reg, "width", 32));-->
+        <!-- var unused              = String(pget(reg, "unused", "RsvdP"));-->
+        <!-- var defaultAttr         = String(pget(reg, "defaultAttr", "other"));-->
+        <!-- var cellWidth           = Number(pget(reg, "cellWidth", 16));-->
+        <!-- var cellHeight          = Number(pget(reg, "cellHeight", 32));-->
+        <!-- var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));-->
+        <!-- var bracketHeight       = Number(pget(reg, "bracketHeight", 4));-->
+        <!-- var cellTop             = Number(pget(reg, "cellTop", 16));-->
+        <!-- var figName             = String(pget(reg, "name", "???"));-->
+        <!-- var fields              = pget(reg, "fields", [ ]); // default to empty register-->
+
+        <!-- Fields are in arbitrary order. Itemsin in a field are: -->
+        <!--  name      Name of the field -->
+        <!--  msb       bit number of the most significnat bit (or only bit) -->
+        <!--  lsb       bit number of the least signiticant bit (or only bit) -->
+        <!--  unused    true if field is considered "unused" -->
+        <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
+        <pre class="json">            
+            { "width" : 32,
+              "unused" : "Bogus",
+              "fields": [
+                {   "msb": 4,
+                    "lsb": 0,
+                    "name": "field 4:0",
+                    "id": "field-field4_0",
+                    "attr": "ro"
+                }, {
+                    "msb": 7,
+                    "lsb": 6,
+                    "name": "Very long name that will never fit",
+                    "href": "Very-long-name-that-will-never-fit"
+                }, {
+                    "msb": 9,
+                    "name": "bit9"
+                }, {
+                    "lsb": 10,
+                    "name": "bit10",
+                    "id": "bit10"
+                }, {
+                    "lsb": 11,
+                    "name": "bit11",
+                    "href": "bit11"
+                }, {
+                    "lsb": 12,
+                    "name": "bit12",
+                    "id": "bit12"
+                }, {
+                    "lsb": 13,
+                    "name": "bit13",
+                    "href": "field-bit13"
+                } ] }
+        </pre>
+        <figcaption>Graph for JSON Defined Register Example</figcaption>
+    </figure>
+    <p>These are references to fields that were defined as terms in this JSON example.</p>
+    <ul>
+        <li><a class="field">field 4:0</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;field 4:0&lt;/a&gt;</li>
+        <li><a class="field">Very long name that will never fit</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;Very long
+            name that will never fit&lt;/a&gt;</li>
+        <li><a class="field">bit9</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit9&lt;/a&gt;</li>
+        <li><a class="field">bit10</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit10&lt;/a&gt;</li>
+        <li><a class="field">bit11</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit11&lt;/a&gt;</li>
+        <li><a class="field">bit12</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit12&lt;/a&gt;</li>
+        <li><a class="field">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit13&lt;/a&gt;</li>
+        <li><a>bit13</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit13&lt;/a&gt;</li>
+        <li><a href="#field-bit13">Bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#field-bit13"&gt;Bit 13&lt;/a&gt;</li>
+    </ul>
+
+</section>
+
+<section>
+    <h2>Intel PTE</h2>
+    <pre data-include="intel.ref" data-include-filter="PTE"></pre>
+    <figure id="figure2" class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE"
+            data-json='{"unused" : "reserved", "register" : "INTEL_PTE" }'>
+        <!--            <a class="nv-refman" href="intel.ref">{ "unused": "reserved", "register": "INTEL_PTE"}</a>-->
+        <figcaption><a href="intel.ref">data-include-filter="PTE" folowed by &lt;a class="nv-refman" href="intel.ref"&gt;INTEL_PTE&lt;/a&gt;</a>
+        </figcaption>
+    </figure>
+</section>
+
+</body>
+</html>
