@@ -310,6 +310,7 @@ define(
                                 var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
                                 if (!validAttr.test(attr)) {
                                     attr = "other";
+                                }
                                 var unusedAttr = /^(rsvdp|rsvdz)$/i;
                                 var unused = !!unusedAttr.test(attr);
                                 json.fields.push({

@@ -4,7 +4,6 @@
 /* See also PCISIG source: https://github.com/sglaser/respec */
 respecVersion = '3.2.15';
 respecVersionPCISIG = '0.0.1';
-
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -13131,7 +13130,8 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\r\n * ReSpec 3 CSS\r\n * Robin Berjon - http://berjon.com/\r\n *****************************************************************/\r\n\r\n/* --- INLINES --- */\r\nem.rfc2119 { \r\n    text-transform:     lowercase;\r\n    font-variant:       small-caps;\r\n    font-style:         normal;\r\n    font-size:          larger;\r\n    color:              #900;\r\n}\r\n\r\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\r\n    border: none;\r\n}\r\n\r\ndfn {\r\n    font-weight:    bold;\r\n}\r\n\r\na.internalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px solid #99c;\r\n    text-decoration:    none;\r\n}\r\n\r\na.externalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration:    none;\r\n}\r\n\r\na.bibref {\r\n    text-decoration:    none;\r\n}\r\n\r\ncite .bibref {\r\n    font-style: normal;\r\n}\r\n\r\ncode {\r\n    color:  #ff4500;\r\n}\r\n\r\n/* --- TOC --- */\r\n.toc a, .tof a, .tot a {\r\n    text-decoration:    none;\r\n}\r\n\r\n.tocline a .secno,\r\n.tofline a .figno,\r\n.totline a .tblno {\r\n    color:  #000;\r\n}\r\n\r\nul.toc > li.tocline,\r\nul.tof > li.tofline,\r\nul.tot > li.totline {\r\n    list-style: none outside none;\r\n}\r\n\r\n.caption {\r\n    margin-top: 0.5em;\r\n    font-style:   italic;\r\n}\r\n\r\n/* --- TABLE --- */\r\ntable.simple {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\r\n}\r\n\r\n.simple th {\r\n    background: #0060A9; /* #38197a; /*#005a9c;*/\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n}\r\n\r\n.simple th[scope="row"] {\r\n    background: inherit;\r\n    color:  inherit;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple tr:nth-child(even) {\r\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\r\n}\r\n\r\n/* --- DL --- */\r\n.section dd > p:first-child {\r\n    margin-top: 0;\r\n}\r\n\r\n.section dd > p:last-child {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.section dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\n.section dl.attrs dd, .section dl.eldef dd {\r\n    margin-bottom:  0;\r\n}\r\n\r\nspan.respec-error {\r\n    color: red;\r\n    font-size: 12pt;\r\n    font-weight: bold;\r\n    font-family: monospace;\r\n}\r\n\r\n@media print {\r\n    .removeOnSave {\r\n        display: none;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -15010,18 +15010,18 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!pcisig/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\r\n{{#if prependPCIeLogo}}\r\n<p>\r\n    <a href="https://www.pcisig.com/">\r\n        <img width="210" height="80" alt="PCI Express Logo"\r\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg"/>\r\n    </a>\r\n</p>\r\n{{/if}}\r\n{{#if prependPCISIGLogo}}\r\n<p>\r\n    <a href="https://www.pcisig.com/">\r\n        <img width="210" height="108" alt="PCISIG Logo"\r\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>\r\n    </a>\r\n</p>\r\n{{/if}}\r\n<div id="respec-banner">\r\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{#if specReviewLong}}\r\n    <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{/if}}\r\n    {{#if specLevelLong}}\r\n    <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{/if}}\r\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\r\n</div>\r\n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\r\n{{#if subtitle}}\r\n<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\r\n{{/if}}\r\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\r\ncontent="{{publishISODate}}"{{/if}} class="nolink">{{textStatus}}\r\n<time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\r\n</h2>\r\n<dl>\r\n    {{#unless isNoTrack}}\r\n    <dt>This version:</dt>\r\n    <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\r\n    <dt>Latest published version:</dt>\r\n    <dd>{{#if latestVersion}}<a href="{{latestVersion}}">{{latestVersion}}</a>{{else}}none{{/if}}\r\n    </dd>\r\n    {{/unless}}\r\n    {{#if edDraftURI}}\r\n    <dt>Latest editor"s draft:</dt>\r\n    <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if testSuiteURI}}\r\n    <dt>Test suite:</dt>\r\n    <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if implementationReportURI}}\r\n    <dt>Implementation report:</dt>\r\n    <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if bugTrackerHTML}}\r\n    <dt>Bug tracker:</dt>\r\n    <dd>{{{bugTrackerHTML}}}</dd>\r\n    {{/if}}\r\n    {{#if isED}}\r\n    {{#if prevED}}\r\n    <dt>Previous editor"s draft:</dt>\r\n    <dd><a href="{{prevED}}">{{prevED}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{#if showPreviousVersion}}\r\n    <dt>Previous version:</dt>\r\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}\r\n        href="{{prevVersion}}">{{prevVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#if prevRecURI}}\r\n    {{#if isRec}}\r\n    <dt>Previous Recommendation:</dt>\r\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href="{{prevRecURI}}">{{prevRecURI}}</a>\r\n    </dd>\r\n    {{else}}\r\n    <dt>Latest Recommendation:</dt>\r\n    <dd><a href="{{prevRecURI}}">{{prevRecURI}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\r\n    {{showPeople "Editor" editors}}\r\n    {{#if authors}}\r\n    <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\r\n    {{showPeople "Author" authors}}\r\n    {{/if}}\r\n    {{#if otherLinks}}\r\n    {{#each otherLinks}}\r\n    {{#if key}}\r\n    <dt\r\n    {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\r\n    {{#if data}}\r\n    {{#each data}}\r\n    {{#if value}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    {{#if href}}<a href="{{href}}">{{/if}}\r\n    {{value}}\r\n    {{#if href}}</a>{{/if}}\r\n    </dd>\r\n    {{else}}\r\n    {{#if href}}\r\n    <dd><a href="{{href}}">{{href}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/each}}\r\n    {{else}}\r\n    {{#if value}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    {{#if href}}<a href="{{href}}">{{/if}}\r\n    {{value}}\r\n    {{#if href}}</a>{{/if}}\r\n    </dd>\r\n    {{else}}\r\n    {{#if href}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    <a href="{{href}}">{{href}}</a>\r\n    </dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/each}}\r\n    {{/if}}\r\n</dl>\r\n{{#if errata}}\r\n<p>\r\n    Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\r\n    reported since publication.\r\n</p>\r\n{{/if}}\r\n{{#if alternateFormats}}\r\n<p>\r\n    {{#if multipleAlternates}}\r\n    This document is also available in these non-normative formats:\r\n    {{else}}\r\n    This document is also available in this non-normative format:\r\n    {{/if}}\r\n    {{{alternatesHTML}}}\r\n</p>\r\n{{/if}}\r\n{{#if isUnofficial}}\r\n{{#if additionalCopyrightHolders}}\r\n<p class="copyright">{{{additionalCopyrightHolders}}}</p>\r\n{{else}}\r\n{{#if overrideCopyright}}\r\n{{{overrideCopyright}}}\r\n{{else}}\r\n<p class="copyright">\r\n    This document is confidential and proprietary. All Rights Reserved.\r\n</p>\r\n{{/if}}\r\n{{/if}}\r\n{{else}}\r\n{{#if overrideCopyright}}\r\n{{{overrideCopyright}}}\r\n{{else}}\r\n<p class="copyright">\r\n    Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\r\n    additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\r\n    <a href="https://www.pcisig.com/">PCI-SIG</a>\r\n    <sup>&reg;</sup>\r\n</p>\r\n\r\n<p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks\r\n    of PCI-SIG. All\r\n    other product names are trademarks, registered trademarks, or servicemarks of their\r\n    respective owners.</p>\r\n\r\n<p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document\r\n    and the information\r\n    contained herein and assumes no responsibility for any errors that may appear in this\r\n    document, nor does PCI-SIG\r\n    make a commitment to update the information contained herein.</p>\r\n{{#unless isNoTrack}}\r\n<p class="copyright">\r\n    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>\r\n<blockquote>\r\n    <p class="copyright">\r\n        Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>\r\n    <table class="head">\r\n        <tbody>\r\n        <tr>\r\n            <td><strong>Membership Services</strong></td>\r\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\r\n            <td><strong>Technical Support</strong></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="mailto:administration@pcisig.com">administration@pcisig.com</a></td>\r\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\r\n            <td><a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="tel:+1-503-619-0569">+1-503-619-0569</a> (Phone)</td>\r\n            <td></td>\r\n            <td></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="tel:+1-503-644-6708">+1-503-644-6708</a> (Fax)</td>\r\n            <td></td>\r\n            <td></td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n</blockquote>\r\n<p class="copyright"><strong>DISCLAIMER</strong></p>\r\n\r\n<p class="copyright">\r\n    This Specification is provided “as is” with no warranties whatsoever, including any warranty\r\n    of merchantability,\r\n    noninfringement, fitness for any particular purpose, or any warranty otherwise arising out\r\n    of any proposal,\r\n    specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary\r\n    rights, relating to\r\n    use of information in this specification. No license, express or implied, by estoppel or\r\n    otherwise, to any\r\n    intellectual property rights is granted herein.</p>\r\n{{/unless}}\r\n{{/if}}\r\n{{/if}}\r\n<hr/>\r\n</div>\r\n');});
 
-define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\r\n    {{#if isUnofficial}}\r\n        <p>\r\n            This document is a working draft of a potential specification. It has\r\n            no official standing of any kind and does not represent the support or consensus of any\r\n            standards organisation.\r\n        </p>\r\n    {{else}}\r\n        {{#if isNoTrack}}\r\n            <p>\r\n                This document is a PCISIG internal document. It\r\n                has no official standing of any kind and does not represent consensus of the PCISIG\r\n                Membership.\r\n            </p>\r\n        {{else}}\r\n            {{#if isFinal}}\r\n                <p>\r\n                    This specification is an official publication of the PCISIG. The PCISIG\r\n                    may publish errata to this specification and may develop future revisions to this\r\n                    specification.\r\n                </p>\r\n            {{else}}\r\n                <p>\r\n                    This specification is intended to become a PCISIG Standard.\r\n                    This particular document is a <strong>{{specStatusLong}}</strong>\r\n                    {{#if specLevelLong}}\r\n                        of the <strong>{{specLevelLong}}</strong> document\r\n                        {{#if specReviewLong}}\r\n                            for <strong>{{specReviewLong}}</strong>\r\n                        {{/if}}\r\n                    {{/if}}.\r\n                    {{#if specReviewLong}}\r\n                        {{#if humanReviewEndDate}}\r\n                            The {{specReviewLong}} period ends 5:00 PM US Pacific Time on <b>{{humanReviewEndDate}}</b>.\r\n                        {{/if}}\r\n                    {{/if}}\r\n                </p>\r\n            {{/if}}\r\n        {{/if}}\r\n    {{/if}}\r\n    {{{sotdCustomParagraph}}}\r\n    {{#if wgPublicList}}\r\n        <p>If you wish to make comments regarding this document, please send them to\r\n            <a href=\'mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}\r\n                @pcisig.com</a>\r\n            {{#if subjectPrefix}}\r\n                with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\r\n        </p>\r\n    {{/if}}\r\n    {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\r\n</section>\r\n');});
+define('tmpl!pcisig/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if prependPCIeLogo}}\n<p>\n    <a href="https://www.pcisig.com/">\n        <img width="210" height="80" alt="PCI Express Logo"\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg"/>\n    </a>\n</p>\n{{/if}}\n{{#if prependPCISIGLogo}}\n<p>\n    <a href="https://www.pcisig.com/">\n        <img width="210" height="108" alt="PCISIG Logo"\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>\n    </a>\n</p>\n{{/if}}\n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if specReviewLong}}\n    <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    {{#if specLevelLong}}\n    <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n{{#if subtitle}}\n<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\ncontent="{{publishISODate}}"{{/if}} class="nolink">\n<time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n<dl>\n    {{#unless isNoTrack}}\n    <dt>This version:</dt>\n    <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    <dt>Latest published version:</dt>\n    <dd>{{#if latestVersion}}<a href="{{latestVersion}}">{{latestVersion}}</a>{{else}}none{{/if}}\n    </dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n    <dt>Latest editor"s draft:</dt>\n    <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n    <dt>Test suite:</dt>\n    <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n    <dt>Implementation report:</dt>\n    <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n    <dt>Bug tracker:</dt>\n    <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n    {{#if prevED}}\n    <dt>Previous editor"s draft:</dt>\n    <dd><a href="{{prevED}}">{{prevED}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n    <dt>Previous version:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}\n        href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n    {{#if isRec}}\n    <dt>Previous Recommendation:</dt>\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href="{{prevRecURI}}">{{prevRecURI}}</a>\n    </dd>\n    {{else}}\n    <dt>Latest Recommendation:</dt>\n    <dd><a href="{{prevRecURI}}">{{prevRecURI}}</a></dd>\n    {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n    <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n    {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n    {{#each otherLinks}}\n    {{#if key}}\n    <dt\n    {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n    {{#if data}}\n    {{#each data}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd><a href="{{href}}">{{href}}</a></dd>\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{else}}\n    {{#if value}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    {{#if href}}<a href="{{href}}">{{/if}}\n    {{value}}\n    {{#if href}}</a>{{/if}}\n    </dd>\n    {{else}}\n    {{#if href}}\n    <dd\n    {{#if class}}class="{{class}}"{{/if}}>\n    <a href="{{href}}">{{href}}</a>\n    </dd>\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/if}}\n    {{/each}}\n    {{/if}}\n</dl>\n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n{{#if isUnofficial}}\n{{#if additionalCopyrightHolders}}\n<p class="copyright">{{{additionalCopyrightHolders}}}</p>\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class="copyright">\n    This document is confidential and proprietary. All Rights Reserved.\n</p>\n{{/if}}\n{{/if}}\n{{else}}\n{{#if overrideCopyright}}\n{{{overrideCopyright}}}\n{{else}}\n<p class="copyright">\n    Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n    additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n    <a href="https://www.pcisig.com/">PCI-SIG</a>\n    <sup>&reg;</sup>\n</p>\n\n<p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks\n    of PCI-SIG. All\n    other product names are trademarks, registered trademarks, or servicemarks of their\n    respective owners.</p>\n\n<p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document\n    and the information\n    contained herein and assumes no responsibility for any errors that may appear in this\n    document, nor does PCI-SIG\n    make a commitment to update the information contained herein.</p>\n{{#unless isNoTrack}}\n<p class="copyright">\n    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>\n<blockquote>\n    <p class="copyright">\n        Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>\n    <table class="head">\n        <tbody>\n        <tr>\n            <td><strong>Membership Services</strong></td>\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n            <td><strong>Technical Support</strong></td>\n        </tr>\n        <tr>\n            <td><a href="mailto:administration@pcisig.com">administration@pcisig.com</a></td>\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n            <td><a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a></td>\n        </tr>\n        <tr>\n            <td><a href="tel:+1-503-619-0569">+1-503-619-0569</a> (Phone)</td>\n            <td></td>\n            <td></td>\n        </tr>\n        <tr>\n            <td><a href="tel:+1-503-644-6708">+1-503-644-6708</a> (Fax)</td>\n            <td></td>\n            <td></td>\n        </tr>\n        </tbody>\n    </table>\n</blockquote>\n<p class="copyright"><strong>DISCLAIMER</strong></p>\n\n<p class="copyright">\n    This Specification is provided “as is” with no warranties whatsoever, including any warranty\n    of merchantability,\n    noninfringement, fitness for any particular purpose, or any warranty otherwise arising out\n    of any proposal,\n    specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary\n    rights, relating to\n    use of information in this specification. No license, express or implied, by estoppel or\n    otherwise, to any\n    intellectual property rights is granted herein.</p>\n{{/unless}}\n{{/if}}\n{{/if}}\n<hr/>\n</div>\n');});
+
+
+define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    {{#if isUnofficial}}\n        <p>\n            This document is a working draft of a potential specification. It has\n            no official standing of any kind and does not represent the support or consensus of any\n            standards organisation.\n        </p>\n    {{else}}\n        {{#if isNoTrack}}\n            <p>\n                This document is a PCISIG internal document. It\n                has no official standing of any kind and does not represent consensus of the PCISIG\n                Membership.\n            </p>\n        {{else}}\n            {{#if isFinal}}\n                <p>\n                    This specification is an official publication of the PCISIG. The PCISIG\n                    may publish errata to this specification and may develop future revisions to this\n                    specification.\n                </p>\n            {{else}}\n                <p>\n                    This specification is intended to become a PCISIG Standard.\n                    This particular document is a <strong>{{specStatusLong}}</strong>\n                    {{#if specLevelLong}}\n                        of the <strong>{{specLevelLong}}</strong> document\n                        {{#if specReviewLong}}\n                            for <strong>{{specReviewLong}}</strong>\n                        {{/if}}\n                    {{/if}}.\n                    {{#if specReviewLong}}\n                        {{#if humanReviewEndDate}}\n                            The {{specReviewLong}} period ends 5:00 PM US Pacific Time on <b>{{humanReviewEndDate}}</b>.\n                        {{/if}}\n                    {{/if}}\n                </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n    {{{sotdCustomParagraph}}}\n    {{#if wgPublicList}}\n        <p>If you wish to make comments regarding this document, please send them to\n            <a href=\'mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}\n                @pcisig.com</a>\n            {{#if subjectPrefix}}\n                with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n        </p>\n    {{/if}}\n    {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n</section>\n');});
 
 /*jshint
-    forin: false
+    forin: false, laxcomma:true, jquery:true
 */
 /*global Handlebars*/
 
 /*global define, self, respecEvents, respecConfig */
-
-
 
 // Module pcisig/headers
 // Generate the headers material based on the provided configuration.
@@ -15105,6 +15105,7 @@ define(
     ,"tmpl!pcisig/templates/sotd.handlebars"
     ],
     function (hb, utils, headersTmpl, sotdTmpl) {
+        
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
             var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "";
@@ -15371,7 +15372,7 @@ define(
                     $html.attr("about", "") ;
                     $html.attr("property", "dcterms:language") ;
                     $html.attr("content", "en") ;
-                    var prefixes = "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
+                    var prefixes = "bibo: http://purl.org/ontology/bibo/";
                     if (conf.doRDFa !== '1.1') {
                         $html.attr("version", "XHTML+RDFa 1.0") ;
                         prefixes += " dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ xsd: http://www.w3.org/2001/XMLSchema#";
@@ -15503,8 +15504,11 @@ define(
     }
 );
 
-define('tmpl!pcisig/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\r\n<p>\r\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\r\n    and notes in this specification are non-normative. Everything else in this specification is\r\n    normative.\r\n</p>\r\n<p>\r\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,\r\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\r\n</p>\r\n');});
 
+define('tmpl!pcisig/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also used by PCISIG specifications.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing so and it is not used by PCISIG specifications.\n</p>\n');});
+
+/*globals define*/
+/*jshint browser:true, jquery:true */
 
 // Module pcisig/conformance
 // Handle the conformance section properly.
@@ -15772,7 +15776,8 @@ define(
     }
 );
 
-define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\r\ndiv.example-title {\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.example-title span {\r\n    text-transform: uppercase;   \r\n}\r\naside.example, div.example, div.illegal-example {\r\n    padding: 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\ndiv.illegal-example { color: red }\r\ndiv.illegal-example p { color: black }\r\naside.example, div.example {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n    border-color: #e0cb52;\r\n    background: #fcfaee;    \r\n}\r\n\r\naside.example div.example {\r\n    border-left-width: .1em;\r\n    border-color: #999;\r\n    background: #fff;\r\n}\r\naside.example div.example div.example-title {\r\n    color: #999;\r\n}\r\n';});
+
+define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
 
 // Module core/examples
@@ -15848,7 +15853,8 @@ define(
     }
 );
 
-define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title,\r\ndiv.note-title,\r\ndiv.impnote-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title     { color: #e05252; }\r\ndiv.note-title      { color: #2b2; }\r\ndiv.impnote-title   { color: #0060A9; }\r\ndiv.issue-title span,\r\ndiv.note-title span,\r\ndiv.impnote-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue, div.impnote {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child,\r\n.issue > p:first-child,\r\n.impnote > p:first-child {\r\n    margin-top: 0;\r\n}\r\n.issue, .note, .impnote {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note, div.impnote {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note,\r\nspan.issue,\r\nspan.impnote {\r\n    padding: .1em .5em .15em;\r\n}\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background:   #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background:   #e9fbe9;\r\n}\r\n.impnote {\r\n    border-color: #0060A9; \r\n    background:   #E5F4FF;\r\n}\r\n\r\n\r\n';});
+
+define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title     { color: #e05252; }\ndiv.note-title      { color: #2b2; }\ndiv.impnote-title   { color: #0060A9; }\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue, div.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue, .note, .impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note, div.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n\n.issue {\n    border-color: #e05252;\n    background:   #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background:   #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9; \n    background:   #E5F4FF;\n}\n\n\n';});
 
 
 // Module core/issues-notes
@@ -15998,7 +16004,8 @@ define(
         };
     }
 );
-define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\r\ncode.prettyprint {\r\n    color:  inherit;\r\n}\r\n\r\n/* this from google-code-prettify */\r\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\r\n';});
+
+define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
 
 // Copyright (C) 2006 Google Inc.
 //
@@ -17703,7 +17710,8 @@ define(
     }
 );
 
-define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\r\ndiv.practice {\r\n    border: solid #bebebe 1px;\r\n    margin: 2em 1em 1em 2em;\r\n}\r\n\r\nspan.practicelab {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n    font-weight: bold;\r\n    font-style: italic;\r\n    background: #dfffff;\r\n    position: relative;\r\n    padding: 0 0.5em;\r\n    top: -1.5em;\r\n}\r\n\r\np.practicedesc {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n}\r\n\r\n@media screen {\r\n    p.practicedesc {\r\n        position: relative;\r\n        top: -2em;\r\n        padding: 0;\r\n        margin: 1.5em 0.5em -1em 1em;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
 
 // Module core/best-practices
@@ -18275,43 +18283,62 @@ define(
     }
 );
 
-define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\r\npre.idl {\r\n    border-top: 1px solid #90b8de;\r\n    border-bottom: 1px solid #90b8de;\r\n    padding:    1em;\r\n    line-height:    120%;\r\n}\r\n\r\npre.idl::before {\r\n    content:    "WebIDL";\r\n    display:    block;\r\n    width:      150px;\r\n    background: #90b8de;\r\n    color:  #fff;\r\n    font-family:    initial;\r\n    padding:    3px;\r\n    font-weight:    bold;\r\n    margin: -1em 0 1em -1em;\r\n}\r\n\r\n.idlType {\r\n    color:  #ff4500;\r\n    font-weight:    bold;\r\n    text-decoration:    none;\r\n}\r\n\r\n/*.idlModule*/\r\n/*.idlModuleID*/\r\n/*.idlInterface*/\r\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\r\n    font-weight:    bold;\r\n    color:  #005a9c;\r\n}\r\na.idlEnumItem {\r\n    color:  #000;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration: none;\r\n}\r\n\r\n.idlSuperclass {\r\n    font-style: italic;\r\n    color:  #005a9c;\r\n}\r\n\r\n/*.idlAttribute*/\r\n.idlAttrType, .idlFieldType, .idlMemberType {\r\n    color:  #005a9c;\r\n}\r\n.idlAttrName, .idlFieldName, .idlMemberName {\r\n    color:  #ff4500;\r\n}\r\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlMethod*/\r\n.idlMethType, .idlCallbackType {\r\n    color:  #005a9c;\r\n}\r\n.idlMethName {\r\n    color:  #ff4500;\r\n}\r\n.idlMethName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlCtor*/\r\n.idlCtorName {\r\n    color:  #ff4500;\r\n}\r\n.idlCtorName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlParam*/\r\n.idlParamType {\r\n    color:  #005a9c;\r\n}\r\n.idlParamName, .idlDefaultValue {\r\n    font-style: italic;\r\n}\r\n\r\n.extAttr {\r\n    color:  #666;\r\n}\r\n\r\n/*.idlSectionComment*/\r\n.idlSectionComment {\r\n    color: gray;\r\n}\r\n\r\n/*.idlConst*/\r\n.idlConstType {\r\n    color:  #005a9c;\r\n}\r\n.idlConstName {\r\n    color:  #ff4500;\r\n}\r\n.idlConstName a {\r\n    color:  #ff4500;\r\n    border-bottom:  1px dotted #ff4500;\r\n    text-decoration: none;\r\n}\r\n\r\n/*.idlException*/\r\n.idlExceptionID {\r\n    font-weight:    bold;\r\n    color:  #c00;\r\n}\r\n\r\n.idlTypedefID, .idlTypedefType {\r\n    color:  #005a9c;\r\n}\r\n\r\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\r\n    color:  #c00;\r\n    font-weight:    normal;\r\n}\r\n\r\n.excName a {\r\n    font-family:    monospace;\r\n}\r\n\r\n.idlRaises a.idlType, .excName a.idlType {\r\n    border-bottom:  1px dotted #c00;\r\n}\r\n\r\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\r\n    width:  45px;\r\n    text-align: center;\r\n}\r\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\r\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\r\n\r\n.idlImplements a {\r\n    font-weight:    bold;\r\n}\r\n\r\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\r\n    margin-left:    2em;\r\n}\r\n\r\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\r\n    font-weight:    normal;\r\n}\r\n\r\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\r\n    font-weight:    bold;\r\n    color:  #000;\r\n    font-family:    monospace;\r\n}\r\n\r\n.attributes dt code, .fields dt code, .dictionary-members dt code {\r\n    background:  #ffffd2;\r\n}\r\n\r\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\r\n    color:  #005a9c;\r\n    background:  transparent;\r\n    font-family:    inherit;\r\n    font-weight:    normal;\r\n    font-style: italic;\r\n}\r\n\r\n.methods dt code {\r\n    background:  #d9e6f8;\r\n}\r\n\r\n.constants dt code {\r\n    background:  #ddffd2;\r\n}\r\n\r\n.constructors dt code {\r\n    background:  #cfc;\r\n}\r\n\r\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\ntable.parameters, table.exceptions {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    margin: 0.5em 0;\r\n    width:  100%;\r\n}\r\ntable.parameters { border-bottom:  1px solid #90b8de; }\r\ntable.exceptions { border-bottom:  1px solid #deb890; }\r\n\r\n.parameters th, .exceptions th {\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n    font-family:    initial;\r\n    font-weight:    normal;\r\n    text-shadow:    #666 1px 1px 0;\r\n}\r\n.parameters th { background: #90b8de; }\r\n.exceptions th { background: #deb890; }\r\n\r\n.parameters td, .exceptions td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n    vertical-align: top;\r\n}\r\n\r\n.parameters tr:first-child td, .exceptions tr:first-child td {\r\n    border-top: none;\r\n}\r\n\r\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\r\n    width:  100px;\r\n}\r\n\r\n.parameters td.prmType {\r\n    width:  120px;\r\n}\r\n\r\ntable.exceptions table {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    width:  100%;\r\n}\r\n');});
 
-define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\r\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\r\n{{idn indent}}};</span>\r\n');});
+define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
 
-define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\r\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\r\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\r\n');});
+define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\n{{idn indent}}};</span>\n');});
 
-define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\r\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\r\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\r\n');});
 
-define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}};</span>\r\n');});
+define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}};</span>\n');});
+
 
 define('tmpl!core/templates/webidl/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj.refId}}" class="idlEnumItem">{{obj.id}}</a>"');});
 
-define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\r\n{{{children}}}\r\n{{idn indent}}}};');});
 
-define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\r\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\r\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\r\n');});
+define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
 
-define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\r\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\r\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\r\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
 
-define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\r\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\r\n');});
+define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\n');});
 
-define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\r\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\r\n');});
 
-define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\r\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
 
-define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\r\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\r\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\r\n');});
 
-define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\r\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\r\n');});
+define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\n');});
 
-define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\r\n}}{{idn indent}}// {{comment}}</span>\r\n');});
 
-define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\r\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\r\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\r\n');});
+define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\n');});
 
-define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\r\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}{{idn indent}}}};</span>');});
 
-define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\r\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\r\n{{{children}}}{{idn indent}}}};</span>');});
+define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+
+
+define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\n}}{{idn indent}}// {{comment}}</span>\n');});
+
+
+define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+
+define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
 
 /*global Handlebars, simpleNode */
 
@@ -19790,7 +19817,8 @@ window.simpleNode.prototype = {
     }
 };
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\r\ntext.regBitNum {\r\n\ttext-anchor: middle;\r\n\tfill: grey;\r\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n\tfont-size: 8pt;\r\n}\r\n\r\npath.regBitNumLine {\r\n\tstroke: grey;\r\n\tstroke-width: 1px;\r\n}\r\n\r\nrect.regFieldBox {\r\n\tfill: white;\r\n\tstroke: black;\r\n\tstroke-width: 1.5px;\r\n}\r\n\r\nrect.regFieldBoxrsvdp,\r\nrect.regFieldBoxrsvdz,\r\nrect.regFieldBoxReserved,\r\nrect.regFieldRsvd {\r\n\tfill: white;\r\n}\r\n\r\nline.regFieldBoxInternal {\r\n\tstroke: black;\r\n}\r\n\r\nline.regFieldBoxUnused {\r\n\tstroke: grey;\r\n}\r\n\r\ntext.regFieldNameInternal {\r\n\ttext-anchor: middle;\r\n}\r\n\r\ntext.regFieldUnused {\r\n\tfill: grey;\r\n}\r\n\r\ntext.regFieldName {\r\n\tfont-size: 11pt;\r\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n}\r\n\r\npath.regBitLine1,\r\npath.regBitBracket1 {\r\n\tstroke: black;\r\n\tstroke-width: 1px;\r\n}\r\n\r\npath.regBitLine0 {\r\n\tstroke: green;\r\n    stroke-dasharray: 4,2;\r\n\tstroke-width: 1px;\r\n}\r\n\r\npath.regBitBracket0 {\r\n    stroke: green;\r\n    stroke-width: 1px;\r\n}\r\n\r\nsvg.regpict {\r\n\tcolor: green;\r\n}\r\n\r\n.svg_error {\r\n\tcolor: red;\r\n\tfont-weight: bold;\r\n}\r\n\r\nfigure div.json,\r\nfigure pre.json {\r\n    color: rgb(0,90,156);\r\n    display: inherit;\r\n}';});
+
+define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNum {\n\ttext-anchor: middle;\n\tfill: grey;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n\tfont-size: 8pt;\n}\n\npath.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\nrect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\nrect.regFieldBoxrsvdp,\nrect.regFieldBoxrsvdz,\nrect.regFieldBoxReserved,\nrect.regFieldRsvd {\n\tfill: white;\n}\n\nline.regFieldBoxInternal {\n\tstroke: black;\n}\n\nline.regFieldBoxUnused {\n\tstroke: grey;\n}\n\ntext.regFieldNameInternal {\n\ttext-anchor: middle;\n}\n\ntext.regFieldUnused {\n\tfill: grey;\n}\n\ntext.regFieldName {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\npath.regBitLine1,\npath.regBitBracket1 {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\npath.regBitLine0 {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\npath.regBitBracket0 {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\n.svg_error {\n\tcolor: red;\n\tfont-weight: bold;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}';});
 
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
@@ -21189,6 +21217,9 @@ $.svg = new SVGManager();
 
 define("jquery-svg/jquery.svg.js", function(){});
 
+/*globals define */
+/*jshint jquery: true, browser: true*/
+
 // Module core/regpict
 // Handles register pictures in the document. This encompasses two primary operations. One is
 // extracting register information from a variety of table styles. The other is inventing an
@@ -21200,10 +21231,11 @@ define(
     function (utils, css) {
         
         function pget(obj, prop, def) {
-            if ((obj !== null) && prop in obj)
+            if ((obj !== null) && prop in obj) {
                 return obj[prop];
-            else
+            } else {
                 return def;
+            }
         }
 
         function draw_regpict(svg, reg) {
@@ -21217,17 +21249,29 @@ define(
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var figName             = String(pget(reg, "name", "???"));
             var fields              = pget(reg, "fields", [ ]); // default to empty register
-            if (! Array.isArray(fields)) fields = [ ];
+            if (! Array.isArray(fields)) {
+                fields = [ ];
+            }
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
             fields.forEach(function (item, index) {
-                if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
-                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;
-                if (!("unused" in item)) item.unused = false;
-                if (!("attr" in item)) item.attr = defaultAttr;
-                if (!("name" in item)) item.name = "UNSPECIFIED NAME";
+                if (("msb" in item) && !("lsb" in item)) {
+                    item.lsb = item.msb;
+                }
+                if (("lsb" in item) && !("msb" in item)) {
+                    item.msb = item.lsb;
+                }
+                if (!("unused" in item)) {
+                    item.unused = false;
+                }
+                if (!("attr" in item)) {
+                    item.attr = defaultAttr;
+                }
+                if (!("name" in item)) {
+                    item.name = "UNSPECIFIED NAME";
+                }
                 //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
             
             });
@@ -21237,8 +21281,9 @@ define(
                                 // bitarray[N] == -1 for unused bits
                                 // bitarray[N] == 1000 for first bit outside register width
             
+            var i;
             bitarray[width] = 1000;
-            for (var i = 0; i < width; i++) {
+            for (i = 0; i < width; i++) {
                 bitarray[i] = -1;
             }
             fields.forEach(function (item, index) {
@@ -21248,7 +21293,7 @@ define(
             });
             
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
-            for (var i = 0; i <= width; ++i) {
+            for (i = 0; i <= width; ++i) {
                 if (lsb >= 0 && bitarray[i] >= 0) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
                     fields.push({
@@ -21283,13 +21328,15 @@ define(
             
             var g = svg.group();
             var p = svg.createPath();
-            for (var i = 0; i < fields.length; i++) {
-                var f = fields[i];
-                var text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+            var f;
+            var text;
+            for (i = 0; i < fields.length; i++) {
+                f = fields[i];
+                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                     svg.createText().string(f.lsb), {
                         class_: "regBitNum"
                     });
-                if (f.lsb != f.msb) {
+                if (f.lsb !== f.msb) {
                     svg.text(g, middleOf(f.msb), cellTop - 4,
                         svg.createText().string(f.msb), {
                             class_: "regBitNum"
@@ -21306,9 +21353,9 @@ define(
                 fill: "none"
             });
             for (var b = 0; b < width; b++) {
-                for (var i = 0; i < fields.length; i++) {
-                    var f = fields[i];
-                    if (b == f.lsb) {
+                for (i = 0; i < fields.length; i++) {
+                    f = fields[i];
+                    if (b === f.lsb) {
                         g = svg.group();
                         svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
                             0, 0, {
@@ -21326,7 +21373,7 @@ define(
                         // svg.link doesn't work on Chrome, disable href for now
                         //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
                         //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                        var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             svg.createText().string(f.name), {
                                 class_: "regFieldName" +
                                     (f.unused ? " regFieldUnused" : "") +
@@ -21423,32 +21470,36 @@ define(
                     msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
                     var temp = $fig.attr("data-json");
-                    if (temp != null && temp != undefined && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         //console.log("parsing JSON '" + temp + "'");
                         json = $.parseJSON(temp);
                     }
                     
                     temp = $fig.attr("data-width");
-                    if (temp != null && temp != undefined && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         json.width = temp;
                     }
                     
                     temp = $fig.attr("data-unused");
-                    if (temp != null && temp != undefine && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         json.unused = temp;
                     }
                     
                     $("pre.json,div.json,span.json", $fig).each(function (index) {
-                        temp = $.parseJSON(this.textContent);
-                        for (var prop in temp) {
-                            json[prop] = temp[prop];
+                        var temp2 = $.parseJSON(this.textContent);
+                        for (var prop in temp2) {
+                            json[prop] = temp2[prop];
                         }
                         $(this).hide();
                     });
                     
                     if ($fig.hasClass("pcisig_reg")) {
-                        if (json == null) json = { };
-                        if (! ("fields" in json)) json.fields = [ ];
+                        if (json === null) {
+                            json = { };
+                        }
+                        if (! ("fields" in json)) {
+                            json.fields = [ ];
+                        }
                         var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
                         //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
                         $tbody.children().each(function () {
@@ -21459,9 +21510,12 @@ define(
                                 var attr = td.eq(2).text().toLowerCase();
                                 var lsb, msb, match;
                                 lsb = msb = -1;
-                                if (match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits)) {
+                                match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
+                                if (match) {
                                     msb = lsb = Number(match[1]);
-                                    if (match[3] != null) lsb = Number(match[3]);
+                                    if (match[3] !== null) {
+                                        lsb = Number(match[3]);
+                                    }
                                     if (lsb > msb) {
                                         msb = lsb; lsb = Number(match[1]);
                                     }
@@ -21472,16 +21526,18 @@ define(
                                 } else {
                                     fieldName = fieldName.first().text().trim();
                                 }
-                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvp|rsvz|other)$/i;
+                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
                                 if (!validAttr.test(attr)) {
                                     attr = "other";
                                 }
+                                var unusedAttr = /^(rsvdp|rsvdz)$/i;
+                                var unused = !!unusedAttr.test(attr);
                                 json.fields.push({
                                     "msb": msb,
                                     "lsb": lsb,
                                     "name": fieldName,
                                     "attr": attr,
-                                    "unused": false
+                                    "unused": unused
                                 });
                             }
                         });
@@ -21489,12 +21545,18 @@ define(
                     }
                     
                     if ($fig.hasClass("nv_refman")) {
-                        if (json == null) json = { };
-                        if (! ("fields" in json)) json.fields = [ ];
+                        if (json === null) {
+                            json = { };
+                        }
+                        if (! ("fields" in json)) {
+                            json.fields = [ ];
+                        }
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
                         var href = $fig.attr("data-href");
-                        if (!!conf.ajaxIsLocal) $.ajaxSetup({ isLocal: true});
+                        if (!!conf.ajaxIsLocal) {
+                            $.ajaxSetup({ isLocal: true});
+                        }
                         conf.ajaxIsLocal = false;
                         $.ajax({
                             dataType:   "text",
@@ -21507,15 +21569,20 @@ define(
                                         var match = pattern.exec(lines[i]);
                                         if (match) {
                                             if (! json.hasOwnProperty("width")) {
-                                                if ((match[2] == "") && (match[4].substr(4,1) === "R")) {
+                                                if ((match[2] === "") && (match[4].substr(4,1) === "R")) {
                                                     var w = match[4].substr(3,1);
-                                                    if (w === "2") json.width = 16;
-                                                    else if (w === "4") json.width = 32;
-                                                    else if (w === "8") json.width = 64;
-                                                    else json.width = 32;
+                                                    if (w === "2") {
+                                                        json.width = 16;
+                                                    } else if (w === "4") {
+                                                        json.width = 32;
+                                                    } else if (w === "8") {
+                                                        json.width = 64;
+                                                    } else {
+                                                        json.width = 32;
+                                                    }
                                                 }
                                             }
-                                            if ((match[2] != "") && (match[4].substr(4,1) === "F")) {
+                                            if ((match[2] !== "") && (match[4].substr(4,1) === "F")) {
                                                 var bits = bitpattern.exec(match[3]);
                                                 if (bits) {
                                                     json.fields.push({
@@ -21854,7 +21921,8 @@ define(
     }
 );
 
-define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\r\n{{#if permalinkHide}}\r\n    section > *:hover > span.permalink {\r\n        visibility: visible;\r\n    }\r\n{{/if}}\r\n\r\n.permalink {\r\n    width:          1px;\r\n    height:         1px;\r\n    overflow:       visible;\r\n    font-size:      10pt;\r\n    font-style:     normal;\r\n    vertical-align: middle;\r\n    margin-left:    4px;\r\n    {{#if permalinkEdge}}\r\n        float:      right;\r\n    {{/if}}\r\n    {{#if permalinkHide}}\r\n        visibility: hidden;\r\n    {{/if}}\r\n}\r\n\r\nspan.permalink > a,\r\nspan.permalink > a:link,\r\nspan.permalink > a:visited,\r\nspan.permalink > a:hover,\r\nspan.permalink > a:focus,\r\nspan.permalink > a:active\r\n{\r\n    background:       transparent !important;\r\n    text-decoration:  none;\r\n    font-weight:      normal;\r\n    color:            grey !important;\r\n}\r\n\r\n.permalink abbr {\r\n    border:0;\r\n}\r\n\r\n{{#if permalinkHide}}\r\n    @media print {\r\n        .permalink,\r\n        section > *:hover > span.permalink {\r\n            visibility: hidden;\r\n        }\r\n    }\r\n{{/if}}\r\n');});
+
+define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\n    section > *:hover > span.permalink {\n        visibility: visible;\n    }\n{{/if}}\n\n.permalink {\n    width:          1px;\n    height:         1px;\n    overflow:       visible;\n    font-size:      10pt;\n    font-style:     normal;\n    vertical-align: middle;\n    margin-left:    4px;\n    {{#if permalinkEdge}}\n        float:      right;\n    {{/if}}\n    {{#if permalinkHide}}\n        visibility: hidden;\n    {{/if}}\n}\n\nspan.permalink > a,\nspan.permalink > a:link,\nspan.permalink > a:visited,\nspan.permalink > a:hover,\nspan.permalink > a:focus,\nspan.permalink > a:active\n{\n    background:       transparent !important;\n    text-decoration:  none;\n    font-weight:      normal;\n    color:            grey !important;\n}\n\n.permalink abbr {\n    border:0;\n}\n\n{{#if permalinkHide}}\n    @media print {\n        .permalink,\n        section > *:hover > span.permalink {\n            visibility: hidden;\n        }\n    }\n{{/if}}\n');});
 
 // Module w3c/permalinks
 // Adds "permalinks" into the document at sections with explicit IDs
@@ -22093,8 +22161,8 @@ define(
     }
 );
 
-/*global define, respecVersion */
-
+/*global define, respecVersion, require */
+/*jshint laxcomma:true, browser:true */
 
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
@@ -22149,6 +22217,7 @@ define('profile-pcisig-common',[
         ,   "core/location-hash"
         ],
         function (domReady, runner, ui) {
+            
             var args = Array.prototype.slice.call(arguments);
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");
@@ -22158,5 +22227,6 @@ define('profile-pcisig-common',[
             });
         }
 );
+
 
 require(['profile-pcisig-common']);
