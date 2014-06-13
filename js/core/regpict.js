@@ -1,3 +1,6 @@
+/*globals define */
+/*jshint jquery: true, browser: true*/
+
 // Module core/regpict
 // Handles register pictures in the document. This encompasses two primary operations. One is
 // extracting register information from a variety of table styles. The other is inventing an
@@ -7,12 +10,13 @@ define(
      "text!core/css/regpict.css",
      "../jquery-svg/jquery.svg.js"],
     function (utils, css) {
-        
+        "use strict";
         function pget(obj, prop, def) {
-            if ((obj !== null) && prop in obj)
+            if ((obj !== null) && prop in obj) {
                 return obj[prop];
-            else
+            } else {
                 return def;
+            }
         }
 
         function draw_regpict(svg, reg) {
@@ -26,17 +30,29 @@ define(
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var figName             = String(pget(reg, "name", "???"));
             var fields              = pget(reg, "fields", [ ]); // default to empty register
-            if (! Array.isArray(fields)) fields = [ ];
+            if (! Array.isArray(fields)) {
+                fields = [ ];
+            }
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
             fields.forEach(function (item, index) {
-                if (("msb" in item) && !("lsb" in item)) item.lsb = item.msb;
-                if (("lsb" in item) && !("msb" in item)) item.msb = item.lsb;
-                if (!("unused" in item)) item.unused = false;
-                if (!("attr" in item)) item.attr = defaultAttr;
-                if (!("name" in item)) item.name = "UNSPECIFIED NAME";
+                if (("msb" in item) && !("lsb" in item)) {
+                    item.lsb = item.msb;
+                }
+                if (("lsb" in item) && !("msb" in item)) {
+                    item.msb = item.lsb;
+                }
+                if (!("unused" in item)) {
+                    item.unused = false;
+                }
+                if (!("attr" in item)) {
+                    item.attr = defaultAttr;
+                }
+                if (!("name" in item)) {
+                    item.name = "UNSPECIFIED NAME";
+                }
                 //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
             
             });
@@ -46,8 +62,9 @@ define(
                                 // bitarray[N] == -1 for unused bits
                                 // bitarray[N] == 1000 for first bit outside register width
             
+            var i;
             bitarray[width] = 1000;
-            for (var i = 0; i < width; i++) {
+            for (i = 0; i < width; i++) {
                 bitarray[i] = -1;
             }
             fields.forEach(function (item, index) {
@@ -57,7 +74,7 @@ define(
             });
             
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
-            for (var i = 0; i <= width; ++i) {
+            for (i = 0; i <= width; ++i) {
                 if (lsb >= 0 && bitarray[i] >= 0) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
                     fields.push({
@@ -92,13 +109,15 @@ define(
             
             var g = svg.group();
             var p = svg.createPath();
-            for (var i = 0; i < fields.length; i++) {
-                var f = fields[i];
-                var text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+            var f;
+            var text;
+            for (i = 0; i < fields.length; i++) {
+                f = fields[i];
+                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                     svg.createText().string(f.lsb), {
                         class_: "regBitNum"
                     });
-                if (f.lsb != f.msb) {
+                if (f.lsb !== f.msb) {
                     svg.text(g, middleOf(f.msb), cellTop - 4,
                         svg.createText().string(f.msb), {
                             class_: "regBitNum"
@@ -115,9 +134,9 @@ define(
                 fill: "none"
             });
             for (var b = 0; b < width; b++) {
-                for (var i = 0; i < fields.length; i++) {
-                    var f = fields[i];
-                    if (b == f.lsb) {
+                for (i = 0; i < fields.length; i++) {
+                    f = fields[i];
+                    if (b === f.lsb) {
                         g = svg.group();
                         svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
                             0, 0, {
@@ -135,7 +154,7 @@ define(
                         // svg.link doesn't work on Chrome, disable href for now
                         //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
                         //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                        var text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             svg.createText().string(f.name), {
                                 class_: "regFieldName" +
                                     (f.unused ? " regFieldUnused" : "") +
@@ -232,32 +251,36 @@ define(
                     msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
                     var temp = $fig.attr("data-json");
-                    if (temp != null && temp != undefined && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         //console.log("parsing JSON '" + temp + "'");
                         json = $.parseJSON(temp);
                     }
                     
                     temp = $fig.attr("data-width");
-                    if (temp != null && temp != undefined && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         json.width = temp;
                     }
                     
                     temp = $fig.attr("data-unused");
-                    if (temp != null && temp != undefine && temp != "") {
+                    if (temp !== null && temp !== undefined && temp !== "") {
                         json.unused = temp;
                     }
                     
                     $("pre.json,div.json,span.json", $fig).each(function (index) {
-                        temp = $.parseJSON(this.textContent);
-                        for (var prop in temp) {
-                            json[prop] = temp[prop];
+                        var temp2 = $.parseJSON(this.textContent);
+                        for (var prop in temp2) {
+                            json[prop] = temp2[prop];
                         }
                         $(this).hide();
                     });
                     
                     if ($fig.hasClass("pcisig_reg")) {
-                        if (json == null) json = { };
-                        if (! ("fields" in json)) json.fields = [ ];
+                        if (json === null) {
+                            json = { };
+                        }
+                        if (! ("fields" in json)) {
+                            json.fields = [ ];
+                        }
                         var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
                         //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
                         $tbody.children().each(function () {
@@ -268,9 +291,12 @@ define(
                                 var attr = td.eq(2).text().toLowerCase();
                                 var lsb, msb, match;
                                 lsb = msb = -1;
-                                if (match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits)) {
+                                match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
+                                if (match) {
                                     msb = lsb = Number(match[1]);
-                                    if (match[3] != null) lsb = Number(match[3]);
+                                    if (match[3] !== null) {
+                                        lsb = Number(match[3]);
+                                    }
                                     if (lsb > msb) {
                                         msb = lsb; lsb = Number(match[1]);
                                     }
@@ -281,16 +307,17 @@ define(
                                 } else {
                                     fieldName = fieldName.first().text().trim();
                                 }
-                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvp|rsvz|other)$/i;
+                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
                                 if (!validAttr.test(attr)) {
                                     attr = "other";
-                                }
+                                var unusedAttr = /^(rsvdp|rsvdz)$/i;
+                                var unused = !!unusedAttr.test(attr);
                                 json.fields.push({
                                     "msb": msb,
                                     "lsb": lsb,
                                     "name": fieldName,
                                     "attr": attr,
-                                    "unused": false
+                                    "unused": unused
                                 });
                             }
                         });
@@ -298,12 +325,18 @@ define(
                     }
                     
                     if ($fig.hasClass("nv_refman")) {
-                        if (json == null) json = { };
-                        if (! ("fields" in json)) json.fields = [ ];
+                        if (json === null) {
+                            json = { };
+                        }
+                        if (! ("fields" in json)) {
+                            json.fields = [ ];
+                        }
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
                         var href = $fig.attr("data-href");
-                        if (!!conf.ajaxIsLocal) $.ajaxSetup({ isLocal: true});
+                        if (!!conf.ajaxIsLocal) {
+                            $.ajaxSetup({ isLocal: true});
+                        }
                         conf.ajaxIsLocal = false;
                         $.ajax({
                             dataType:   "text",
@@ -316,15 +349,20 @@ define(
                                         var match = pattern.exec(lines[i]);
                                         if (match) {
                                             if (! json.hasOwnProperty("width")) {
-                                                if ((match[2] == "") && (match[4].substr(4,1) === "R")) {
+                                                if ((match[2] === "") && (match[4].substr(4,1) === "R")) {
                                                     var w = match[4].substr(3,1);
-                                                    if (w === "2") json.width = 16;
-                                                    else if (w === "4") json.width = 32;
-                                                    else if (w === "8") json.width = 64;
-                                                    else json.width = 32;
+                                                    if (w === "2") {
+                                                        json.width = 16;
+                                                    } else if (w === "4") {
+                                                        json.width = 32;
+                                                    } else if (w === "8") {
+                                                        json.width = 64;
+                                                    } else {
+                                                        json.width = 32;
+                                                    }
                                                 }
                                             }
-                                            if ((match[2] != "") && (match[4].substr(4,1) === "F")) {
+                                            if ((match[2] !== "") && (match[4].substr(4,1) === "F")) {
                                                 var bits = bitpattern.exec(match[3]);
                                                 if (bits) {
                                                     json.fields.push({
