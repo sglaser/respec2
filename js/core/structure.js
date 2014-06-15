@@ -1,5 +1,5 @@
 /*globals define*/
-/*jshint browser: true*/
+/*jshint browser:true, jquery:true, laxcomma:true */
 
 // Module core/structure
 //  Handles producing the ToC and numbering sections across the document.
