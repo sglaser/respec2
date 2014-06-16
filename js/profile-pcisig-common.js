@@ -49,6 +49,7 @@ define([
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
+        ,   "core/xref-map"
         ,   "w3c/aria"
         ,   "core/remove-respec"
         ,   "core/location-hash"
