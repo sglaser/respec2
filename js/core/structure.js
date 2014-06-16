@@ -58,7 +58,7 @@ define(
                     }
                     $(h).addClass("section-level-" + secnos.length);
                     $(h).wrapInner("<span class='sec-title'></span>");
-                    var $span = $("<span class='secno'></span>").text(secno + " ");
+                    var $span = $("<span class='secno'></span>").text(secno).addClass("section-level-" + secnos.length).append($("<span class='secno-decoration'> </span>"));
                     if (!isIntro) $(h).prepend($span);
                     var map = "";
                     if (!isIntro) {
@@ -77,7 +77,7 @@ define(
                                               .append($kidsHolder.contents()));
                     var $item = $("<li class='tocline'/>").append($a);
                     if (conf.maxTocLevel === 0 || level <= conf.maxTocLevel) {
-                    	$ul.append($item);
+                        $ul.append($item);
                     }
                     current.push(0);
                     var $sub = makeTOCAtLevel($sec, doc, current, level + 1, conf);
