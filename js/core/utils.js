@@ -1,4 +1,5 @@
-/*global respecEvents */
+/*global respecEvents, define */
+/*jshint browser:true, laxcomma:true */
 
 // Module core/utils
 // As the name implies, this contains a ragtag gang of methods that just don't fit
@@ -191,7 +192,7 @@ define(
                 if (n < alphabet.length) {
                 	return alphabet.charAt(n);
                 } else {
-                	return this.appendixMap(floor(n/alphabet.length)) + alphabet.charAt(mod(n,alphabet.length));
+                	return this.appendixMap(Math.floor(n/alphabet.length)) + alphabet.charAt(Math.mod(n,alphabet.length));
                 }
             }
 
