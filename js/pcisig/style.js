@@ -18,8 +18,7 @@ define(
                 var statStyle = conf.specStatus;
                 var css = "https://";
 //                if (statStyle === "unofficial") {
-                css += "sglaser.github.io/";
-                css += "respec/stylesheets/unofficial.css";
+                css += "sglaser.github.io/respec/stylesheets/unofficial.css";
 //                css = "respec/stylesheets/unofficial.css";
 //                }
 //                else if (statStyle === "base") {
@@ -28,10 +27,12 @@ define(
 //                else {
 //                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle + ".css";
 //                }
+                if (conf.cssOverride) {
+                    css = conf.cssOverride;
+                }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
 //                console.log("inlinecss.length = " + inlinecss.length);
-
                 msg.pub("end", "pcisig/style");
                 cb();
             }
