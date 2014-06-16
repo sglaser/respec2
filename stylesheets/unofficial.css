@@ -405,12 +405,21 @@ body {
     margin: 0 0 0 0;
     text-align: right;
     padding: 4px 4px 4px 4px;
-    /* W3C */
-    transform: rotate(270deg);
-    transform-origin: right center;
     /* Safari, Chrome */
     -webkit-transform: rotate(270deg);
     -webkit-transform-origin: right center;
+    /* Mozilla */
+    -moz-transform: rotate(270deg);
+    -moz-transform-origin: right center;
+    /* Opera */
+    -o-transform: rotate(270deg);
+    -o-transform-origin: right center;
+    /* IE */
+    -ms-transform: rotate(270deg);
+    -ms-transform-origin: right center;
+    /* W3C */
+    transform: rotate(270deg);
+    transform-origin: right center;
 }
 
 #respec-banner {
@@ -461,7 +470,6 @@ path.regBitBracket0 {
     }
 }
 
-/*<style type="text/css" scoped="scoped">*/
 
 @media print {
     @page {
@@ -505,12 +513,21 @@ path.regBitBracket0 {
         margin: 0 0 0 0;
         text-align: center;
         padding: 4px 4px 4px 4px;
-        /* W3C */
-        transform: rotate(0deg);
-        transform-origin: right center;
         /* Safari, Chrome */
         -webkit-transform: rotate(0deg);
         -webkit-transform-origin: right center;
+        /* Opera */
+        -o-transform: rotate(0deg);
+        -o-transform-origin: right center;
+        /* Mozilla */
+        -moz-transform: rotate(0deg);
+        -moz-transform-origin: right center;
+        /* IE */
+        -ms-transform: rotate(0deg);
+        -ms-transform-origin: right center;
+        /* W3C */
+        transform: rotate(0deg);
+        transform-origin: right center;
         flow: static(header);
         font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
         font-size: 17px;
