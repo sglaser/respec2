@@ -148,7 +148,7 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
-                /*if (refs.length) {
+                if (refs.length) {
                     var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
                     $.ajax({
                         dataType:   "json"
@@ -168,7 +168,7 @@ define(
                         }
                     });
                 }
-                else*/ finish();
+                else finish();
             }
         };
     }
