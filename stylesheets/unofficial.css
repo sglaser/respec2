@@ -468,8 +468,34 @@ path.regBitBracket0 {
         vertical-align: super;
         color: #0060A9;
     }
-}
 
+    a.sec-ref span.sec-title,
+    a.sec-ref span.secno-decoration,
+    a.tocxref span.secno-decoration,
+    a.fig-ref span.figdecoration,
+    a.fig-ref span.figtitle,
+    a.tbl-ref span.tbldecoration,
+    a.tbl-ref span.tbltitle {
+        display: none;
+    }
+    
+    a.tocxref span.secno::after {
+        content: ".    "
+    }
+    a.tocxref span.figtitle::before,
+    a.tocxref span.tbltitle::before {
+        content: "    "
+    }
+    
+    h1 span.secno-decoration,
+    h2 span.secno-decoration,
+    h3 span.secno-decoration,
+    h4 span.secno-decoration,
+    h5 span.secno-decoration,
+    h6 span.secno-decoration {
+        content: ".    "
+    }
+}
 
 @media print {
     @page {
