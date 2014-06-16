@@ -73,7 +73,8 @@ define(
 
                     var $a = $("<a/>").attr({ href: "#" + id, 'class' : 'tocxref' })
                                       .append(isIntro ? "" : $span.clone())
-                                      .append($kidsHolder.contents());
+                                      .append($("<span class='sectitle'></span>")
+                                              .append($kidsHolder.contents()));
                     var $item = $("<li class='tocline'/>").append($a);
                     if (conf.maxTocLevel === 0 || level <= conf.maxTocLevel) {
                     	$ul.append($item);
