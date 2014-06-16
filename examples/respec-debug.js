@@ -13166,7 +13166,8 @@ define(
     }
 );
 
-/*global respecEvents */
+/*global respecEvents, define */
+/*jshint browser:true, laxcomma:true */
 
 // Module core/utils
 // As the name implies, this contains a ragtag gang of methods that just don't fit
@@ -13359,7 +13360,7 @@ define(
                 if (n < alphabet.length) {
                 	return alphabet.charAt(n);
                 } else {
-                	return this.appendixMap(floor(n/alphabet.length)) + alphabet.charAt(mod(n,alphabet.length));
+                	return this.appendixMap(Math.floor(n/alphabet.length)) + alphabet.charAt(Math.mod(n,alphabet.length));
                 }
             }
 
@@ -13415,8 +13416,7 @@ define(
                 var statStyle = conf.specStatus;
                 var css = "https://";
 //                if (statStyle === "unofficial") {
-                css += "sglaser.github.io/";
-                css += "respec/stylesheets/unofficial.css";
+                css += "sglaser.github.io/respec/stylesheets/unofficial.css";
 //                css = "respec/stylesheets/unofficial.css";
 //                }
 //                else if (statStyle === "base") {
@@ -13425,10 +13425,12 @@ define(
 //                else {
 //                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle + ".css";
 //                }
+                if (conf.cssOverride) {
+                    css = conf.cssOverride;
+                }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
 //                console.log("inlinecss.length = " + inlinecss.length);
-
                 msg.pub("end", "pcisig/style");
                 cb();
             }
@@ -18215,7 +18217,7 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
-                /*if (refs.length) {
+                if (refs.length) {
                     var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
                     $.ajax({
                         dataType:   "json"
@@ -18235,7 +18237,7 @@ define(
                         }
                     });
                 }
-                else*/ finish();
+                else finish();
             }
         };
     }
@@ -21639,7 +21641,7 @@ define(
 define(
     'core/dfn',[],
     function () {
-        var dfnClass = ["dfn", "pin", "signal", "term", "field", "register", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "state", "value", "parameter", "argument"];
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
@@ -21711,14 +21713,15 @@ define(
                 });
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
-                    var $mapsec = $("<section id='definition-map' class='appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
+                    var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
                     var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
                     var keys = Object.keys(conf.definitionMap).sort();
                     for (var i = 0; i < keys.length; i++) {
                         var d = keys[i];
                         var item = d.split(/-/);
                         var kind = item.shift();
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td>" + conf.definitionMap[d] + "</td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                        var id=conf.definitionMap[d];
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
@@ -21757,7 +21760,7 @@ define(
 );
 
 /*globals define*/
-/*jshint browser: true*/
+/*jshint browser:true, jquery:true, laxcomma:true */
 
 // Module core/structure
 //  Handles producing the ToC and numbering sections across the document.
@@ -21809,7 +21812,6 @@ define(
                     var secno = secnos.join(".")
                     ,   isTopLevel = secnos.length === 1;
                     if (isTopLevel) {
-                        secno = secno + ".";
                         // if this is a top level item, insert
                         // an OddPage comment so html2ps will correctly
                         // paginate the output
@@ -21817,7 +21819,7 @@ define(
                     }
                     $(h).addClass("section-level-" + secnos.length);
                     $(h).wrapInner("<span class='sec-title'></span>");
-                    var $span = $("<span class='secno'></span>").text(secno + " ");
+                    var $span = $("<span class='secno'></span>").text(secno).addClass("section-level-" + secnos.length).append($("<span class='secno-decoration'> </span>"));
                     if (!isIntro) $(h).prepend($span);
                     var map = "";
                     if (!isIntro) {
@@ -21832,10 +21834,11 @@ define(
 
                     var $a = $("<a/>").attr({ href: "#" + id, 'class' : 'tocxref' })
                                       .append(isIntro ? "" : $span.clone())
-                                      .append($kidsHolder.contents());
+                                      .append($("<span class='sectitle'></span>")
+                                              .append($kidsHolder.contents()));
                     var $item = $("<li class='tocline'/>").append($a);
                     if (conf.maxTocLevel === 0 || level <= conf.maxTocLevel) {
-                    	$ul.append($item);
+                        $ul.append($item);
                     }
                     current.push(0);
                     var $sub = makeTOCAtLevel($sec, doc, current, level + 1, conf);
@@ -22024,6 +22027,48 @@ define(
     }
 );
 
+/*globals define*/
+/*jshint browser:true, jquery:true, laxcomma:true */
+
+// Module core/structure
+//  Handles producing the ToC and numbering sections across the document.
+
+// CONFIGURATION:
+//  - noTOC: if set to true, no TOC is generated and sections are not numbered
+//  - tocIntroductory: if set to true, the introductory material is listed in the TOC
+//  - lang: can change the generated text (supported: en, fr)
+//  - maxTocLevel: only generate a TOC so many levels deep
+
+define(
+    'core/xref-map',["core/utils"],
+    function (utils) {
+        
+        return {
+            run: function (conf, doc, cb, msg) {
+                msg.pub("start", "core/xref-map");
+                if (!!conf.addXrefMap) {
+                    var $refs = $("a.tocxref", doc);
+                    if ($refs.length > 0) {
+                        var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure and Table ID Map</h2></section>").appendTo($("body"));
+                        var $tbody = $("<table><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+
+                        $refs.each(function() {
+                            var number = ($(".secno, .figno, .tblno", this).text()
+                                          .replace(/ /g,"&nbsp;").replace(/-/g,"&#8209;"));
+                            var id = $(this).attr("href");
+                            var name = $(".sectitle, .figtitle, .tbltitle", this).text();
+                            $("<tr><td>" + number + "</td>" +
+                              "<td>" + name + "</td>" +
+                              "<td><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);
+                        });
+                    }
+                }
+                msg.pub("end", "core/structure");
+                cb();
+            }
+        };
+    }
+);
 // Module w3c/aria
 // Adds wai-aria landmarks and roles to entire document.
 // Introduced by Shane McCarron (shane@aptest.com) from the W3C PFWG
@@ -22212,6 +22257,7 @@ define('profile-pcisig-common',[
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
+        ,   "core/xref-map"
         ,   "w3c/aria"
         ,   "core/remove-respec"
         ,   "core/location-hash"
