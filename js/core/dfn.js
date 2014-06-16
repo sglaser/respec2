@@ -6,7 +6,7 @@
 define(
     [],
     function () {
-        var dfnClass = ["dfn", "pin", "signal", "term", "field", "register", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "state", "value", "parameter", "argument"];
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
