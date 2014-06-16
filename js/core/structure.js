@@ -51,7 +51,6 @@ define(
                     var secno = secnos.join(".")
                     ,   isTopLevel = secnos.length === 1;
                     if (isTopLevel) {
-                        secno = secno + ".";
                         // if this is a top level item, insert
                         // an OddPage comment so html2ps will correctly
                         // paginate the output
