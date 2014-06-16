@@ -85,7 +85,8 @@ define(
                         var d = keys[i];
                         var item = d.split(/-/);
                         var kind = item.shift();
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td>" + conf.definitionMap[d] + "</td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                        var id=conf.definitionMap[d];
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
