@@ -8,7 +8,7 @@
 define(
     ["core/utils",
      "text!core/css/regpict.css",
-     "../jquery-svg/jquery.svg.js"],
+     "jquery-svg"],
     function (utils, css) {
         "use strict";
         function pget(obj, prop, def) {
