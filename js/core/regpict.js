@@ -155,14 +155,15 @@ define(
                         //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
                         //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                         text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                            svg.createText().string(f.name), {
-                                class_: "regFieldName" +
-                                    (f.unused ? " regFieldUnused" : "") +
-                                    " regFieldName" + f.attr +
-                                    " regFieldNameInternal" +
-                                    " regFieldNameInternal" + f.attr,
-                                    "id" : (f.id ? f.id : ("field-" + figName + "-" + f.name))
-                            });
+                                        svg.createText().string(f.name), {
+                                            class_: "regFieldName" +
+                                            (f.unused ? " regFieldUnused" : "") +
+                                            " regFieldName" + f.attr +
+                                            " regFieldNameInternal" +
+                                            " regFieldNameInternal" + f.attr
+                                        });
+                        var unique_id = $("<span/>").makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                        svg.change(text, { id: unique_id });
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
@@ -369,8 +370,9 @@ define(
                                                     json.fields.push({
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
-                                                        name: String(match[2].substr(1)),
-                                                        id:   String(match[1] + match[2]),
+                                                      /*name: String(match[2].substr(1)),*/
+                                                        name: String(match[1] + match[2]),
+                                                      /*id:   String(match[1] + match[2]),*/
                                                         attr: match[4].substr(0,2).toLowerCase() });
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);

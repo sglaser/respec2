@@ -6,7 +6,7 @@
 define(
     [],
     function () {
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
@@ -29,9 +29,9 @@ define(
                 $("svg text[id]").each(function () {
                     //console.log("svg text[id] matches " + this.outerHTML);
                     var title = $(this).dfnTitle();
-                    if (!conf.definitionMap["field-" + title]) {
-                        conf.definitionMap["field-" + title] = $(this).attr("id");
-                        conf.definitionHTML["field-" + title] = $(this).text();
+                    if (!conf.definitionMap["regpict-" + title]) {
+                        conf.definitionMap["regpict-" + title] = $(this).attr("id");
+                        conf.definitionHTML["regpict-" + title] = $(this).text();
                     }
                 });
                 $("a:not([href])").each(function () {
