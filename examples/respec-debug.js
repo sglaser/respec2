@@ -21217,7 +21217,7 @@ $.svg = new SVGManager();
 
 })(jQuery);
 
-define("jquery-svg/jquery.svg.js", function(){});
+define("jquery-svg", function(){});
 
 /*globals define */
 /*jshint jquery: true, browser: true*/
@@ -21229,7 +21229,7 @@ define("jquery-svg/jquery.svg.js", function(){});
 define(
     'core/regpict',["core/utils",
      "text!core/css/regpict.css",
-     "../jquery-svg/jquery.svg.js"],
+     "jquery-svg"],
     function (utils, css) {
         
         function pget(obj, prop, def) {
