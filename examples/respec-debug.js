@@ -13176,17 +13176,18 @@ define(
 define(
     'core/utils',["jquery"],
     function ($) {
+        
         // --- JQUERY EXTRAS -----------------------------------------------------------------------
         // Applies to any jQuery object containing elements, changes their name to the one give, and
         // return a jQuery object containing the new elements
         $.fn.renameElement = function (name) {
             var arr = [];
             this.each(function () {
-                var $newEl = $(this.ownerDocument.createElement(name));
+                var $newEl = $(this.ownerDocument.createElement(name)), at, i, n;
                 // I forget why this didn't work, maybe try again
                 // $newEl.attr($(this).attr());
-                for (var i = 0, n = this.attributes.length; i < n; i++) {
-                    var at = this.attributes[i];
+                for (i = 0, n = this.attributes.length; i < n; i = i + 1) {
+                    at = this.attributes[i];
                     $newEl[0].setAttributeNS(at.namespaceURI, at.name, at.value);
                 }
                 $(this).contents().appendTo($newEl);
@@ -13200,10 +13201,15 @@ define(
         // actual title of a <dfn> element (but can apply to other as well).
         $.fn.dfnTitle = function () {
             var title;
-            if (this.attr("title")) title = this.attr("title");
-            else if (this.contents().length == 1 && this.children("abbr, acronym").length == 1 &&
-                     this.find(":first-child").attr("title")) title = this.find(":first-child").attr("title");
-            else title = this.text();
+            if (this.attr("title")) {
+                title = this.attr("title");
+            } else if (this.contents().length === 1 &&
+                       this.children("abbr, acronym").length === 1 &&
+                       this.find(":first-child").attr("title")) {
+                title = this.find(":first-child").attr("title");
+            } else {
+                title = this.text();
+            }
             return title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
         };
 
@@ -13211,19 +13217,36 @@ define(
         // Applied to an element, sets an ID for it (and returns it), using a specific prefix
         // if provided, and a specific text if given.
         $.fn.makeID = function (pfx, txt, noLC) {
-            if (this.attr("id")) return this.attr("id");
-            if (!txt) txt = this.attr("title") ? this.attr("title") : this.text();
+            if (this.attr("id")) {
+                return this.attr("id");
+            }
+            if (!txt) {
+                txt = this.attr("title") || this.text();
+            }
             txt = txt.replace(/^\s+/, "").replace(/\s+$/, "");
-            var id = noLC ? txt : txt.toLowerCase();
-            id = id.split(/[^\-.0-9a-z_]+/i).join("-").replace(/^-+/, "").replace(/-+$/, "");
-            if (/\.$/.test(id)) id += "x"; // trailing . doesn't play well with jQuery
-            if (id.length > 0 && /^[^a-z]/i.test(id)) id = "x" + id;
-            if (id.length === 0) id = "generatedID";
-            if (pfx) id = pfx + "-" + id;
-            var inc = 1
-            ,   doc = this[0].ownerDocument;
+            var id = noLC ? txt : txt.toLowerCase(),
+                inc,
+                doc;
+            //id = id.split(/[^\-.0-9a-z_]+/i).join("-").replace(/^-+/, "").replace(/-+$/, "");
+            id = id.replace(/[\-.0-9a-z_]+/ig, "-").replace(/^-+/, "").replace(/-+$/, "");
+            if (/\.$/.test(id)) {
+                id += "x"; // trailing . doesn't play well with jQuery
+            }
+            if (id.length > 0 && !(/^[a-z]/i.test(id))) {
+                id = "x" + id;
+            }
+            if (id.length === 0) {
+                id = "generatedID";
+            }
+            if (pfx) {
+                id = pfx + "-" + id;
+            }
+            inc = 1;
+            doc = this[0].ownerDocument;
             if ($("#" + id, doc).length) {
-                while ($("#" + id + "-" + inc, doc).length) inc++;
+                while ($("#" + id + "-" + inc, doc).length) {
+                    inc = inc + 1;
+                }
                 id += "-" + inc;
             }
             this.attr("id", id);
@@ -13234,13 +13257,23 @@ define(
         // returned as a jQuery array since I'm not sure if that would make too much sense.
         $.fn.allTextNodes = function (exclusions) {
             var textNodes = [],
-                excl = {};
-            for (var i = 0, n = exclusions.length; i < n; i++) excl[exclusions[i]] = true;
-            function getTextNodes (node) {
-                if (node.nodeType === 1 && excl[node.localName.toLowerCase()]) return;
-                if (node.nodeType === 3) textNodes.push(node);
-                else {
-                    for (var i = 0, len = node.childNodes.length; i < len; ++i) getTextNodes(node.childNodes[i]);
+                excl = {},
+                i,
+                n;
+            for (i = 0, n = exclusions.length; i < n; i = i + 1) {
+                excl[exclusions[i]] = true;
+            }
+            function getTextNodes(node) {
+                var i, len;
+                if (node.nodeType === 1 && excl[node.localName.toLowerCase()]) {
+                    return;
+                }
+                if (node.nodeType === 3) {
+                    textNodes.push(node);
+                } else {
+                    for (i = 0, len = node.childNodes.length; i < len; i = i + 1) {
+                        getTextNodes(node.childNodes[i]);
+                    }
                 }
             }
             getTextNodes(this[0]);
@@ -13254,137 +13287,162 @@ define(
                 msg.pub("start", "core/utils");
                 msg.pub("end", "core/utils");
                 cb();
-            }
+            },
 
             // --- RESPEC STUFF -------------------------------------------------------------------------------
-        ,   removeReSpec:   function (doc) {
+            removeReSpec:   function (doc) {
                 $(".remove, script[data-requiremodule]", doc).remove();
-            }
+            },
 
             // --- STRING HELPERS -----------------------------------------------------------------------------
             // Takes an array and returns a string that separates each of its items with the proper commas and
             // "and". The second argument is a mapping function that can convert the items before they are
             // joined
-        ,   joinAnd:    function (arr, mapper) {
-                if (!arr || !arr.length) return "";
+            joinAnd:    function (arr, mapper) {
+                var i, n, ret;
+                if (!arr || !arr.length) {
+                    return "";
+                }
                 mapper = mapper || function (ret) { return ret; };
-                var ret = "";
-                if (arr.length === 1) return mapper(arr[0], 0);
-                for (var i = 0, n = arr.length; i < n; i++) {
+                ret = "";
+                if (arr.length === 1) {
+                    return mapper(arr[0], 0);
+                }
+                for (i = 0, n = arr.length; i < n; i = i + 1) {
                     if (i > 0) {
-                        if (n === 2) ret += ' ';
-                        else         ret += ', ';
-                        if (i == n - 1) ret += 'and ';
+                        if (n === 2) {
+                            ret += ' ';
+                        } else {
+                            ret += ', ';
+                        }
+                        if (i === n - 1) {
+                            ret += 'and ';
+                        }
                     }
                     ret += mapper(arr[i], i);
                 }
                 return ret;
-            }
+            },
 
             // Takes a string, applies some XML escapes, and returns the escaped string.
             // Note that overall using either Handlebars' escaped output or jQuery is much
             // preferred to operating on strings directly.
-        ,   xmlEscape:    function (s) {
+            xmlEscape:    function (s) {
                 return s.replace(/&/g, "&amp;")
                         .replace(/>/g, "&gt;")
                         .replace(/"/g, "&quot;")
                         .replace(/</g, "&lt;");
-            }
+            },
 
             // Trims string at both ends and replaces all other white space with a single space
-        ,   norm:   function (str) {
+            norm:   function (str) {
                 return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
-            }
+            },
 
             
             // --- DATE HELPERS -------------------------------------------------------------------------------
             // Takes a Date object and an optional separator and returns the year,month,day representation with
             // the custom separator (defaulting to none) and proper 0-padding
-        ,   concatDate: function (date, sep) {
-                if (!sep) sep = "";
-                return "" + date.getFullYear() + sep + this.lead0(date.getMonth() + 1) + sep + this.lead0(date.getDate());
-            }
+            concatDate: function (date, sep) {
+                if (!sep) {
+                    sep = "";
+                }
+                return String(date.getFullYear() + sep +
+                              this.lead0(date.getMonth() + 1) + sep +
+                              this.lead0(date.getDate()));
+            },
 
             // takes a string, prepends a "0" if it is of length 1, does nothing otherwise
-        ,   lead0:  function (str) {
-                str = "" + str;
-                return (str.length == 1) ? "0" + str : str;
-            }
+            lead0:  function (str) {
+                str = String(str);
+                return (str.length === 1) ? "0" + str : str;
+            },
             
             // takes a YYYY-MM-DD date and returns a Date object for it
-        ,   parseSimpleDate:    function (str) {
+            parseSimpleDate:    function (str) {
                 return new Date(str.substr(0, 4), (str.substr(5, 2) - 1), str.substr(8, 2));
-            }
+            },
 
             // takes what document.lastModified returns and produces a Date object for it
-        ,   parseLastModified:    function (str) {
-                if (!str) return new Date();
+            parseLastModified:    function (str) {
+                if (!str) {
+                    return new Date();
+                }
                 return new Date(Date.parse(str));
                 // return new Date(str.substr(6, 4), (str.substr(0, 2) - 1), str.substr(3, 2));
-            }
+            },
 
             // list of human names for months (in English)
-        ,   humanMonths: ["January", "February", "March", "April", "May", "June", "July",
-                          "August", "September", "October", "November", "December"]
+            humanMonths: ["January", "February", "March", "April", "May", "June", "July",
+                          "August", "September", "October", "November", "December"],
         
             // given either a Date object or a date in YYYY-MM-DD format, return a human-formatted
             // date suitable for use in a W3C specification
-        ,   humanDate:  function (date) {
-                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
+            humanDate:  function (date) {
+                if (!(date instanceof Date)) {
+                    date = this.parseSimpleDate(date);
+                }
                 return this.lead0(date.getDate()) + " " + this.humanMonths[date.getMonth()] + " " + date.getFullYear();
-            }
+            },
             // given either a Date object or a date in YYYY-MM-DD format, return an ISO formatted
             // date suitable for use in a xsd:datetime item
-        ,   isoDate:    function (date) {
-                if (!(date instanceof Date)) date = this.parseSimpleDate(date);
+            isoDate:    function (date) {
+                if (!(date instanceof Date)) {
+                    date = this.parseSimpleDate(date);
+                }
                 // return "" + date.getUTCFullYear() +'-'+ this.lead0(date.getUTCMonth() + 1)+'-' + this.lead0(date.getUTCDate()) +'T'+this.lead0(date.getUTCHours())+':'+this.lead0(date.getUTCMinutes()) +":"+this.lead0(date.getUTCSeconds())+'+0000';
-                return date.toISOString() ;
-            }
+                return date.toISOString();
+            },
             
             
             // --- STYLE HELPERS ------------------------------------------------------------------------------
             // take a document and either a link or an array of links to CSS and appends a <link/> element
             // to the head pointing to each
-        ,   linkCSS:  function (doc, styles) {
-                if (!$.isArray(styles)) styles = [styles];
+            linkCSS:  function (doc, styles) {
+                if (!$.isArray(styles)) {
+                    styles = [styles];
+                }
                 $.each(styles, function (i, css) {
                     $('head', doc).append($("<link/>").attr({ rel: 'stylesheet', href: css }));
                 });
-            }
+            },
 
             // --- APPENDIX NUMBERING --------------------------------------------------------------------------
             // take a a number and return the corresponding Appendix String. 0 means 'A', ... 25 means 'Z, 26
             // means 'AA', 26**26-1 means 'ZZ, 26**26 means 'AAA', etc.
-        ,   appendixMap: function(n) {
-        	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            appendixMap: function (n) {
+                var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 if (n < alphabet.length) {
-                	return alphabet.charAt(n);
+                    return alphabet.charAt(n);
                 } else {
-                	return this.appendixMap(Math.floor(n/alphabet.length)) + alphabet.charAt(Math.mod(n,alphabet.length));
+                    return (this.appendixMap(Math.floor(n / alphabet.length)) +
+                            alphabet.charAt(Math.mod(n, alphabet.length)));
                 }
-            }
+            },
 
             // --- TRANSFORMATIONS ------------------------------------------------------------------------------
             // Run list of transforms over content and return result.
             // Please note that this is a legacy method that is only kept in order to maintain compatibility
             // with RSv1. It is therefore not tested and not actively supported.
-        ,   runTransforms: function (content, flist) {
-                var args = [this, content]
-                ,   funcArgs = Array.prototype.slice.call(arguments)
-                ;
-                funcArgs.shift(); funcArgs.shift();
+            runTransforms: function (content, flist) {
+                var args = [this, content],
+                    funcArgs = Array.prototype.slice.call(arguments),
+                    methods,
+                    meth,
+                    j;
+                funcArgs.shift();
+                funcArgs.shift();
                 args = args.concat(funcArgs);
                 if (flist) {
-                    var methods = flist.split(/\s+/);
-                    for (var j = 0; j < methods.length; j++) {
-                        var meth = methods[j];
+                    methods = flist.split(/\s+/);
+                    for (j = 0; j < methods.length; j = j + 1) {
+                        meth = methods[j];
                         if (window[meth]) {
                             // the initial call passed |this| directly, so we keep it that way
                             try {
                                 content = window[meth].apply(this, args);
-                            }
-                            catch (e) {
-                                respecEvents.pub("warn", "call to " + meth + "() failed with " + e) ;
+                            } catch (e) {
+                                respecEvents.pub("warn", "call to " + meth + "() failed with " + e);
                             }
                         }
                     }
@@ -21376,14 +21434,15 @@ define(
                         //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
                         //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                         text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                            svg.createText().string(f.name), {
-                                class_: "regFieldName" +
-                                    (f.unused ? " regFieldUnused" : "") +
-                                    " regFieldName" + f.attr +
-                                    " regFieldNameInternal" +
-                                    " regFieldNameInternal" + f.attr,
-                                    "id" : (f.id ? f.id : ("field-" + figName + "-" + f.name))
-                            });
+                                        svg.createText().string(f.name), {
+                                            class_: "regFieldName" +
+                                            (f.unused ? " regFieldUnused" : "") +
+                                            " regFieldName" + f.attr +
+                                            " regFieldNameInternal" +
+                                            " regFieldNameInternal" + f.attr
+                                        });
+                        var unique_id = $("<span/>").makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                        svg.change(text, { id: unique_id });
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
@@ -21590,8 +21649,9 @@ define(
                                                     json.fields.push({
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
-                                                        name: String(match[2].substr(1)),
-                                                        id:   String(match[1] + match[2]),
+                                                      /*name: String(match[2].substr(1)),*/
+                                                        name: String(match[1] + match[2]),
+                                                      /*id:   String(match[1] + match[2]),*/
                                                         attr: match[4].substr(0,2).toLowerCase() });
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
@@ -21641,7 +21701,7 @@ define(
 define(
     'core/dfn',[],
     function () {
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
@@ -21664,9 +21724,9 @@ define(
                 $("svg text[id]").each(function () {
                     //console.log("svg text[id] matches " + this.outerHTML);
                     var title = $(this).dfnTitle();
-                    if (!conf.definitionMap["field-" + title]) {
-                        conf.definitionMap["field-" + title] = $(this).attr("id");
-                        conf.definitionHTML["field-" + title] = $(this).text();
+                    if (!conf.definitionMap["regpict-" + title]) {
+                        conf.definitionMap["regpict-" + title] = $(this).attr("id");
+                        conf.definitionHTML["regpict-" + title] = $(this).text();
                     }
                 });
                 $("a:not([href])").each(function () {
