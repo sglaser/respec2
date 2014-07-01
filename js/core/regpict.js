@@ -162,7 +162,7 @@ define(
                                             " regFieldNameInternal" +
                                             " regFieldNameInternal" + f.attr
                                         });
-                        var unique_id = $("<span/>").makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                        var unique_id = $("<span></span>").makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
                         svg.change(text, { id: unique_id });
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
@@ -233,7 +233,7 @@ define(
             run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
                 if (!conf.noReSpecCSS) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                    $(doc).find("head link").first().before($("<style></style>").text(css));
                 }
                 var figNum = 1;
                 $("figure.register", doc).each(function (index) {
