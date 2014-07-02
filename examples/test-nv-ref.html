@@ -81,17 +81,29 @@
                     "name": "bit9"
                 }, {
                     "lsb": 10,
-                    "name": "bit10"
+                    "name": "bit10",
+                    "class": "svg_error"
                 }, {
                     "lsb": 11,
                     "name": "bit11"
                 }, {
                     "lsb": 12,
-                    "name": "bit11"
+                    "name": "bit11",
+                    "value": "1"
                 }, {
                     "lsb": 13,
                     "name": "bit13",
                     "href": "field-bit13"
+                }, {
+                    "lsb": 14,
+                    "msb": 24,
+                    "name": "bit 20:14",
+                    "value": "value"
+                }, {
+                    "lsb": 25,
+                    "msb": 32,
+                    "name": "byte",
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
                 } ] }
         &lt;/pre&gt;
         &lt;figcaption&gt;Graph for JSON Defined Register Example&lt;/figcaption&gt;
@@ -124,7 +136,7 @@
             <!--  unused    true if field is considered "unused" -->
             <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
             <pre class="json">            
-            { "width" : 32,
+            { "width" : 48,
               "unused" : "Bogus",
               "fields": [
                 {   "msb": 4,
@@ -140,17 +152,29 @@
                     "name": "bit9"
                 }, {
                     "lsb": 10,
-                    "name": "bit10"
+                    "name": "bit10",
+                    "class": "svg_error"
                 }, {
                     "lsb": 11,
                     "name": "bit11"
                 }, {
                     "lsb": 12,
-                    "name": "bit11"
+                    "name": "bit11",
+                    "value": "1"
                 }, {
                     "lsb": 13,
                     "name": "bit13",
                     "href": "field-bit13"
+                }, {
+                    "lsb": 14,
+                    "msb": 24,
+                    "name": "bit 20:14",
+                    "value": "value"
+                }, {
+                    "lsb": 25,
+                    "msb": 32,
+                    "name": "byte",
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
                 } ] }
         </pre>
             <figcaption>Graph for JSON Defined Register Example</figcaption>
@@ -169,6 +193,8 @@
             <li><a href="#regpict-json-register-bit13">bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#regpict-json-register-bit13"&gt;bit 13&lt;/a&gt;</li>
             <li><dfn class="field">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;bit13&lt;/dfn&gt;
                 - this is the definition for <a class="field">bit13</a></li>
+            <li><dfn class="field">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;bit13&lt;/dfn&gt;
+                - this is a <b>duplicate</b> definition for <a class="field">bit13</a></li>
         </ul>
 
     </section>

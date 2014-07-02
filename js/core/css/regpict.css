@@ -32,14 +32,17 @@ line.regFieldBoxUnused {
 	stroke: grey;
 }
 
+text.regFieldValueInternal ,
 text.regFieldNameInternal {
 	text-anchor: middle;
 }
 
-text.regFieldUnused {
+text.regFieldValueUnused,
+text.regFieldNameUnused {
 	fill: grey;
 }
 
+text.regFieldValue,
 text.regFieldName {
 	font-size: 11pt;
 	font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
@@ -61,14 +64,21 @@ path.regBitBracket0 {
     stroke: green;
     stroke-width: 1px;
 }
+svg text.regFieldValue {
+    fill: #0060A9;
+    font-family: monospace;
+}
 
 svg.regpict {
 	color: green;
 }
 
-.svg_error {
-	color: red;
-	font-weight: bold;
+svg *.svg_error text {
+    fill: red;
+    font-size: 12pt;
+    font-weight: bold;
+    font-style: normal;
+    font-family: monospace;
 }
 
 figure div.json,

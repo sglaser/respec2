@@ -6,10 +6,11 @@
 // extracting register information from a variety of table styles. The other is inventing an
 // svg diagram that represents the fields in the table.
 define(
-    ["core/utils",
-     "text!core/css/regpict.css",
+    ["text!core/css/regpict.css",
+     "jquery",
+     "core/utils",
      "jquery-svg"],
-    function (utils, css) {
+    function (css) {
         "use strict";
         function pget(obj, prop, def) {
             if ((obj !== null) && prop in obj) {
@@ -19,13 +20,16 @@ define(
             }
         }
 
-        function draw_regpict(svg, reg) {
+        function draw_regpict(divsvg, svg, reg) {
             var width               = Number(pget(reg, "width", 32));
             var unused              = String(pget(reg, "unused", "RsvdP"));
             var defaultAttr         = String(pget(reg, "defaultAttr", "other"));
             var cellWidth           = Number(pget(reg, "cellWidth", 16));
             var cellHeight          = Number(pget(reg, "cellHeight", 32));
             var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+            var cellValueTop        = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
+            var cellBitValueTop     = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
+            var cellNameTop         = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
             var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var figName             = String(pget(reg, "name", "???"));
@@ -33,11 +37,13 @@ define(
             if (! Array.isArray(fields)) {
                 fields = [ ];
             }
+            var divsvg_id = (divsvg.hasOwnProperty("id") ? divsvg["id"] : "");
+
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
-            fields.forEach(function (item, index) {
+            fields.forEach(function (item) {
                 if (("msb" in item) && !("lsb" in item)) {
                     item.lsb = item.msb;
                 }
@@ -52,6 +58,12 @@ define(
                 }
                 if (!("name" in item)) {
                     item.name = "UNSPECIFIED NAME";
+                }
+                if (!("value" in item)) {
+                    item.value = "";
+                }
+                if (!("class" in item)) {
+                    item.class = "";
                 }
                 //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
             
@@ -81,8 +93,9 @@ define(
                         "msb": i - 1,
                         "lsb": lsb,
                         "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
-                        "attr": unused.toLowerCase(),   // attribute is name
-                        "unused": true
+                        "attr": unused,   // attribute is name
+                        "unused": true,
+                        "value": ""
                     });
                     lsb = -1;
                 }
@@ -138,6 +151,9 @@ define(
                     f = fields[i];
                     if (b === f.lsb) {
                         g = svg.group();
+                        if (f.class !== "") {
+                            svg.change(g, { class_: f.class });
+                        }
                         svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
                             0, 0, {
                                 class_: "regFieldBox regFieldBox" + f.attr
@@ -154,16 +170,52 @@ define(
                         // svg.link doesn't work on Chrome, disable href for now
                         //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
                         //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
                                         svg.createText().string(f.name), {
                                             class_: "regFieldName" +
-                                            (f.unused ? " regFieldUnused" : "") +
+                                            (f.unused ? " regFieldNameUnused" : "") +
                                             " regFieldName" + f.attr +
                                             " regFieldNameInternal" +
                                             " regFieldNameInternal" + f.attr
                                         });
-                        var unique_id = $("<span></span>").makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
-                        svg.change(text, { id: unique_id });
+                        if (!f.unused) {
+                            var $temp_dom = $("<span></span>").prependTo(divsvg);
+                            var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                            $temp_dom.remove();
+                            svg.change(g, { id: unique_id });
+                        }
+                        if (f.value !== "") {
+                            if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
+                                for (i = 0; i < f.value.length; ++i) {
+                                    svg.text(g, (leftOf(f.lsb+i) + rightOf(f.lsb+i)) / 2, cellBitValueTop,
+                                        svg.createText().string(f.value[i]), {
+                                            class_: "regFieldValue" +
+                                                (f.unused ? " regFieldValueUnused" : "") +
+                                                " regFieldBitValue" +
+                                                " regFieldBitValue-" + i.toString() +
+                                                ((i === (f.value.length - 1)) ? " regFieldBitValue-msb" : "") +
+                                                " regFieldValue" + f.attr +
+                                                " regFieldValueInternal" +
+                                                " regFieldValueInternal" + f.attr
+                                        });
+                                }
+                            } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
+                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
+                                    (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
+                                    svg.createText().string(f.value), {
+                                        class_: "regFieldValue" +
+                                            (f.unused ? " regFieldValueUnused" : "") +
+                                            " regFieldValue" + f.attr +
+                                            " regFieldValueInternal" +
+                                            " regFieldValueInternal" + f.attr
+                                    });
+                            } else {
+                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
+                                    svg.createText().string("INVALID VALUE"), {
+                                        class_ : "svg_error"
+                                    });
+                            }
+                        }
                         var text_width = text.clientWidth;
                         if (text_width === 0) {
                             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
@@ -190,11 +242,15 @@ define(
                                     " rightOf(msb)=" + rightOf(f.lsb) +
                                     " leftOf(lsb)=" + leftOf(f.msb) +
                                     " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
-                        if (((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
+                        /* if field has a specified value,
+                           the field name is too wide for the box,
+                           or the field name is too tall for the box */
+                        if ((f.value !== "") || ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                             svg.change(text, {
                                 x: rightOf(-0.5),
                                 y: nextBitLine,
                                 class_: "regFieldName" +
+                                    (f.unused ? " regFieldNameUnused" : "") +
                                     " regFieldName" + f.attr +
                                     " regFieldName" + (bitLineCount < 2 ? "0" : "1")
                             });
@@ -204,6 +260,7 @@ define(
                              .line(rightOf(f.lsb), cellTop + cellHeight);
                             svg.path(g, p, {
                                 class_: "regBitBracket" +
+                                    (f.unused ? " regFieldBracketUnused" : "") +
                                     " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
                                 fill: "none"
                             });  
@@ -213,6 +270,7 @@ define(
                              .horiz(rightOf(-0.4));
                             svg.path(g, p, {
                                 class_: "regBitLine" +
+                                    (f.unused ? " regFieldLineUnused" : "") +
                                     " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
                                 fill: "none"
                             });
@@ -236,7 +294,7 @@ define(
                     $(doc).find("head link").first().before($("<style></style>").text(css));
                 }
                 var figNum = 1;
-                $("figure.register", doc).each(function (index) {
+                $("figure.register", doc).each(function () {
                     var $fig = $(this);
                     var json = { };
                     if ($fig.attr("id")) {
@@ -267,7 +325,7 @@ define(
                         json.unused = temp;
                     }
                     
-                    $("pre.json,div.json,span.json", $fig).each(function (index) {
+                    $("pre.json,div.json,span.json", $fig).each(function () {
                         var temp2 = $.parseJSON(this.textContent);
                         for (var prop in temp2) {
                             json[prop] = temp2[prop];
@@ -406,7 +464,7 @@ define(
                         }
                         $divsvg=$("div.svg", this);
                     }
-                    if (json !== null) { $divsvg.first().svg(function(svg) { draw_regpict(svg, json); }); }
+                    if (json !== null) { $divsvg.first().svg(function(svg) { draw_regpict(this, svg, json); }); }
                 });
                 msg.pub("end", "core/regpict");
                 cb();

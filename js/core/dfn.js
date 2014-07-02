@@ -21,20 +21,23 @@ define(
                     var title = $(this).dfnTitle();
                     if (conf.definitionMap[tag + "-" + title]) {
                         msg.pub("error", "Duplicate definition '" + tag + "-" + title + "'");
-                        $(this).append("<span class=\"respec-error\"> Duplicate definition of '" + tag + "-" + title + "'</span>");
+                        $(this).append("<span class=\"respec-error\"> Definition '" + tag + "-" + title + "' is defined more than once </span>");
                     }
                     conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
                     conf.definitionHTML[tag + "-" + title] = $(this).html();
                 });
-                $("svg text[id]").each(function () {
-                    //console.log("svg text[id] matches " + this.outerHTML);
-                    var title = $(this).dfnTitle();
-                    if (!conf.definitionMap["regpict-" + title]) {
-                        conf.definitionMap["regpict-" + title] = $(this).attr("id");
-                        conf.definitionHTML["regpict-" + title] = $(this).text();
+                $("div.hasSVG g[id]", doc).each(function () {
+                    //console.log("svg g[id] matches " + this.outerHTML);
+                    var $text = $("text.regFieldName", this).first();
+                    if ($text) {
+                        var title = $text.dfnTitle();
+                        if (!conf.definitionMap["regpict-" + title]) {
+                            conf.definitionMap["regpict-" + title] = $(this).attr("id");
+                            conf.definitionHTML["regpict-" + title] = $text.text();
+                        }
                     }
                 });
-                $("a:not([href])").each(function () {
+                $("a:not([href])", doc).each(function () {
                     var $ant = $(this);
                     if ($ant.hasClass("externalDFN")) return;
                     var title = $ant.dfnTitle();
