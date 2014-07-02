@@ -194,38 +194,45 @@
     <h2>JSON Example Register Figure</h2>
     <figure id="json-register" class="register">
         <pre class="json">
-            { "width" : 32,
+           { "width" : 48,
               "unused" : "Bogus",
               "fields": [
                 {   "msb": 4,
                     "lsb": 0,
                     "name": "field 4:0",
-                    "id": "field-field4_0",
                     "attr": "ro"
                 }, {
                     "msb": 7,
                     "lsb": 6,
-                    "name": "Very long name that will never fit",
-                    "href": "Very-long-name-that-will-never-fit"                
+                    "name": "Very long name that will never fit"
                 }, {
                     "msb": 9,
                     "name": "bit9"
                 }, {
                     "lsb": 10,
                     "name": "bit10",
-                    "id": "bit10"
+                    "class": "svg_error"
                 }, {
                     "lsb": 11,
-                    "name": "bit11",
-                    "href": "bit11"
+                    "name": "bit11"
                 }, {
                     "lsb": 12,
-                    "name": "bit12",
-                    "id": "bit12"
+                    "name": "bit11",
+                    "value": "1"
                 }, {
                     "lsb": 13,
                     "name": "bit13",
                     "href": "field-bit13"
+                }, {
+                    "lsb": 14,
+                    "msb": 24,
+                    "name": "bit 20:14",
+                    "value": "value"
+                }, {
+                    "lsb": 25,
+                    "msb": 32,
+                    "name": "byte",
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
                 } ] }
         </pre>
         <figcaption>Graph for JSON Defined Register Example</figcaption>
@@ -366,10 +373,10 @@
 </section>
       <section>
     <h2>Device Capabilities 2 Register (Offset 24h)</h2>
-    <figure class="register pcisig_reg" data-table="#reg_pcie_capability__device_capability_2">
+    <figure class="register pcisig_reg" data-table="#tbl-device-capabilities-2-register">
         <figcaption>Device Capabilities 2 Register</figcaption>
     </figure>
-    <table class="pcisig_reg" id="reg_pcie_capability__device_capability_2">
+    <table class="pcisig_reg" id="tbl-device-capabilities-2-register">
         <caption>Device Capabilities 2 Register</caption>
         <thead>
             <tr>
