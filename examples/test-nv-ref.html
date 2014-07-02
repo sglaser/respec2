@@ -66,46 +66,47 @@
         &lt;figure id="json-register" class="register"&gt;
 
         &lt;pre class="json"&gt;
-            { "width" : 32,
-              "unused" : "Bogus",
-              "fields": [
-                {   "msb": 4,
-                    "lsb": 0,
-                    "name": "field 4:0",
+        { "width":    32,
+            "unused": "Bogus",
+            "fields": {
+                "field 4:0":                          {
+                    "msb":  4,
+                    "lsb":  0,
                     "attr": "ro"
-                }, {
+                },
+                "Very long name that will never fit": {
                     "msb": 7,
-                    "lsb": 6,
-                    "name": "Very long name that will never fit"
-                }, {
-                    "msb": 9,
-                    "name": "bit9"
-                }, {
-                    "lsb": 10,
-                    "name": "bit10",
+                    "lsb": 6
+                },
+                "bit9":                               {
+                    "msb": 9
+                },
+                "bit10":                              {
+                    "lsb":   10,
                     "class": "svg_error"
-                }, {
-                    "lsb": 11,
-                    "name": "bit11"
-                }, {
-                    "lsb": 12,
-                    "name": "bit11",
+                },
+                "bit11":                              {
+                    "lsb": 11
+                },
+                "bit12":                              {
+                    "lsb":   12,
                     "value": "1"
-                }, {
-                    "lsb": 13,
-                    "name": "bit13",
+                },
+                "bit13":                              {
+                    "lsb":  13,
                     "href": "field-bit13"
-                }, {
-                    "lsb": 14,
-                    "msb": 24,
-                    "name": "bit 20:14",
+                },
+                "bit 20:14":                          {
+                    "lsb":   14,
+                    "msb":   24,
                     "value": "value"
-                }, {
-                    "lsb": 25,
-                    "msb": 32,
-                    "name": "byte",
+                },
+                "byte":                               {
+                    "lsb":   25,
+                    "msb":   32,
                     "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
-                } ] }
+                }
+            } }
         &lt;/pre&gt;
         &lt;figcaption&gt;Graph for JSON Defined Register Example&lt;/figcaption&gt;
         &lt;/figure&gt;
@@ -137,46 +138,47 @@
             <!--  unused    true if field is considered "unused" -->
             <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
             <pre class="json">            
-            { "width" : 48,
-              "unused" : "Bogus",
-              "fields": [
-                {   "msb": 4,
-                    "lsb": 0,
-                    "name": "field 4:0",
-                    "attr": "ro"
-                }, {
-                    "msb": 7,
-                    "lsb": 6,
-                    "name": "Very long name that will never fit"
-                }, {
-                    "msb": 9,
-                    "name": "bit9"
-                }, {
-                    "lsb": 10,
-                    "name": "bit10",
-                    "class": "svg_error"
-                }, {
-                    "lsb": 11,
-                    "name": "bit11"
-                }, {
-                    "lsb": 12,
-                    "name": "bit11",
-                    "value": "1"
-                }, {
-                    "lsb": 13,
-                    "name": "bit13",
-                    "href": "field-bit13"
-                }, {
-                    "lsb": 14,
-                    "msb": 24,
-                    "name": "bit 20:14",
-                    "value": "value"
-                }, {
-                    "lsb": 25,
-                    "msb": 32,
-                    "name": "byte",
-                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
-                } ] }
+            { "width":    32,
+                "unused": "Bogus",
+                "fields": {
+                    "field 4:0":                          {
+                        "msb":  4,
+                        "lsb":  0,
+                        "attr": "ro"
+                    },
+                    "Very long name that will never fit": {
+                        "msb": 7,
+                        "lsb": 6
+                    },
+                    "bit9":                               {
+                        "msb": 9
+                    },
+                    "bit10":                              {
+                        "lsb":   10,
+                        "class": "svg_error"
+                    },
+                    "bit11":                              {
+                        "lsb": 11
+                    },
+                    "bit12":                              {
+                        "lsb":   12,
+                        "value": "1"
+                    },
+                    "bit13":                              {
+                        "lsb":  13,
+                        "href": "field-bit13"
+                    },
+                    "bit 20:14":                          {
+                        "lsb":   14,
+                        "msb":   24,
+                        "value": "value"
+                    },
+                    "byte":                               {
+                        "lsb":   25,
+                        "msb":   32,
+                        "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
+                    }
+                } }
         </pre>
             <figcaption>Graph for JSON Defined Register Example</figcaption>
         </figure>
