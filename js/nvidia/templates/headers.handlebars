@@ -61,9 +61,9 @@
         <dd>{{{bugTrackerHTML}}}</dd>
     {{/if}}
 
-    {{#if showPreviousVersion}}
+    {{#if prevVersion}}
         <dt>Previous version:</dt>
-        <dd><a {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>
+        <dd><a class="u-url" {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>
     {{/if}}
 
     {{#if editors}}
@@ -88,7 +88,7 @@
                             </dd>
                         {{else}}
                             {{#if href}}
-                                <dd><a href="{{href}}">{{href}}</a></dd>
+                                <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>
                             {{/if}}
                         {{/if}}
                     {{/each}}

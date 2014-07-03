@@ -152,8 +152,6 @@ define(
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "nvidia";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
-                //                console.log("conf.specStatus = \"" + conf.specStatus + "\"");
-                if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
                 if (!conf.publishDate) {
@@ -177,14 +175,6 @@ define(
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
                 }
-
-//                if (conf.prevRecShortname && !conf.prevRecURI) {
-//                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
-//                }
-//
-//                if (!conf.editors || conf.editors.length === 0) {
-//                    msg.pub("error", "At least one editor is required");
-//                }
 
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
