@@ -33,73 +33,82 @@ define(
             var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var figName             = String(pget(reg, "name", "???"));
-            var fields              = pget(reg, "fields", [ ]); // default to empty register
-            if (! Array.isArray(fields)) {
-                fields = [ ];
-            }
-            var divsvg_id = (divsvg.hasOwnProperty("id") ? divsvg["id"] : "");
+            var fields              = pget(reg, "fields", { }); // default to empty register
 
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
-            fields.forEach(function (item) {
-                if (("msb" in item) && !("lsb" in item)) {
-                    item.lsb = item.msb;
+            for (var index in fields) {
+                if (fields.hasOwnProperty(index)) {
+                    var item = fields[index];
+                    if (("msb" in item) && !("lsb" in item)) {
+                        item.lsb = item.msb;
+                    }
+                    if (("lsb" in item) && !("msb" in item)) {
+                        item.msb = item.lsb;
+                    }
+                    if (!("unused" in item)) {
+                        item.unused = false;
+                    }
+                    if (!("attr" in item)) {
+                        item.attr = defaultAttr;
+                    }
+                    if (!("name" in item)) {
+                        item.name = index;
+                    }
+                    if (!("value" in item)) {
+                        item.value = "";
+                    }
+                    if (!("class" in item)) {
+                        item.class = "";
+                    }
+                    //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+
                 }
-                if (("lsb" in item) && !("msb" in item)) {
-                    item.msb = item.lsb;
-                }
-                if (!("unused" in item)) {
-                    item.unused = false;
-                }
-                if (!("attr" in item)) {
-                    item.attr = defaultAttr;
-                }
-                if (!("name" in item)) {
-                    item.name = "UNSPECIFIED NAME";
-                }
-                if (!("value" in item)) {
-                    item.value = "";
-                }
-                if (!("class" in item)) {
-                    item.class = "";
-                }
-                //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
-            
-            });
+            }
             
             var bitarray = [];  // Array indexed by bit # in register range 0:width
                                 // field[bitarray[N]] contains bit N
                                 // bitarray[N] == -1 for unused bits
                                 // bitarray[N] == 1000 for first bit outside register width
             
-            var i;
-            bitarray[width] = 1000;
+            var i, j;
+            bitarray[width] = 1000; //???
             for (i = 0; i < width; i++) {
-                bitarray[i] = -1;
+                bitarray[i] = null;
             }
-            fields.forEach(function (item, index) {
-                for (var i = item.lsb; i <= item.msb; i++) {
-                    bitarray[i] = index;
+
+            for (index in fields) {
+                if (fields.hasOwnProperty(index)) {
+                    for (i = fields[index].lsb; i <= fields[index].msb; i++) {
+                        bitarray[i] = index;
+                    }
                 }
-            });
+            }
             
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
             for (i = 0; i <= width; ++i) {
-                if (lsb >= 0 && bitarray[i] >= 0) {
+                if (lsb >= 0 && bitarray[i] !== null) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
-                    fields.push({
+                    index = "_unused_" + (i-1); // _unused_msb
+                    if (lsb !== (i-1)) {
+                        index = index + "_" + lsb;  // _unused_msb_lsb
+                    }
+                    fields[index] = {
                         "msb": i - 1,
                         "lsb": lsb,
                         "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
                         "attr": unused,   // attribute is name
                         "unused": true,
                         "value": ""
-                    });
+                    };
+                    for (j = lsb; j < i; j++) {
+                        bitarray[j] = index;
+                    }
                     lsb = -1;
                 }
-                if (lsb < 0 && bitarray[i] < 0) {
+                if (lsb < 0 && bitarray[i] === null) {
                     // starting a string of unused bits
                     lsb = i;
                 }
@@ -124,19 +133,21 @@ define(
             var p = svg.createPath();
             var f;
             var text;
-            for (i = 0; i < fields.length; i++) {
-                f = fields[i];
-                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
-                    svg.createText().string(f.lsb), {
-                        class_: "regBitNum"
-                    });
-                if (f.lsb !== f.msb) {
-                    svg.text(g, middleOf(f.msb), cellTop - 4,
-                        svg.createText().string(f.msb), {
+            for (i  in fields) {
+                if (fields.hasOwnProperty(i)) {
+                    f = fields[i];
+                    text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+                                    svg.createText().string(f.lsb), {
                             class_: "regBitNum"
                         });
+                    if (f.lsb !== f.msb) {
+                        svg.text(g, middleOf(f.msb), cellTop - 4,
+                                 svg.createText().string(f.msb), {
+                                class_: "regBitNum"
+                            });
+                    }
+                    p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
                 }
-                p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
             }
             p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
             var nextBitLine = cellTop + cellHeight + 20; //76;
@@ -147,135 +158,150 @@ define(
                 fill: "none"
             });
             for (var b = 0; b < width; b++) {
-                for (i = 0; i < fields.length; i++) {
-                    f = fields[i];
-                    if (b === f.lsb) {
-                        g = svg.group();
-                        if (f.class !== "") {
-                            svg.change(g, { class_: f.class });
-                        }
-                        svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
-                            0, 0, {
-                                class_: "regFieldBox regFieldBox" + f.attr
-                            });
-                        for (var j = f.lsb + 1; j <= f.msb; j++) {
-                            svg.line(g,
-                                rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                rightOf(j), cellTop + cellHeight, {
-                                    class_: "regFieldBoxInternal" +
-                                        (f.unused ? " regFieldBoxUnused" : "") +
-                                        " regFieldBoxInternal" + f.attr
-                                });
-                        }
-                        // svg.link doesn't work on Chrome, disable href for now
-                        //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
-                        //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
-                                        svg.createText().string(f.name), {
-                                            class_: "regFieldName" +
-                                            (f.unused ? " regFieldNameUnused" : "") +
-                                            " regFieldName" + f.attr +
-                                            " regFieldNameInternal" +
-                                            " regFieldNameInternal" + f.attr
-                                        });
-                        if (!f.unused) {
-                            var $temp_dom = $("<span></span>").prependTo(divsvg);
-                            var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
-                            $temp_dom.remove();
-                            svg.change(g, { id: unique_id });
-                        }
-                        if (f.value !== "") {
-                            if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
-                                for (i = 0; i < f.value.length; ++i) {
-                                    svg.text(g, (leftOf(f.lsb+i) + rightOf(f.lsb+i)) / 2, cellBitValueTop,
-                                        svg.createText().string(f.value[i]), {
-                                            class_: "regFieldValue" +
-                                                (f.unused ? " regFieldValueUnused" : "") +
-                                                " regFieldBitValue" +
-                                                " regFieldBitValue-" + i.toString() +
-                                                ((i === (f.value.length - 1)) ? " regFieldBitValue-msb" : "") +
-                                                " regFieldValue" + f.attr +
-                                                " regFieldValueInternal" +
-                                                " regFieldValueInternal" + f.attr
-                                        });
-                                }
-                            } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
-                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                                    (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
-                                    svg.createText().string(f.value), {
-                                        class_: "regFieldValue" +
-                                            (f.unused ? " regFieldValueUnused" : "") +
-                                            " regFieldValue" + f.attr +
-                                            " regFieldValueInternal" +
-                                            " regFieldValueInternal" + f.attr
-                                    });
-                            } else {
-                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
-                                    svg.createText().string("INVALID VALUE"), {
-                                        class_ : "svg_error"
-                                    });
+                for (i in fields) {
+                    if (fields.hasOwnProperty(i)) {
+                        f = fields[i];
+                        if (b === f.lsb) {
+                            g = svg.group();
+                            if (f.class !== "") {
+                                svg.change(g, { class_: f.class });
                             }
-                        }
-                        var text_width = text.clientWidth;
-                        if (text_width === 0) {
-                            // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                            text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
-                        }
-                        if (text_width > max_text_width) {
-                            max_text_width = text_width;
-                        }
-                        var text_height = text.clientHeight;
-                        if (text_height === 0) {
-                            // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
-                            text_height = 18;             // Assume 18px: 1 row of text, 15px high
-                        }
-                        /*console.log("field " + f.name +
-                                    " msb=" + f.msb +
-                                    " lsb=" + f.lsb +
-                                    " attr=" + f.attr +
-                                    " unused=" + f.unused +
-                                    (("id" in f) ? f.id : ""));
-                        console.log(" text.clientWidth=" + text.clientWidth +
-                                    " text_width=" + text_width +
-                                    " text.clientHeight=" + text.clientHeight +
-                                    " text_height=" + text_height +
-                                    " rightOf(msb)=" + rightOf(f.lsb) +
-                                    " leftOf(lsb)=" + leftOf(f.msb) +
-                                    " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
-                        /* if field has a specified value,
-                           the field name is too wide for the box,
-                           or the field name is too tall for the box */
-                        if ((f.value !== "") || ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
-                            svg.change(text, {
-                                x: rightOf(-0.5),
-                                y: nextBitLine,
-                                class_: "regFieldName" +
-                                    (f.unused ? " regFieldNameUnused" : "") +
-                                    " regFieldName" + f.attr +
-                                    " regFieldName" + (bitLineCount < 2 ? "0" : "1")
-                            });
-                            p = svg.createPath();
-                            p.move(leftOf(f.msb), cellTop + cellHeight)
-                             .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
-                             .line(rightOf(f.lsb), cellTop + cellHeight);
-                            svg.path(g, p, {
-                                class_: "regBitBracket" +
-                                    (f.unused ? " regFieldBracketUnused" : "") +
-                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
-                                fill: "none"
-                            });  
-                            p = svg.createPath();
-                            p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
-                             .vert(nextBitLine - text_height / 4)
-                             .horiz(rightOf(-0.4));
-                            svg.path(g, p, {
-                                class_: "regBitLine" +
-                                    (f.unused ? " regFieldLineUnused" : "") +
-                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
-                                fill: "none"
-                            });
-                            nextBitLine += text_height + 2;
-                            bitLineCount = (bitLineCount + 1) % 4;
+                            svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
+                                     0, 0, {
+                                    class_: "regFieldBox regFieldBox" + f.attr
+                                });
+                            for (j = f.lsb + 1; j <= f.msb; j++) {
+                                svg.line(g,
+                                         rightOf(j), cellTop + cellHeight - cellInternalHeight,
+                                         rightOf(j), cellTop + cellHeight,
+                                         {
+                                             class_: "regFieldBoxInternal" +
+                                                         (f.unused ? " regFieldBoxUnused" : "") +
+                                                         " regFieldBoxInternal" + f.attr
+                                         });
+                            }
+                            // svg.link doesn't work on Chrome, disable href for now
+                            //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
+                            //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
+                                            svg.createText().string(f.name),
+                                            {
+                                                class_: "regFieldName" +
+                                                            (f.unused ? " regFieldNameUnused" : "") +
+                                                            " regFieldName" + f.attr +
+                                                            " regFieldNameInternal" +
+                                                            " regFieldNameInternal" + f.attr
+                                            });
+                            if (!f.unused) {
+                                var $temp_dom = $("<span></span>").prependTo(divsvg);
+                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                                $temp_dom.remove();
+                                svg.change(g, { id: unique_id });
+                            }
+                            if (f.value !== "") {
+                                if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
+                                    for (i = 0; i < f.value.length; ++i) {
+                                        svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
+                                                 cellBitValueTop,
+                                                 svg.createText().string(f.value[i]),
+                                                 {
+                                                     class_: "regFieldValue" +
+                                                                 (f.unused ? " regFieldValueUnused" : "") +
+                                                                 " regFieldBitValue" +
+                                                                 " regFieldBitValue-" + i.toString() +
+                                                                 ((i === (f.value.length - 1)) ?
+                                                                  " regFieldBitValue-msb" : "") +
+                                                                 " regFieldValue" + f.attr +
+                                                                 " regFieldValueInternal" +
+                                                                 " regFieldValueInternal" + f.attr
+                                                 });
+                                    }
+                                } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
+                                             (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
+                                             svg.createText().string(f.value),
+                                             {
+                                                 class_: "regFieldValue" +
+                                                             (f.unused ? " regFieldValueUnused" : "") +
+                                                             " regFieldValue" + f.attr +
+                                                             " regFieldValueInternal" +
+                                                             " regFieldValueInternal" + f.attr
+                                             });
+                                } else {
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
+                                             svg.createText().string("INVALID VALUE"),
+                                             {
+                                                 class_: "svg_error"
+                                             });
+                                }
+                            }
+                            var text_width = text.clientWidth;
+                            if (text_width === 0) {
+                                // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                            }
+                            if (text_width > max_text_width) {
+                                max_text_width = text_width;
+                            }
+                            var text_height = text.clientHeight;
+                            if (text_height === 0) {
+                                // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
+                                text_height = 18;             // Assume 18px: 1 row of text, 15px high
+                            }
+                            /*console.log("field " + f.name +
+                             " msb=" + f.msb +
+                             " lsb=" + f.lsb +
+                             " attr=" + f.attr +
+                             " unused=" + f.unused +
+                             (("id" in f) ? f.id : ""));
+                             console.log(" text.clientWidth=" + text.clientWidth +
+                             " text_width=" + text_width +
+                             " text.clientHeight=" + text.clientHeight +
+                             " text_height=" + text_height +
+                             " rightOf(msb)=" + rightOf(f.lsb) +
+                             " leftOf(lsb)=" + leftOf(f.msb) +
+                             " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
+                            /* if field has a specified value,
+                             the field name is too wide for the box,
+                             or the field name is too tall for the box */
+                            if ((f.value !== "") ||
+                                ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
+                                ((text_height + 2) > (cellHeight - cellInternalHeight)))
+                            {
+                                svg.change(text,
+                                           {
+                                               x:      rightOf(-0.5),
+                                               y:      nextBitLine,
+                                               class_: "regFieldName" +
+                                                           (f.unused ? " regFieldNameUnused" : "") +
+                                                           " regFieldName" + f.attr +
+                                                           " regFieldName" + (bitLineCount < 2 ? "0" : "1")
+                                           });
+                                p = svg.createPath();
+                                p.move(leftOf(f.msb), cellTop + cellHeight)
+                                    .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
+                                    .line(rightOf(f.lsb), cellTop + cellHeight);
+                                svg.path(g, p,
+                                         {
+                                             class_: "regBitBracket" +
+                                                         (f.unused ? " regFieldBracketUnused" : "") +
+                                                         " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
+                                             fill:   "none"
+                                         });
+                                p = svg.createPath();
+                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight)
+                                    .vert(nextBitLine - text_height / 4)
+                                    .horiz(rightOf(-0.4));
+                                svg.path(g, p,
+                                         {
+                                             class_: "regBitLine" +
+                                                         (f.unused ? " regFieldLineUnused" : "") +
+                                                         " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
+                                             fill:   "none"
+                                         });
+                                nextBitLine += text_height + 2;
+                                bitLineCount = (bitLineCount + 1) % 4;
+                            }
                         }
                     }
                 }
@@ -328,7 +354,9 @@ define(
                     $("pre.json,div.json,span.json", $fig).each(function () {
                         var temp2 = $.parseJSON(this.textContent);
                         for (var prop in temp2) {
-                            json[prop] = temp2[prop];
+                            if (temp2.hasOwnProperty(prop)) {
+                                json[prop] = temp2[prop];
+                            }
                         }
                         $(this).hide();
                     });
@@ -338,7 +366,7 @@ define(
                             json = { };
                         }
                         if (! ("fields" in json)) {
-                            json.fields = [ ];
+                            json.fields = { };
                         }
                         var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
                         //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
@@ -372,13 +400,13 @@ define(
                                 }
                                 var unusedAttr = /^(rsvdp|rsvdz)$/i;
                                 var unused = !!unusedAttr.test(attr);
-                                json.fields.push({
+                                json.fields[fieldName] = {
                                     "msb": msb,
                                     "lsb": lsb,
-                                    "name": fieldName,
+//                                    "name": fieldName,
                                     "attr": attr,
                                     "unused": unused
-                                });
+                                };
                             }
                         });
                         //console.log("json=" + JSON.stringify(json, null, 2));
@@ -389,7 +417,7 @@ define(
                             json = { };
                         }
                         if (! ("fields" in json)) {
-                            json.fields = [ ];
+                            json.fields = { };
                         }
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
@@ -425,13 +453,11 @@ define(
                                             if ((match[2] !== "") && (match[4].substr(4,1) === "F")) {
                                                 var bits = bitpattern.exec(match[3]);
                                                 if (bits) {
-                                                    json.fields.push({
+                                                    var index = String(match[1] + match[2]);
+                                                    json.fields[index] = {
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
-                                                      /*name: String(match[2].substr(1)),*/
-                                                        name: String(match[1] + match[2]),
-                                                      /*id:   String(match[1] + match[2]),*/
-                                                        attr: match[4].substr(0,2).toLowerCase() });
+                                                        attr: match[4].substr(0,2).toLowerCase() };
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
                                                 }

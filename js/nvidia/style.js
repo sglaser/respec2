@@ -8,7 +8,7 @@
 
 define(
     ["core/utils"/*,
-     "text!../../stylesheets/unofficial.css"*/],
+     "text!../../stylesheets/unofficial-nvidia.css"*/],
     function (utils/*, inlinecss*/) {
         "use strict";
         return {
@@ -17,17 +17,11 @@ define(
                 if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for nvidia/style");
                 var statStyle = conf.specStatus;
                 var css = "https://";
-//                if (statStyle === "unofficial") {
                 css += "sglaser.github.io/";
-                css += "respec/stylesheets/unofficial.css";
-//                css = "respec/stylesheets/unofficial.css";
-//                }
-//                else if (statStyle === "base") {
-//                    css += "sglaser.github.io/respec/stylesheets/base.css";
-//                }
-//                else {
-//                    css += "sglaser.github.io/respec/stylesheets/nvidia-" + statStyle + ".css";
-//                }
+                css += "respec/stylesheets/unofficial-nvidia.css";
+                if (conf.useCSS) {
+                    css = conf.useCSS;
+                }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
 //                console.log("inlinecss.length = " + inlinecss.length);

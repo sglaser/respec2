@@ -2,6 +2,7 @@
     "name": "respec",
     "version": "3.2.15",
     "versionPCISIG": "0.0.1",
+    "versionNVIDIA": "0.0.1",
     "description": "Specification Edition Support Tool.",
     "main": "index.js",
     "directories": {
@@ -17,6 +18,10 @@
         "url": "git://github.com/darobin/respec.git"
     },
     "repositoryPCISIG": {
+        "type": "git",
+        "url": "git://github.com/sglaser/respec.git"
+    },
+    "repositoryNVIDIA": {
         "type": "git",
         "url": "git://github.com/sglaser/respec.git"
     },

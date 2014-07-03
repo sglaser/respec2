@@ -15,6 +15,8 @@
             wg: "Nvidia",
             wgURI: "http://www.nvidia.com/",
             edDraftURI: "http://sglaser.github.io/respec/examples/test-nv-ref.html",
+            useCSS: "unofficial-nvidia.css",
+            useLogo: "NVLogo_2D.svg",
             trace: true,
             includePermalinks: true,
             figFmt: "%1Figure %(%c-%#%): %t",
@@ -24,11 +26,11 @@
             addXrefMap: true
         };
     </script>
-    <!--<script src='../js/require.js' data-main='../js/profile-pcisig-common' async class='remove'></script>-->
-    <script src='../js/require.js' data-main='../js/profile-pcisig-common'></script>
+    <!--<script src='../js/require.js' data-main='../js/profile-nvidia-common' async class='remove'></script>-->
+    <script src='../js/require.js' data-main='../js/profile-nvidia-common'></script>
     <!--<script src="respec-debug.js" async="async" class="remove"></script>-->
     <!--<script src="respec-debug.js"></script>-->
-    <!--<script src='http://sglaser.github.io/respec/builds/respec-pcisig-common.js' async class='remove'></script>-->
+    <!--<script src='http://sglaser.github.io/respec/builds/respec-nvidia-common.js' async class='remove'></script>-->
 </head>
 
 <body>
@@ -51,22 +53,29 @@
          var cellWidth           = Number(pget(reg, "cellWidth", 16));
          var cellHeight          = Number(pget(reg, "cellHeight", 32));
          var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+         var cellValueTop        = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
+         var cellBitValueTop     = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
+         var cellNameTop         = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
          var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
          var cellTop             = Number(pget(reg, "cellTop", 16));
          var figName             = String(pget(reg, "name", "???"));
-         var fields              = pget(reg, "fields", [ ]); // default to empty register
+         var fields              = pget(reg, "fields", { }); // default to empty register
 
-         Fields are in arbitrary order. Items in in a field are:
-          name      Name of the field
+         Fields are indexed by field name. Items in in a field are:
+          name      Name of the field (default is the index of the field)
           msb       bit number of the most significant bit (or only bit)
           lsb       bit number of the least significant bit (or only bit)
           unused    true if field is considered "unused"
           attr      field type (e.g. other, rw, ro, rw1c, ros, ...)
+          class     class name for the <g> (group) SVG element for the field
+          value     value of the field contents. Either a single string, or an array of strings
+                    where the array length is the width of the field (in bits).
+                    Array element [0] is the LSB of the field.
 
         &lt;figure id="json-register" class="register"&gt;
 
         &lt;pre class="json"&gt;
-        { "width":    32,
+        { "width":    48,
             "unused": "Bogus",
             "fields": {
                 "field 4:0":                          {
@@ -138,7 +147,7 @@
             <!--  unused    true if field is considered "unused" -->
             <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
             <pre class="json">            
-            { "width":    32,
+            { "width":    48,
                 "unused": "Bogus",
                 "fields": {
                     "field 4:0":                          {
