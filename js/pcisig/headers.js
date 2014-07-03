@@ -9,9 +9,7 @@
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
-//  - shortName: the small name that is used after /TR/ in published reports (required)
-//  - editors: an array of people editing the document (at least one is required). People
-//      are defined using:
+//  - editors: an array of people editing the document. People are defined using:
 //          - name: the person's name (required)
 //          - url: URI for the person's home page
 //          - company: the person's company
@@ -42,6 +40,8 @@
 //  - additionalCopyrightHolders: a copyright owner in addition to pcisig (or the only one if specStatus
 //      is unofficial)
 //  - overrideCopyright: provides markup to completely override the copyright
+//  - cssOverride: if set, name of the stylesheet (useful when running locally)
+//  - logoOverride: if set, the uri of the appropriate PCISIG / PCI Express logo
 //  - copyrightStart: the year from which the copyright starts running
 //  - prevED: the URI of the previous Editor's Draft if it has moved
 //  - prevRecShortname: the short name of the previous Recommendation, if the name has changed
@@ -286,13 +286,13 @@ define(
                     if (!conf.prevVersion) conf.prevVersion = "";
                 }*/
                 /*if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;*/
-                if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
+//                if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
-                $.each(conf.editors, peopCheck);
+                $.each(conf.editors || [], peopCheck);
                 $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors.length > 1;
+                conf.multipleEditors = conf.editors && conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
                 $.each(conf.alternateFormats || [], function (i, it) {
                     if (!it.uri || !it.label) msg.pub("error", "All alternate formats must have a uri and a label.");

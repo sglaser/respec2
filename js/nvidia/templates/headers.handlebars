@@ -2,8 +2,8 @@
 {{#if prependLogo}}
 <p>
     <a href="https://www.nvidia.com/">
-    {{#if useLogo}}
-        <img width="270" height="230" alt="Nvidia Logo" src="{{useLogo}}"/>
+    {{#if logoOverride}}
+        <img width="270" height="230" alt="Nvidia Logo" src="{{logoOverride}}"/>
     {{else}}
         <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>
     {{/if}}
@@ -38,22 +38,22 @@
     
     {{#if latestVersion}}
         <dt>Latest published version:</dt>
-        <dd><a href="{{latestVersion}}">{{latestVersion}}</a></dd>
+        <dd><a class="u-url" href="{{latestVersion}}">{{latestVersion}}</a></dd>
     {{/if}}
 
     {{#if edDraftURI}}
-        <dt>Latest editor"s draft:</dt>
-        <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>
+        <dt>Latest editor's draft:</dt>
+        <dd><a class="u-url" href="{{edDraftURI}}">{{edDraftURI}}</a></dd>
     {{/if}}
 
     {{#if testSuiteURI}}
         <dt>Test suite:</dt>
-        <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>
+        <dd><a class="u-url" href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>
     {{/if}}
 
     {{#if implementationReportURI}}
         <dt>Implementation report:</dt>
-        <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>
+        <dd><a class="u-url" href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>
     {{/if}}
 
     {{#if bugTrackerHTML}}

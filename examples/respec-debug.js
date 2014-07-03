@@ -13475,8 +13475,8 @@ define(
                 var css = "https://";
                 css += "sglaser.github.io/";
                 css += "respec/stylesheets/unofficial-nvidia.css";
-                if (conf.useCSS) {
-                    css = conf.useCSS;
+                if (conf.cssOverride) {
+                    css = conf.cssOverride;
                 }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
@@ -15064,10 +15064,10 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
 });
 
 
-define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if prependLogo}}\n<p>\n    <a href="https://www.nvidia.com/">\n    {{#if useLogo}}\n        <img width="270" height="230" alt="Nvidia Logo" src="{{useLogo}}"/>\n    {{else}}\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\n    {{/if}}\n    </a>\n</p>\n{{/if}}\n    \n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if publishHumanDate}}\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n    \n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n    \n{{#if subtitle}}\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n    \n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\n    content="{{publishISODate}}"{{/if}} class="nolink">\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n    \n<dl>\n    {{#if thisVersion}}\n        <dt>This version:</dt>\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    {{/if}}\n    \n    {{#if latestVersion}}\n        <dt>Latest published version:</dt>\n        <dd><a href="{{latestVersion}}">{{latestVersion}}</a></dd>\n    {{/if}}\n\n    {{#if edDraftURI}}\n        <dt>Latest editor"s draft:</dt>\n        <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n\n    {{#if testSuiteURI}}\n        <dt>Test suite:</dt>\n        <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n\n    {{#if implementationReportURI}}\n        <dt>Implementation report:</dt>\n        <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n        <dt>Bug tracker:</dt>\n        <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n\n    {{#if showPreviousVersion}}\n        <dt>Previous version:</dt>\n        <dd><a {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n\n    {{#if editors}}\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n        {{showPeople "Editor" editors}}\n    {{/if}}\n\n    {{#if authors}}\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n        {{showPeople "Author" authors}}\n    {{/if}}\n\n    {{#if otherLinks}}\n        {{#each otherLinks}}\n            {{#if key}}\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n                {{#if data}}\n                    {{#each data}}\n                        {{#if value}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                            </dd>\n                        {{else}}\n                            {{#if href}}\n                                <dd><a href="{{href}}">{{href}}</a></dd>\n                            {{/if}}\n                        {{/if}}\n                    {{/each}}\n                {{else}}\n                    {{#if value}}\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                        </dd>\n                    {{else}}\n                        {{#if href}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                        {{/if}}\n                    {{/if}}\n                {{/if}}\n            {{/if}}\n        {{/each}}\n    {{/if}}\n\n</dl>\n    \n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n    \n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n\n{{#if overrideCopyright}}\n    {{{overrideCopyright}}}\n{{else}}\n    <p class="copyright">\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\n        <sup>&reg;</sup>\n    </p>\n{{/if}}\n\n    <hr/>\n</div>\n');});
+define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if prependLogo}}\n<p>\n    <a href="https://www.nvidia.com/">\n    {{#if logoOverride}}\n        <img width="270" height="230" alt="Nvidia Logo" src="{{logoOverride}}"/>\n    {{else}}\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\n    {{/if}}\n    </a>\n</p>\n{{/if}}\n    \n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if publishHumanDate}}\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n    \n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n    \n{{#if subtitle}}\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n    \n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\n    content="{{publishISODate}}"{{/if}} class="nolink">\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n    \n<dl>\n    {{#if thisVersion}}\n        <dt>This version:</dt>\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    {{/if}}\n    \n    {{#if latestVersion}}\n        <dt>Latest published version:</dt>\n        <dd><a class="u-url" href="{{latestVersion}}">{{latestVersion}}</a></dd>\n    {{/if}}\n\n    {{#if edDraftURI}}\n        <dt>Latest editor\'s draft:</dt>\n        <dd><a class="u-url" href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n\n    {{#if testSuiteURI}}\n        <dt>Test suite:</dt>\n        <dd><a class="u-url" href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n\n    {{#if implementationReportURI}}\n        <dt>Implementation report:</dt>\n        <dd><a class="u-url" href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n        <dt>Bug tracker:</dt>\n        <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n\n    {{#if showPreviousVersion}}\n        <dt>Previous version:</dt>\n        <dd><a {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n\n    {{#if editors}}\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n        {{showPeople "Editor" editors}}\n    {{/if}}\n\n    {{#if authors}}\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n        {{showPeople "Author" authors}}\n    {{/if}}\n\n    {{#if otherLinks}}\n        {{#each otherLinks}}\n            {{#if key}}\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n                {{#if data}}\n                    {{#each data}}\n                        {{#if value}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                            </dd>\n                        {{else}}\n                            {{#if href}}\n                                <dd><a href="{{href}}">{{href}}</a></dd>\n                            {{/if}}\n                        {{/if}}\n                    {{/each}}\n                {{else}}\n                    {{#if value}}\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                        </dd>\n                    {{else}}\n                        {{#if href}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                        {{/if}}\n                    {{/if}}\n                {{/if}}\n            {{/if}}\n        {{/each}}\n    {{/if}}\n\n</dl>\n    \n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n    \n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n\n{{#if overrideCopyright}}\n    {{{overrideCopyright}}}\n{{else}}\n    <p class="copyright">\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\n        <sup>&reg;</sup>\n    </p>\n{{/if}}\n\n    <hr/>\n</div>\n');});
 
 
-define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    \n    {{#if isUnofficial}}\n    <p>\n        This document is a working draft.\n        It has no official standing of any kind and does not represent the support or consensus of any group.\n    </p>\n    {{else}}\n        {{#if isNoTrack}}\n        <p>\n            This document is a Nvidia internal document.\n            It has no official standing of any kind and does not represent consensus of any group.\n        </p>\n        {{else}}\n            {{#if isFinal}}\n            <p>\n                This document is considered a final publication.\n                Nvidia may publish errata to this document and may develop future revisions to this document.\n            </p>\n            {{else}}\n            <p>\n                This document is intended to become a part of the specification for an Nvidia product.\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\n            </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n\n    {{#if humanReviewEndDate}}\n    <p>\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\n    </p>\n    {{/if}}\n\n    {{#if commentsNVBugs}}\n    <p>\n        Comments should be filed using <a href=\'http://nvbugs\'>http://nvbugs</a> against {{commentsNVBugs}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsPDF}}\n    <p>\n        Comments should be added to the PDF review associated with {{commentsPDF}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsEmail}}\n    <p>\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n    </p>\n    {{/if}}\n\n{{{sotdCustomParagraph}}}\n\n</section>\n');});
+define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    \n    {{#if isUnofficial}}\n    <p>\n        This document is a working draft.\n        It has no official standing of any kind and does not represent the support or consensus of any group.\n    </p>\n    {{else}}\n        {{#if isNoTrack}}\n        <p>\n            This document is a Nvidia internal document.\n            It has no official standing of any kind and does not represent consensus of any group.\n        </p>\n        {{else}}\n            {{#if isFinal}}\n            <p>\n                This document is considered a final publication.\n                Nvidia may publish errata to this document and may develop future revisions to this document.\n            </p>\n            {{else}}\n            <p>\n                This document is intended to become a part of the specification for an Nvidia product.\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\n            </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n\n    {{#if humanReviewEndDate}}\n    <p>\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\n    </p>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n    <p>\n        Comments should be filed using NVBugs: {{bugTrackerHTML}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsPDF}}\n    <p>\n        Comments should be added to the PDF review <a class="u-url" href="{{commentsPDF}}">{{commentsPDF}}</a>.\n    </p>\n    {{/if}}\n\n    {{#if commentsEmail}}\n    <p>\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n    </p>\n    {{/if}}\n\n{{{sotdCustomParagraph}}}\n\n</section>\n');});
 
 /*jshint
     forin: false, laxcomma:true, jquery:true
@@ -15080,9 +15080,7 @@ define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
-//  - shortName: the small name that is used after /TR/ in published reports (required)
-//  - editors: an array of people editing the document (at least one is required). People
-//      are defined using:
+//  - editors: an array of people editing the document. People are defined using:
 //          - name: the person's name (required)
 //          - url: URI for the person's home page
 //          - company: the person's company
@@ -15102,7 +15100,6 @@ define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //
 //  - reviewEndDate: The date for the end of the review period (if any) The format is YYY-MM-DD or a Date object
 //  - commentsPDF: The URI of the Acrobat Review enabled PDF file for this review.
-//  - commentsNVBugs: Details of where in http://nvbugs, comments should be filed
 //  - commentsEmail: email address that should get comments
 //  - subjectPrefix: the string that is expected to be used as a subject prefix for email comments
 //
@@ -15252,21 +15249,21 @@ define(
                     conf.edDraftURI = "";
                 }
 
-                if (conf.prevRecShortname && !conf.prevRecURI) {
-                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
-                }
-
-                if (!conf.editors || conf.editors.length === 0) {
-                    msg.pub("error", "At least one editor is required");
-                }
+//                if (conf.prevRecShortname && !conf.prevRecURI) {
+//                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
+//                }
+//
+//                if (!conf.editors || conf.editors.length === 0) {
+//                    msg.pub("error", "At least one editor is required");
+//                }
 
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
 
-                $.each(conf.editors, peopCheck);
+                $.each(conf.editors || [], peopCheck);
                 $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors.length > 1;
+                conf.multipleEditors = conf.editors && conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
 
                 $.each(conf.alternateFormats || [], function (i, it) {
@@ -15411,23 +15408,23 @@ define(
 );
 
 
-define('tmpl!pcisig/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also used by PCISIG specifications.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing so and it is not used by PCISIG specifications.\n</p>\n');});
+define('tmpl!nvidia/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also available.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing and thus it is not used by Nvidia.\n</p>\n');});
 
 /*globals define*/
 /*jshint browser:true, jquery:true */
 
-// Module pcisig/conformance
+// Module nvidia/conformance
 // Handle the conformance section properly.
 
 define(
-    'pcisig/conformance',["tmpl!pcisig/templates/conformance.handlebars"],
+    'nvidia/conformance',["tmpl!nvidia/templates/conformance.handlebars"],
     function (confoTmpl) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/conformance");
+                msg.pub("start", "nvidia/conformance");
                 var $confo = $("#conformance");
                 if ($confo.length) $confo.prepend(confoTmpl(conf));
-                msg.pub("end", "pcisig/conformance");
+                msg.pub("end", "nvidia/conformance");
                 cb();
             }
         };
@@ -20695,7 +20692,7 @@ define('profile-nvidia-common',[
         ,   "nvidia/headers"
         ,   "core/footnotes"
         ,   "w3c/abstract"
-        ,   "pcisig/conformance"
+        ,   "nvidia/conformance"
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"

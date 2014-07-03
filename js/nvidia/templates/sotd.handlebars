@@ -32,15 +32,15 @@
     </p>
     {{/if}}
 
-    {{#if commentsNVBugs}}
+    {{#if bugTrackerHTML}}
     <p>
-        Comments should be filed using <a href='http://nvbugs'>http://nvbugs</a> against {{commentsNVBugs}}.
+        Comments should be filed using NVBugs: {{bugTrackerHTML}}.
     </p>
     {{/if}}
 
     {{#if commentsPDF}}
     <p>
-        Comments should be added to the PDF review associated with {{commentsPDF}}.
+        Comments should be added to the PDF review <a class="u-url" href="{{commentsPDF}}">{{commentsPDF}}</a>.
     </p>
     {{/if}}
 

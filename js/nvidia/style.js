@@ -19,8 +19,8 @@ define(
                 var css = "https://";
                 css += "sglaser.github.io/";
                 css += "respec/stylesheets/unofficial-nvidia.css";
-                if (conf.useCSS) {
-                    css = conf.useCSS;
+                if (conf.cssOverride) {
+                    css = conf.cssOverride;
                 }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);

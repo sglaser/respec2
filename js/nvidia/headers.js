@@ -9,9 +9,7 @@
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
-//  - shortName: the small name that is used after /TR/ in published reports (required)
-//  - editors: an array of people editing the document (at least one is required). People
-//      are defined using:
+//  - editors: an array of people editing the document. People are defined using:
 //          - name: the person's name (required)
 //          - url: URI for the person's home page
 //          - company: the person's company
@@ -31,7 +29,6 @@
 //
 //  - reviewEndDate: The date for the end of the review period (if any) The format is YYY-MM-DD or a Date object
 //  - commentsPDF: The URI of the Acrobat Review enabled PDF file for this review.
-//  - commentsNVBugs: Details of where in http://nvbugs, comments should be filed
 //  - commentsEmail: email address that should get comments
 //  - subjectPrefix: the string that is expected to be used as a subject prefix for email comments
 //
@@ -181,21 +178,21 @@ define(
                     conf.edDraftURI = "";
                 }
 
-                if (conf.prevRecShortname && !conf.prevRecURI) {
-                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
-                }
-
-                if (!conf.editors || conf.editors.length === 0) {
-                    msg.pub("error", "At least one editor is required");
-                }
+//                if (conf.prevRecShortname && !conf.prevRecURI) {
+//                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
+//                }
+//
+//                if (!conf.editors || conf.editors.length === 0) {
+//                    msg.pub("error", "At least one editor is required");
+//                }
 
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
 
-                $.each(conf.editors, peopCheck);
+                $.each(conf.editors || [], peopCheck);
                 $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors.length > 1;
+                conf.multipleEditors = conf.editors && conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
 
                 $.each(conf.alternateFormats || [], function (i, it) {
