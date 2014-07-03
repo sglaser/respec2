@@ -1,10 +1,9 @@
 /* ReSpec 3.2.15 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec */
-/* See also PCISIG source: https://github.com/sglaser/respec */
+/* See also NVIDIA source: https://github.com/sglaser/respec */
 respecVersion = '3.2.15';
-respecVersionPCISIG = '0.0.1';
-
+respecVersionNVIDIA = '0.0.1';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -13131,7 +13130,8 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\r\n * ReSpec 3 CSS\r\n * Robin Berjon - http://berjon.com/\r\n *****************************************************************/\r\n\r\n/* --- INLINES --- */\r\nem.rfc2119 { \r\n    text-transform:     lowercase;\r\n    font-variant:       small-caps;\r\n    font-style:         normal;\r\n    font-size:          larger;\r\n    color:              #900;\r\n}\r\n\r\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\r\n    border: none;\r\n}\r\n\r\ndfn {\r\n    font-weight:    bold;\r\n}\r\n\r\na.internalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px solid #99c;\r\n    text-decoration:    none;\r\n}\r\n\r\na.externalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration:    none;\r\n}\r\n\r\na.bibref {\r\n    text-decoration:    none;\r\n}\r\n\r\ncite .bibref {\r\n    font-style: normal;\r\n}\r\n\r\ncode {\r\n    color:  #ff4500;\r\n}\r\n\r\n/* --- TOC --- */\r\n.toc a, .tof a, .tot a {\r\n    text-decoration:    none;\r\n}\r\n\r\n.tocline a .secno,\r\n.tofline a .figno,\r\n.totline a .tblno {\r\n    color:  #000;\r\n}\r\n\r\nul.toc > li.tocline,\r\nul.tof > li.tofline,\r\nul.tot > li.totline {\r\n    list-style: none outside none;\r\n}\r\n\r\n.caption {\r\n    margin-top: 0.5em;\r\n    font-style:   italic;\r\n}\r\n\r\n/* --- TABLE --- */\r\ntable.simple {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\r\n}\r\n\r\n.simple th {\r\n    background: #0060A9; /* #38197a; /*#005a9c;*/\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n}\r\n\r\n.simple th[scope="row"] {\r\n    background: inherit;\r\n    color:  inherit;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple tr:nth-child(even) {\r\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\r\n}\r\n\r\n/* --- DL --- */\r\n.section dd > p:first-child {\r\n    margin-top: 0;\r\n}\r\n\r\n.section dd > p:last-child {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.section dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\n.section dl.attrs dd, .section dl.eldef dd {\r\n    margin-bottom:  0;\r\n}\r\n\r\nspan.respec-error {\r\n    color: red;\r\n    font-size: 12pt;\r\n    font-weight: bold;\r\n    font-family: monospace;\r\n}\r\n\r\n@media print {\r\n    .removeOnSave {\r\n        display: none;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -13457,39 +13457,32 @@ define(
 /*globals define */
 /*jshint browser: true */
 
-// Module pcisig/style
-// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
+// Module nvidia/style
+// Inserts a link to the appropriate Nvidia style for the specification's maturity level.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
 define(
-    'pcisig/style',["core/utils"/*,
-     "text!../../stylesheets/unofficial.css"*/],
+    'nvidia/style',["core/utils"/*,
+     "text!../../stylesheets/unofficial-nvidia.css"*/],
     function (utils/*, inlinecss*/) {
         
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/style");
-                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for pcisig/style");
+                msg.pub("start", "nvidia/style");
+                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for nvidia/style");
                 var statStyle = conf.specStatus;
                 var css = "https://";
-//                if (statStyle === "unofficial") {
-                css += "sglaser.github.io/respec/stylesheets/unofficial.css";
-//                css = "respec/stylesheets/unofficial.css";
-//                }
-//                else if (statStyle === "base") {
-//                    css += "sglaser.github.io/respec/stylesheets/base.css";
-//                }
-//                else {
-//                    css += "sglaser.github.io/respec/stylesheets/pcisig-" + statStyle + ".css";
-//                }
-                if (conf.cssOverride) {
-                    css = conf.cssOverride;
+                css += "sglaser.github.io/";
+                css += "respec/stylesheets/unofficial-nvidia.css";
+                if (conf.useCSS) {
+                    css = conf.useCSS;
                 }
                 utils.linkCSS(doc, css);
 //                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
 //                console.log("inlinecss.length = " + inlinecss.length);
-                msg.pub("end", "pcisig/style");
+
+                msg.pub("end", "nvidia/style");
                 cb();
             }
         };
@@ -15070,9 +15063,11 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!pcisig/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\r\n{{#if prependPCIeLogo}}\r\n<p>\r\n    <a href="https://www.pcisig.com/">\r\n        <img width="210" height="80" alt="PCI Express Logo"\r\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg"/>\r\n    </a>\r\n</p>\r\n{{/if}}\r\n{{#if prependPCISIGLogo}}\r\n<p>\r\n    <a href="https://www.pcisig.com/">\r\n        <img width="210" height="108" alt="PCISIG Logo"\r\n             src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>\r\n    </a>\r\n</p>\r\n{{/if}}\r\n<div id="respec-banner">\r\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{#if specReviewLong}}\r\n    <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{/if}}\r\n    {{#if specLevelLong}}\r\n    <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{/if}}\r\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\r\n</div>\r\n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\r\n{{#if subtitle}}\r\n<h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\r\n{{/if}}\r\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\r\ncontent="{{publishISODate}}"{{/if}} class="nolink">\r\n<time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\r\n</h2>\r\n<dl>\r\n    {{#unless isNoTrack}}\r\n    <dt>This version:</dt>\r\n    <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\r\n    <dt>Latest published version:</dt>\r\n    <dd>{{#if latestVersion}}<a href="{{latestVersion}}">{{latestVersion}}</a>{{else}}none{{/if}}\r\n    </dd>\r\n    {{/unless}}\r\n    {{#if edDraftURI}}\r\n    <dt>Latest editor"s draft:</dt>\r\n    <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if testSuiteURI}}\r\n    <dt>Test suite:</dt>\r\n    <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if implementationReportURI}}\r\n    <dt>Implementation report:</dt>\r\n    <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\r\n    {{/if}}\r\n    {{#if bugTrackerHTML}}\r\n    <dt>Bug tracker:</dt>\r\n    <dd>{{{bugTrackerHTML}}}</dd>\r\n    {{/if}}\r\n    {{#if isED}}\r\n    {{#if prevED}}\r\n    <dt>Previous editor"s draft:</dt>\r\n    <dd><a href="{{prevED}}">{{prevED}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{#if showPreviousVersion}}\r\n    <dt>Previous version:</dt>\r\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}}\r\n        href="{{prevVersion}}">{{prevVersion}}</a></dd>\r\n    {{/if}}\r\n    {{#if prevRecURI}}\r\n    {{#if isRec}}\r\n    <dt>Previous Recommendation:</dt>\r\n    <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href="{{prevRecURI}}">{{prevRecURI}}</a>\r\n    </dd>\r\n    {{else}}\r\n    <dt>Latest Recommendation:</dt>\r\n    <dd><a href="{{prevRecURI}}">{{prevRecURI}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\r\n    {{showPeople "Editor" editors}}\r\n    {{#if authors}}\r\n    <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\r\n    {{showPeople "Author" authors}}\r\n    {{/if}}\r\n    {{#if otherLinks}}\r\n    {{#each otherLinks}}\r\n    {{#if key}}\r\n    <dt\r\n    {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\r\n    {{#if data}}\r\n    {{#each data}}\r\n    {{#if value}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    {{#if href}}<a href="{{href}}">{{/if}}\r\n    {{value}}\r\n    {{#if href}}</a>{{/if}}\r\n    </dd>\r\n    {{else}}\r\n    {{#if href}}\r\n    <dd><a href="{{href}}">{{href}}</a></dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/each}}\r\n    {{else}}\r\n    {{#if value}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    {{#if href}}<a href="{{href}}">{{/if}}\r\n    {{value}}\r\n    {{#if href}}</a>{{/if}}\r\n    </dd>\r\n    {{else}}\r\n    {{#if href}}\r\n    <dd\r\n    {{#if class}}class="{{class}}"{{/if}}>\r\n    <a href="{{href}}">{{href}}</a>\r\n    </dd>\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/if}}\r\n    {{/each}}\r\n    {{/if}}\r\n</dl>\r\n{{#if errata}}\r\n<p>\r\n    Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\r\n    reported since publication.\r\n</p>\r\n{{/if}}\r\n{{#if alternateFormats}}\r\n<p>\r\n    {{#if multipleAlternates}}\r\n    This document is also available in these non-normative formats:\r\n    {{else}}\r\n    This document is also available in this non-normative format:\r\n    {{/if}}\r\n    {{{alternatesHTML}}}\r\n</p>\r\n{{/if}}\r\n{{#if isUnofficial}}\r\n{{#if additionalCopyrightHolders}}\r\n<p class="copyright">{{{additionalCopyrightHolders}}}</p>\r\n{{else}}\r\n{{#if overrideCopyright}}\r\n{{{overrideCopyright}}}\r\n{{else}}\r\n<p class="copyright">\r\n    This document is confidential and proprietary. All Rights Reserved.\r\n</p>\r\n{{/if}}\r\n{{/if}}\r\n{{else}}\r\n{{#if overrideCopyright}}\r\n{{{overrideCopyright}}}\r\n{{else}}\r\n<p class="copyright">\r\n    Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\r\n    additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\r\n    <a href="https://www.pcisig.com/">PCI-SIG</a>\r\n    <sup>&reg;</sup>\r\n</p>\r\n\r\n<p class="copyright">PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks\r\n    of PCI-SIG. All\r\n    other product names are trademarks, registered trademarks, or servicemarks of their\r\n    respective owners.</p>\r\n\r\n<p class="copyright">PCI-SIG disclaims all warranties and liability for the use of this document\r\n    and the information\r\n    contained herein and assumes no responsibility for any errors that may appear in this\r\n    document, nor does PCI-SIG\r\n    make a commitment to update the information contained herein.</p>\r\n{{#unless isNoTrack}}\r\n<p class="copyright">\r\n    Contact the PCI-SIG office to obtain the latest revision of this specification.</p>\r\n<blockquote>\r\n    <p class="copyright">\r\n        Questions regarding this specification or membership in PCI-SIG may be forwarded to:</p>\r\n    <table class="head">\r\n        <tbody>\r\n        <tr>\r\n            <td><strong>Membership Services</strong></td>\r\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\r\n            <td><strong>Technical Support</strong></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="mailto:administration@pcisig.com">administration@pcisig.com</a></td>\r\n            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\r\n            <td><a href="mailto:techsupp@pcisig.com">techsupp@pcisig.com</a></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="tel:+1-503-619-0569">+1-503-619-0569</a> (Phone)</td>\r\n            <td></td>\r\n            <td></td>\r\n        </tr>\r\n        <tr>\r\n            <td><a href="tel:+1-503-644-6708">+1-503-644-6708</a> (Fax)</td>\r\n            <td></td>\r\n            <td></td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n</blockquote>\r\n<p class="copyright"><strong>DISCLAIMER</strong></p>\r\n\r\n<p class="copyright">\r\n    This Specification is provided “as is” with no warranties whatsoever, including any warranty\r\n    of merchantability,\r\n    noninfringement, fitness for any particular purpose, or any warranty otherwise arising out\r\n    of any proposal,\r\n    specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary\r\n    rights, relating to\r\n    use of information in this specification. No license, express or implied, by estoppel or\r\n    otherwise, to any\r\n    intellectual property rights is granted herein.</p>\r\n{{/unless}}\r\n{{/if}}\r\n{{/if}}\r\n<hr/>\r\n</div>\r\n');});
 
-define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\r\n    {{#if isUnofficial}}\r\n        <p>\r\n            This document is a working draft of a potential specification. It has\r\n            no official standing of any kind and does not represent the support or consensus of any\r\n            standards organisation.\r\n        </p>\r\n    {{else}}\r\n        {{#if isNoTrack}}\r\n            <p>\r\n                This document is a PCISIG internal document. It\r\n                has no official standing of any kind and does not represent consensus of the PCISIG\r\n                Membership.\r\n            </p>\r\n        {{else}}\r\n            {{#if isFinal}}\r\n                <p>\r\n                    This specification is an official publication of the PCISIG. The PCISIG\r\n                    may publish errata to this specification and may develop future revisions to this\r\n                    specification.\r\n                </p>\r\n            {{else}}\r\n                <p>\r\n                    This specification is intended to become a PCISIG Standard.\r\n                    This particular document is a <strong>{{specStatusLong}}</strong>\r\n                    {{#if specLevelLong}}\r\n                        of the <strong>{{specLevelLong}}</strong> document\r\n                        {{#if specReviewLong}}\r\n                            for <strong>{{specReviewLong}}</strong>\r\n                        {{/if}}\r\n                    {{/if}}.\r\n                    {{#if specReviewLong}}\r\n                        {{#if humanReviewEndDate}}\r\n                            The {{specReviewLong}} period ends 5:00 PM US Pacific Time on <b>{{humanReviewEndDate}}</b>.\r\n                        {{/if}}\r\n                    {{/if}}\r\n                </p>\r\n            {{/if}}\r\n        {{/if}}\r\n    {{/if}}\r\n    {{{sotdCustomParagraph}}}\r\n    {{#if wgPublicList}}\r\n        <p>If you wish to make comments regarding this document, please send them to\r\n            <a href=\'mailto:{{wgPublicList}}@pcisig.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{wgPublicList}}\r\n                @pcisig.com</a>\r\n            {{#if subjectPrefix}}\r\n                with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\r\n        </p>\r\n    {{/if}}\r\n    {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\r\n</section>\r\n');});
+define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if prependLogo}}\n<p>\n    <a href="https://www.nvidia.com/">\n    {{#if useLogo}}\n        <img width="270" height="230" alt="Nvidia Logo" src="{{useLogo}}"/>\n    {{else}}\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\n    {{/if}}\n    </a>\n</p>\n{{/if}}\n    \n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if publishHumanDate}}\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n    \n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n    \n{{#if subtitle}}\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n    \n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\n    content="{{publishISODate}}"{{/if}} class="nolink">\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n    \n<dl>\n    {{#if thisVersion}}\n        <dt>This version:</dt>\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    {{/if}}\n    \n    {{#if latestVersion}}\n        <dt>Latest published version:</dt>\n        <dd><a href="{{latestVersion}}">{{latestVersion}}</a></dd>\n    {{/if}}\n\n    {{#if edDraftURI}}\n        <dt>Latest editor"s draft:</dt>\n        <dd><a href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n\n    {{#if testSuiteURI}}\n        <dt>Test suite:</dt>\n        <dd><a href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n\n    {{#if implementationReportURI}}\n        <dt>Implementation report:</dt>\n        <dd><a href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n        <dt>Bug tracker:</dt>\n        <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n\n    {{#if showPreviousVersion}}\n        <dt>Previous version:</dt>\n        <dd><a {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n\n    {{#if editors}}\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n        {{showPeople "Editor" editors}}\n    {{/if}}\n\n    {{#if authors}}\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n        {{showPeople "Author" authors}}\n    {{/if}}\n\n    {{#if otherLinks}}\n        {{#each otherLinks}}\n            {{#if key}}\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n                {{#if data}}\n                    {{#each data}}\n                        {{#if value}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                            </dd>\n                        {{else}}\n                            {{#if href}}\n                                <dd><a href="{{href}}">{{href}}</a></dd>\n                            {{/if}}\n                        {{/if}}\n                    {{/each}}\n                {{else}}\n                    {{#if value}}\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                        </dd>\n                    {{else}}\n                        {{#if href}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                        {{/if}}\n                    {{/if}}\n                {{/if}}\n            {{/if}}\n        {{/each}}\n    {{/if}}\n\n</dl>\n    \n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n    \n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n\n{{#if overrideCopyright}}\n    {{{overrideCopyright}}}\n{{else}}\n    <p class="copyright">\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\n        <sup>&reg;</sup>\n    </p>\n{{/if}}\n\n    <hr/>\n</div>\n');});
+
+
+define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    \n    {{#if isUnofficial}}\n    <p>\n        This document is a working draft.\n        It has no official standing of any kind and does not represent the support or consensus of any group.\n    </p>\n    {{else}}\n        {{#if isNoTrack}}\n        <p>\n            This document is a Nvidia internal document.\n            It has no official standing of any kind and does not represent consensus of any group.\n        </p>\n        {{else}}\n            {{#if isFinal}}\n            <p>\n                This document is considered a final publication.\n                Nvidia may publish errata to this document and may develop future revisions to this document.\n            </p>\n            {{else}}\n            <p>\n                This document is intended to become a part of the specification for an Nvidia product.\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\n            </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n\n    {{#if humanReviewEndDate}}\n    <p>\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\n    </p>\n    {{/if}}\n\n    {{#if commentsNVBugs}}\n    <p>\n        Comments should be filed using <a href=\'http://nvbugs\'>http://nvbugs</a> against {{commentsNVBugs}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsPDF}}\n    <p>\n        Comments should be added to the PDF review associated with {{commentsPDF}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsEmail}}\n    <p>\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n    </p>\n    {{/if}}\n\n{{{sotdCustomParagraph}}}\n\n</section>\n');});
 
 /*jshint
     forin: false, laxcomma:true, jquery:true
@@ -15081,7 +15076,7 @@ define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 
 /*global define, self, respecEvents, respecConfig */
 
-// Module pcisig/headers
+// Module nvidia/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
@@ -15098,8 +15093,19 @@ define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //  - subtitle: a subtitle for the specification
 //  - publishDate: the date to use for the publication, default to document.lastModified, and
 //      failing that to now. The format is YYYY-MM-DD or a Date object.
-//  - previousPublishDate: the date on which the previous version was published.
-//  - previousMaturity: the specStatus of the previous version
+//  - previousPublishDate: The date on which the previous version was published.
+//  - previousMaturity: The specStatus of the previous version
+//
+//  - thisVersion: the URI to the dated current version of the document.
+//  - latestVersion: the URI to the latest (undated) version of the document.
+//  - prevVersion: the URI to the previous (dated) version of the document.
+//
+//  - reviewEndDate: The date for the end of the review period (if any) The format is YYY-MM-DD or a Date object
+//  - commentsPDF: The URI of the Acrobat Review enabled PDF file for this review.
+//  - commentsNVBugs: Details of where in http://nvbugs, comments should be filed
+//  - commentsEmail: email address that should get comments
+//  - subjectPrefix: the string that is expected to be used as a subject prefix for email comments
+//
 //  - errata: the URI of the errata document, if any
 //  - alternateFormats: a list of alternate formats for the document, each of which being
 //      defined by:
@@ -15108,42 +15114,12 @@ define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //          - lang: optional language
 //          - type: optional MIME type
 //  - testSuiteURI: the URI to the test suite, if any
-//  - implementationReportURI: the URI to the implementation report, if any
 //  - bugTracker: and object with the following details
 //      - open: pointer to the list of open bugs
 //      - new: pointer to where to raise new bugs
-//  - noRecTrack: set to true if this document is not intended to be on the Recommendation track
-//  - edDraftURI: the URI of the Editor's Draft for this document, if any. Required if
-//      specStatus is set to "ED".
-//  - additionalCopyrightHolders: a copyright owner in addition to pcisig (or the only one if specStatus
-//      is unofficial)
-//  - overrideCopyright: provides markup to completely override the copyright
+//  - additionalCopyrightHolders: a copyright owner in addition to nvidia
 //  - copyrightStart: the year from which the copyright starts running
-//  - prevED: the URI of the previous Editor's Draft if it has moved
-//  - prevRecShortname: the short name of the previous Recommendation, if the name has changed
-//  - prevRecURI: the URI of the previous Recommendation if not directly generated from
-//    prevRecShortname.
-//  - wg: the name of the WG in charge of the document. This may be an array in which case wgURI
-//      and wgPatentURI need to be arrays as well, of the same length and in the same order
-//  - wgURI: the URI to the group's page, or an array of such
-//  - wgPatentURI: the URI to the group's patent information page, or an array of such. NOTE: this
-//      is VERY IMPORTANT information to provide and get right, do not just paste this without checking
-//      that you're doing it right
-//  - wgPublicList: the name of the mailing list where discussion takes place. Note that this cannot
-//      be an array as it is assumed that there is a single list to discuss the document, even if it
-//      is handled by multiple groups
-//  - charterDisclosureURI: used for IGs (when publishing IG-NOTEs) to provide a link to the IPR commitment
-//      defined in their charter.
-//  - addPatentNote: used to add patent-related information to the SotD, for instance if there's an open
-//      PAG on the document.
-//  - thisVersion: the URI to the dated current version of the specification. ONLY ever use this for CG/BG
-//      documents, for all others it is autogenerated.
-//  - latestVersion: the URI to the latest (undated) version of the specification. ONLY ever use this for CG/BG
-//      documents, for all others it is autogenerated.
-//  - prevVersion: the URI to the previous (dated) version of the specification. ONLY ever use this for CG/BG
-//      documents, for all others it is autogenerated.
-//  - subjectPrefix: the string that is expected to be used as a subject prefix when posting to the mailing
-//      list of the group.
+
 //  - otherLinks: an array of other links that you might want in the header (e.g., link github, twitter, etc).
 //         Example of usage: [{key: "foo", href:"http://b"}, {key: "bar", href:"http://"}].
 //         Allowed values are:
@@ -15151,28 +15127,30 @@ define('tmpl!pcisig/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //          - value: The value that will appear in the <dd> (e.g., "GitHub"). Optional.
 //          - href: a URL for the value (e.g., "http://foo.com/issues"). Optional.
 //          - class: a string representing CSS classes. Optional.
-//  - license: can either be "pcisig" (for the currently default, restrictive license) or "cc-by" for
-//      the friendly permissive dual license that nice people use (if they are participating in the
-//      HTML WG licensing experiment)
-
 
 define(
-    'pcisig/headers',["handlebars"
-    ,"core/utils"
-    ,"tmpl!pcisig/templates/headers.handlebars"
-    ,"tmpl!pcisig/templates/sotd.handlebars"
+    'nvidia/headers',["handlebars"
+    , "core/utils"
+    , "tmpl!nvidia/templates/headers.handlebars"
+    , "tmpl!nvidia/templates/sotd.handlebars"
     ],
     function (hb, utils, headersTmpl, sotdTmpl) {
         
+        
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
-            var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "";
+            var re = "",
+                rp = "",
+                rm = "",
+                rn = "",
+                rwu = "",
+                rpu = "";
+
             if (this.doRDFa !== false) {
                 if (name === "Editor") {
                     re = " rel='bibo:editor'";
                     if (this.doRDFa !== "1.0") re += " inlist=''";
-                }
-                else if (name === "Author") {
+                } else if (name === "Author") {
                     re = " rel='dcterms:contributor'";
                 }
                 rn = " property='foaf:name'";
@@ -15181,74 +15159,60 @@ define(
                 rwu = " rel='foaf:workplaceHomepage'";
                 rpu = " rel='foaf:homepage'";
             }
+            
             var ret = "";
+
             for (var i = 0, n = items.length; i < n; i++) {
                 var p = items[i];
-                if (this.doRDFa !== false ) ret += "<dd class='p-author h-card vcard' " + re +"><span" + rp + ">";
-                else             ret += "<dd class='p-author h-card vcard'>";
+                if (this.doRDFa !== false)
+                    ret += "<dd class='p-author h-card vcard' " + re + "><span" + rp + ">";
+                else
+                    ret += "<dd class='p-author h-card vcard'>";
                 if (p.url) {
-                    if (this.doRDFa !== false ) {
-                        ret += "<a class='u-url url p-name fn' " + rpu + rn + " content='" + p.name +  "' href='" + p.url + "'>" + p.name + "</a>";
+                    if (this.doRDFa !== false) {
+                        ret += "<a class='u-url url p-name fn' " + rpu + rn + " content='" + p.name + "' href='" + p.url + "'>" + p.name + "</a>";
+                    } else {
+                        ret += "<a class='u-url url p-name fn' href='" + p.url + "'>" + p.name + "</a>";
                     }
-                    else {
-                        ret += "<a class='u-url url p-name fn' href='" + p.url + "'>"+ p.name + "</a>";
-                    }
-                }
-                else {
+                } else {
                     ret += "<span" + rn + " class='p-name fn'>" + p.name + "</span>";
                 }
                 if (p.company) {
                     ret += ", ";
-                    if (p.companyURL) ret += "<a" + rwu + " class='p-org org h-org h-card' href='" + p.companyURL + "'>" + p.company + "</a>";
-                    else ret += p.company;
+                    if (p.companyURL)
+                        ret += "<a" + rwu + " class='p-org org h-org h-card' href='" + p.companyURL + "'>" + p.company + "</a>";
+                    else
+                        ret += p.company;
                 }
                 if (p.mailto) {
                     ret += ", <span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>";
                 }
                 if (p.note) ret += " (" + p.note + ")";
-                if (this.doRDFa !== false ) ret += "</span>\n";
+                if (this.doRDFa !== false) ret += "</span>\n";
                 ret += "</dd>\n";
             }
             return new Handlebars.SafeString(ret);
         });
-        
+
 
         return {
-           status2Text: {
-                NOTE:           "Note"
-            ,   WD:             "Working Draft"
-            ,   ED:             "Editor's Draft"
-            ,   RC:             "Release Candidate"
-            ,   PUBLISH:        "Published"
-            ,   TP:             "TechPubs Draft"
-            ,   confidential:   "Confidential"
-            ,   submission:     "Submission"
-            ,   unofficial:     "Unofficial"
-            ,   base:           "Document"
-            ,   finding:        "Finding"
-            }
-        ,   noTrackStatus:  ["NOTE", "confidential", "submission", "unofficial", "base", "finding"]
-        ,   review2Text: {
-                "":                 ""
-            ,   NONE:               ""
-            ,   "Author-Review":    "Author Review"
-            ,   "WG-Review":        "Work Group Review"
-            ,   "Cross-WG-Review":  "Cross Work Group Review"
-            ,   "Member-Review":    "PCISIG Member Review"
-            ,   "Final-Review":     "Final Review"
-            ,   "Draft":            "Draft"
-        }
-        ,   level2Text: {
-                "":                 ""
-            ,   "0.1":              "0.1 Maturity Level"
-            ,   "0.3":              "0.3 Maturity Level"
-            ,   "0.5":              "0.5 Maturity Level"
-            ,   "0.7":              "0.7 Maturity Level"
-            ,   "0.9":              "0.9 Maturity Level"
-            ,   "1.0":              "Final"
-        }
-        ,   run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "pcisig/headers");
+            status2Text: {
+                WD:             "Working Draft",
+                ED:             "Editor's Draft",
+                REVIEW:         "Review Draft",
+                TP:             "TechPubs Draft",
+                RC:             "Release Candidate",
+                PUBLISH:        "Published",
+                POR:            "Plan of Record",
+
+                NOTE:           "Note",
+                confidential:   "Confidential",
+                unofficial:     "Unofficial",
+                base:           "Document"
+            },
+            noTrackStatus: ["NOTE", "confidential", "unofficial", "base"],
+            run: function (conf, doc, cb, msg) {
+                msg.pub("start", "nvidia/headers");
 
                 if (conf.doRDFa !== false) {
                     if (conf.doRDFa === undefined) {
@@ -15260,32 +15224,15 @@ define(
                 if (!conf.tblFmt) conf.tblFmt = "%(Table %1%c-%#%): %t";
 
                 // validate configuration and derive new configuration values
-                if (!conf.license) conf.license = "pcisig";
+                if (!conf.license) conf.license = "nvidia";
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
-//                console.log("initial conf.specStatus = \"" + conf.specStatus + "\"");
-//                console.log("initial conf.specReview = \"" + conf.specReview + "\"");
-//                console.log("initial conf.specLevel = \"" + conf.specLevel + "\"");
-                if (!conf.specReview) {
-                    var temp = conf.specStatus.split(/\//);
-//                    console.log("split(specStatus).length = " + temp.length);
-                    conf.specStatus = (temp.length > 0) ? temp[0] : conf.specStatus;
-                    conf.specReview = (temp.length > 1) ? temp[1] : "";
-                    if (!conf.specLevel) {
-                        conf.specLevel = (temp.length > 2) ? temp[2] : "";
-                    }
-//                } else {
-//                    console.log("!conf.specReview conf.specReview = \"" + !conf.specReview + "\"");
-                }
-//                console.log("final conf.specStatus = \"" + conf.specStatus + "\"");
-//                console.log("final conf.specReview = \"" + conf.specReview + "\"");
-//                console.log("final conf.specLevel = \"" + conf.specLevel + "\"");
+                //                console.log("conf.specStatus = \"" + conf.specStatus + "\"");
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
                 if (!conf.publishDate) {
                     conf.publishDate = utils.parseLastModified(doc.lastModified);
-                }
-                else {
+                } else {
                     if (!(conf.publishDate instanceof Date))
                         conf.publishDate = utils.parseSimpleDate(conf.publishDate);
                 }
@@ -15295,81 +15242,33 @@ define(
                     conf.humanReviewEndDate = utils.humanDate(conf.reviewEndDate);
                 }
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
-                conf.isTagFinding = conf.specStatus === "finding";
-                if (!conf.isNoTrack) {
-                    if (!conf.specLevel || conf.specLevel === "") {
-                        msg.pub("error", "Standards Track: Missing required configuration: specLevel");
-                    }
-                    if (!conf.specReview || conf.specReview === "") {
-                        msg.pub("error", "Standards Track: Missing required configuration: specReview");
-                    }
-                }
-                if (!conf.specLevel) conf.specLevel = "";
-                if (!conf.specReview) conf.specReview = "";
-                if (this.review2Text[conf.specReview]) {
-                    conf.specReviewLong = this.review2Text[conf.specReview];
-                } else {
-                    conf.specReviewLong = conf.specReview;
-                }
                 if (conf.specStatus in this.status2Text) {
                     conf.specStatusLong = this.status2Text[conf.specStatus];
                 } else {
                     conf.specStatusLong = conf.specStatus;
                 }
-                if (this.level2Text[conf.specLevel]) {
-                    conf.specLevelLong = this.level2Text[conf.specLevel];
-                } else {
-                    conf.specLevelLong = conf.specLevel + " Maturity Level";
-                }
+
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
-                    /*if (conf.specStatus === "ED") msg.pub("warn", "Editor's Drafts should set edDraftURI.");*/
                 }
-                /*var publishSpace = "TR";
-                if (conf.specStatus === "Member-SUBM") publishSpace = "Submission";
-                else if (conf.specStatus === "Team-SUBM") publishSpace = "TeamSubmission";
-                if (!conf.isCGBG) conf.thisVersion =  "http://www.w3.org/" + publishSpace + "/" +
-                                                      conf.publishDate.getFullYear() + "/" +
-                                                      conf.maturity + "-" + conf.shortName + "-" +
-                                                      utils.concatDate(conf.publishDate) + "/";
-                if (conf.specStatus === "ED") conf.thisVersion = conf.edDraftURI;
-                if (!conf.isCGBG) conf.latestVersion = "http://www.w3.org/" + publishSpace + "/" + conf.shortName + "/";
-                if (conf.isTagFinding) {
-                    conf.latestVersion = "http://www.w3.org/2001/tag/doc/" + conf.shortName;
-                    conf.thisVersion = conf.latestVersion + "-" + utils.concatDate(conf.publishDate, "-");
-                }*/
-                /*if (conf.previousPublishDate) {
-                    if (!conf.previousMaturity && !conf.isTagFinding)
-                        msg.pub("error", "previousPublishDate is set, but not previousMaturity");
-                    if (!(conf.previousPublishDate instanceof Date))
-                        conf.previousPublishDate = utils.parseSimpleDate(conf.previousPublishDate);
-                    var pmat = (this.status2maturity[conf.previousMaturity]) ? this.status2maturity[conf.previousMaturity] :
-                                                                               conf.previousMaturity;
-                    if (conf.isTagFinding) {
-                        conf.prevVersion = conf.latestVersion + "-" + utils.concatDate(conf.previousPublishDate, "-");
-                    }
-                    else if (conf.isCGBG) {
-                        conf.prevVersion = conf.prevVersion || "";
-                    }
-                    else {
-                        conf.prevVersion = "http://www.w3.org/TR/" + conf.previousPublishDate.getFullYear() + "/" + pmat + "-" +
-                                           conf.shortName + "-" + utils.concatDate(conf.previousPublishDate) + "/";
-                    }
+
+                if (conf.prevRecShortname && !conf.prevRecURI) {
+                    conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
                 }
-                else {
-                    if (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
-                        msg.pub("error", "Document on track but no previous version.");
-                    if (!conf.prevVersion) conf.prevVersion = "";
-                }*/
-                /*if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;*/
-                if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
+
+                if (!conf.editors || conf.editors.length === 0) {
+                    msg.pub("error", "At least one editor is required");
+                }
+
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
+
                 $.each(conf.editors, peopCheck);
                 $.each(conf.authors || [], peopCheck);
                 conf.multipleEditors = conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
+
                 $.each(conf.alternateFormats || [], function (i, it) {
                     if (!it.uri || !it.label) msg.pub("error", "All alternate formats must have a uri and a label.");
                 });
@@ -15379,118 +15278,67 @@ define(
                     optional += (alt.hasOwnProperty('type') && alt.type) ? " type='" + alt.type + "'" : "";
                     return "<a rel='alternate' href='" + alt.uri + "'" + optional + ">" + alt.label + "</a>";
                 });
+
                 if (conf.bugTracker) {
                     if (conf.bugTracker["new"] && conf.bugTracker.open) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker["new"] + "'>file a bug</a>" +
-                                              " (<a href='" + conf.bugTracker.open + "'>open bugs</a>)";
-                    }
-                    else if (conf.bugTracker.open) {
+                            " (<a href='" + conf.bugTracker.open + "'>open bugs</a>)";
+                    } else if (conf.bugTracker.open) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker.open + "'>open bugs</a>";
-                    }
-                    else if (conf.bugTracker["new"]) {
+                    } else if (conf.bugTracker["new"]) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker["new"] + "'>file a bug</a>";
                     }
                 }
+
                 if (conf.copyrightStart && conf.copyrightStart === conf.publishYear) conf.copyrightStart = "";
-                /*if (this.status2rdf[conf.specStatus]) {
-                    conf.rdfStatus = this.status2rdf[conf.specStatus];
-                }*/
-                /*conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
-                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
-                                           !conf.isNoTrack);
-                if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
-                conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
-                conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
-                if (conf.isRec && !conf.errata)
-                    msg.pub("error", "Recommendations must have an errata link.");
-                conf.notRec = (conf.specStatus !== "REC");*/
                 conf.isUnofficial = conf.specStatus === "unofficial";
-                conf.prependPCIeLogo = conf.isUnofficial || !conf.isNoTrack;
-                conf.isFinal = (conf.specStatus === "PUBLISH") && (conf.specLevel === "1.0") &&
-                    ((conf.specReview === "NONE") || (conf.specReview === ""));
+                conf.prependLogo = conf.isUnofficial || !conf.isNoTrack;
+                conf.isFinal = (conf.specStatus === "PUBLISH");
                 conf.isPublished = conf.specStatus === "PUBLISH";
-                /*conf.isED = (conf.specStatus === "ED");
-                conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
-                conf.isCR = (conf.specStatus === "CR");
-                conf.isPR = (conf.specStatus === "PR");
-                conf.isMO = (conf.specStatus === "MO");
-                conf.isIGNote = (conf.specStatus === "IG-NOTE");*/
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
-                conf.publishISODate = utils.isoDate(conf.publishDate) ;
+                conf.publishISODate = utils.isoDate(conf.publishDate);
                 // configuration done - yay!
-                
+
                 // annotate html element with RFDa
                 if (conf.doRDFa) {
                     var $html = $("html");
                     if (conf.rdfStatus) {
-                        $html.attr("typeof", "bibo:Document "+conf.rdfStatus ) ;
+                        $html.attr("typeof", "bibo:Document " + conf.rdfStatus);
                     } else {
-                        $html.attr("typeof", "bibo:Document ") ;
+                        $html.attr("typeof", "bibo:Document ");
                     }
-                    $html.attr("about", "") ;
-                    $html.attr("property", "dcterms:language") ;
-                    $html.attr("content", "en") ;
+                    $html.attr("about", "");
+                    $html.attr("property", "dcterms:language");
+                    $html.attr("content", "en");
                     var prefixes = "bibo: http://purl.org/ontology/bibo/";
                     if (conf.doRDFa !== '1.1') {
-                        $html.attr("version", "XHTML+RDFa 1.0") ;
-                        prefixes += " dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ xsd: http://www.w3.org/2001/XMLSchema#";
+                        $html.attr("version", "XHTML+RDFa 1.0");
+                        prefixes += " dcterms: http://purl.org/dc/terms/";
+                        prefixes += " foaf: http://xmlns.com/foaf/0.1/";
+                        prefixes += " xsd: http://www.w3.org/2001/XMLSchema#";
                     }
                     $html.attr("prefix", prefixes);
                 }
+
                 // insert into document and mark with microformat
                 $("body", doc).prepend($(headersTmpl(conf)))
-                              .addClass("h-entry");
+                    .addClass("h-entry");
 
                 // handle SotD
                 var $sotd = $("#sotd");
-                if ((!conf.isNoTrack || conf.isTagFinding) && !$sotd.length)
+                if ((!conf.isNoTrack) && !$sotd.length)
                     msg.pub("error", "A custom SotD paragraph is required for your type of document.");
                 conf.sotdCustomParagraph = $sotd.html();
                 $sotd.remove();
-                if ($.isArray(conf.wg)) {
-                    conf.multipleWGs = conf.wg.length > 1;
-                    conf.wgHTML = utils.joinAnd($.isArray(conf.wg) ? conf.wg : [conf.wg], function (wg, idx) {
-                        return "<a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
-                    });
-                    var pats = [];
-                    for (var i = 0, n = conf.wg.length; i < n; i++) {
-                        pats.push("<a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>" + conf.wg[i] + "</a>");
-                    }
-                    conf.wgPatentHTML = pats.join(", ");
-                }
-                else {
-                    conf.multipleWGs = false;
-                    conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
-                }
-                /*if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
-                if (conf.specStatus === "PR" && !conf.lcEnd) msg.pub("error", "Status is PR but no lcEnd is specified (needed to indicate end of previous LC)");
-                conf.humanLCEnd = utils.humanDate(conf.lcEnd || "");
-                if (conf.specStatus === "CR" && !conf.crEnd) msg.pub("error", "Status is CR but no crEnd is specified");
-                conf.humanCREnd = utils.humanDate(conf.crEnd || "");
-                if (conf.specStatus === "PR" && !conf.prEnd) msg.pub("error", "Status is PR but no prEnd is specified");
-                conf.humanPREnd = utils.humanDate(conf.prEnd || "");
 
-                conf.recNotExpected = (!conf.isRecTrack && conf.maturity == "WD" && conf.specStatus !== "FPWD-NOTE");
-                if (conf.isIGNote && !conf.charterDisclosureURI)
-                    msg.pub("error", "IG-NOTEs must link to charter's disclosure section using charterDisclosureURI");
-                $(conf.isCGBG ? cgbgSotdTmpl(conf) : sotdTmpl(conf)).insertAfter($("#abstract"));
-
-                if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
-                    msg.pub("error", "CR, PR, and REC documents need to have an implementationReportURI defined.");
-                }*/
                 $(sotdTmpl(conf)).insertAfter($("#abstract"));
-                if (conf.isTagFinding && !conf.sotdCustomParagraph) {
-                    msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
-                                     "please specify one using a <code><section></code> element with ID=sotd.");
-                }
 
-                msg.pub("end", "pcisig/headers");
+                msg.pub("end", "nvidia/headers");
                 cb();
             }
         };
     }
 );
-
 /*global define */
 
 /* jshint browser: true */
@@ -15562,7 +15410,8 @@ define(
     }
 );
 
-define('tmpl!pcisig/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\r\n<p>\r\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\r\n    implementation notes,\r\n    and notes in this specification are non-normative. Everything else in this specification is\r\n    normative.\r\n</p>\r\n<p>\r\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\r\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\r\n</p>\r\n<p>\r\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\r\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\r\n    and NOT PERMITTED are also used by PCISIG specifications.\r\n</p>\r\n<p>\r\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\r\n    Experience has found this term to be confusing so and it is not used by PCISIG specifications.\r\n</p>\r\n');});
+
+define('tmpl!pcisig/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also used by PCISIG specifications.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing so and it is not used by PCISIG specifications.\n</p>\n');});
 
 /*globals define*/
 /*jshint browser:true, jquery:true */
@@ -15833,7 +15682,8 @@ define(
     }
 );
 
-define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\r\ndiv.example-title {\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.example-title span {\r\n    text-transform: uppercase;   \r\n}\r\naside.example, div.example, div.illegal-example {\r\n    padding: 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\ndiv.illegal-example { color: red }\r\ndiv.illegal-example p { color: black }\r\naside.example, div.example {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n    border-color: #e0cb52;\r\n    background: #fcfaee;    \r\n}\r\n\r\naside.example div.example {\r\n    border-left-width: .1em;\r\n    border-color: #999;\r\n    background: #fff;\r\n}\r\naside.example div.example div.example-title {\r\n    color: #999;\r\n}\r\n';});
+
+define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
 
 // Module core/examples
@@ -15909,7 +15759,8 @@ define(
     }
 );
 
-define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title,\r\ndiv.note-title,\r\ndiv.impnote-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title     { color: #e05252; }\r\ndiv.note-title      { color: #2b2; }\r\ndiv.impnote-title   { color: #0060A9; }\r\ndiv.issue-title span,\r\ndiv.note-title span,\r\ndiv.impnote-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue, div.impnote {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child,\r\n.issue > p:first-child,\r\n.impnote > p:first-child {\r\n    margin-top: 0;\r\n}\r\n.issue, .note, .impnote {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note, div.impnote {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note,\r\nspan.issue,\r\nspan.impnote {\r\n    padding: .1em .5em .15em;\r\n}\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background:   #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background:   #e9fbe9;\r\n}\r\n.impnote {\r\n    border-color: #0060A9; \r\n    background:   #E5F4FF;\r\n}\r\n\r\n\r\n';});
+
+define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title     { color: #e05252; }\ndiv.note-title      { color: #2b2; }\ndiv.impnote-title   { color: #0060A9; }\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue, div.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue, .note, .impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note, div.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n\n.issue {\n    border-color: #e05252;\n    background:   #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background:   #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9; \n    background:   #E5F4FF;\n}\n\n\n';});
 
 
 // Module core/issues-notes
@@ -16059,7 +15910,8 @@ define(
         };
     }
 );
-define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\r\ncode.prettyprint {\r\n    color:  inherit;\r\n}\r\n\r\n/* this from google-code-prettify */\r\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\r\n';});
+
+define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
 
 // Copyright (C) 2006 Google Inc.
 //
@@ -17764,7 +17616,8 @@ define(
     }
 );
 
-define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\r\ndiv.practice {\r\n    border: solid #bebebe 1px;\r\n    margin: 2em 1em 1em 2em;\r\n}\r\n\r\nspan.practicelab {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n    font-weight: bold;\r\n    font-style: italic;\r\n    background: #dfffff;\r\n    position: relative;\r\n    padding: 0 0.5em;\r\n    top: -1.5em;\r\n}\r\n\r\np.practicedesc {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n}\r\n\r\n@media screen {\r\n    p.practicedesc {\r\n        position: relative;\r\n        top: -2em;\r\n        padding: 0;\r\n        margin: 1.5em 0.5em -1em 1em;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
 
 // Module core/best-practices
@@ -18336,7 +18189,1542 @@ define(
     }
 );
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\r\ntext.regBitNum {\r\n\ttext-anchor: middle;\r\n\tfill: grey;\r\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n\tfont-size: 8pt;\r\n}\r\n\r\npath.regBitNumLine {\r\n\tstroke: grey;\r\n\tstroke-width: 1px;\r\n}\r\n\r\nrect.regFieldBox {\r\n\tfill: white;\r\n\tstroke: black;\r\n\tstroke-width: 1.5px;\r\n}\r\n\r\nrect.regFieldBoxrsvdp,\r\nrect.regFieldBoxrsvdz,\r\nrect.regFieldBoxReserved,\r\nrect.regFieldRsvd {\r\n\tfill: white;\r\n}\r\n\r\nline.regFieldBoxInternal {\r\n\tstroke: black;\r\n}\r\n\r\nline.regFieldBoxUnused {\r\n\tstroke: grey;\r\n}\r\n\r\ntext.regFieldValueInternal ,\r\ntext.regFieldNameInternal {\r\n\ttext-anchor: middle;\r\n}\r\n\r\ntext.regFieldValueUnused,\r\ntext.regFieldNameUnused {\r\n\tfill: grey;\r\n}\r\n\r\ntext.regFieldValue,\r\ntext.regFieldName {\r\n\tfont-size: 11pt;\r\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n}\r\n\r\npath.regBitLine1,\r\npath.regBitBracket1 {\r\n\tstroke: black;\r\n\tstroke-width: 1px;\r\n}\r\n\r\npath.regBitLine0 {\r\n\tstroke: green;\r\n    stroke-dasharray: 4,2;\r\n\tstroke-width: 1px;\r\n}\r\n\r\npath.regBitBracket0 {\r\n    stroke: green;\r\n    stroke-width: 1px;\r\n}\r\nsvg text.regFieldValue {\r\n    fill: #0060A9;\r\n    font-family: monospace;\r\n}\r\n\r\nsvg.regpict {\r\n\tcolor: green;\r\n}\r\n\r\nsvg *.svg_error text {\r\n    fill: red;\r\n    font-size: 12pt;\r\n    font-weight: bold;\r\n    font-style: normal;\r\n    font-family: monospace;\r\n}\r\n\r\nfigure div.json,\r\nfigure pre.json {\r\n    color: rgb(0,90,156);\r\n    display: inherit;\r\n}';});
+
+define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
+
+
+define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\n{{idn indent}}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj.refId}}" class="idlEnumItem">{{obj.id}}</a>"');});
+
+
+define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
+
+
+define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
+
+
+define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\n');});
+
+
+define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\n');});
+
+
+define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+
+
+define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\n}}{{idn indent}}// {{comment}}</span>\n');});
+
+
+define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+
+define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+/*global Handlebars, simpleNode */
+
+// Module core/webidl-oldschool
+//  Transforms specific markup into the complex old school rendering for API information.
+
+// TODO:
+//  - It could be useful to report parsed IDL items as events
+//  - don't use generated content in the CSS!
+
+var sn;
+define(
+    'core/webidl-oldschool',[
+        "handlebars"
+    ,   "tmpl!core/css/webidl-oldschool.css"
+    ,   "tmpl!core/templates/webidl/module.html"
+    ,   "tmpl!core/templates/webidl/typedef.html"
+    ,   "tmpl!core/templates/webidl/implements.html"
+    ,   "tmpl!core/templates/webidl/dict-member.html"
+    ,   "tmpl!core/templates/webidl/dictionary.html"
+    ,   "tmpl!core/templates/webidl/enum-item.html"
+    ,   "tmpl!core/templates/webidl/enum.html"
+    ,   "tmpl!core/templates/webidl/const.html"
+    ,   "tmpl!core/templates/webidl/param.html"
+    ,   "tmpl!core/templates/webidl/callback.html"
+    ,   "tmpl!core/templates/webidl/method.html"
+    ,   "tmpl!core/templates/webidl/constructor.html"
+    ,   "tmpl!core/templates/webidl/attribute.html"
+    ,   "tmpl!core/templates/webidl/serializer.html"
+    ,   "tmpl!core/templates/webidl/comment.html"
+    ,   "tmpl!core/templates/webidl/field.html"
+    ,   "tmpl!core/templates/webidl/exception.html"
+    ,   "tmpl!core/templates/webidl/interface.html"
+    ],
+    function (hb, css, idlModuleTmpl, idlTypedefTmpl, idlImplementsTmpl, idlDictMemberTmpl, idlDictionaryTmpl,
+                   idlEnumItemTmpl, idlEnumTmpl, idlConstTmpl, idlParamTmpl, idlCallbackTmpl, idlMethodTmpl,
+              idlConstructorTmpl, idlAttributeTmpl, idlSerializerTmpl, idlCommentTmpl, idlFieldTmpl, idlExceptionTmpl, idlInterfaceTmpl) {
+        var WebIDLProcessor = function (cfg) {
+                this.parent = { type: "module", id: "outermost", children: [] };
+                if (!cfg) cfg = {};
+                for (var k in cfg) if (cfg.hasOwnProperty(k)) this[k] = cfg[k];
+
+                Handlebars.registerHelper("extAttr", function (obj, indent, nl, ctor) {
+                    var ret = "";
+                    if (obj.extendedAttributes) {
+                        ret += idn(indent) + "[<span class='extAttr'>" + obj.extendedAttributes + "</span>" +
+                               (typeof ctor === 'string' && ctor.length ? ",\n" + ctor : "") + "]" + (nl ? "\n" : " ");
+                    }
+                    else if (typeof ctor === 'string' && ctor.length) {
+                        ret += idn(indent) + "[" + ctor + "]" + (nl ? "\n" : " ");
+                    }
+                    return new Handlebars.SafeString(ret);
+                });
+                Handlebars.registerHelper("param", function (obj, children) {
+                    var param = "";
+                    if (children) param += " (" + children + ")";
+                    return new Handlebars.SafeString(param);
+                });
+                Handlebars.registerHelper("idn", function (indent) {
+                    return new Handlebars.SafeString(idn(indent));
+                });
+                Handlebars.registerHelper("asWebIDL", function (proc, obj, indent) {
+                    return new Handlebars.SafeString(proc.writeAsWebIDL(obj, indent));
+                });
+                Handlebars.registerHelper("datatype", function (text) {
+                    return new Handlebars.SafeString(datatype(text));
+                });
+                Handlebars.registerHelper("pads", function (num) {
+                    return new Handlebars.SafeString(pads(num));
+                });
+                Handlebars.registerHelper("superclasses", function (obj) {
+                    if (!obj.superclasses || !obj.superclasses.length) return "";
+                    var str = " : " +
+                              obj.superclasses.map(function (it) {
+                                                    return "<span class='idlSuperclass'><a>" + it + "</a></span>";
+                                                  }).join(", ")
+                    ;
+                    return new Handlebars.SafeString(str);
+                });
+            }
+        ,   idn = function (lvl) {
+                var str = "";
+                for (var i = 0; i < lvl; i++) str += "    ";
+                return str;
+            }
+        ,   norm = function (str) {
+                return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            }
+        ,   arrsq = function (obj) {
+                var str = "";
+                for (var i = 0, n = obj.arrayCount; i < n; i++) str += "[]";
+                return str;
+            }
+        ,   datatype = function (text) {
+                if ($.isArray(text)) {
+                    var arr = [];
+                    for (var i = 0, n = text.length; i < n; i++) arr.push(datatype(text[i]));
+                    return "(" + arr.join(" or ") + ")";
+                }
+                else {
+                    var matched = /^(sequence|Promise)<(.+)>$/.exec(text);
+                    if (matched)
+                        return matched[1] + "&lt;<a>" + matched[2] + "</a>&gt;";
+
+                    return "<a>" + text + "</a>";
+                }
+            }
+        ,   pads = function (num) {
+                // XXX
+                //  this might be more simply done as
+                //  return Array(num + 1).join(" ")
+                var str = "";
+                for (var i = 0; i < num; i++) str += " ";
+                return str;
+            }
+        ;
+        WebIDLProcessor.prototype = {
+            setID:  function (obj, match) {
+                obj.id = match;
+                obj.refId = obj.id.replace(/[^a-zA-Z_\-]/g, "");
+		obj.unescapedId = (obj.id[0] == "_" ? obj.id.slice(1) : obj.id);
+            }
+        ,   nullable:   function (obj, type) {
+                obj.nullable = false;
+                if (/\?$/.test(type)) {
+                    type = type.replace(/\?$/, "");
+                    obj.nullable = true;
+                }
+                return type;
+            }
+        ,   array:   function (obj, type) {
+                obj.array = false;
+                if (/\[\]$/.test(type)) {
+                    obj.arrayCount = 0;
+                    type = type.replace(/(?:\[\])/g, function () {
+                        obj.arrayCount++;
+                        return "";
+                    });
+                    obj.array = true;
+                }
+                return type;
+            }
+        ,   params: function (prm, $dd, obj) {
+                var p = {};
+                prm = this.parseExtendedAttributes(prm, p);
+                // either up to end of string, or up to ,
+                // var re = /^\s*(?:in\s+)?([^,]+)\s+\b([^,\s]+)\s*(?:,)?\s*/;
+                var re = /^\s*(?:in\s+)?([^,=]+)\s+\b([^,]+)\s*(?:,)?\s*/;
+                var match = re.exec(prm);
+                if (match) {
+                    prm = prm.replace(re, "");
+                    var type = match[1]
+                    ,   name = match[2]
+                    ,   components = name.split(/\s*=\s*/)
+                    ,   deflt = null
+                    ;
+                    if (components.length === 1) name = name.replace(/\s+/g, "");
+                    else {
+                        name = components[0];
+                        deflt = components[1];
+                    }
+                    this.parseDatatype(p, type);
+                    p.defaultValue = deflt;
+                    this.setID(p, name);
+                    if ($dd) p.description = $dd.contents();
+                    obj.params.push(p);
+                }
+                else {
+                    this.msg.pub("error", "Expected parameter list, got: " + prm);
+                    return false;
+                }
+                return prm;
+            }
+        ,   optional:   function (p) {
+                if (p.isUnionType) {
+                    p.optional = false;
+                    return false;
+                }
+                else {
+                    var pkw = p.datatype.split(/\s+/)
+                    ,   idx = pkw.indexOf("optional")
+                    ,   isOptional = false;
+                    if (idx > -1) {
+                        isOptional = true;
+                        pkw.splice(idx, 1);
+                        p.datatype = pkw.join(" ");
+                    }
+                    p.optional = isOptional;
+                    return isOptional;
+                }
+            }
+
+
+        ,   definition:    function ($idl) {
+                var def = { children: [] }
+                ,   str = $idl.attr("title")
+                ,   id = $idl.attr("id");
+                if (!str) this.msg.pub("error", "No IDL definition in element.");
+                str = this.parseExtendedAttributes(str, def);
+                if (str.indexOf("partial") === 0) { // Could be interface or dictionary
+                    var defType = str.slice(8);
+                    if  (defType.indexOf("interface") === 0)        this.processInterface(def, str, $idl, { partial : true });
+                    else if (defType.indexOf("dictionary") === 0)   this.dictionary(def, defType, $idl, { partial : true });
+                    else    this.msg.pub("error", "Expected definition, got: " + str);
+                }
+                else if      (str.indexOf("interface") === 0 ||
+                         /^callback\s+interface\b/.test(str))   this.processInterface(def, str, $idl);
+                else if (str.indexOf("exception") === 0)        this.exception(def, str, $idl);
+                else if (str.indexOf("dictionary") === 0)       this.dictionary(def, str, $idl);
+                else if (str.indexOf("callback") === 0)         this.callback(def, str, $idl);
+                else if (str.indexOf("enum") === 0)             this.processEnum(def, str, $idl);
+                else if (str.indexOf("typedef") === 0)          this.typedef(def, str, $idl);
+                else if (/\bimplements\b/.test(str))            this.processImplements(def, str, $idl);
+                else    this.msg.pub("error", "Expected definition, got: " + str);
+                this.parent.children.push(def);
+                this.processMembers(def, $idl);
+                if (id) def.htmlID = id;
+                return def;
+            },
+
+            processInterface:  function (obj, str, $idl, opt) {
+                opt = opt || {};
+                obj.type = "interface";
+                obj.partial = opt.partial || false;
+
+                var match = /^\s*(?:(partial|callback)\s+)?interface\s+([A-Za-z][A-Za-z0-9]*)(?:\s+:\s*([^{]+)\s*)?/.exec(str);
+                if (match) {
+                    obj.callback = !!match[1] && match[1] === "callback";
+                    this.setID(obj, match[2]);
+                    if ($idl.attr('data-merge')) obj.merge = $idl.attr('data-merge').split(' ');
+                    if (match[3]) obj.superclasses = match[3].split(/\s*,\s*/);
+                }
+                else this.msg.pub("error", "Expected interface, got: " + str);
+                return obj;
+            },
+
+            dictionary:  function (obj, str, $idl, opt) {
+                opt = opt || {};
+                obj.partial = opt.partial || false;
+                return this.excDic("dictionary", obj, str, $idl);
+            },
+
+            exception:  function (obj, str, $idl) {
+                return this.excDic("exception", obj, str, $idl);
+            },
+
+            excDic:  function (type, obj, str) {
+                obj.type = type;
+                var re = new RegExp("^\\s*" + type + "\\s+([A-Za-z][A-Za-z0-9]*)(?:\\s+:\\s*([^{]+)\\s*)?\\s*")
+                ,   match = re.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    if (match[2]) obj.superclasses = match[2].split(/\s*,\s*/);
+                }
+                else this.msg.pub("error", "Expected " + type + ", got: " + str);
+                return obj;
+            },
+
+            callback:  function (obj, str) {
+                obj.type = "callback";
+                var match = /^\s*callback\s+([A-Za-z][A-Za-z0-9]*)\s*=\s*\b(.*?)\s*$/.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    var type = match[2];
+                    this.parseDatatype(obj, type);
+                }
+                else this.msg.pub("error", "Expected callback, got: " + str);
+                return obj;
+            },
+
+            processEnum:  function (obj, str) {
+                obj.type = "enum";
+                var match = /^\s*enum\s+([A-Za-z][A-Za-z0-9]*)\s*$/.exec(str);
+                if (match) this.setID(obj, match[1]);
+                else this.msg.pub("error", "Expected enum, got: " + str);
+                return obj;
+            },
+
+            typedef:    function (obj, str, $idl) {
+                obj.type = "typedef";
+                str = str.replace(/^\s*typedef\s+/, "");
+                str = this.parseExtendedAttributes(str, obj);
+                var match = /^(.+)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    obj.description = $idl.contents();
+                }
+                else this.msg.pub("error", "Expected typedef, got: " + str);
+                return obj;
+            },
+
+            processImplements: function (obj, str, $idl) {
+                obj.type = "implements";
+                var match = /^\s*(.+?)\s+implements\s+(.+)\s*$/.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    obj.datatype = match[2];
+                    obj.description = $idl.contents();
+                }
+                else this.msg.pub("error", "Expected implements, got: " + str);
+                return obj;
+            },
+
+            processMembers:    function (obj, $el) {
+                var exParent = this.parent
+                ,   self = this;
+                this.parent = obj;
+                $el.find("> dt").each(function () {
+                    var $dt = $(this)
+                    ,   $dd = $dt.next()
+                    ,   t = obj.type
+                    ,   mem
+                    ;
+                    if      (t === "exception")     mem = self.exceptionMember($dt, $dd);
+                    else if (t === "dictionary")    mem = self.dictionaryMember($dt, $dd);
+                    else if (t === "callback")      mem = self.callbackMember($dt, $dd);
+                    else if (t === "enum")          mem = self.processEnumMember($dt, $dd);
+                    else                            mem = self.interfaceMember($dt, $dd);
+                    obj.children.push(mem);
+                });
+                this.parent = exParent;
+            },
+
+            parseConst:    function (obj, str) {
+                // CONST
+                var match = /^\s*const\s+\b([^=]+\??)\s+([^=\s]+)\s*=\s*(.*)$/.exec(str);
+                if (match) {
+                    obj.type = "constant";
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    obj.value = match[3];
+                    return true;
+                }
+                return false;
+            },
+
+            exceptionMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // CONST
+                if (this.parseConst(obj, str)) return obj;
+
+                // FIELD
+                var match = /^\s*(.*?)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "field";
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected exception member, got: " + str);
+            },
+
+            dictionaryMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                var match = /^\s*([^=]+\??)\s+([^=\s]+)(?:\s*=\s*(.*))?$/.exec(str);
+                if (match) {
+                    obj.type = "member";
+                    var type = match[1];
+                    obj.defaultValue = match[3];
+                    this.setID(obj, match[2]);
+                    this.parseDatatype(obj, type);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected dictionary member, got: " + str);
+            },
+
+            callbackMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                var match = /^\s*(.*?)\s+([A-Za-z][A-Za-z0-9]*)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "member";
+                    var type = match[1];
+                    this.setID(obj, match[2]);
+                    obj.defaultValue = match[3];
+                    this.parseDatatype(obj, type);
+                    this.optional(obj);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected callback member, got: " + str);
+            },
+
+            processEnumMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                obj.type = "member";
+                this.setID(obj, str);
+                obj.refId = sn.sanitiseID(obj.id); // override with different ID type
+                return obj;
+            },
+
+            interfaceMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text())
+                ,   $extPrm = $dd.find("dl.parameters").first()
+                ,   $sgrs = $dd.find(".getraises, .setraises")
+                ,   $excepts = $dd.find("dl.exception").first()
+                ;
+                obj.description = $dd.contents().not("dl.parameters");
+                str = this.parseExtendedAttributes(str, obj);
+                var match;
+
+                // ATTRIBUTE
+                match = /^\s*(?:(readonly|inherit|stringifier)\s+)?attribute\s+(.*?)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "attribute";
+                    obj.declaration = match[1] ? match[1] : "";
+                    obj.declaration += (new Array(12-obj.declaration.length)).join(" "); // fill string with spaces
+                    var type = match[2];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[3]);
+                    obj.raises = [];
+                    $sgrs.each(function () {
+                        var $el = $(this)
+                        ,   exc = {
+                                id:     $el.attr("title")
+                            ,   onSet:  $el.hasClass("setraises")
+                            ,   onGet:  $el.hasClass("getraises")
+                        };
+                        if ($el.is("dl")) {
+                            exc.type = "codelist";
+                            exc.description = [];
+                            $el.find("dt").each(function () {
+                                var $dt = $(this)
+                                ,   $dd = $dt.next("dd");
+                                exc.description.push({ id: $dt.text(), description: $dd.contents().clone() });
+                            });
+                        }
+                        else if ($el.is("div")) {
+                            exc.type = "simple";
+                            exc.description = $el.contents().clone();
+                        }
+                        else {
+                            this.msg.pub("error", "Do not know what to do with exceptions being raised defined outside of a div or dl.");
+                        }
+                        $el.remove();
+                        obj.raises.push(exc);
+                    });
+
+                    return obj;
+                }
+
+                // CONST
+                if (this.parseConst(obj, str)) return obj;
+
+                // CONSTRUCTOR
+                match = /^\s*Constructor(?:\s*\(\s*(.*)\s*\))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "constructor";
+                    var prm = match[1] ? match[1] : [];
+                    this.setID(obj, this.parent.id);
+                    obj.named = false;
+                    obj.datatype = "";
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // NAMED CONSTRUCTOR
+                match = /^\s*NamedConstructor\s*(?:=\s*)?\b([^(]+)(?:\s*\(\s*(.*)\s*\))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "constructor";
+                    var prm = match[2] ? match[2] : [];
+                    this.setID(obj, match[1]);
+                    obj.named = true;
+                    obj.datatype = "";
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // METHOD
+                match = /^\s*(.*?)\s+\b(\S+?)\s*\(\s*(.*)\s*\)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "method";
+                    var type = match[1]
+                    ,   prm = match[3];
+                    // XXX we need to do better for parsing modifiers
+                    type = this.parseStatic(obj, type);
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // SERIALIZER
+                match = /^\s*serializer(\s*=\s*((\{\s*(\S+(\s*,\s*\S+)*)?\s*\})|(\[(\s*\S+(\s*,\s*\S+)*)?\s*\])|(\S+)))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "serializer";
+                    obj.values = [];
+                    this.setID(obj, "serializer");
+                    var serializermap = match[3],
+                    serializerlist = match[6],
+                    serializerattribute = match[9], rawvalues;
+                    if (serializermap) {
+                        obj.serializertype = "map";
+                        rawvalues = match[4];
+                    }
+                    else if (serializerlist) {
+                        obj.serializertype = "list";
+                        rawvalues = match[7];
+                    }
+                    else if (serializerattribute) {
+                        obj.serializertype = "attribute";
+                        obj.values.push(serializerattribute);
+                    }
+                    else {
+                        obj.serializertype = "prose";
+                    }
+                    if (rawvalues) {
+                        // split at comma and remove white space
+                        var values = rawvalues.split(/\s*,\s*/);
+                        obj.getter = false;
+                        obj.inherit = false;
+                        obj.all = false;
+                        if (values[0] == "getter") {
+                            obj.getter = true;
+                        }
+                        else {
+                            if (obj.serializertype == "map") {
+                                if (values[0] == "inherit") {
+                                    obj.inherit = true;
+                                    values.shift();
+                                }
+                                if (values[0] == "attribute" && obj.serializertype == "map" ) {
+                                    obj.all = true;
+                                    values = [];
+                                }
+                            }
+                            obj.values = values;
+                        }
+                    }
+                    return obj;
+                }
+
+                // COMMENT
+                match = /^\s*\/\/\s*(.*)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "comment";
+                    obj.id = match[1];
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected interface member, got: " + str);
+            },
+
+            methodMember:   function (obj, $excepts, $extPrm, prm) {
+                obj.params = [];
+                obj.raises = [];
+
+                $excepts.each(function () {
+                    var $el = $(this)
+                    ,   exc = { id: $el.attr("title") };
+                    if ($el.is("dl")) {
+                        exc.type = "codelist";
+                        exc.description = [];
+                        $el.find("dt").each(function () {
+                            var $dt = $(this)
+                            ,   $dd = $dt.next("dd");
+                            exc.description.push({ id: $dt.text(), description: $dd.contents().clone() });
+                        });
+                    }
+                    else if ($el.is("div")) {
+                        exc.type = "simple";
+                        exc.description = $el.contents().clone();
+                    }
+                    else {
+                        this.msg.pub("error", "Do not know what to do with exceptions being raised defined outside of a div or dl.");
+                    }
+                    $el.remove();
+                    obj.raises.push(exc);
+                });
+
+
+                if ($extPrm.length) {
+                    $extPrm.remove();
+                    var self = this;
+                    $extPrm.find("> dt").each(function () {
+                        return self.params($(this).text(), $(this).next(), obj);
+                    });
+                }
+                else {
+                    while (prm.length) {
+                        prm = this.params(prm, null, obj);
+                        if (prm === false) break;
+                    }
+                }
+
+                // apply optional
+                var seenOptional = false;
+                for (var i = 0; i < obj.params.length; i++) {
+                    if (seenOptional) {
+                        obj.params[i].optional = true;
+                        obj.params[i].datatype = obj.params[i].datatype.replace(/\boptional\s+/, "");
+                    }
+                    else {
+                        seenOptional = this.optional(obj.params[i]);
+                    }
+                }
+                return obj;
+            },
+
+            parseDatatype:  function (obj, type) {
+                type = this.nullable(obj, type);
+                type = this.array(obj, type);
+                obj.variadic = false;
+                if (/\.\.\./.test(type)) {
+                    type = type.replace(/\.\.\./, "");
+                    obj.variadic = true;
+                }
+                if (type.indexOf("(") === 0) {
+                    type = type.replace("(", "").replace(")", "");
+                    obj.datatype = type.split(/\s+or\s+/);
+                    obj.isUnionType = true;
+                }
+                else {
+                    obj.datatype = type;
+                }
+            },
+
+            parseStatic:  function (obj, type) {
+                if (/^static\s+/.test(type)) {
+                    type = type.replace(/^static\s+/, "");
+                    obj.isStatic = true;
+                }
+                else {
+                    obj.isStatic = false;
+                }
+                return type;
+            },
+
+            parseExtendedAttributes:    function (str, obj) {
+                if (!str) return;
+                return str.replace(/^\s*\[([^\]]+)\]\s*/, function (x, m1) { obj.extendedAttributes = m1; return ""; });
+            },
+
+            makeMarkup:    function (id) {
+                var $df = $("<div></div>");
+                var attr = { "class": "idl" };
+                if (id) attr.id = id;
+                var $pre = $("<pre></pre>").attr(attr);
+                $pre.html(this.writeAsWebIDL(this.parent, -1));
+                $df.append($pre);
+                if (!this.conf.noLegacyStyle) $df.append(this.writeAsHTML(this.parent));
+                this.mergeWebIDL(this.parent.children[0]);
+                return $df.children();
+            },
+
+            parseParameterized: function (str) {
+                var matched = /^(sequence|Promise)<(.+)>$/.exec(str);
+                if (!matched)
+                    return null;
+                return { type: matched[1], parameter: matched[2] };
+            },
+
+            writeAsHTML:    function (obj) {
+                if (obj.type == "module") {
+                    if (obj.id == "outermost") {
+                        if (obj.children.length > 1) this.msg.pub("error", "We currently only support one structural level per IDL fragment");
+                        return this.writeAsHTML(obj.children[0]);
+                    }
+                    else {
+                        this.msg.pub("warn", "No HTML can be generated for module definitions.");
+                        return $("<span></span>");
+                    }
+                }
+                else if (obj.type == "typedef") {
+                    var cnt;
+                    if (obj.description && obj.description.text()) cnt = [obj.description];
+                    else {
+                        // yuck -- should use a single model...
+                        var $tdt = sn.element("span", { "class": "idlTypedefType" }, null);
+                        $tdt.html(datatype(obj.datatype));
+                        cnt = [ sn.text("Throughout this specification, the identifier "),
+                                sn.element("span", { "class": "idlTypedefID" }, null, obj.unescapedId),
+                                sn.text(" is used to refer to the "),
+                                sn.text(obj.array ? (obj.arrayCount > 1 ? obj.arrayCount + "-" : "") + "array of " : ""),
+                                $tdt,
+                                sn.text(obj.nullable ? " (nullable)" : ""),
+                                sn.text(" type.")];
+                    }
+                    return sn.element("div", { "class": "idlTypedefDesc" }, null, cnt);
+                }
+                else if (obj.type == "implements") {
+                    var cnt;
+                    if (obj.description && obj.description.text()) cnt = [obj.description];
+                    else {
+                        cnt = [ sn.text("All instances of the "),
+                                sn.element("code", {}, null, [sn.element("a", {}, null, obj.unescapedId)]),
+                                sn.text(" type are defined to also implement the "),
+                                sn.element("a", {}, null, obj.datatype),
+                                sn.text(" interface.")];
+                        cnt = [sn.element("p", {}, null, cnt)];
+                    }
+                    return sn.element("div", { "class": "idlImplementsDesc" }, null, cnt);
+                }
+
+                else if (obj.type == "exception") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var types = ["field", "constant"];
+                    var filterFunc = function (it) { return it.type === type; }
+                    ,   sortFunc = function (a, b) {
+                            if (a.unescapedId < b.unescapedId) return -1;
+                            if (a.unescapedId > b.unescapedId) return 1;
+                            return 0;
+                    }
+                    ;
+                    for (var i = 0; i < types.length; i++) {
+                        var type = types[i];
+                        var things = obj.children.filter(filterFunc);
+                        if (things.length === 0) continue;
+                        if (!this.noIDLSorting) {
+                            things.sort(sortFunc);
+                        }
+
+                        var sec = sn.element("section", {}, df);
+                        var secTitle = type;
+                        secTitle = secTitle.substr(0, 1).toUpperCase() + secTitle.substr(1) + "s";
+                        if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, secTitle);
+                        var dl = sn.element("dl", { "class": type + "s" }, sec);
+                        for (var j = 0; j < things.length; j++) {
+                            var it = things[j];
+                            var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                            sn.element("code", {}, dt, it.unescapedId);
+                            var desc = sn.element("dd", {}, dl, [it.description]);
+                            if (type == "field") {
+                                sn.text(" of type ", dt);
+                                if (it.array) {
+                                    for (var k = 0, n = it.arrayCount; k < n; k++) sn.text("array of ", dt);
+                                }
+                                var span = sn.element("span", { "class": "idlFieldType" }, dt);
+                                var parameterized = this.parseParameterized(it.datatype);
+                                if (parameterized) {
+                                    sn.text(parameterized.type + "<", span);
+                                    sn.element("a", {}, span, parameterized.parameter);
+                                    sn.text(">", span);
+                                }
+                                else {
+                                    sn.element("a", {}, span, it.datatype);
+                                }
+                                if (it.nullable) sn.text(", nullable", dt);
+                            }
+                            else if (type == "constant") {
+                                sn.text(" of type ", dt);
+                                sn.element("span", { "class": "idlConstType" }, dt, [sn.element("a", {}, null, it.datatype)]);
+                                if (it.nullable) sn.text(", nullable", dt);
+                            }
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "dictionary") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var things = obj.children;
+                    var cnt;
+                    if (things.length === 0) return df;
+                    if (!this.noIDLSorting) {
+                        things.sort(function (a, b) {
+                            if (a.id < b.id) return -1;
+                            if (a.id > b.id) return 1;
+                              return 0;
+                        });
+                    }
+
+                    var sec = sn.element("section", {}, df);
+                    cnt = [sn.text("Dictionary "),
+                           sn.element("a", { "class": "idlType" }, null, obj.unescapedId),
+                           sn.text(" Members")];
+                    if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, cnt);
+                    var dl = sn.element("dl", { "class": "dictionary-members" }, sec);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                        sn.element("code", {}, dt, it.unescapedId);
+                        var desc = sn.element("dd", {}, dl, [it.description]);
+                        sn.text(" of type ", dt);
+                        if (it.array) {
+                            for (var i = 0, n = it.arrayCount; i < n; i++) sn.text("array of ", dt);
+                        }
+                        var span = sn.element("span", { "class": "idlMemberType" }, dt);
+                        var parameterized = this.parseParameterized(it.datatype);
+                        if (parameterized) {
+                            sn.text(parameterized.type + "<", span);
+                            sn.element("a", {}, span, parameterized.parameter);
+                            sn.text(">", span);
+                        }
+                        else {
+                            sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                        }
+                        if (it.nullable) sn.text(", nullable", dt);
+                        if (it.defaultValue) {
+                            sn.text(", defaulting to ", dt);
+                            sn.element("code", {}, dt, [sn.text(it.defaultValue)]);
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "callback") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var things = obj.children;
+                    var cnt;
+                    if (things.length === 0) return df;
+
+                    var sec = sn.element("section", {}, df);
+                    cnt = [sn.text("Callback "),
+                           sn.element("a", { "class": "idlType" }, null, obj.unescapedId),
+                           sn.text(" Parameters")];
+                    if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, cnt);
+                    var dl = sn.element("dl", { "class": "callback-members" }, sec);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                        sn.element("code", {}, dt, it.unescapedId);
+                        var desc = sn.element("dd", {}, dl, [it.description]);
+                        sn.text(" of type ", dt);
+                        if (it.array) {
+                            for (var i = 0, n = it.arrayCount; i < n; i++) sn.text("array of ", dt);
+                        }
+                        var span = sn.element("span", { "class": "idlMemberType" }, dt);
+                        var parameterized = this.parseParameterized(it.datatype);
+                        if (parameterized) {
+                            sn.text(parameterized.type + "<", span);
+                            sn.element("a", {}, span, parameterized.parameter);
+                            sn.text(">", span);
+                        }
+                        else {
+                            sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                        }
+                        if (it.nullable) sn.text(", nullable", dt);
+                        if (it.defaultValue) {
+                            sn.text(", defaulting to ", dt);
+                            sn.element("code", {}, dt, [sn.text(it.defaultValue)]);
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "enum") {
+                    var df = sn.documentFragment();
+                    var things = obj.children;
+                    if (things.length === 0) return df;
+
+                    var sec = sn.element("table", { "class": "simple" }, df);
+                    sn.element("tr", {}, sec, [sn.element("th", { colspan: 2 }, null, [sn.text("Enumeration description")])]);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var tr = sn.element("tr", {}, sec)
+                        ,   td1 = sn.element("td", {}, tr)
+                        ;
+                        sn.element("code", { "id": "idl-def-" + obj.refId + "." + it.refId }, td1, it.unescapedId);
+                        sn.element("td", {}, tr, [it.description]);
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "interface") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var types = ["constructor", "attribute", "method", "constant", "serializer"];
+                    var filterFunc = function (it) { return it.type == type; }
+                    ,   sortFunc = function (a, b) {
+                            if (a.unescapedId < b.unescapedId) return -1;
+                            if (a.unescapedId > b.unescapedId) return 1;
+                            return 0;
+                        }
+                    ;
+                    for (var i = 0; i < types.length; i++) {
+                        var type = types[i];
+                        var things = obj.children.filter(filterFunc);
+                        if (things.length === 0) continue;
+                        if (!this.noIDLSorting) things.sort(sortFunc);
+
+                        var sec = sn.element("section", {}, df);
+                        var secTitle = type;
+                        secTitle = secTitle.substr(0, 1).toUpperCase() + secTitle.substr(1) + (type != "serializer" ? "s" : "");
+                        if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, secTitle);
+                        if (type != "serializer") {
+                            var dl = sn.element("dl", { "class": type + "s" }, sec);
+                            for (var j = 0; j < things.length; j++) {
+                                var it = things[j];
+                                var id = (type == "method") ? this.makeMethodID(curLnk, it) :
+                                    (type == "constructor") ? this.makeMethodID("widl-ctor-", it)
+                                    : sn.idThatDoesNotExist(curLnk + it.refId);
+                                var dt = sn.element("dt", { id: id }, dl);
+                                sn.element("code", {}, dt, it.unescapedId);
+                                if (it.isStatic) dt.append(this.doc.createTextNode(", static"));
+                                var desc = sn.element("dd", {}, dl, [it.description]);
+                                if (type == "method" || type == "constructor") {
+                                    if (it.params.length) {
+                                        var table = sn.element("table", { "class": "parameters" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Parameter", "Type", "Nullable", "Optional", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.params.length; k++) {
+                                            var prm = it.params[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "prmName" }, tr, prm.id);
+                                            var tyTD = sn.element("td", { "class": "prmType" }, tr);
+                                            var code = sn.element("code", {}, tyTD);
+                                            var codeHTML = datatype(prm.datatype);
+                                            if (prm.array) codeHTML += arrsq(prm);
+                                            if (prm.defaultValue) {
+                                                codeHTML += " = " + prm.defaultValue;
+                                            }
+                                            code.html(codeHTML);
+                                            if (prm.nullable) sn.element("td", { "class": "prmNullTrue" }, tr, $("<span role='img' aria-label='True'>\u2714</span>"));
+                                            else              sn.element("td", { "class": "prmNullFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            if (prm.optional) sn.element("td", { "class": "prmOptTrue" }, tr,  $("<span role='img' aria-label='True'>\u2714</span>"));
+                                            else              sn.element("td", { "class": "prmOptFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            var cnt = prm.description ? [prm.description] : "";
+                                            sn.element("td", { "class": "prmDesc" }, tr, cnt);
+                                        }
+                                    }
+                                    else {
+                                        sn.element("div", {}, desc, [sn.element("em", {}, null, "No parameters.")]);
+                                    }
+                                    if (this.conf.idlOldStyleExceptions && it.raises.length) {
+                                        var table = sn.element("table", { "class": "exceptions" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Exception", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.raises.length; k++) {
+                                            var exc = it.raises[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "excName" }, tr, [sn.element("a", {}, null, exc.id)]);
+                                            var dtd = sn.element("td", { "class": "excDesc" }, tr);
+                                            if (exc.type == "simple") {
+                                                dtd.append(exc.description);
+                                            }
+                                            else {
+                                                var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
+                                                for (var m = 0; m < exc.description.length; m++) {
+                                                    var cd = exc.description[m];
+                                                    var tr = sn.element("tr", {}, ctab);
+                                                    sn.element("td", { "class": "excCodeName" }, tr, [sn.element("code", {}, null, cd.id)]);
+                                                    sn.element("td", { "class": "excCodeDesc" }, tr, [cd.description]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // else {
+                                    //     sn.element("div", {}, desc, [sn.element("em", {}, null, "No exceptions.")]);
+                                    // }
+
+                                    if (type !== "constructor") {
+                                        var reDiv = sn.element("div", {}, desc);
+                                        sn.element("em", {}, reDiv, "Return type: ");
+                                        var code = sn.element("code", {}, reDiv);
+                                        var codeHTML = datatype(it.datatype);
+                                        if (it.array) codeHTML += arrsq(it);
+                                        if (it.nullable) sn.text(", nullable", reDiv);
+                                        code.html(codeHTML);
+                                    }
+                                }
+                                else if (type == "attribute") {
+                                    sn.text(" of type ", dt);
+                                    if (it.array) {
+                                        for (var m = 0, n = it.arrayCount; m < n; m++) sn.text("array of ", dt);
+                                    }
+                                    var span = sn.element("span", { "class": "idlAttrType" }, dt);
+                                    var parameterized = this.parseParameterized(it.datatype);
+                                    if (parameterized) {
+                                        sn.text(parameterized.type + "<", span);
+                                        sn.element("a", {}, span, parameterized.parameter);
+                                        sn.text(">", span);
+                                    }
+                                    else {
+                                        sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                                    }
+                                    if (it.declaration) sn.text(", " + it.declaration, dt);
+                                    if (it.nullable) sn.text(", nullable", dt);
+
+                                    if (this.conf.idlOldStyleExceptions && it.raises.length) {
+                                        var table = sn.element("table", { "class": "exceptions" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Exception", "On Get", "On Set", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.raises.length; k++) {
+                                            var exc = it.raises[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "excName" }, tr, [sn.element("a", {}, null, exc.id)]);
+                                            ["onGet", "onSet"].forEach(function (gs) {
+                                                if (exc[gs]) sn.element("td", { "class": "excGetSetTrue" }, tr, $("<span role='img' aria-label='True'>\u2714</span>"));
+                                                else         sn.element("td", { "class": "excGetSetFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            });
+                                            var dtd = sn.element("td", { "class": "excDesc" }, tr);
+                                            if (exc.type == "simple") {
+                                                dtd.append(exc.description);
+                                            }
+                                            else {
+                                                var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
+                                                for (var m = 0; m < exc.description.length; m++) {
+                                                    var cd = exc.description[m];
+                                                    var tr = sn.element("tr", {}, ctab);
+                                                    sn.element("td", { "class": "excCodeName" }, tr, [sn.element("code", {}, null, cd.id)]);
+                                                    sn.element("td", { "class": "excCodeDesc" }, tr, [cd.description]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // else {
+                                    //     sn.element("div", {}, desc, [sn.element("em", {}, null, "No exceptions.")]);
+                                    // }
+                                }
+                                else if (type == "constant") {
+                                    sn.text(" of type ", dt);
+                                    sn.element("span", { "class": "idlConstType" }, dt, [sn.element("a", {}, null, it.datatype)]);
+                                    if (it.nullable) sn.text(", nullable", dt);
+                                }
+                            }
+                        }
+                        // Serializer
+                        else {
+                            var div = sn.element("div", {}, sec);
+                            var it = things[0];
+                            if (it.serializertype != "prose") {
+                                var generatedDescription = "Instances of this interface are serialized as ";
+                                if (it.serializertype == "map") {
+                                    var mapDescription = "a map ";
+                                    if (it.getter) {
+                                        mapDescription += "with entries corresponding to the named properties";
+                                    }
+                                    else {
+                                        var and = "";
+                                        if (it.inherit) {
+                                            mapDescription += "with entries from the closest inherited interface ";
+                                            and = "and ";
+                                        }
+                                        if (it.all) {
+                                            mapDescription += and + "with entries for each of the serializable attributes";
+                                        }
+                                        else if (it.values && it.values.length) {
+                                            mapDescription += and + "with entries for the following attributes: " + it.values.join(", ");
+                                        }
+                                        else {
+                                            mapDescription = "an empty map";
+                                        }
+                                    }
+                                    generatedDescription += mapDescription;
+                                }
+                                else if (it.serializertype == "list") {
+                                    var listDescription = "a list ";
+                                    if (it.getter) {
+                                        listDescription += "with values corresponding to the indexed properties";
+                                    }
+                                    else {
+                                        if (it.values && it.values.length) {
+                                            listDescription += "with the values of the following attributes: " + it.values.join(", ");
+                                        }
+                                        else {
+                                            listDescription = "an empty list";
+                                        }
+                                    }
+                                    generatedDescription += listDescription;
+                                }
+                                else if (it.serializertype == "attribute") {
+                                    generatedDescription += "the value of the attribute " + it.values[0];
+                                }
+                                generatedDescription += ".";
+                                sn.element("p", {}, div, generatedDescription);
+                            }
+                            sn.element("p", {}, div, [it.description]);
+                        }
+                    }
+                    return df;
+                }
+            },
+
+            makeMethodID:    function (cur, obj) {
+                var id = cur + obj.refId + "-" + obj.datatype + "-"
+                ,   params = [];
+                for (var i = 0, n = obj.params.length; i < n; i++) {
+                    var prm = obj.params[i];
+                    params.push(prm.datatype + (prm.array ? "Array" : "") + "-" + prm.id);
+                }
+                id += params.join("-");
+                return sn.sanitiseID(id);
+            },
+
+            mergeWebIDL:    function (obj) {
+                if (typeof obj.merge === "undefined" || obj.merge.length === 0) return;
+                // queue for later execution
+                setTimeout(function () {
+                    for (var i = 0; i < obj.merge.length; i++) {
+                        var idlInterface = document.querySelector("#idl-def-" + obj.refId)
+                        ,   idlInterfaceToMerge = document.querySelector("#idl-def-" + obj.merge[i]);
+                        idlInterface.insertBefore(document.createElement("br"), idlInterface.firstChild);
+                        idlInterface.insertBefore(document.createElement("br"), idlInterface.firstChild);
+                        idlInterfaceToMerge.parentNode.parentNode.removeChild(idlInterfaceToMerge.parentNode);
+                        idlInterface.insertBefore(idlInterfaceToMerge, idlInterface.firstChild);
+                    }
+                }, 0);
+            },
+
+            writeAsWebIDL:    function (obj, indent) {
+                indent++;
+                var opt = { indent: indent, obj: obj, proc: this };
+                if (obj.type === "module") {
+                    if (obj.id == "outermost") {
+                        var $div = $("<div></div>");
+                        for (var i = 0; i < obj.children.length; i++) $div.append(this.writeAsWebIDL(obj.children[i], indent - 1));
+                        return $div.children();
+                    }
+                    else return $(idlModuleTmpl(opt));
+                }
+
+                else if (obj.type === "typedef") {
+                    opt.nullable = obj.nullable ? "?" : "";
+                    opt.arr = arrsq(obj);
+                    return $(idlTypedefTmpl(opt));
+                }
+
+                else if (obj.type === "implements") {
+                    return $(idlImplementsTmpl(opt));
+                }
+
+                else if (obj.type === "interface") {
+                    // stop gap fix for duplicate IDs while we're transitioning the code
+                    var div = this.doc.createElement("div")
+                    ,   id = $(div).makeID("idl-def", obj.refId, true)
+                    ,   maxAttr = 0, maxMeth = 0, maxConst = 0, hasRO = false;
+                    obj.children.forEach(function (it) {
+                        var len = 0;
+                        if (it.isUnionType)   len = it.datatype.join(" or ").length + 2;
+                        else if (it.datatype) len = it.datatype.length;
+                        if (it.isStatic) len += 7;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        if (it.type == "attribute") maxAttr = (len > maxAttr) ? len : maxAttr;
+                        else if (it.type == "method") maxMeth = (len > maxMeth) ? len : maxMeth;
+                        else if (it.type == "constant") maxConst = (len > maxConst) ? len : maxConst;
+                        if (it.type == "attribute" && it.declaration) hasRO = true;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   ctor = []
+                    ,   children = obj.children
+                                      .map(function (ch) {
+                                          if (ch.type == "attribute") return self.writeAttribute(ch, maxAttr, indent + 1, curLnk, hasRO);
+                                          else if (ch.type == "method") return self.writeMethod(ch, maxMeth, indent + 1, curLnk);
+                                          else if (ch.type == "constant") return self.writeConst(ch, maxConst, indent + 1, curLnk);
+                                          else if (ch.type == "serializer") return self.writeSerializer(ch, indent + 1, curLnk);
+                                          else if (ch.type == "constructor") ctor.push(self.writeConstructor(ch, indent, "widl-ctor-"));
+                                          else if (ch.type == "comment") return self.writeComment(ch, indent + 1);
+                                      })
+                                      .join("")
+                    ;
+                    return idlInterfaceTmpl({
+                        obj:        obj
+                    ,   indent:     indent
+                    ,   id:         id
+                    ,   ctor:       ctor.join(",\n")
+                    ,   partial:    obj.partial ? "partial " : ""
+                    ,   callback:   obj.callback ? "callback " : ""
+                    ,   children:   children
+                    });
+                }
+
+                else if (obj.type === "exception") {
+                    var maxAttr = 0, maxConst = 0;
+                    obj.children.forEach(function (it) {
+                        var len = it.datatype.length;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        if (it.type === "field")   maxAttr = (len > maxAttr) ? len : maxAttr;
+                        else if (it.type === "constant") maxConst = (len > maxConst) ? len : maxConst;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   children = obj.children
+                                      .map(function (ch) {
+                                          if (ch.type === "field") return self.writeField(ch, maxAttr, indent + 1, curLnk);
+                                          else if (ch.type === "constant") return self.writeConst(ch, maxConst, indent + 1, curLnk);
+                                      })
+                                      .join("")
+                    ;
+                    return idlExceptionTmpl({ obj: obj, indent: indent, children: children });
+                }
+
+                else if (obj.type === "dictionary") {
+                    var max = 0;
+                    obj.children.forEach(function (it) {
+                        var len = 0;
+                        if (it.isUnionType)   len = it.datatype.join(" or ").length + 2;
+                        else if (it.datatype) len = it.datatype.length;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        max = (len > max) ? len : max;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   children = obj.children
+                                      .map(function (it) {
+                                          return self.writeMember(it, max, indent + 1, curLnk);
+                                      })
+                                      .join("")
+                    ;
+                    return idlDictionaryTmpl({ obj: obj, indent: indent, children: children, partial: obj.partial ? "partial " : "" });
+                }
+
+                else if (obj.type === "callback") {
+                    var params = obj.children
+                                    .map(function (it) {
+                                        return idlParamTmpl({
+                                            obj:        it
+                                        ,   optional:   it.optional ? "optional " : ""
+                                        ,   arr:        arrsq(it)
+                                        ,   nullable:   it.nullable ? "?" : ""
+                                        ,   variadic:   it.variadic ? "..." : ""
+                                        });
+                                    })
+                                    .join(", ");
+                    return idlCallbackTmpl({
+                        obj:        obj
+                    ,   indent:     indent
+                    ,   arr:        arrsq(obj)
+                    ,   nullable:   obj.nullable ? "?" : ""
+                    ,   children:   params
+                    });
+                }
+
+                else if (obj.type === "enum") {
+                    var children = obj.children
+                                      .map(function (it) { return idlEnumItemTmpl({ obj: it, parentID: obj.refId, indent: indent + 1 }); })
+                                      .join(",\n");
+                    return idlEnumTmpl({obj: obj, indent: indent, children: children });
+                }
+            },
+
+            writeField:    function (attr, max, indent, curLnk) {
+                var pad = max - attr.datatype.length;
+                if (attr.nullable) pad = pad - 1;
+                if (attr.array) pad = pad - (2 * attr.arrayCount);
+                return idlFieldTmpl({
+                    obj:        attr
+                ,   indent:     indent
+                ,   arr:        arrsq(attr)
+                ,   nullable:   attr.nullable ? "?" : ""
+                ,   pad:        pad
+                ,   href:       curLnk + attr.refId
+                });
+            },
+
+            writeAttribute:    function (attr, max, indent, curLnk) {
+                var len = 0;
+                if (attr.isUnionType)   len = attr.datatype.join(" or ").length + 2;
+                else if (attr.datatype) len = attr.datatype.length;
+                var pad = max - len;
+                if (attr.nullable) pad = pad - 1;
+                if (attr.array) pad = pad - (2 * attr.arrayCount);
+                return idlAttributeTmpl({
+                    obj:            attr
+                ,   indent:         indent
+                ,   declaration:    attr.declaration
+                ,   pad:            pad
+                ,   arr:            arrsq(attr)
+                ,   nullable:       attr.nullable ? "?" : ""
+                ,   href:           curLnk + attr.refId
+                });
+            },
+
+            writeMethod:    function (meth, max, indent, curLnk) {
+                var params = meth.params
+                                .map(function (it) {
+                                    return idlParamTmpl({
+                                        obj:        it
+                                    ,   optional:   it.optional ? "optional " : ""
+                                    ,   arr:        arrsq(it)
+                                    ,   nullable:   it.nullable ? "?" : ""
+                                    ,   variadic:   it.variadic ? "..." : ""
+                                    });
+                                })
+                                .join(", ");
+                var len = 0;
+                if (meth.isUnionType) len = meth.datatype.join(" or ").length + 2;
+                else                  len = meth.datatype.length;
+                if (meth.isStatic) len += 7;
+                var pad = max - len;
+                if (meth.nullable) pad = pad - 1;
+                if (meth.array) pad = pad - (2 * meth.arrayCount);
+                return idlMethodTmpl({
+                    obj:        meth
+                ,   indent:     indent
+                ,   arr:        arrsq(meth)
+                ,   nullable:   meth.nullable ? "?" : ""
+                ,   "static":   meth.isStatic ? "static " : ""
+                ,   pad:        pad
+                ,   id:         this.makeMethodID(curLnk, meth)
+                ,   children:   params
+                });
+            },
+
+            writeConstructor:   function (ctor, indent, curLnk) {
+                var params = ctor.params
+                                .map(function (it) {
+                                    return idlParamTmpl({
+                                        obj:        it
+                                    ,   optional:   it.optional ? "optional " : ""
+                                    ,   arr:        arrsq(it)
+                                    ,   nullable:   it.nullable ? "?" : ""
+                                    ,   variadic:   it.variadic ? "..." : ""
+                                    });
+                                })
+                                .join(", ");
+                return idlConstructorTmpl({
+                    obj:        ctor
+                ,   indent:     indent
+                ,   id:         this.makeMethodID(curLnk, ctor)
+                ,   name:       ctor.named ? ctor.id : "Constructor"
+                ,   keyword:    ctor.named ? "NamedConstructor=" : ""
+                ,   children:   params
+                });
+            },
+
+            writeConst:    function (cons, max, indent) {
+                var pad = max - cons.datatype.length;
+                if (cons.nullable) pad--;
+                return idlConstTmpl({ obj: cons, indent: indent, pad: pad, nullable: cons.nullable ? "?" : ""});
+            },
+
+            writeComment:   function (comment, indent) {
+                return idlCommentTmpl({ obj: comment, indent: indent, comment: comment.id});
+            },
+
+
+            writeSerializer: function (serializer, indent) {
+                var values = "";
+                if (serializer.serializertype == "map") {
+                    var mapValues = [];
+                    if (serializer.getter) mapValues = ["getter"];
+                    else {
+                        if (serializer.inherit) mapValues.push("inherit");
+                        if (serializer.all) mapValues.push("attribute");
+                        else                mapValues = mapValues.concat(serializer.values);
+                    }
+                    values = "{" + mapValues.join(", ") + "}";
+                }
+                else if (serializer.serializertype == "list") {
+                    var listValues = (serializer.getter ? ["getter"] : serializer.values);
+                    values = "[" + listValues.join(", ") + "]";
+                }
+                else if (serializer.serializertype == "attribute") {
+                    values = serializer.values[0];
+                }
+                return idlSerializerTmpl({
+                    obj:        serializer
+                ,   indent:     indent
+                ,   values:     values
+                });
+            },
+
+            writeMember:    function (memb, max, indent, curLnk) {
+                var opt = { obj: memb, indent: indent, curLnk: curLnk,
+                            nullable: (memb.nullable ? "?" : ""), arr: arrsq(memb) };
+                if (memb.isUnionType)   opt.pad = max - (memb.datatype.join(" or ").length + 2);
+                else if (memb.datatype) opt.pad = max - memb.datatype.length;
+                if (memb.nullable) opt.pad = opt.pad - 1;
+                if (memb.array) opt.pad = opt.pad - (2 * memb.arrayCount);
+                return idlDictMemberTmpl(opt);
+            }
+        };
+
+
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/webidl");
+                if (!conf.noIDLSorting) conf.noIDLSorting = false;
+                if (!conf.noIDLSectionTitle) conf.noIDLSectionTitle = false;
+                sn = new simpleNode(document);
+                var $idl = $(".idl", doc)
+                ,   finish = function () {
+                        msg.pub("end", "core/webidl");
+                        cb();
+                    };
+                if (!$idl.length) return finish();
+                $(doc).find("head link").first().before($("<style/>").text(css));
+
+                var infNames = [];
+                $idl.each(function () {
+                    var w = new WebIDLProcessor({ noIDLSorting: conf.noIDLSorting, msg: msg, doc: doc, conf: conf })
+                    ,   inf = w.definition($(this))
+                    ,   $df = w.makeMarkup(inf.htmlID);
+                    $(this).replaceWith($df);
+                    if ($.inArray(inf.type, "interface exception dictionary typedef callback enum".split(" ")) !== -1) infNames.push(inf.id);
+                });
+                doc.normalize();
+                $("a:not([href])").each(function () {
+                    var $ant = $(this);
+                    if ($ant.hasClass("externalDFN")) return;
+                    var name = $ant.text();
+                    if ($.inArray(name, infNames) !== -1) {
+                        $ant.attr("href", "#idl-def-" + name)
+                            .addClass("idlType")
+                            .html("<code>" + name + "</code>");
+                    }
+                });
+                finish();
+            }
+        };
+    }
+);
+
+window.simpleNode = function (doc) {
+    this.doc = doc ? doc : document;
+};
+window.simpleNode.prototype = {
+
+    // --- NODE CREATION ---
+    element:    function (name, attr, parent, content) {
+        var $el = $(this.doc.createElement(name));
+        $el.attr(attr || {});
+        if (parent) $(parent).append($el);
+        if (content) {
+            if (content instanceof jQuery) $el.append(content);
+            else if (content instanceof Array) for (var i = 0; i < content.length; i++) $el.append(content[i]);
+            else this.text(content, $el);
+        }
+        return $el;
+    },
+
+    text:    function (txt, parent) {
+        var tn = this.doc.createTextNode(txt);
+        if (parent) $(parent).append(tn);
+        return tn;
+    },
+
+    documentFragment:    function () {
+        return this.doc.createDocumentFragment();
+    },
+
+    // --- ID MANAGEMENT ---
+    sanitiseID:    function (id) {
+        id = id.split(/[^\-.0-9a-zA-Z_]/).join("-");
+        id = id.replace(/^-+/g, "");
+        id = id.replace(/-+$/, "");
+        if (id.length > 0 && /^[^a-z]/.test(id)) id = "x" + id;
+        if (id.length === 0) id = "generatedID";
+        return id;
+    },
+
+    idThatDoesNotExist:    function (id) {
+        var inc = 1;
+        if (this.doc.getElementById(id)) {
+            while (this.doc.getElementById(id + "-" + inc)) inc++;
+            id = id + "-" + inc;
+        }
+        return id;
+    }
+};
+
+
+define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNum {\n\ttext-anchor: middle;\n\tfill: grey;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n\tfont-size: 8pt;\n}\n\npath.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\nrect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\nrect.regFieldBoxrsvdp,\nrect.regFieldBoxrsvdz,\nrect.regFieldBoxReserved,\nrect.regFieldRsvd {\n\tfill: white;\n}\n\nline.regFieldBoxInternal {\n\tstroke: black;\n}\n\nline.regFieldBoxUnused {\n\tstroke: grey;\n}\n\ntext.regFieldValueInternal ,\ntext.regFieldNameInternal {\n\ttext-anchor: middle;\n}\n\ntext.regFieldValueUnused,\ntext.regFieldNameUnused {\n\tfill: grey;\n}\n\ntext.regFieldValue,\ntext.regFieldName {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\npath.regBitLine1,\npath.regBitBracket1 {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\npath.regBitLine0 {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\npath.regBitBracket0 {\n    stroke: green;\n    stroke-width: 1px;\n}\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}';});
 
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
@@ -19770,73 +21158,82 @@ define(
             var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
             var cellTop             = Number(pget(reg, "cellTop", 16));
             var figName             = String(pget(reg, "name", "???"));
-            var fields              = pget(reg, "fields", [ ]); // default to empty register
-            if (! Array.isArray(fields)) {
-                fields = [ ];
-            }
-            var divsvg_id = (divsvg.hasOwnProperty("id") ? divsvg["id"] : "");
+            var fields              = pget(reg, "fields", { }); // default to empty register
 
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
             
             // sanitize field array to avoid subsequent problems
-            fields.forEach(function (item) {
-                if (("msb" in item) && !("lsb" in item)) {
-                    item.lsb = item.msb;
+            for (var index in fields) {
+                if (fields.hasOwnProperty(index)) {
+                    var item = fields[index];
+                    if (("msb" in item) && !("lsb" in item)) {
+                        item.lsb = item.msb;
+                    }
+                    if (("lsb" in item) && !("msb" in item)) {
+                        item.msb = item.lsb;
+                    }
+                    if (!("unused" in item)) {
+                        item.unused = false;
+                    }
+                    if (!("attr" in item)) {
+                        item.attr = defaultAttr;
+                    }
+                    if (!("name" in item)) {
+                        item.name = index;
+                    }
+                    if (!("value" in item)) {
+                        item.value = "";
+                    }
+                    if (!("class" in item)) {
+                        item.class = "";
+                    }
+                    //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+
                 }
-                if (("lsb" in item) && !("msb" in item)) {
-                    item.msb = item.lsb;
-                }
-                if (!("unused" in item)) {
-                    item.unused = false;
-                }
-                if (!("attr" in item)) {
-                    item.attr = defaultAttr;
-                }
-                if (!("name" in item)) {
-                    item.name = "UNSPECIFIED NAME";
-                }
-                if (!("value" in item)) {
-                    item.value = "";
-                }
-                if (!("class" in item)) {
-                    item.class = "";
-                }
-                //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
-            
-            });
+            }
             
             var bitarray = [];  // Array indexed by bit # in register range 0:width
                                 // field[bitarray[N]] contains bit N
                                 // bitarray[N] == -1 for unused bits
                                 // bitarray[N] == 1000 for first bit outside register width
             
-            var i;
-            bitarray[width] = 1000;
+            var i, j;
+            bitarray[width] = 1000; //???
             for (i = 0; i < width; i++) {
-                bitarray[i] = -1;
+                bitarray[i] = null;
             }
-            fields.forEach(function (item, index) {
-                for (var i = item.lsb; i <= item.msb; i++) {
-                    bitarray[i] = index;
+
+            for (index in fields) {
+                if (fields.hasOwnProperty(index)) {
+                    for (i = fields[index].lsb; i <= fields[index].msb; i++) {
+                        bitarray[i] = index;
+                    }
                 }
-            });
+            }
             
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
             for (i = 0; i <= width; ++i) {
-                if (lsb >= 0 && bitarray[i] >= 0) {
+                if (lsb >= 0 && bitarray[i] !== null) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
-                    fields.push({
+                    index = "_unused_" + (i-1); // _unused_msb
+                    if (lsb !== (i-1)) {
+                        index = index + "_" + lsb;  // _unused_msb_lsb
+                    }
+                    fields[index] = {
                         "msb": i - 1,
                         "lsb": lsb,
                         "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
                         "attr": unused,   // attribute is name
                         "unused": true,
                         "value": ""
-                    });
+                    };
+                    for (j = lsb; j < i; j++) {
+                        bitarray[j] = index;
+                    }
                     lsb = -1;
                 }
-                if (lsb < 0 && bitarray[i] < 0) {
+                if (lsb < 0 && bitarray[i] === null) {
                     // starting a string of unused bits
                     lsb = i;
                 }
@@ -19861,19 +21258,21 @@ define(
             var p = svg.createPath();
             var f;
             var text;
-            for (i = 0; i < fields.length; i++) {
-                f = fields[i];
-                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
-                    svg.createText().string(f.lsb), {
-                        class_: "regBitNum"
-                    });
-                if (f.lsb !== f.msb) {
-                    svg.text(g, middleOf(f.msb), cellTop - 4,
-                        svg.createText().string(f.msb), {
+            for (i  in fields) {
+                if (fields.hasOwnProperty(i)) {
+                    f = fields[i];
+                    text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+                                    svg.createText().string(f.lsb), {
                             class_: "regBitNum"
                         });
+                    if (f.lsb !== f.msb) {
+                        svg.text(g, middleOf(f.msb), cellTop - 4,
+                                 svg.createText().string(f.msb), {
+                                class_: "regBitNum"
+                            });
+                    }
+                    p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
                 }
-                p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
             }
             p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
             var nextBitLine = cellTop + cellHeight + 20; //76;
@@ -19884,135 +21283,150 @@ define(
                 fill: "none"
             });
             for (var b = 0; b < width; b++) {
-                for (i = 0; i < fields.length; i++) {
-                    f = fields[i];
-                    if (b === f.lsb) {
-                        g = svg.group();
-                        if (f.class !== "") {
-                            svg.change(g, { class_: f.class });
-                        }
-                        svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
-                            0, 0, {
-                                class_: "regFieldBox regFieldBox" + f.attr
-                            });
-                        for (var j = f.lsb + 1; j <= f.msb; j++) {
-                            svg.line(g,
-                                rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                rightOf(j), cellTop + cellHeight, {
-                                    class_: "regFieldBoxInternal" +
-                                        (f.unused ? " regFieldBoxUnused" : "") +
-                                        " regFieldBoxInternal" + f.attr
-                                });
-                        }
-                        // svg.link doesn't work on Chrome, disable href for now
-                        //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
-                        //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
-                        text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
-                                        svg.createText().string(f.name), {
-                                            class_: "regFieldName" +
-                                            (f.unused ? " regFieldNameUnused" : "") +
-                                            " regFieldName" + f.attr +
-                                            " regFieldNameInternal" +
-                                            " regFieldNameInternal" + f.attr
-                                        });
-                        if (!f.unused) {
-                            var $temp_dom = $("<span></span>").prependTo(divsvg);
-                            var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
-                            $temp_dom.remove();
-                            svg.change(g, { id: unique_id });
-                        }
-                        if (f.value !== "") {
-                            if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
-                                for (i = 0; i < f.value.length; ++i) {
-                                    svg.text(g, (leftOf(f.lsb+i) + rightOf(f.lsb+i)) / 2, cellBitValueTop,
-                                        svg.createText().string(f.value[i]), {
-                                            class_: "regFieldValue" +
-                                                (f.unused ? " regFieldValueUnused" : "") +
-                                                " regFieldBitValue" +
-                                                " regFieldBitValue-" + i.toString() +
-                                                ((i === (f.value.length - 1)) ? " regFieldBitValue-msb" : "") +
-                                                " regFieldValue" + f.attr +
-                                                " regFieldValueInternal" +
-                                                " regFieldValueInternal" + f.attr
-                                        });
-                                }
-                            } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
-                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                                    (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
-                                    svg.createText().string(f.value), {
-                                        class_: "regFieldValue" +
-                                            (f.unused ? " regFieldValueUnused" : "") +
-                                            " regFieldValue" + f.attr +
-                                            " regFieldValueInternal" +
-                                            " regFieldValueInternal" + f.attr
-                                    });
-                            } else {
-                                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
-                                    svg.createText().string("INVALID VALUE"), {
-                                        class_ : "svg_error"
-                                    });
+                for (i in fields) {
+                    if (fields.hasOwnProperty(i)) {
+                        f = fields[i];
+                        if (b === f.lsb) {
+                            g = svg.group();
+                            if (f.class !== "") {
+                                svg.change(g, { class_: f.class });
                             }
-                        }
-                        var text_width = text.clientWidth;
-                        if (text_width === 0) {
-                            // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                            text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
-                        }
-                        if (text_width > max_text_width) {
-                            max_text_width = text_width;
-                        }
-                        var text_height = text.clientHeight;
-                        if (text_height === 0) {
-                            // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
-                            text_height = 18;             // Assume 18px: 1 row of text, 15px high
-                        }
-                        /*console.log("field " + f.name +
-                                    " msb=" + f.msb +
-                                    " lsb=" + f.lsb +
-                                    " attr=" + f.attr +
-                                    " unused=" + f.unused +
-                                    (("id" in f) ? f.id : ""));
-                        console.log(" text.clientWidth=" + text.clientWidth +
-                                    " text_width=" + text_width +
-                                    " text.clientHeight=" + text.clientHeight +
-                                    " text_height=" + text_height +
-                                    " rightOf(msb)=" + rightOf(f.lsb) +
-                                    " leftOf(lsb)=" + leftOf(f.msb) +
-                                    " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
-                        /* if field has a specified value,
-                           the field name is too wide for the box,
-                           or the field name is too tall for the box */
-                        if ((f.value !== "") || ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) || ((text_height + 2) > (cellHeight - cellInternalHeight))) {
-                            svg.change(text, {
-                                x: rightOf(-0.5),
-                                y: nextBitLine,
-                                class_: "regFieldName" +
-                                    (f.unused ? " regFieldNameUnused" : "") +
-                                    " regFieldName" + f.attr +
-                                    " regFieldName" + (bitLineCount < 2 ? "0" : "1")
-                            });
-                            p = svg.createPath();
-                            p.move(leftOf(f.msb), cellTop + cellHeight)
-                             .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
-                             .line(rightOf(f.lsb), cellTop + cellHeight);
-                            svg.path(g, p, {
-                                class_: "regBitBracket" +
-                                    (f.unused ? " regFieldBracketUnused" : "") +
-                                    " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
-                                fill: "none"
-                            });  
-                            p = svg.createPath();
-                            p.move(middleOf(f.lsb + ((f.msb - f.lsb)/2)), cellTop + cellHeight + bracketHeight)
-                             .vert(nextBitLine - text_height / 4)
-                             .horiz(rightOf(-0.4));
-                            svg.path(g, p, {
-                                class_: "regBitLine" +
-                                    (f.unused ? " regFieldLineUnused" : "") +
-                                    " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
-                                fill: "none"
-                            });
-                            nextBitLine += text_height + 2;
-                            bitLineCount = (bitLineCount + 1) % 4;
+                            svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
+                                     0, 0, {
+                                    class_: "regFieldBox regFieldBox" + f.attr
+                                });
+                            for (j = f.lsb + 1; j <= f.msb; j++) {
+                                svg.line(g,
+                                         rightOf(j), cellTop + cellHeight - cellInternalHeight,
+                                         rightOf(j), cellTop + cellHeight,
+                                         {
+                                             class_: "regFieldBoxInternal" +
+                                                         (f.unused ? " regFieldBoxUnused" : "") +
+                                                         " regFieldBoxInternal" + f.attr
+                                         });
+                            }
+                            // svg.link doesn't work on Chrome, disable href for now
+                            //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
+                            //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
+                                            svg.createText().string(f.name),
+                                            {
+                                                class_: "regFieldName" +
+                                                            (f.unused ? " regFieldNameUnused" : "") +
+                                                            " regFieldName" + f.attr +
+                                                            " regFieldNameInternal" +
+                                                            " regFieldNameInternal" + f.attr
+                                            });
+                            if (!f.unused) {
+                                var $temp_dom = $("<span></span>").prependTo(divsvg);
+                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                                $temp_dom.remove();
+                                svg.change(g, { id: unique_id });
+                            }
+                            if (f.value !== "") {
+                                if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
+                                    for (i = 0; i < f.value.length; ++i) {
+                                        svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
+                                                 cellBitValueTop,
+                                                 svg.createText().string(f.value[i]),
+                                                 {
+                                                     class_: "regFieldValue" +
+                                                                 (f.unused ? " regFieldValueUnused" : "") +
+                                                                 " regFieldBitValue" +
+                                                                 " regFieldBitValue-" + i.toString() +
+                                                                 ((i === (f.value.length - 1)) ?
+                                                                  " regFieldBitValue-msb" : "") +
+                                                                 " regFieldValue" + f.attr +
+                                                                 " regFieldValueInternal" +
+                                                                 " regFieldValueInternal" + f.attr
+                                                 });
+                                    }
+                                } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
+                                             (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
+                                             svg.createText().string(f.value),
+                                             {
+                                                 class_: "regFieldValue" +
+                                                             (f.unused ? " regFieldValueUnused" : "") +
+                                                             " regFieldValue" + f.attr +
+                                                             " regFieldValueInternal" +
+                                                             " regFieldValueInternal" + f.attr
+                                             });
+                                } else {
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
+                                             svg.createText().string("INVALID VALUE"),
+                                             {
+                                                 class_: "svg_error"
+                                             });
+                                }
+                            }
+                            var text_width = text.clientWidth;
+                            if (text_width === 0) {
+                                // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+                            }
+                            if (text_width > max_text_width) {
+                                max_text_width = text_width;
+                            }
+                            var text_height = text.clientHeight;
+                            if (text_height === 0) {
+                                // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
+                                text_height = 18;             // Assume 18px: 1 row of text, 15px high
+                            }
+                            /*console.log("field " + f.name +
+                             " msb=" + f.msb +
+                             " lsb=" + f.lsb +
+                             " attr=" + f.attr +
+                             " unused=" + f.unused +
+                             (("id" in f) ? f.id : ""));
+                             console.log(" text.clientWidth=" + text.clientWidth +
+                             " text_width=" + text_width +
+                             " text.clientHeight=" + text.clientHeight +
+                             " text_height=" + text_height +
+                             " rightOf(msb)=" + rightOf(f.lsb) +
+                             " leftOf(lsb)=" + leftOf(f.msb) +
+                             " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
+                            /* if field has a specified value,
+                             the field name is too wide for the box,
+                             or the field name is too tall for the box */
+                            if ((f.value !== "") ||
+                                ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
+                                ((text_height + 2) > (cellHeight - cellInternalHeight)))
+                            {
+                                svg.change(text,
+                                           {
+                                               x:      rightOf(-0.5),
+                                               y:      nextBitLine,
+                                               class_: "regFieldName" +
+                                                           (f.unused ? " regFieldNameUnused" : "") +
+                                                           " regFieldName" + f.attr +
+                                                           " regFieldName" + (bitLineCount < 2 ? "0" : "1")
+                                           });
+                                p = svg.createPath();
+                                p.move(leftOf(f.msb), cellTop + cellHeight)
+                                    .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
+                                    .line(rightOf(f.lsb), cellTop + cellHeight);
+                                svg.path(g, p,
+                                         {
+                                             class_: "regBitBracket" +
+                                                         (f.unused ? " regFieldBracketUnused" : "") +
+                                                         " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
+                                             fill:   "none"
+                                         });
+                                p = svg.createPath();
+                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight)
+                                    .vert(nextBitLine - text_height / 4)
+                                    .horiz(rightOf(-0.4));
+                                svg.path(g, p,
+                                         {
+                                             class_: "regBitLine" +
+                                                         (f.unused ? " regFieldLineUnused" : "") +
+                                                         " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
+                                             fill:   "none"
+                                         });
+                                nextBitLine += text_height + 2;
+                                bitLineCount = (bitLineCount + 1) % 4;
+                            }
                         }
                     }
                 }
@@ -20065,7 +21479,9 @@ define(
                     $("pre.json,div.json,span.json", $fig).each(function () {
                         var temp2 = $.parseJSON(this.textContent);
                         for (var prop in temp2) {
-                            json[prop] = temp2[prop];
+                            if (temp2.hasOwnProperty(prop)) {
+                                json[prop] = temp2[prop];
+                            }
                         }
                         $(this).hide();
                     });
@@ -20075,7 +21491,7 @@ define(
                             json = { };
                         }
                         if (! ("fields" in json)) {
-                            json.fields = [ ];
+                            json.fields = { };
                         }
                         var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
                         //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
@@ -20109,13 +21525,13 @@ define(
                                 }
                                 var unusedAttr = /^(rsvdp|rsvdz)$/i;
                                 var unused = !!unusedAttr.test(attr);
-                                json.fields.push({
+                                json.fields[fieldName] = {
                                     "msb": msb,
                                     "lsb": lsb,
-                                    "name": fieldName,
+//                                    "name": fieldName,
                                     "attr": attr,
                                     "unused": unused
-                                });
+                                };
                             }
                         });
                         //console.log("json=" + JSON.stringify(json, null, 2));
@@ -20126,7 +21542,7 @@ define(
                             json = { };
                         }
                         if (! ("fields" in json)) {
-                            json.fields = [ ];
+                            json.fields = { };
                         }
                         var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
                         var bitpattern = /(\d+):(\d+)/;
@@ -20162,13 +21578,11 @@ define(
                                             if ((match[2] !== "") && (match[4].substr(4,1) === "F")) {
                                                 var bits = bitpattern.exec(match[3]);
                                                 if (bits) {
-                                                    json.fields.push({
+                                                    var index = String(match[1] + match[2]);
+                                                    json.fields[index] = {
                                                         msb : Number(bits[1]),
                                                         lsb : Number(bits[2]),
-                                                      /*name: String(match[2].substr(1)),*/
-                                                        name: String(match[1] + match[2]),
-                                                      /*id:   String(match[1] + match[2]),*/
-                                                        attr: match[4].substr(0,2).toLowerCase() });
+                                                        attr: match[4].substr(0,2).toLowerCase() };
                                                 } else {
                                                     msg.pub("error", "Unknown field width " + match[0]);
                                                 }
@@ -20503,7 +21917,8 @@ define(
     }
 );
 
-define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\r\n{{#if permalinkHide}}\r\n    section > *:hover > span.permalink {\r\n        visibility: visible;\r\n    }\r\n{{/if}}\r\n\r\n.permalink {\r\n    width:          1px;\r\n    height:         1px;\r\n    overflow:       visible;\r\n    font-size:      10pt;\r\n    font-style:     normal;\r\n    vertical-align: middle;\r\n    margin-left:    4px;\r\n    {{#if permalinkEdge}}\r\n        float:      right;\r\n    {{/if}}\r\n    {{#if permalinkHide}}\r\n        visibility: hidden;\r\n    {{/if}}\r\n}\r\n\r\nspan.permalink > a,\r\nspan.permalink > a:link,\r\nspan.permalink > a:visited,\r\nspan.permalink > a:hover,\r\nspan.permalink > a:focus,\r\nspan.permalink > a:active\r\n{\r\n    background:       transparent !important;\r\n    text-decoration:  none;\r\n    font-weight:      normal;\r\n    color:            grey !important;\r\n}\r\n\r\n.permalink abbr {\r\n    border:0;\r\n}\r\n\r\n{{#if permalinkHide}}\r\n    @media print {\r\n        .permalink,\r\n        section > *:hover > span.permalink {\r\n            visibility: hidden;\r\n        }\r\n    }\r\n{{/if}}\r\n');});
+
+define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\n    section > *:hover > span.permalink {\n        visibility: visible;\n    }\n{{/if}}\n\n.permalink {\n    width:          1px;\n    height:         1px;\n    overflow:       visible;\n    font-size:      10pt;\n    font-style:     normal;\n    vertical-align: middle;\n    margin-left:    4px;\n    {{#if permalinkEdge}}\n        float:      right;\n    {{/if}}\n    {{#if permalinkHide}}\n        visibility: hidden;\n    {{/if}}\n}\n\nspan.permalink > a,\nspan.permalink > a:link,\nspan.permalink > a:visited,\nspan.permalink > a:hover,\nspan.permalink > a:focus,\nspan.permalink > a:active\n{\n    background:       transparent !important;\n    text-decoration:  none;\n    font-weight:      normal;\n    color:            grey !important;\n}\n\n.permalink abbr {\n    border:0;\n}\n\n{{#if permalinkHide}}\n    @media print {\n        .permalink,\n        section > *:hover > span.permalink {\n            visibility: hidden;\n        }\n    }\n{{/if}}\n');});
 
 // Module w3c/permalinks
 // Adds "permalinks" into the document at sections with explicit IDs
@@ -20605,48 +22020,6 @@ define(
     }
 );
 
-/*globals define*/
-/*jshint browser:true, jquery:true, laxcomma:true */
-
-// Module core/structure
-//  Handles producing the ToC and numbering sections across the document.
-
-// CONFIGURATION:
-//  - noTOC: if set to true, no TOC is generated and sections are not numbered
-//  - tocIntroductory: if set to true, the introductory material is listed in the TOC
-//  - lang: can change the generated text (supported: en, fr)
-//  - maxTocLevel: only generate a TOC so many levels deep
-
-define(
-    'core/xref-map',["core/utils"],
-    function (utils) {
-        
-        return {
-            run: function (conf, doc, cb, msg) {
-                msg.pub("start", "core/xref-map");
-                if (!!conf.addXrefMap) {
-                    var $refs = $("a.tocxref", doc);
-                    if ($refs.length > 0) {
-                        var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure and Table ID Map</h2></section>").appendTo($("body"));
-                        var $tbody = $("<table><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
-
-                        $refs.each(function() {
-                            var number = ($(".secno, .figno, .tblno", this).text()
-                                          .replace(/ /g,"&nbsp;").replace(/-/g,"&#8209;"));
-                            var id = $(this).attr("href");
-                            var name = $(".sectitle, .figtitle, .tbltitle", this).text();
-                            $("<tr><td>" + number + "</td>" +
-                              "<td>" + name + "</td>" +
-                              "<td><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);
-                        });
-                    }
-                }
-                msg.pub("end", "core/structure");
-                cb();
-            }
-        };
-    }
-);
 // Module w3c/aria
 // Adds wai-aria landmarks and roles to entire document.
 // Introduced by Shane McCarron (shane@aptest.com) from the W3C PFWG
@@ -20802,7 +22175,7 @@ if ("respecVersion" in window && respecVersion) {
 }
 require.config(requireConfig);
 
-define('profile-pcisig-common',[
+define('profile-nvidia-common',[
             "domReady"
         ,   "core/base-runner"
         ,   "core/ui"
@@ -20810,8 +22183,8 @@ define('profile-pcisig-common',[
         ,   "core/default-root-attr"
         ,   "core/markdown"
         ,   "core/style"
-        ,   "pcisig/style"
-        ,   "pcisig/headers"
+        ,   "nvidia/style"
+        ,   "nvidia/headers"
         ,   "core/footnotes"
         ,   "w3c/abstract"
         ,   "pcisig/conformance"
@@ -20827,7 +22200,7 @@ define('profile-pcisig-common',[
         ,   "core/tables"
         ,   "core/biblio"
         ,   "core/rdfa"
-        //,   "core/webidl-oldschool"
+        ,   "core/webidl-oldschool"
         ,   "core/regpict"
         ,   "core/dfn"
         ,   "core/fix-headers"
@@ -20835,7 +22208,6 @@ define('profile-pcisig-common',[
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
-        ,   "core/xref-map"
         ,   "w3c/aria"
         ,   "core/remove-respec"
         ,   "core/location-hash"
@@ -20852,4 +22224,5 @@ define('profile-pcisig-common',[
         }
 );
 
-require(['profile-pcisig-common']);
+
+require(['profile-nvidia-common']);
