@@ -28,7 +28,7 @@ define([
         ,   "nvidia/headers"
         ,   "core/footnotes"
         ,   "w3c/abstract"
-        ,   "pcisig/conformance"
+        ,   "nvidia/conformance"
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
