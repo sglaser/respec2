@@ -194,7 +194,7 @@ define(
                                             });
                             if (!f.unused) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
-                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
                                 svg.change(g, { id: unique_id });
                             }
@@ -274,7 +274,10 @@ define(
                                                class_: "regFieldName" +
                                                            (f.unused ? " regFieldNameUnused" : "") +
                                                            " regFieldName" + f.attr +
-                                                           " regFieldName" + (bitLineCount < 2 ? "0" : "1")
+                                                           " regFieldName" + (bitLineCount < 2 ? "0" : "1") +
+                                                           " regFieldNameExternal" +
+                                                           " regFieldNameExternal" + f.attr +
+                                                           " regFieldNameExternal" + (bitLineCount < 2 ? "0" : "1")
                                            });
                                 p = svg.createPath();
                                 p.move(leftOf(f.msb), cellTop + cellHeight)
@@ -325,7 +328,7 @@ define(
                         var $fig = $(this);
                         var json = { };
                         if ($fig.attr("id")) {
-                            json.name = $fig.attr("id");
+                            json.name = $fig.attr("id").replace(/^fig-/, "");
                         } else if ($fig.attr("title")) {
                             json.name = $fig.attr("title");
                         } else if ($("figcaption", this)) {
@@ -334,16 +337,16 @@ define(
                             json.name = "unnamed-" + figNum;
                             figNum++;
                         }
+                        json.name = json.name
+                            .replace(/^\s+/, "")
+                            .replace(/\s+$/, "")
+                            .replace(/[^\-.0-9a-z_]+/ig, "-")
+                            .replace(/^-+/, "")
+                            .replace(/-+$/, "")
+                            .replace(/\.$/, ".x")
+                            .replace(/^([^a-z])/i, "x$1")
+                            .replace(/^$/, "generatedID");
                         if (!$fig.attr("id")) {
-                            json.name = json.name
-                                .replace(/^\s+/, "")
-                                .replace(/\s+$/, "")
-                                .replace(/[^\-.0-9a-z_]+/ig, "-")
-                                .replace(/^-+/, "")
-                                .replace(/-+$/, "")
-                                .replace(/\.$/, ".x")
-                                .replace(/^([a-z])/i, "x$1")
-                                .replace(/^$/, "generatedID");
                             $fig.attr("id", "fig-" + json.name);
                         }
                         msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
@@ -426,9 +429,9 @@ define(
                                     };
                                 }
                             });
-                            console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                            //console.log("parsed=" + JSON.stringify(parsed, null, 2));
                             $.extend(true, json, parsed);
-                            console.log("json=" + JSON.stringify(json, null, 2));
+                            //console.log("json=" + JSON.stringify(json, null, 2));
                         }
 
                         if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") && json.hasOwnProperty("register")) {
@@ -482,9 +485,9 @@ define(
                                                        }
                                                    }
                                                }
-                                               console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                                               //console.log("parsed=" + JSON.stringify(parsed, null, 2));
                                                $.extend(true, json, parsed);
-                                               console.log("json=" + JSON.stringify(json, null, 2));
+                                               //console.log("json=" + JSON.stringify(json, null, 2));
                                            }
                                        },
                                        error:    function(xhr, status, error) {
