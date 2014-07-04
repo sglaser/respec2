@@ -5,18 +5,26 @@
 // Handles the processing and linking of <dfn> and <a> elements.
 define(
     [],
-    function () {
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
+    function() {
+        "use strict";
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
+                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
         return {
-            run:    function (conf, doc, cb, msg) {
+            run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
-                if (!conf.definitionMap) conf.definitionMap = {};
-                if (!conf.definitionHTML) conf.definitionHTML = {};
-                $("dfn", doc).each(function () {
+                if (!conf.definitionMap) {
+                    conf.definitionMap = {};
+                }
+                if (!conf.definitionHTML) {
+                    conf.definitionHTML = {};
+                }
+                $("dfn", doc).each(function() {
                     var tag = dfnClass[0];  // default "dfn"
                     for (var i = 1; i < dfnClass.length; i++) {
-                        if ($(this).hasClass(dfnClass[i])) tag = dfnClass[i];
+                        if ($(this).hasClass(dfnClass[i])) {
+                            tag = dfnClass[i];
+                        }
                     }
                     var title = $(this).dfnTitle();
                     if (conf.definitionMap[tag + "-" + title]) {
@@ -26,7 +34,7 @@ define(
                     conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
                     conf.definitionHTML[tag + "-" + title] = $(this).html();
                 });
-                $("div.hasSVG g[id]", doc).each(function () {
+                $("div.hasSVG g[id]", doc).each(function() {
                     //console.log("svg g[id] matches " + this.outerHTML);
                     var $text = $("text.regFieldName", this).first();
                     if ($text) {
@@ -37,21 +45,21 @@ define(
                         }
                     }
                 });
-                $("a:not([href])", doc).each(function () {
+                $("a:not([href])", doc).each(function() {
                     var $ant = $(this);
-                    if ($ant.hasClass("externalDFN")) return;
+                    if ($ant.hasClass("externalDFN")) {
+                        return;
+                    }
                     var title = $ant.dfnTitle();
                     var tag = null;
                     for (var i = 0; i < dfnClass.length; i++) {
                         if (conf.definitionMap[dfnClass[i] + "-" + title]) {
                             if ($ant.hasClass(dfnClass[i])) {
                                 tag = dfnClass[i];
-                            }
-                            else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
+                            } else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
                                 if (tag === null) {
                                     tag = dfnClass[i];
-                                }
-                                else if (!$ant.hasClass(tag)) {
+                                } else if (!$ant.hasClass(tag)) {
                                     tag = tag + "-" + dfnClass[i];
                                 }
                             }
@@ -59,8 +67,8 @@ define(
                     }
                     if (tag !== null) {
                         if (conf.definitionMap[tag + "-" + title]) {
-                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
-                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
+                            $ant.attr("href",
+                                      "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
                                 $ant.html(conf.definitionHTML[tag + "-" + title]);
                         } else {
                             var temp = tag.split("-")[0] + "-" + title;
@@ -74,7 +82,8 @@ define(
                     else {
                         // ignore WebIDL
                         if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                            msg.pub("warn",
+                                    "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
                         }
                         $ant.replaceWith($ant.contents());
                     }
@@ -88,8 +97,8 @@ define(
                         var d = keys[i];
                         var item = d.split(/-/);
                         var kind = item.shift();
-                        var id=conf.definitionMap[d];
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                        var id = conf.definitionMap[d];
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"" + "#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
