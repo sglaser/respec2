@@ -43,6 +43,13 @@ define(
                             conf.definitionMap["regpict-" + title] = $(this).attr("id");
                             conf.definitionHTML["regpict-" + title] = $text.text();
                         }
+                        if (("field-" + title) in conf.definitionMap) {
+                            $text.wrap("<a xlink:href=\"field-" + title + "></a>");
+                            $text = $("text.regFieldValue", this);
+                            if ($text.length > 0) {
+                                $text.wrap("<a xlink:href=\"field-" + title + "></a>");
+                            }
+                        }
                     }
                 });
                 $("a:not([href])", doc).each(function() {
@@ -66,13 +73,21 @@ define(
                         }
                     }
                     if (tag !== null) {
+                        if (tag === "regpict-field" || tag === "field-regpict") {
+                            tag = "field";
+                        }
                         if (conf.definitionMap[tag + "-" + title]) {
                             $ant.attr("href",
                                       "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
+                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
                                 $ant.html(conf.definitionHTML[tag + "-" + title]);
+                            }
                         } else {
                             var temp = tag.split("-")[0] + "-" + title;
                             $ant.attr("href", "#" + temp);
+                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
+                                $ant.html(conf.definitionHTML[tag + "-" + title]);
+                            }
                             temp = "Ambiguous reference to '" + tag + "-" + title + "', resolved as '" + temp + "'";
                             msg.pub("warn", temp);
                             $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
