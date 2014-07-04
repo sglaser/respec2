@@ -10,7 +10,7 @@ define(
      "jquery",
      "core/utils",
      "jquery-svg"],
-    function (css) {
+    function(css) {
         "use strict";
         function pget(obj, prop, def) {
             if ((obj !== null) && prop in obj) {
@@ -21,23 +21,23 @@ define(
         }
 
         function draw_regpict(divsvg, svg, reg) {
-            var width               = Number(pget(reg, "width", 32));
-            var unused              = String(pget(reg, "unused", "RsvdP"));
-            var defaultAttr         = String(pget(reg, "defaultAttr", "other"));
-            var cellWidth           = Number(pget(reg, "cellWidth", 16));
-            var cellHeight          = Number(pget(reg, "cellHeight", 32));
-            var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
-            var cellValueTop        = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
-            var cellBitValueTop     = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
-            var cellNameTop         = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
-            var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
-            var cellTop             = Number(pget(reg, "cellTop", 16));
-            var figName             = String(pget(reg, "name", "???"));
-            var fields              = pget(reg, "fields", { }); // default to empty register
+            var width = Number(pget(reg, "width", 32));
+            var unused = String(pget(reg, "unused", "RsvdP"));
+            var defaultAttr = String(pget(reg, "defaultAttr", "other"));
+            var cellWidth = Number(pget(reg, "cellWidth", 16));
+            var cellHeight = Number(pget(reg, "cellHeight", 32));
+            var cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
+            var cellValueTop = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
+            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
+            var cellNameTop = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
+            var bracketHeight = Number(pget(reg, "bracketHeight", 4));
+            var cellTop = Number(pget(reg, "cellTop", 16));
+            var figName = String(pget(reg, "name", "???"));
+            var fields = pget(reg, "fields", { }); // default to empty register
 
             //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
-            
+
             // sanitize field array to avoid subsequent problems
             for (var index in fields) {
                 if (fields.hasOwnProperty(index)) {
@@ -67,12 +67,12 @@ define(
 
                 }
             }
-            
+
             var bitarray = [];  // Array indexed by bit # in register range 0:width
-                                // field[bitarray[N]] contains bit N
-                                // bitarray[N] == -1 for unused bits
-                                // bitarray[N] == 1000 for first bit outside register width
-            
+            // field[bitarray[N]] contains bit N
+            // bitarray[N] == -1 for unused bits
+            // bitarray[N] == 1000 for first bit outside register width
+
             var i, j;
             bitarray[width] = 1000; //???
             for (i = 0; i < width; i++) {
@@ -86,22 +86,22 @@ define(
                     }
                 }
             }
-            
+
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
             for (i = 0; i <= width; ++i) {
                 if (lsb >= 0 && bitarray[i] !== null) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
-                    index = "_unused_" + (i-1); // _unused_msb
-                    if (lsb !== (i-1)) {
+                    index = "_unused_" + (i - 1); // _unused_msb
+                    if (lsb !== (i - 1)) {
                         index = index + "_" + lsb;  // _unused_msb_lsb
                     }
                     fields[index] = {
-                        "msb": i - 1,
-                        "lsb": lsb,
+                        "msb":    i - 1,
+                        "lsb":    lsb,
                         "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
-                        "attr": unused,   // attribute is name
+                        "attr":   unused,   // attribute is name
                         "unused": true,
-                        "value": ""
+                        "value":  ""
                     };
                     for (j = lsb; j < i; j++) {
                         bitarray[j] = index;
@@ -113,7 +113,7 @@ define(
                     lsb = i;
                 }
             }
-            
+
             // x position of left edge of bit i
             function leftOf(i) {
                 return cellWidth * (width - i - 0.5);
@@ -128,7 +128,7 @@ define(
             function middleOf(i) {
                 return cellWidth * (width - i);
             }
-            
+
             var g = svg.group();
             var p = svg.createPath();
             var f;
@@ -155,7 +155,7 @@ define(
             var max_text_width = 0;
             svg.path(g, p, {
                 class_: "regBitNumLine",
-                fill: "none"
+                fill:   "none"
             });
             for (var b = 0; b < width; b++) {
                 for (i in fields) {
@@ -266,8 +266,7 @@ define(
                              or the field name is too tall for the box */
                             if ((f.value !== "") ||
                                 ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
-                                ((text_height + 2) > (cellHeight - cellInternalHeight)))
-                            {
+                                ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                                 svg.change(text,
                                            {
                                                x:      rightOf(-0.5),
@@ -307,194 +306,222 @@ define(
                 }
             }
             svg.configure({
-                height: "" + nextBitLine,
-                width: "100%",
-                viewBox: "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine
-            });
+                              height:  "" + nextBitLine,
+                              width:   "100%",
+                              viewBox: "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine
+                          });
         }
 
         return {
-            run: function (conf, doc, cb, msg) {
+            run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
                 if (!conf.noReSpecCSS) {
                     $(doc).find("head link").first().before($("<style></style>").text(css));
                 }
                 var figNum = 1;
-                $("figure.register", doc).each(function () {
-                    var $fig = $(this);
-                    var json = { };
-                    if ($fig.attr("id")) {
-                        json.name = $fig.attr("id");
-                    } else if ($fig.attr("title")) {
-                        json.name = $fig.attr("title").replace(/^\s+/,"").replace(/\s+$/,"").split(/\s+/).join("-");
-                        $fig.attr("id","figure-" + json.name);
-                    } else {
-                        json.name = "unnamed-" + figNum;
-                        figNum++;
-                        $fig.attr("id", "figure-" + json.figid);
-                    }
-                    msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
+                $("figure.register", doc).each(
+                    function() {
+                        var parsed, $tbody, pattern, bitpattern;
+                        var $fig = $(this);
+                        var json = { };
+                        if ($fig.attr("id")) {
+                            json.name = $fig.attr("id");
+                        } else if ($fig.attr("title")) {
+                            json.name = $fig.attr("title");
+                        } else if ($("figcaption", this)) {
+                            json.name = $("figcaption", this).text();
+                        } else {
+                            json.name = "unnamed-" + figNum;
+                            figNum++;
+                        }
+                        if (!$fig.attr("id")) {
+                            json.name = json.name
+                                .replace(/^\s+/, "")
+                                .replace(/\s+$/, "")
+                                .replace(/[^\-.0-9a-z_]+/ig, "-")
+                                .replace(/^-+/, "")
+                                .replace(/-+$/, "")
+                                .replace(/\.$/, ".x")
+                                .replace(/^([a-z])/i, "x$1")
+                                .replace(/^$/, "generatedID");
+                            $fig.attr("id", "fig-" + json.name);
+                        }
+                        msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
 
-                    var temp = $fig.attr("data-json");
-                    if (temp !== null && temp !== undefined && temp !== "") {
-                        //console.log("parsing JSON '" + temp + "'");
-                        json = $.parseJSON(temp);
-                    }
-                    
-                    temp = $fig.attr("data-width");
-                    if (temp !== null && temp !== undefined && temp !== "") {
-                        json.width = temp;
-                    }
-                    
-                    temp = $fig.attr("data-unused");
-                    if (temp !== null && temp !== undefined && temp !== "") {
-                        json.unused = temp;
-                    }
-                    
-                    $("pre.json,div.json,span.json", $fig).each(function () {
-                        var temp2 = $.parseJSON(this.textContent);
-                        for (var prop in temp2) {
-                            if (temp2.hasOwnProperty(prop)) {
-                                json[prop] = temp2[prop];
-                            }
+                        var temp = $fig.attr("data-json");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            $.extend(true, json, $.parseJSON(temp));
                         }
-                        $(this).hide();
-                    });
-                    
-                    if ($fig.hasClass("pcisig_reg")) {
-                        if (json === null) {
-                            json = { };
+
+                        temp = $fig.attr("data-width");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            json.width = temp;
                         }
-                        if (! ("fields" in json)) {
-                            json.fields = { };
+
+                        temp = $fig.attr("data-unused");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            json.unused = temp;
                         }
-                        var $tbody = $($fig.attr("data-table") + " tbody", doc).first();
-                        //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
-                        $tbody.children().each(function () {
-                            var td = $(this).children();
-                            if (td.length >= 3) {
-                                var bits = td.eq(0).text();
-                                var desc = td.eq(1);
-                                var attr = td.eq(2).text().toLowerCase();
-                                var lsb, msb, match;
-                                lsb = msb = -1;
-                                match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
-                                if (match) {
-                                    msb = lsb = Number(match[1]);
-                                    if (match[3] !== null) {
-                                        lsb = Number(match[3]);
-                                    }
-                                    if (lsb > msb) {
-                                        msb = lsb; lsb = Number(match[1]);
-                                    }
-                                }
-                                var fieldName = $("code:first, dfn:first", desc);
-                                if (fieldName.length === 0) {
-                                    fieldName = /^\s*(\w+)/.exec(desc.text())[1];
-                                } else {
-                                    fieldName = fieldName.first().text().trim();
-                                }
-                                var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
-                                if (!validAttr.test(attr)) {
-                                    attr = "other";
-                                }
-                                var unusedAttr = /^(rsvdp|rsvdz)$/i;
-                                var unused = !!unusedAttr.test(attr);
-                                json.fields[fieldName] = {
-                                    "msb": msb,
-                                    "lsb": lsb,
-//                                    "name": fieldName,
-                                    "attr": attr,
-                                    "unused": unused
-                                };
-                            }
+
+                        temp = $fig.attr("data-href");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            json.href = temp;
+                        }
+
+                        temp = $fig.attr("data-table");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            json.table = temp;
+                        }
+
+                        temp = $fig.attr("data-register");
+                        if (temp !== null && temp !== undefined && temp !== "") {
+                            json.register = temp;
+                        }
+
+                        $("pre.json,div.json,span.json", $fig).each(function() {
+                            $.extend(true, json, $.parseJSON(this.textContent));
+                            $(this).hide();
                         });
-                        //console.log("json=" + JSON.stringify(json, null, 2));
-                    }
-                    
-                    if ($fig.hasClass("nv_refman")) {
-                        if (json === null) {
-                            json = { };
-                        }
-                        if (! ("fields" in json)) {
-                            json.fields = { };
-                        }
-                        var pattern = new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(.*)\\s*/\\*\\s*(.*)\\s*\\*/\\s*$");
-                        var bitpattern = /(\d+):(\d+)/;
-                        var href = $fig.attr("data-href");
-                        if (!!conf.ajaxIsLocal) {
-                            $.ajaxSetup({ isLocal: true});
-                        }
-                        conf.ajaxIsLocal = false;
-                        $.ajax({
-                            dataType:   "text",
-                            url:        href,
-                            async:      false,
-                            success:    function (data) {
-                                if (data) {
-                                    var lines = data.split(/\n/);
-                                    for (var i = 0; i < lines.length; i++) {
-                                        var match = pattern.exec(lines[i]);
-                                        if (match) {
-                                            if (! json.hasOwnProperty("width")) {
-                                                if ((match[2] === "") && (match[4].substr(4,1) === "R")) {
-                                                    var w = match[4].substr(3,1);
-                                                    if (w === "2") {
-                                                        json.width = 16;
-                                                    } else if (w === "4") {
-                                                        json.width = 32;
-                                                    } else if (w === "8") {
-                                                        json.width = 64;
-                                                    } else {
-                                                        json.width = 32;
-                                                    }
-                                                }
-                                            }
-                                            if ((match[2] !== "") && (match[4].substr(4,1) === "F")) {
-                                                var bits = bitpattern.exec(match[3]);
-                                                if (bits) {
-                                                    var index = String(match[1] + match[2]);
-                                                    json.fields[index] = {
-                                                        msb : Number(bits[1]),
-                                                        lsb : Number(bits[2]),
-                                                        attr: match[4].substr(0,2).toLowerCase() };
-                                                } else {
-                                                    msg.pub("error", "Unknown field width " + match[0]);
-                                                }
-                                            }
-                                            //console.log("json=" + JSON.stringify(json, null, 2));
+
+                        if ($fig.hasClass("pcisig_reg") && json.hasOwnProperty("table")) {
+                            parsed = { fields: { } };
+                            $tbody = $(json.table + " tbody", doc).first();
+                            //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
+                            $tbody.children().each(function() {
+                                var td = $(this).children();
+                                if (td.length >= 3) {
+                                    var bits = td.eq(0).text();
+                                    var desc = td.eq(1);
+                                    var attr = td.eq(2).text().toLowerCase();
+                                    var lsb, msb, match;
+                                    lsb = msb = -1;
+                                    match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
+                                    if (match) {
+                                        msb = lsb = Number(match[1]);
+                                        if (match[3] !== null) {
+                                            lsb = Number(match[3]);
+                                        }
+                                        if (lsb > msb) {
+                                            msb = lsb;
+                                            lsb = Number(match[1]);
                                         }
                                     }
+                                    var fieldName = $("code:first, dfn:first", desc);
+                                    if (fieldName.length === 0) {
+                                        fieldName = /^\s*(\w+)/.exec(desc.text())[1];
+                                    } else {
+                                        fieldName = fieldName.first().text().trim();
+                                    }
+                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
+                                    if (!validAttr.test(attr)) {
+                                        attr = "other";
+                                    }
+                                    var unusedAttr = /^(rsvdp|rsvdz)$/i;
+                                    var unused = !!unusedAttr.test(attr);
+                                    parsed.fields[fieldName] = {
+                                        msb:    msb,
+                                        lsb:    lsb,
+                                        attr:   attr,
+                                        unused: unused
+                                    };
                                 }
-                            },
-                            error:      function (xhr, status, error) {
-                                msg.pub("error", "Error including URI=" + href + ": " + status + " (" + error + ")");
-                            }
-                        });
-                    }
-                    
-                    if (json === null) {
-                        msg.pub("warn", "core/regpict: no register definition " + $fig.get(0).outerHTML);
-                    }
-
-                    // invent a div to hold the svg, if necessary
-                    var $divsvg = $("div.svg", this);
-                    if ($divsvg.length === 0) {
-                        var $cap = $("figcaption", this);
-                        if ($cap.length > 0) {
-                            //console.log("inserting div.svg before <figcaption>");
-                            $cap.before('<div class="svg"></div>');
-                        } else {
-                            //console.log("inserting div.svg at end of <figure>");
-                            $(this).append('<div class="svg"></div>');
+                            });
+                            console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                            $.extend(true, json, parsed);
+                            console.log("json=" + JSON.stringify(json, null, 2));
                         }
-                        $divsvg=$("div.svg", this);
-                    }
-                    if (json !== null) { $divsvg.first().svg(function(svg) { draw_regpict(this, svg, json); }); }
-                });
+
+                        if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") && json.hasOwnProperty("register")) {
+                            parsed = { fields: { } };
+                            pattern =
+                                new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(\\S*)\\s*/\\*\\s*(\\S\\S\\S\\S\\S)\\s*\\*/\\s*$");
+                            bitpattern = /(\d+):(\d+)/;
+                            if (!!conf.ajaxIsLocal) {
+                                $.ajaxSetup({ isLocal: true});
+                            }
+                            conf.ajaxIsLocal = false;
+                            $.ajax({
+                                       dataType: "text",
+                                       url:      json.href,
+                                       async:    false,
+                                       success:  function(data) {
+                                           if (data) {
+                                               var lines = data.split(/\n/);
+                                               for (var i = 0; i < lines.length; i++) {
+                                                   var match = pattern.exec(lines[i]);
+                                                   if (match) {
+                                                       if (!json.hasOwnProperty("width")) {
+                                                           if ((match[2] === "") && (match[4].substr(4, 1) === "R")) {
+                                                               var w = match[4].substr(3, 1);
+                                                               if (w === "2") {
+                                                                   parsed.width = 16;
+                                                               } else if (w === "4") {
+                                                                   parsed.width = 32;
+                                                               } else if (w === "8") {
+                                                                   parsed.width = 64;
+                                                               } else {
+                                                                   parsed.width = 32;
+                                                               }
+                                                           }
+                                                       }
+                                                       if ((match[2] !== "") && (match[4].substr(4, 1) === "F")) {
+                                                           var bits = bitpattern.exec(match[3]);
+                                                           if (bits) {
+                                                               parsed.fields[match[1] + match[2]] = {
+                                                                   msb:  Number(bits[1]),
+                                                                   lsb:  Number(bits[2]),
+                                                                   attr: match[4].substr(0, 2)
+                                                                             .replace(/[^-r][^-w]/i, "other")
+                                                                             .replace(/rw/i, "rw")
+                                                                             .replace(/r-/i, "ro")
+                                                                             .replace(/-w/i, "wo")};
+                                                           } else {
+                                                               msg.pub("error",
+                                                                       "Unknown field width " + match[0]);
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                               console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                                               $.extend(true, json, parsed);
+                                               console.log("json=" + JSON.stringify(json, null, 2));
+                                           }
+                                       },
+                                       error:    function(xhr, status, error) {
+                                           msg.pub("error",
+                                                   "regpict/nv_refman: Error including file data-href=" + json.href +
+                                                       " data-register=" + json.register + " : " +
+                                                       status + " (" + error + ")");
+                                       }
+                                   });
+                        }
+
+                        if (json === null) {
+                            msg.pub("warn",
+                                    "core/regpict: no register definition " + $fig.get(0).outerHTML);
+                        }
+
+                        // invent a div to hold the svg, if necessary
+                        var $divsvg = $("div.svg", this);
+                        if ($divsvg.length === 0) {
+                            var $cap = $("figcaption", this);
+                            if ($cap.length > 0) {
+                                //console.log("inserting div.svg before <figcaption>");
+                                $cap.before('<div class="svg"></div>');
+                            } else {
+                                //console.log("inserting div.svg at end of <figure>");
+                                $(this).append('<div class="svg"></div>');
+                            }
+                            $divsvg = $("div.svg", this);
+                        }
+                        if (json !== null) {
+                            $divsvg.first().svg(function(svg) {
+                                draw_regpict(this, svg, json);
+                            });
+                        }
+                    });
                 msg.pub("end", "core/regpict");
                 cb();
             }
         };
-    }
-);
+    });
