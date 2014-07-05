@@ -27,6 +27,7 @@ define(
                 ,   num = 0
                 ;
                 if ($exes.length) {
+                    if (!(conf.noReSpecCSS))
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     $exes.each(function (i, ex) {
                         var $ex = $(ex)

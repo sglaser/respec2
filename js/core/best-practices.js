@@ -24,6 +24,7 @@ define(
                     $bp.prepend(doc.createTextNode("Best Practice " + num + ": "));
                 });
                 if ($bps.length) {
+                    if (!(conf.noReSpecCSS))
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     if ($("#bp-summary")) $("#bp-summary").append($content.contents());
                 }

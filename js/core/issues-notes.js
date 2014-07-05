@@ -20,7 +20,8 @@ define(
                 msg.pub("start", "core/issues-notes");
                 var $ins = $(".issue, .note, .impnote");
                 if ($ins.length) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                    if (!(conf.noReSpecCSS))
+                        $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
                     ,   issueNum = 0;
                     $ins.each(function (i, inno) {
