@@ -1,3 +1,5 @@
+/*globals define */
+/*jshint browser:true, jquery:true */
 
 // Module core/best-practices
 // Handles the marking up of best practices, and can generate a summary of all of them.
@@ -7,6 +9,7 @@
 define(
     ["text!core/css/bp.css"],
     function (css) {
+        "use strict";
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/best-practices");
@@ -25,8 +28,10 @@ define(
                 });
                 if ($bps.length) {
                     if (!(conf.noReSpecCSS))
-                    $(doc).find("head link").first().before($("<style/>").text(css));
-                    if ($("#bp-summary")) $("#bp-summary").append($content.contents());
+                        $(doc).find("head link").first().before($("<style/>").text(css));
+                    if ($("#bp-summary")) {
+                        $("#bp-summary").append($content.contents());
+                    }
                 }
                 else if ($("#bp-summary").length) {
                     msg.pub("warn", "Using best practices summary (#bp-summary) but no best practices found.");

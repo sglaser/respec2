@@ -1,3 +1,5 @@
+/* globals define */
+/* jshint browser: true, jquery: true */
 
 // Module core/examples
 // Manages examples, including marking them up, numbering, inserting the title,
@@ -9,6 +11,8 @@
 define(
     ["text!core/css/examples.css"],
     function (css) {
+        "use strict";
+
         var makeTitle = function ($el, num, report) {
             var txt = (num > 0) ? " " + num : ""
             ,   $tit = $("<div class='example-title'><span>Example" + txt + "</span></div>");
@@ -25,27 +29,34 @@ define(
                 msg.pub("start", "core/examples");
                 var $exes = $("pre.example, pre.illegal-example, aside.example")
                 ,   num = 0
+                ,   $tit
                 ;
                 if ($exes.length) {
                     if (!(conf.noReSpecCSS))
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                        $(doc).find("head link").first().before($("<style/>").text(css));
                     $exes.each(function (i, ex) {
                         var $ex = $(ex)
                         ,   report = { number: num, illegal: $ex.hasClass("illegal-example") }
                         ;
                         if ($ex.is("aside")) {
                             num++;
-                            var $tit = makeTitle($ex, num, report);
+                            $tit = makeTitle($ex, num, report);
                             $ex.prepend($tit);
                             msg.pub("example", report);
                         }
                         else {
                             var inAside = !!$ex.parents("aside").length;
-                            if (!inAside) num++;
+                            if (!inAside) {
+                                num++;
+                            }
                             // reindent
                             var lines = $ex.html().split("\n");
-                            while (lines.length && /^\s*$/.test(lines[0])) lines.shift();
-                            while (lines.length && /^\s*$/.test(lines[lines.length - 1])) lines.pop();
+                            while (lines.length && /^\s*$/.test(lines[0])) {
+                                lines.shift();
+                            }
+                            while (lines.length && /^\s*$/.test(lines[lines.length - 1])) {
+                                lines.pop();
+                            }
                             var matches = /^(\s+)/.exec(lines[0]);
                             if (matches) {
                                 var rep = new RegExp("^" + matches[1]);
@@ -56,13 +67,14 @@ define(
                             report.content = lines.join("\n");
                             $ex.html(lines.join("\n"));
                             // wrap
-                            var $div = $("<div class='example'></div>")
-                            ,   $tit = makeTitle($ex, inAside ? 0 : num, report)
-                            ;
+                            var $div = $("<div class='example'></div>");
+                            $tit = makeTitle($ex, inAside ? 0 : num, report);
                             $div.append($tit);
                             $div.append($ex.clone());
                             $ex.replaceWith($div);
-                            if (!inAside) msg.pub("example", report);
+                            if (!inAside) {
+                                msg.pub("example", report);
+                            }
                         }
                     });
                 }
