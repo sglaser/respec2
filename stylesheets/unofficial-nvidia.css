@@ -80,7 +80,10 @@ p.copyright { font-size: small; }
 p.copyright small { font-size: small; }
 
 @media screen {  /* hide from IE3 */
-    a[href]:hover { background: #ffa; }
+    a[href]:hover,
+    .regLink:hover,
+    .regLink:hover > rect,
+    .regLink:hover > text { fill: #ffa; }
 }
 
 pre { margin-left: 2em; }
@@ -443,15 +446,13 @@ h5 {
     /* PCIe Logo Blue */
 }
 
-
-
-path.regBitLine0 {
+g.regFieldExternal0 path.regBitLine {
     stroke: rgb(118,185,0) /* #0060A9 */;
     stroke-dasharray: 4, 2;
     stroke-width: 1px;
 }
 
-path.regBitBracket0 {
+g.regFieldExternal0 path.regBitBracket {
     stroke: rgb(118,185,0) /* #0060A9 */;
     stroke-width: 1px;
 }
@@ -666,7 +667,6 @@ path.regBitBracket0 {
         font-size: larger;
         font-weight: normal;
     }
-
 
     img {
         max-width: 100%;
