@@ -1,8 +1,8 @@
-/* ReSpec 3.2.15 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.17 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec */
 /* See also NVIDIA source: https://github.com/sglaser/respec */
-respecVersion = '3.2.15';
+respecVersion = '3.2.17';
 respecVersionNVIDIA = '0.0.1';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
@@ -11396,6 +11396,8 @@ return jQuery;
 
 }));
 
+define("jquery", function(){});
+
 /*jshint
     expr:   true
 */
@@ -13131,7 +13133,7 @@ b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET"
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #ff4500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #C83500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -13210,7 +13212,11 @@ define(
             } else {
                 title = this.text();
             }
-            return title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            title = title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            console.log("pre-title= \"" + title + "\"");
+            title = title.split(/[\|]+/);
+            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
+            return title;
         };
 
 
@@ -15672,6 +15678,8 @@ define(
 
 define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
+/* globals define */
+/* jshint browser: true, jquery: true */
 
 // Module core/examples
 // Manages examples, including marking them up, numbering, inserting the title,
@@ -15683,6 +15691,8 @@ define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES ---
 define(
     'core/examples',["text!core/css/examples.css"],
     function (css) {
+        
+
         var makeTitle = function ($el, num, report) {
             var txt = (num > 0) ? " " + num : ""
             ,   $tit = $("<div class='example-title'><span>Example" + txt + "</span></div>");
@@ -15699,26 +15709,34 @@ define(
                 msg.pub("start", "core/examples");
                 var $exes = $("pre.example, pre.illegal-example, aside.example")
                 ,   num = 0
+                ,   $tit
                 ;
                 if ($exes.length) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                    if (!(conf.noReSpecCSS))
+                        $(doc).find("head link").first().before($("<style/>").text(css));
                     $exes.each(function (i, ex) {
                         var $ex = $(ex)
                         ,   report = { number: num, illegal: $ex.hasClass("illegal-example") }
                         ;
                         if ($ex.is("aside")) {
                             num++;
-                            var $tit = makeTitle($ex, num, report);
+                            $tit = makeTitle($ex, num, report);
                             $ex.prepend($tit);
                             msg.pub("example", report);
                         }
                         else {
                             var inAside = !!$ex.parents("aside").length;
-                            if (!inAside) num++;
+                            if (!inAside) {
+                                num++;
+                            }
                             // reindent
                             var lines = $ex.html().split("\n");
-                            while (lines.length && /^\s*$/.test(lines[0])) lines.shift();
-                            while (lines.length && /^\s*$/.test(lines[lines.length - 1])) lines.pop();
+                            while (lines.length && /^\s*$/.test(lines[0])) {
+                                lines.shift();
+                            }
+                            while (lines.length && /^\s*$/.test(lines[lines.length - 1])) {
+                                lines.pop();
+                            }
                             var matches = /^(\s+)/.exec(lines[0]);
                             if (matches) {
                                 var rep = new RegExp("^" + matches[1]);
@@ -15729,13 +15747,14 @@ define(
                             report.content = lines.join("\n");
                             $ex.html(lines.join("\n"));
                             // wrap
-                            var $div = $("<div class='example'></div>")
-                            ,   $tit = makeTitle($ex, inAside ? 0 : num, report)
-                            ;
+                            var $div = $("<div class='example'></div>");
+                            $tit = makeTitle($ex, inAside ? 0 : num, report);
                             $div.append($tit);
                             $div.append($ex.clone());
                             $ex.replaceWith($div);
-                            if (!inAside) msg.pub("example", report);
+                            if (!inAside) {
+                                msg.pub("example", report);
+                            }
                         }
                     });
                 }
@@ -15771,7 +15790,8 @@ define(
                 msg.pub("start", "core/issues-notes");
                 var $ins = $(".issue, .note, .impnote");
                 if ($ins.length) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                    if (!(conf.noReSpecCSS))
+                        $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
                     ,   issueNum = 0;
                     $ins.each(function (i, inno) {
@@ -17590,7 +17610,8 @@ define(
                 ;
                 if ($highs.length) {
                     if (!conf.noHighlightCSS) {
-                        $(doc).find("head link").first().before($("<style/>").text(css));
+                        if (!(conf.noReSpecCSS))
+                            $(doc).find("head link").first().before($("<style/>").text(css));
                     }
                     $highs.addClass("prettyprint");
                     PR.prettyPrint(done);
@@ -17606,6 +17627,8 @@ define(
 
 define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
+/*globals define */
+/*jshint browser:true, jquery:true */
 
 // Module core/best-practices
 // Handles the marking up of best practices, and can generate a summary of all of them.
@@ -17615,6 +17638,7 @@ define('text!core/css/bp.css',[],function () { return '/* --- Best Practices ---
 define(
     'core/best-practices',["text!core/css/bp.css"],
     function (css) {
+        
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/best-practices");
@@ -17632,8 +17656,11 @@ define(
                     $bp.prepend(doc.createTextNode("Best Practice " + num + ": "));
                 });
                 if ($bps.length) {
-                    $(doc).find("head link").first().before($("<style/>").text(css));
-                    if ($("#bp-summary")) $("#bp-summary").append($content.contents());
+                    if (!(conf.noReSpecCSS))
+                        $(doc).find("head link").first().before($("<style/>").text(css));
+                    if ($("#bp-summary")) {
+                        $("#bp-summary").append($content.contents());
+                    }
                 }
                 else if ($("#bp-summary").length) {
                     msg.pub("warn", "Using best practices summary (#bp-summary) but no best practices found.");
@@ -18004,10 +18031,11 @@ define(
                 if (ref.etAl) output += " et al";
                 output += ". ";
             }
-            output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
+            if (ref.href) output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
+            else output += '<cite>' + ref.title + '</cite>. ';
             if (ref.date) output += ref.date + ". ";
             if (ref.status) output += (REF_STATUSES[ref.status] || ref.status) + ". ";
-            output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
+            if (ref.href) output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
             return output;
         };
         var bibref = function (conf, msg) {
@@ -18177,7 +18205,7 @@ define(
 );
 
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNum {\n\ttext-anchor: middle;\n\tfill: grey;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n\tfont-size: 8pt;\n}\n\npath.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\nrect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\nrect.regFieldBoxrsvdp,\nrect.regFieldBoxrsvdz,\nrect.regFieldBoxReserved,\nrect.regFieldRsvd {\n\tfill: white;\n}\n\nline.regFieldBoxInternal {\n\tstroke: black;\n}\n\nline.regFieldBoxUnused {\n\tstroke: grey;\n}\n\ntext.regFieldValueInternal ,\ntext.regFieldNameInternal {\n\ttext-anchor: middle;\n}\n\ntext.regFieldValueUnused,\ntext.regFieldNameUnused {\n\tfill: grey;\n}\n\ntext.regFieldValue,\ntext.regFieldName {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\npath.regBitLine1,\npath.regBitBracket1 {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\npath.regBitLine0 {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\npath.regBitBracket0 {\n    stroke: green;\n    stroke-width: 1px;\n}\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}';});
+define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNum {\n\ttext-anchor: middle;\n\tfill: grey;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n\tfont-size: 8pt;\n}\n\ng line.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\ng line.regBitNumLine_Hide {\n    stroke: none;\n    stroke-width: 1px;\n}\n\ng rect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\ng.regAttr_rsvd rect.regFieldBox,\ng.regAttr_rsvdp rect.regFieldBox,\ng.regAttr_rsvdz rect.regFieldBox,\ng.regAttr_reserved rect.regFieldBox,\ng.regAttr_unused rect.regFieldBox {\n\tfill: white;\n}\n\ng.regFieldExternal line.regFieldBox,\ng.regFieldInternal line.regFieldBox {\n\tstroke: black;\n}\n\ng.regFieldUnused line.regFieldBox {\n\tstroke: grey;\n}\n\ng.regFieldUnused text.regFieldName,\ng.regFieldUnused text.regFieldValue {\n\tfill: grey;\n}\n\ng text.regFieldValue,\ng.regFieldInternal text.regFieldName {\n    text-anchor: middle;\n}\n\ng text.regFieldName,\ng text.regFieldValue {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\ng.regFieldExternal1 path.regBitLine,\ng.regFieldExternal1 path.regBitBracket {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitLine {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitBracket {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text:not(.regBitNum) {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}\n\n@media screen {\n    g.regLink:hover rect.regFieldBox,\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\n    \n    g.regLink:hover line.regBitNumLine,\n    g.regLink:focus line.regBitNumLine,\n    g.regLink:hover line.regBitNumLine_Hide,\n    g.regLink:focus line.regBitNumLine_Hide,\n    g.regLink:hover line.regFieldBox,\n    g.regLink:focus line.regFieldBox,\n    g.regLink:hover path.regBitLine,\n    g.regLink:focus path.regBitLine,\n    g.regLink.regFieldExternal:hover path.regBitBracket,\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\n\n    g.regLink:hover text.regFieldName,\n    g.regLink:focus text.regFieldName,\n    g.regLink.regFieldExternal:hover text.regFieldValue,\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\n\n    g.regLink:hover text.regBitNum,\n    g.regLink:focus text.regBitNum { fill: blue; font-weight: bold; font-size: 9pt; }\n\n}';});
 
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
@@ -19590,6 +19618,7 @@ define(
      "jquery-svg"],
     function(css) {
         
+
         function pget(obj, prop, def) {
             if ((obj !== null) && prop in obj) {
                 return obj[prop];
@@ -19676,8 +19705,8 @@ define(
                     fields[index] = {
                         "msb":    i - 1,
                         "lsb":    lsb,
-                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : "R", // if full name fits, use it, else use "R"
-                        "attr":   unused,   // attribute is name
+                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : unused[0].toUpperCase(), // use full name if if fits, else use 1st char
+                        "attr":   unused.toLowerCase(),   // attribute is name
                         "unused": true,
                         "value":  ""
                     };
@@ -19707,72 +19736,58 @@ define(
                 return cellWidth * (width - i);
             }
 
-            var g = svg.group();
-            var p = svg.createPath();
-            var f;
-            var text;
-            for (i  in fields) {
-                if (fields.hasOwnProperty(i)) {
-                    f = fields[i];
-                    text = svg.text(g, middleOf(f.lsb), cellTop - 4,
-                                    svg.createText().string(f.lsb), {
-                            class_: "regBitNum"
-                        });
-                    if (f.lsb !== f.msb) {
-                        svg.text(g, middleOf(f.msb), cellTop - 4,
-                                 svg.createText().string(f.msb), {
-                                class_: "regBitNum"
-                            });
-                    }
-                    p.move(rightOf(f.lsb), cellTop - text.clientHeight).line(0, cellTop, true);
-                }
-            }
-            p.move(rightOf(width), cellTop / 3).line(0, cellTop, true);
+            var g, p, f, text;
             var nextBitLine = cellTop + cellHeight + 20; //76;
             var bitLineCount = 0;
             var max_text_width = 0;
-            svg.path(g, p, {
-                class_: "regBitNumLine",
-                fill:   "none"
-            });
+
             for (var b = 0; b < width; b++) {
                 for (i in fields) {
                     if (fields.hasOwnProperty(i)) {
                         f = fields[i];
+                        var gclass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
-                            if (f.class !== "") {
-                                svg.change(g, { class_: f.class });
+                            text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+                                            svg.createText().string(f.lsb), {
+                                    class_: "regBitNum"
+                                });
+                            if (f.lsb !== f.msb) {
+                                svg.text(g, middleOf(f.msb), cellTop - 4,
+                                         svg.createText().string(f.msb), {
+                                        class_: "regBitNum"
+                                    });
+                            }
+                            svg.line(g,
+                                     rightOf(f.lsb), cellTop,
+                                     rightOf(f.lsb), cellTop - text.clientHeight,
+                                     { class_: (f.lsb === 0)? "regBitNumLine" : "regBitNumLine_Hide"});
+                            svg.line(g,
+                                     leftOf(f.msb), cellTop,
+                                     leftOf(f.msb), cellTop - text.clientHeight,
+                                     { class_: "regBitNumLine" });
+                            if ("class" in f && typeof f.class === "string") {
+                                gclass = gclass.concat(f.class.split(/\s+/));
+                            }
+                            if (f.unused) {
+                                gclass.push("regFieldUnused");
                             }
                             svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
                                      0, 0, {
-                                    class_: "regFieldBox regFieldBox" + f.attr
+                                    class_: "regFieldBox"
                                 });
                             for (j = f.lsb + 1; j <= f.msb; j++) {
                                 svg.line(g,
                                          rightOf(j), cellTop + cellHeight - cellInternalHeight,
                                          rightOf(j), cellTop + cellHeight,
-                                         {
-                                             class_: "regFieldBoxInternal" +
-                                                         (f.unused ? " regFieldBoxUnused" : "") +
-                                                         " regFieldBoxInternal" + f.attr
-                                         });
+                                         { class_: "regFieldBox" });
                             }
-                            // svg.link doesn't work on Chrome, disable href for now
-                            //var text = svg.text(("href" in f)? svg.link(g, f.href) : g,
-                            //  (leftOf(f.msb) + rightOf(f.lsb)) / 2, 32,
                             text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
                                             svg.createText().string(f.name),
-                                            {
-                                                class_: "regFieldName" +
-                                                            (f.unused ? " regFieldNameUnused" : "") +
-                                                            " regFieldName" + f.attr +
-                                                            " regFieldNameInternal" +
-                                                            " regFieldNameInternal" + f.attr
-                                            });
+                                            { class_: "regFieldName" });
                             if (!f.unused) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
-                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : figName + "-" + f.name));
+                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
                                 svg.change(g, { id: unique_id });
                             }
@@ -19783,34 +19798,21 @@ define(
                                                  cellBitValueTop,
                                                  svg.createText().string(f.value[i]),
                                                  {
-                                                     class_: "regFieldValue" +
-                                                                 (f.unused ? " regFieldValueUnused" : "") +
-                                                                 " regFieldBitValue" +
-                                                                 " regFieldBitValue-" + i.toString() +
-                                                                 ((i === (f.value.length - 1)) ?
-                                                                  " regFieldBitValue-msb" : "") +
-                                                                 " regFieldValue" + f.attr +
-                                                                 " regFieldValueInternal" +
-                                                                 " regFieldValueInternal" + f.attr
+                                                     class_: ("regFieldValue regFieldBitValue" +
+                                                         " regFieldBitValue-" + i.toString() +
+                                                         ((i === (f.value.length - 1)) ?
+                                                          " regFieldBitValue-msb" : ""))
                                                  });
                                     }
                                 } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
                                              (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
                                              svg.createText().string(f.value),
-                                             {
-                                                 class_: "regFieldValue" +
-                                                             (f.unused ? " regFieldValueUnused" : "") +
-                                                             " regFieldValue" + f.attr +
-                                                             " regFieldValueInternal" +
-                                                             " regFieldValueInternal" + f.attr
-                                             });
+                                             { class_: "regFieldValue" });
                                 } else {
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
                                              svg.createText().string("INVALID VALUE"),
-                                             {
-                                                 class_: "svg_error"
-                                             });
+                                             { class_: "svg_error" });
                                 }
                             }
                             var text_width = text.clientWidth;
@@ -19849,51 +19851,48 @@ define(
                                            {
                                                x:      rightOf(-0.5),
                                                y:      nextBitLine,
-                                               class_: "regFieldName" +
-                                                           (f.unused ? " regFieldNameUnused" : "") +
-                                                           " regFieldName" + f.attr +
-                                                           " regFieldName" + (bitLineCount < 2 ? "0" : "1")
+                                               class_: "regFieldName"
                                            });
                                 p = svg.createPath();
-                                p.move(leftOf(f.msb), cellTop + cellHeight)
-                                    .line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true)
-                                    .line(rightOf(f.lsb), cellTop + cellHeight);
+                                p.move(leftOf(f.msb), cellTop + cellHeight);
+                                p.line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true);
+                                p.line(rightOf(f.lsb), cellTop + cellHeight);
                                 svg.path(g, p,
                                          {
-                                             class_: "regBitBracket" +
-                                                         (f.unused ? " regFieldBracketUnused" : "") +
-                                                         " regBitBracket" + (bitLineCount < 2 ? "0" : "1"),
+                                             class_: "regBitBracket",
                                              fill:   "none"
                                          });
                                 p = svg.createPath();
-                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight)
-                                    .vert(nextBitLine - text_height / 4)
-                                    .horiz(rightOf(-0.4));
+                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
+                                p.vert(nextBitLine - text_height / 4);
+                                p.horiz(rightOf(-0.4));
                                 svg.path(g, p,
                                          {
-                                             class_: "regBitLine" +
-                                                         (f.unused ? " regFieldLineUnused" : "") +
-                                                         " regBitLine" + (bitLineCount < 2 ? "0" : "1"),
+                                             class_: "regBitLine",
                                              fill:   "none"
                                          });
+                                gclass[0] = "regFieldExternal";
+                                gclass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
                                 nextBitLine += text_height + 2;
                                 bitLineCount = (bitLineCount + 1) % 4;
                             }
+                            svg.change(g, { class_: gclass.join(" ") });
                         }
                     }
                 }
             }
             svg.configure({
-                              height:  "" + nextBitLine,
-                              width:   "100%",
-                              viewBox: "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine
+                              height:        nextBitLine + "px",
+                              width:         (max_text_width + rightOf(-1)) + "px",
+//                              viewBox:       "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine,
+                              "xmlns:xlink": "http://www.w3.org/1999/xlink"
                           });
         }
 
         return {
             run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
-                if (!conf.noReSpecCSS) {
+                if (!(conf.noReSpecCSS)) {
                     $(doc).find("head link").first().before($("<style></style>").text(css));
                 }
                 var figNum = 1;
@@ -19903,7 +19902,7 @@ define(
                         var $fig = $(this);
                         var json = { };
                         if ($fig.attr("id")) {
-                            json.name = $fig.attr("id");
+                            json.name = $fig.attr("id").replace(/^fig-/, "");
                         } else if ($fig.attr("title")) {
                             json.name = $fig.attr("title");
                         } else if ($("figcaption", this)) {
@@ -19912,16 +19911,16 @@ define(
                             json.name = "unnamed-" + figNum;
                             figNum++;
                         }
+                        json.name = json.name
+                            .replace(/^\s+/, "")
+                            .replace(/\s+$/, "")
+                            .replace(/[^\-.0-9a-z_]+/ig, "-")
+                            .replace(/^-+/, "")
+                            .replace(/-+$/, "")
+                            .replace(/\.$/, ".x")
+                            .replace(/^([^a-z])/i, "x$1")
+                            .replace(/^$/, "generatedID");
                         if (!$fig.attr("id")) {
-                            json.name = json.name
-                                .replace(/^\s+/, "")
-                                .replace(/\s+$/, "")
-                                .replace(/[^\-.0-9a-z_]+/ig, "-")
-                                .replace(/^-+/, "")
-                                .replace(/-+$/, "")
-                                .replace(/\.$/, ".x")
-                                .replace(/^([a-z])/i, "x$1")
-                                .replace(/^$/, "generatedID");
                             $fig.attr("id", "fig-" + json.name);
                         }
                         msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
@@ -19966,17 +19965,17 @@ define(
                             $tbody = $(json.table + " tbody", doc).first();
                             //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
                             $tbody.children().each(function() {
-                                var td = $(this).children();
-                                if (td.length >= 3) {
-                                    var bits = td.eq(0).text();
-                                    var desc = td.eq(1);
-                                    var attr = td.eq(2).text().toLowerCase();
+                                var $td = $(this).children();
+                                if ($td.length >= 3) {
+                                    var bits = $td[0].textContent;
+                                    var desc = $td[1];
+                                    var attr = $td[2].textContent.toLowerCase();
                                     var lsb, msb, match;
                                     lsb = msb = -1;
                                     match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
                                     if (match) {
                                         msb = lsb = Number(match[1]);
-                                        if (match[3] !== null) {
+                                        if ((typeof(match[3]) === "string") && (match[3] !== "")) {
                                             lsb = Number(match[3]);
                                         }
                                         if (lsb > msb) {
@@ -19984,18 +19983,20 @@ define(
                                             lsb = Number(match[1]);
                                         }
                                     }
-                                    var fieldName = $("code:first, dfn:first", desc);
-                                    if (fieldName.length === 0) {
-                                        fieldName = /^\s*(\w+)/.exec(desc.text())[1];
+                                    var fieldName;
+                                    var $dfn = $("code:first, dfn:first", desc);
+                                    if ($dfn.length === 0) {
+                                        fieldName = /^\s*(\w+)/.exec(desc.textContent)[1];
                                     } else {
-                                        fieldName = fieldName.first().text().trim();
+                                        fieldName = $dfn.first().text().trim();
                                     }
-                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|hwinit|rsvdp|rsvdz|reserved|other)$/i;
+                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|unused|other)$/i;
                                     if (!validAttr.test(attr)) {
                                         attr = "other";
                                     }
-                                    var unusedAttr = /^(rsvdp|rsvdz)$/i;
+                                    var unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|unused)$/i;
                                     var unused = !!unusedAttr.test(attr);
+//                                    console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  unused=" + unused);
                                     parsed.fields[fieldName] = {
                                         msb:    msb,
                                         lsb:    lsb,
@@ -20004,9 +20005,9 @@ define(
                                     };
                                 }
                             });
-                            console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                            //console.log("parsed=" + JSON.stringify(parsed, null, 2));
                             $.extend(true, json, parsed);
-                            console.log("json=" + JSON.stringify(json, null, 2));
+//                            console.log("json=" + JSON.stringify(json, null, 2));
                         }
 
                         if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") && json.hasOwnProperty("register")) {
@@ -20060,9 +20061,9 @@ define(
                                                        }
                                                    }
                                                }
-                                               console.log("parsed=" + JSON.stringify(parsed, null, 2));
+                                               //console.log("parsed=" + JSON.stringify(parsed, null, 2));
                                                $.extend(true, json, parsed);
-                                               console.log("json=" + JSON.stringify(json, null, 2));
+                                               //console.log("json=" + JSON.stringify(json, null, 2));
                                            }
                                        },
                                        error:    function(xhr, status, error) {
@@ -20110,80 +20111,224 @@ define(
 // Handles the processing and linking of <dfn> and <a> elements.
 define(
     'core/dfn',[],
-    function () {
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg", "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
+    function() {
+        
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
+                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
         return {
-            run:    function (conf, doc, cb, msg) {
+            run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
-                if (!conf.definitionMap) conf.definitionMap = {};
-                if (!conf.definitionHTML) conf.definitionHTML = {};
-                $("dfn", doc).each(function () {
+                if (!conf.definitionMap) {
+                    conf.definitionMap = {};
+                }
+                if (!conf.definitionHTML) {
+                    conf.definitionHTML = {};
+                }
+
+                //console.log("\n\n\n\n");
+
+                $("table[id] dfn.field", doc).each(function() {
+                    var $dfn = $(this);
+                    var base_id = "field-" + $dfn.parents("table[id]")[0].id.replace(/^tbl-/, "") + "-";
+                    var title = $dfn.dfnTitle();
+                    //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
+                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
+
+                    if (conf.definitionMap[base_id + title[0]]) {
+                        msg.pub("error", "Duplicate definition '" + base_id + title[0] + "'");
+                        $dfn.append("<span class=\"respec-error\"> Definition '" + base_id + title[0] + "' is defined more than once </span>");
+                    }
+                    var id = $dfn.makeID(null, base_id + title[0]);
+                    //console.log("<dfn class=\"field\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
+                    conf.definitionMap[id] = id;
+                    conf.definitionHTML[id] = $dfn.html();
+                    for (i = 0; i < title.length; i++) {
+                        //console.log("<dfn" + i + " class=\"field\" title=\"" + base_id + title[i] + "\">" + $dfn.html() + "</dfn>");
+                        conf.definitionMap[base_id + title[i]] = conf.definitionMap[id];
+                        conf.definitionHTML[base_id + title[i]] = conf.definitionHTML[id];
+                    }
+
+                });
+
+                //console.log("\n\n\n\n");
+
+                $("dfn", doc).each(function() {
+                    var $dfn = $(this);
+                    if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
+                        return;
+                    }
                     var tag = dfnClass[0];  // default "dfn"
                     for (var i = 1; i < dfnClass.length; i++) {
-                        if ($(this).hasClass(dfnClass[i])) tag = dfnClass[i];
+                        if ($dfn.hasClass(dfnClass[i])) {
+                            tag = dfnClass[i];
+                        }
                     }
-                    var title = $(this).dfnTitle();
-                    if (conf.definitionMap[tag + "-" + title]) {
-                        msg.pub("error", "Duplicate definition '" + tag + "-" + title + "'");
-                        $(this).append("<span class=\"respec-error\"> Definition '" + tag + "-" + title + "' is defined more than once </span>");
+                    var title = $dfn.dfnTitle();
+                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
+                    if (conf.definitionMap[tag + "-" + title[0]]) {
+                        msg.pub("error", "Duplicate definition '" + tag + "-" + title[0] + "'");
+                        $dfn.append("<span class=\"respec-error\"> Definition '" + tag + "-" + title[0] + "' is defined more than once </span>");
                     }
-                    conf.definitionMap[tag + "-" + title] = $(this).makeID(tag, title);
-                    conf.definitionHTML[tag + "-" + title] = $(this).html();
+                    var id = $dfn.makeID(tag, title[0]);
+                    //console.log("<dfn class=\"" + tag + "\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
+                    conf.definitionMap[id] = id;
+                    conf.definitionHTML[id] = $dfn.html();
+                    for (i = 0; i < title.length; i++) {
+                        //console.log("<dfn" + i + " class=\"" + tag + "\" title=\"" + tag + "-" + title[i] + "\">" + $dfn.html() + "</dfn>");
+                        conf.definitionMap[tag + "-" + title[i]] = conf.definitionMap[id];
+                        conf.definitionHTML[tag + "-" + title[i]] = conf.definitionHTML[id];
+                    }
                 });
-                $("div.hasSVG g[id]", doc).each(function () {
-                    //console.log("svg g[id] matches " + this.outerHTML);
+
+                //console.log("\n\n\n\n");
+
+                $("div.hasSVG g[id]", doc).each(function() {
                     var $text = $("text.regFieldName", this).first();
                     if ($text) {
                         var title = $text.dfnTitle();
-                        if (!conf.definitionMap["regpict-" + title]) {
-                            conf.definitionMap["regpict-" + title] = $(this).attr("id");
-                            conf.definitionHTML["regpict-" + title] = $text.text();
+                        var id = $(this).attr("id");
+                        //console.log("<dfn class=\"regpict\" id=\"" + id + "\">" + $(this).text() + "</dfn>");
+                        conf.definitionMap[id] = id;
+                        conf.definitionHTML[id] = $text.text();
+                        var found = null;
+                        for (i = 0; i < title.length; i++) {
+                            //console.log("<dfn" + i + " class=\"regpict\" title=\"regpict-" + title[i] + "\">" + $(this).text() + "</dfn>");
+                            conf.definitionMap["regpict-" + title[i]] = id;
+                            conf.definitionHTML["regpict-" + title[i]] = conf.definitionHTML[id];
+                            if (conf.definitionMap["field-" + title[i]]) {
+                                found = conf.definitionMap["field-" + title[i]];
+                            }
+                        }
+                        id = id.replace(/^regpict-/, "field-");
+                        if (conf.definitionMap[id]) {
+                            found = conf.definitionMap[id];
+                        }
+                        if (found) {
+                            var $rect = $("rect.regFieldBox", this).first();
+                            //console.log("Map[field-" + title + "]=" + conf.definitionMap["field-" + title]);
+                            //console.log(" $rect.length= " + $rect.length);
+                            //console.log(" $rect[0] is " + $rect[0]);
+                            //console.log(" wrapping field-" + title);
+                            var a = doc.createElementNS("http://www.w3.org/2000/svg", "a");
+                            a.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
+//                            a.setAttribute("class", "regLink");
+//                            a.setAttribute("target", "_parent");
+                            $rect.wrap(a);
+//                            $rect[0].setAttribute("class", $rect[0].getAttribute("class") + " regLink");
+//                            $rect[0].setAttributeNS("http://www.w3.org/2000/svg", "class",
+//                                                    $rect[0].getAttributeNS("http://www.w3.org/2000/svg", "class") + " regLink");
+                            var b = doc.createElementNS("http://www.w3.org/2000/svg", "a");
+                            b.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
+//                            b.setAttribute("class", "regLink");
+//                            b.setAttribute("target", "_parent");
+//                            b.setAttributeNS("http://www.w3.org/1999/xhtml", "class", "field internalDFN");
+//                            b.setAttributeNS("http://www.w3.org/2000/svg", "class", "field internalDFN");
+                            $text.wrap(b);
+//                            $text[0].setAttribute("class", $text[0].getAttribute("class") + " regLink");
                         }
                     }
                 });
-                $("a:not([href])", doc).each(function () {
-                    var $ant = $(this);
-                    if ($ant.hasClass("externalDFN")) return;
-                    var title = $ant.dfnTitle();
-                    var tag = null;
-                    for (var i = 0; i < dfnClass.length; i++) {
-                        if (conf.definitionMap[dfnClass[i] + "-" + title]) {
-                            if ($ant.hasClass(dfnClass[i])) {
-                                tag = dfnClass[i];
-                            }
-                            else if (!(conf.definitionMap[dfnClass[i] + "-" + title] instanceof Function)) {
-                                if (tag === null) {
-                                    tag = dfnClass[i];
-                                }
-                                else if (!$ant.hasClass(tag)) {
-                                    tag = tag + "-" + dfnClass[i];
-                                }
-                            }
-                        }
-                    }
-                    if (tag !== null) {
-                        if (conf.definitionMap[tag + "-" + title]) {
-                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title]).addClass("internalDFN").addClass(tag);
-                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title"))
-                                $ant.html(conf.definitionHTML[tag + "-" + title]);
-                        } else {
-                            var temp = tag.split("-")[0] + "-" + title;
-                            $ant.attr("href", "#" + temp);
-                            temp = "Ambiguous reference to '" + tag + "-" + title + "', resolved as '" + temp + "'";
-                            msg.pub("warn", temp);
-                            $ant.append("<span class=\"respec-error\"> " + temp + " </span>");
-                        }
 
-                    }
-                    else {
-                        // ignore WebIDL
-                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                //console.log("\n\n\n\n");
+
+                $("dfn.field", doc).each(function() {
+                    var id = this.id.replace(/^field-/,"#regpict-");
+                    if (id !== this.id) {
+                        //console.log("field-->regpict: looking for " + this.id + " --> " + id);
+                        var $regpict = $(id, doc);
+                        if ($regpict.length > 0) {
+                            $(this).wrapInner("<a href=\"" + id + "\"></a>");
+                            //console.log("field-->regpict: <dfn class=\"" + this["class"] +
+                            //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
+                            //console.log("");
                         }
-                        $ant.replaceWith($ant.contents());
                     }
                 });
+
+                //console.log("\n\n\n\n");
+
+                $("a:not([href])", doc)
+                    .filter(
+                    function() {
+                        return (this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href") === null);
+                    })
+                    .each(
+                    function() {
+                        //console.log("a:not([href]): " + this.tagName + "  " + this.namespaceURI + "  " + this.outerHTML);
+                        var $ant = $(this);
+                        if ($ant.hasClass("externalDFN")) {
+                            return;
+                        }
+                        /*var hrefNode = this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
+                         if (hrefNode) {
+                         console.log("  getAttributeNS() localName=" + hrefNode.localName +
+                         " nodeName=" + hrefNode.nodeName +
+                         " nodeType=" + hrefNode.nodeType +
+                         " namespaceURI=" + hrefNode.namespaceURI);
+                         return;
+                         }*/
+                        var title = $ant.dfnTitle()[0];
+                        var tag = null;
+                        var temp = $ant.attr("class");
+                        var i;
+                        if (temp) {
+                            //console.log("class=" + temp);
+                            temp = temp.split(/\s+/);
+                            for (i = 0; i < temp.length; i++) {
+                                //console.log("checking " + temp[i] + "-" + title);
+                                if (conf.definitionMap[temp[i] + "-" + title]) {
+                                    tag = temp[i];
+                                    //console.log("found " + temp[i] + "-" + title);
+                                }
+                            }
+                        }
+                        if (tag === null) {
+                            for (i = 0; i < dfnClass.length; i++) {
+                                if (conf.definitionMap[dfnClass[i] + "-" + title]) {
+                                    if (tag === null) {
+                                        tag = dfnClass[i];
+                                    } else {
+                                        tag = tag + "-" + dfnClass[i];
+                                    }
+                                }
+                            }
+                        }
+                        if (tag !== null) {
+                            //console.log("tag= " + tag);
+                            if (tag === "regpict-field" || tag === "field-regpict") {
+                                tag = "field";
+                            }
+                            //console.log("tag= " + tag);
+                            var warn = null;
+                            if (tag.match(/-/)) {
+                                warn = "Ambiguous reference to '(" + tag + ")-" + title + "'";
+                                tag = tag.split("-")[0];
+                                warn = warn + ", resolved as '" + tag + "'";
+                                msg.pub("warn", warn);
+                            }
+                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title])
+                                .addClass("internalDFN")
+                                .addClass(tag);
+                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
+                                $ant.html(conf.definitionHTML[tag + "-" + title]);
+                            }
+                            if (warn !== null) {
+                                $ant.append("<span class=\"respec-error\"> " + warn + " </span>");
+                            }
+                            //console.log("result: " + $ant[0].outerHTML);
+                        }
+                        else {
+                            // ignore WebIDL
+                            if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
+                                msg.pub("warn",
+                                        "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                            }
+                            $ant.replaceWith($ant.contents());
+                        }
+                    }
+                )
+                ;
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
                     var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
@@ -20193,17 +20338,19 @@ define(
                         var d = keys[i];
                         var item = d.split(/-/);
                         var kind = item.shift();
-                        var id=conf.definitionMap[d];
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                        var id = conf.definitionMap[d];
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"" + "#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
                 msg.pub("end", "core/dfn");
                 cb();
             }
-        };
+        }
+            ;
     }
-);
+)
+;
 
 
 // Module core/fix-headers
@@ -20440,7 +20587,7 @@ define(
                             var resourceID = $item.attr('id');
 
                             var $par = $item.parent();
-                            if ($par.is("section")) {
+                            if ($par.is("section") || $par.is("div")) {
                                 if (!$par.hasClass("introductory") && !$par.hasClass("nolink")) {
                                     resourceID = $par.attr('id') ;
                                 } else {
