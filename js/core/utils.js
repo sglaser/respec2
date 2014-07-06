@@ -42,7 +42,11 @@ define(
             } else {
                 title = this.text();
             }
-            return title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            title = title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            console.log("pre-title= \"" + title + "\"");
+            title = title.split(/[\|]+/);
+            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
+            return title;
         };
 
 

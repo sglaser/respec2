@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>NV Refman Example</title>
     <script class="remove">
-//    <script>
+        //    <script>
         var respecConfig = {
             specStatus:              "WD",
             thisVersion:             "http://sglaser.github.io/respec/examples/test-nv-ref.html",
@@ -16,7 +16,7 @@
             bugTracker:              {
                 new: "http://nvbugs"
             },
-//            cssOverride: "unofficial-nvidia.css",
+//            cssOverride: "../stylesheets/unofficial-nvidia.css",
 //            logoOverride: "NVLogo_2D.svg",
             trace:                   true,
             includePermalinks:       true,
@@ -28,11 +28,11 @@
 //            showPreviousVersion: true
         };
     </script>
-    <!--<script src='../js/require.js' data-main='../js/profile-nvidia-common' async class='remove'></script>-->
+    <script src='../js/require.js' data-main='../js/profile-nvidia-common' async class='remove'></script>
     <!--<script src='../js/require.js' data-main='../js/profile-nvidia-common'></script>-->
     <!--<script src="respec-debug.js" async="async" class="remove"></script>-->
     <!--<script src="respec-debug.js"></script>-->
-    <script src='http://sglaser.github.io/respec/builds/respec-nvidia-common.js' async class='remove'></script>
+    <!--<script src='http://sglaser.github.io/respec/builds/respec-nvidia-common.js' async class='remove'></script>-->
 </head>
 
 <body>
@@ -41,8 +41,13 @@
         This is a very simple Abstract.
     </p>
 </section>
+<section class="introductory" id="sotd">
+    <p>
+        This is a custom Status of this Document Paragraph.
+    </p>
+</section>
 <section>
-    <h2>JSON Example Register Figure</h2>
+<h2>JSON Example Register Figure</h2>
         <pre class="example">
         for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields
 
@@ -136,30 +141,30 @@
 
     </pre>
 
-    <figure class="register">
+<figure class="register">
 
-        <!-- for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields -->
+    <!-- for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields -->
 
-        <!-- any nested div.json, pre.json, or span.json within figure.register is parsed for json content -->
-        <!-- the width argument describes the register width (defaults to 32 bits) -->
-        <!-- the unused item is name used for bit fields that are not otherwise defined (defaults "RsvdP" -->
-        <!-- var width               = Number(pget(reg, "width", 32));-->
-        <!-- var unused              = String(pget(reg, "unused", "RsvdP"));-->
-        <!-- var defaultAttr         = String(pget(reg, "defaultAttr", "other"));-->
-        <!-- var cellWidth           = Number(pget(reg, "cellWidth", 16));-->
-        <!-- var cellHeight          = Number(pget(reg, "cellHeight", 32));-->
-        <!-- var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));-->
-        <!-- var bracketHeight       = Number(pget(reg, "bracketHeight", 4));-->
-        <!-- var cellTop             = Number(pget(reg, "cellTop", 16));-->
-        <!-- var figName             = String(pget(reg, "name", "???"));-->
-        <!-- var fields              = pget(reg, "fields", [ ]); // default to empty register-->
+    <!-- any nested div.json, pre.json, or span.json within figure.register is parsed for json content -->
+    <!-- the width argument describes the register width (defaults to 32 bits) -->
+    <!-- the unused item is name used for bit fields that are not otherwise defined (defaults "RsvdP" -->
+    <!-- var width               = Number(pget(reg, "width", 32));-->
+    <!-- var unused              = String(pget(reg, "unused", "RsvdP"));-->
+    <!-- var defaultAttr         = String(pget(reg, "defaultAttr", "other"));-->
+    <!-- var cellWidth           = Number(pget(reg, "cellWidth", 16));-->
+    <!-- var cellHeight          = Number(pget(reg, "cellHeight", 32));-->
+    <!-- var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));-->
+    <!-- var bracketHeight       = Number(pget(reg, "bracketHeight", 4));-->
+    <!-- var cellTop             = Number(pget(reg, "cellTop", 16));-->
+    <!-- var figName             = String(pget(reg, "name", "???"));-->
+    <!-- var fields              = pget(reg, "fields", [ ]); // default to empty register-->
 
-        <!-- Fields are in arbitrary order. Items in in a field are: -->
-        <!--  name      Name of the field -->
-        <!--  msb       bit number of the most significant bit (or only bit) -->
-        <!--  lsb       bit number of the least significant bit (or only bit) -->
-        <!--  unused    true if field is considered "unused" -->
-        <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
+    <!-- Fields are in arbitrary order. Items in in a field are: -->
+    <!--  name      Name of the field -->
+    <!--  msb       bit number of the most significant bit (or only bit) -->
+    <!--  lsb       bit number of the least significant bit (or only bit) -->
+    <!--  unused    true if field is considered "unused" -->
+    <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
             <pre class="json">            
             {
                 "width":    48,
@@ -197,8 +202,7 @@
                             },
                         "bit13":
                             {
-                                "lsb":  13,
-                                "href": "field-bit13"
+                                "lsb":  13
                             },
                         "bit 20:14":
                             {
@@ -215,28 +219,44 @@
                     }
             }
         </pre>
-        <figcaption>Graph for JSON Defined Register Example</figcaption>
-    </figure>
-    <p>These are references to fields that were defined as terms in this JSON example.</p>
-    <ul>
-        <li><a>field 4:0</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;field 4:0&lt;/a&gt;</li>
-        <li><a>Very long name that will never fit</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;Very long name that will never fit&lt;/a&gt;
-        </li>
-        <li><a>bit9</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit9&lt;/a&gt;</li>
-        <li><a>bit10</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit10&lt;/a&gt;</li>
-        <li><a>bit11</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit11&lt;/a&gt;</li>
-        <li><a>bit12</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit12&lt;/a&gt;</li>
-        <li><a>bit13</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit13&lt;/a&gt;</li>
-        <li><a class="field">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit13&lt;/a&gt;</li>
-        <li><a class="regpict">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="regpict"&gt;bit13&lt;/a&gt;</li>
-        <li>
-            <a href="#regpict-json-register-bit13">bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#regpict-json-register-bit13"&gt;bit 13&lt;/a&gt;
-        </li>
-        <li><dfn class="field">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;bit13&lt;/dfn&gt;
-            - this is the definition for <a class="field">bit13</a></li>
-        <li><dfn class="field">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;bit13&lt;/dfn&gt;
-            - this is a <b>duplicate</b> definition for <a class="field">bit13</a></li>
-    </ul>
+    <figcaption>JSON Defined Register Example</figcaption>
+</figure>
+<p>These are references to fields that were defined as terms in this JSON example.</p>
+<ul>
+    <li><a>field 4:0</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;field 4:0&lt;/a&gt;</li>
+    <li><a>Very long name that will never fit</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;Very long name that will never fit&lt;/a&gt;
+    </li>
+    <li><a>bit9</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit9&lt;/a&gt;</li>
+    <li><a>bit10</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit10&lt;/a&gt;</li>
+    <li><a>bit11</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit11&lt;/a&gt;</li>
+    <li><a>bit12</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit12&lt;/a&gt;</li>
+    <li><a class="field">bit 20:14</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit 20:14&lt;/a&gt;</li>
+    <li><a class="regpict">bit 20:14</a>&nbsp;&nbsp;&nbsp;&lt;a class="regpict"&gt;bit 20:14&lt;/a&gt;</li>
+    <li><dfn class="field" title="bit 20:14|json defined register example bit 20:14">bit 20:14</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" title="bit 20:14|json define register example bit 20:14"&gt;bit 20:14&lt;/dfn&gt;</li>
+    <li><a>bit13</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit13&lt;/a&gt;</li>
+    <li><a class="field">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit13&lt;/a&gt;</li>
+    <li><a class="regpict">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="regpict"&gt;bit13&lt;/a&gt;</li>
+    <li>
+        <a href="#regpict-json-defined-register-example-bit13">bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#regpict-json-defined-register-example-bit13"&gt;bit 13&lt;/a&gt;
+    </li>
+    <li>
+        <dfn class="field">JSON Defined Register Example bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;JSON Defined Register Example bit13&lt;/dfn&gt;
+        <ul>
+            <li>this is the definition for <a class="field">JSON Defined Register Example bit13</a></li>
+            <li>it should be referenced by <a class="regpict">JSON Defined Register Example bit13</a></li>
+        </ul>
+    </li>
+    <li>
+        <dfn class="field" id="field-json-defined-register-example-byte">JSON:byte</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" id="field-json-defined-register-example-byte"&gt;JSON Defined Register Example byte&lt;/dfn&gt;
+        <ul>
+            <li>this is the definition for <a class="field">JSON:byte</a></li>
+            <li>it should be referenced by <a class="regpict">byte</a></li>
+        </ul>
+    </li>
+    <li>
+        <dfn class="field" title="JSON Defined Register Example bit13-x">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" title=""JSON Defined Register Example bit13"&gt;bit13&lt;/dfn&gt;
+        - this is a <b>duplicate</b> definition for <a class="field">bit13</a></li>
+</ul>
 
 </section>
 
@@ -244,19 +264,18 @@
     <h2>Intel PTE</h2>
     <pre data-include="intel.ref" data-include-filter="PTE"></pre>
     <style>
-        .regpict-highlight rect {
+        .regpict-highlight rect.regFieldBox {
             fill: lightgrey;
         }
-        .regpict-highlight text {
+
+        .regpict-highlight text:not(.regBitNum) {
             fill: blue;
-        }
-        .regpict-highlight path {
-            stroke: blue;
         }
     </style>
     <figure class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-unused="reserved"
             data-json='{ "fields": { "INTEL_PTE_A":  { "class": "regpict-highlight", "value": "0" },
-                                     "INTEL_PTE_XD": { "class": "regpict-highlight", "value": "1" } } }'>
+                                     "INTEL_PTE_XD": { "class": "regpict-highlight", "value": "1" },
+                                     "INTEL_PTE_RESERVED_HAW":  { "class": "regpict-highlight" } } }'>
         <figcaption>Intel PTE Example</figcaption>
     </figure>
 
@@ -266,16 +285,14 @@
                 .regpict-highlight rect {
                     fill: lightgrey;
                 }
-                .regpict-highlight text {
+                .regpict-highlight text:not(.regBitNum) {
                     fill: blue;
-                }
-                .regpict-highlight path {
-                    stroke: blue;
                 }
             &lt;/style&gt;
             &lt;figure class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-unused="reserved"
                         data-json='{ "fields": { "INTEL_PTE_A":  { "class": "regpict-highlight", "value": "0" },
-                                                 "INTEL_PTE_XD": { "class": "regpict-highlight", "value": "1" } } }'&gt;
+                                                 "INTEL_PTE_XD": { "class": "regpict-highlight", "value": "1" },
+                                                 "INTEL_PTE_RESERVED_HAW":  { "class": "regpict-highlight" } } }'&gt;
                 &lt;figcaption&gt;Intel PTE Example&lt;/figcaption&gt;
             &lt;/figure&gt;
         </pre>

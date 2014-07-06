@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en">
+
+<head lang="en">
+    <meta charset="utf-8">
+    <title>NV Refman Example</title>
+
+
+    <!--<script src='../js/require.js' data-main='../js/profile-nvidia-common'></script>-->
+    <!--<script src="respec-debug.js" async="async" class="remove"></script>-->
+    <!--<script src="respec-debug.js"></script>-->
+    <!--<script src='http://sglaser.github.io/respec/builds/respec-nvidia-common.js' async class='remove'></script>-->
+    <style>
+        /*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+        /* --- INLINES --- */
+        em.rfc2119 {
+            text-transform: lowercase;
+            font-variant: small-caps;
+            font-style: normal;
+            font-size: larger;
+            color: #900;
+        }
+        h1 abbr,
+        h2 abbr,
+        h3 abbr,
+        h4 abbr,
+        h5 abbr,
+        h6 abbr,
+        a abbr {
+            border: none;
+        }
+        dfn {
+            font-weight: bold;
+        }
+        a.internalDFN {
+            color: inherit;
+            border-bottom: 1px solid #99c;
+            text-decoration: none;
+        }
+        a.externalDFN {
+            color: inherit;
+            border-bottom: 1px dotted #ccc;
+            text-decoration: none;
+        }
+        a.bibref {
+            text-decoration: none;
+        }
+        cite .bibref {
+            font-style: normal;
+        }
+        code {
+            color: #C83500;
+        }
+        /* --- TOC --- */
+        .toc a,
+        .tof a,
+        .tot a {
+            text-decoration: none;
+        }
+        .tocline a .secno,
+        .tofline a .figno,
+        .totline a .tblno {
+            color: #000;
+        }
+        ul.toc > li.tocline,
+        ul.tof > li.tofline,
+        ul.tot > li.totline {
+            list-style: none outside none;
+        }
+        .caption {
+            margin-top: 0.5em;
+            font-style: italic;
+        }
+        /* --- TABLE --- */
+        table.simple {
+            border-spacing: 0;
+            border-collapse: collapse;
+            border-bottom: 3px solid #0060A9;
+            /* #38197a; pcisig purple */
+            /* respec orig #005a9c;*/
+        }
+        .simple th {
+            background: #0060A9;
+            /* #38197a; /*#005a9c;*/
+            color: #fff;
+            padding: 3px 5px;
+            text-align: left;
+        }
+        .simple th[scope="row"] {
+            background: inherit;
+            color: inherit;
+            border-top: 1px solid #ddd;
+        }
+        .simple td {
+            padding: 3px 10px;
+            border-top: 1px solid #ddd;
+        }
+        .simple tr:nth-child(even) {
+            background: #E5F4FF;
+            /* ß#F6F1FE; /*#f0f6ff;*/
+        }
+        /* --- DL --- */
+        .section dd > p:first-child {
+            margin-top: 0;
+        }
+        .section dd > p:last-child {
+            margin-bottom: 0;
+        }
+        .section dd {
+            margin-bottom: 1em;
+        }
+        .section dl.attrs dd,
+        .section dl.eldef dd {
+            margin-bottom: 0;
+        }
+        span.respec-error {
+            color: red;
+            font-size: 12pt;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        @media print {
+            .removeOnSave {
+                display: none;
+            }
+        }
+    </style>
+    <style>
+        /* --- EXAMPLES --- */
+        div.example-title {
+            min-width: 7.5em;
+            color: #b9ab2d;
+        }
+        div.example-title span {
+            text-transform: uppercase;
+        }
+        aside.example,
+        div.example,
+        div.illegal-example {
+            padding: 0.5em;
+            margin: 1em 0;
+            position: relative;
+            clear: both;
+        }
+        div.illegal-example {
+            color: red
+        }
+        div.illegal-example p {
+            color: black
+        }
+        aside.example,
+        div.example {
+            padding: .5em;
+            border-left-width: .5em;
+            border-left-style: solid;
+            border-color: #e0cb52;
+            background: #fcfaee;
+        }
+        aside.example div.example {
+            border-left-width: .1em;
+            border-color: #999;
+            background: #fff;
+        }
+        aside.example div.example div.example-title {
+            color: #999;
+        }
+    </style>
+    <style>
+        /* --- REGPICT --- */
+        text.regBitNum {
+            text-anchor: middle;
+            fill: grey;
+            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+            font-size: 8pt;
+        }
+        g line.regBitNumLine {
+            stroke: grey;
+            stroke-width: 1px;
+        }
+        g line.regBitNumLine_Hide {
+            stroke: none;
+            stroke-width: 1px;
+        }
+        g rect.regFieldBox {
+            fill: white;
+            stroke: black;
+            stroke-width: 1.5px;
+        }
+        g.regAttr_rsvd rect.regFieldBox,
+        g.regAttr_rsvdp rect.regFieldBox,
+        g.regAttr_rsvdz rect.regFieldBox,
+        g.regAttr_reserved rect.regFieldBox,
+        g.regAttr_unused rect.regFieldBox {
+            fill: white;
+        }
+        g.regFieldExternal line.regFieldBox,
+        g.regFieldInternal line.regFieldBox {
+            stroke: black;
+        }
+        g.regFieldUnused line.regFieldBox {
+            stroke: grey;
+        }
+        g.regFieldUnused text.regFieldName,
+        g.regFieldUnused text.regFieldValue {
+            fill: grey;
+        }
+        g text.regFieldValue,
+        g.regFieldInternal text.regFieldName {
+            text-anchor: middle;
+        }
+        g text.regFieldName,
+        g text.regFieldValue {
+            font-size: 11pt;
+            font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+        }
+        g.regFieldExternal1 path.regBitLine,
+        g.regFieldExternal1 path.regBitBracket {
+            stroke: black;
+            stroke-width: 1px;
+        }
+        g.regFieldExternal0 path.regBitLine {
+            stroke: green;
+            stroke-dasharray: 4, 2;
+            stroke-width: 1px;
+        }
+        g.regFieldExternal0 path.regBitBracket {
+            stroke: green;
+            stroke-width: 1px;
+        }
+        svg text.regFieldValue {
+            fill: #0060A9;
+            font-family: monospace;
+        }
+        svg.regpict {
+            color: green;
+        }
+        svg *.svg_error text:not(.regBitNum) {
+            fill: red;
+            font-size: 12pt;
+            font-weight: bold;
+            font-style: normal;
+            font-family: monospace;
+        }
+        figure div.json,
+        figure pre.json {
+            color: rgb(0, 90, 156);
+            display: inherit;
+        }
+        @media screen {
+            g.regLink:hover rect.regFieldBox,
+            g.regLink:focus rect.regFieldBox {
+                fill: #ffa;
+                stroke: blue;
+            }
+            g.regLink:hover line.regBitNumLine,
+            g.regLink:focus line.regBitNumLine,
+            g.regLink:hover line.regBitNumLine_Hide,
+            g.regLink:focus line.regBitNumLine_Hide,
+            g.regLink:hover line.regFieldBox,
+            g.regLink:focus line.regFieldBox,
+            g.regLink:hover path.regBitLine,
+            g.regLink:focus path.regBitLine,
+            g.regLink.regFieldExternal:hover path.regBitBracket,
+            g.regLink.regFieldExternal:focus path.regBitBracket {
+                stroke: blue;
+            }
+            g.regLink:hover text.regFieldName,
+            g.regLink:focus text.regFieldName,
+            g.regLink.regFieldExternal:hover text.regFieldValue,
+            g.regLink.regFieldExternal:focus text.regFieldValue {
+                fill: blue;
+                font-weight: bold;
+            }
+            g.regLink:hover text.regBitNum,
+            g.regLink:focus text.regBitNum {
+                fill: blue;
+                font-weight: bold;
+                font-size: 9pt;
+            }
+        }
+    </style>
+    <style>
+        /* --- PERMALINKS --- */
+        .permalink {
+            width: 1px;
+            height: 1px;
+            overflow: visible;
+            font-size: 10pt;
+            font-style: normal;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        span.permalink > a,
+        span.permalink > a:link,
+        span.permalink > a:visited,
+        span.permalink > a:hover,
+        span.permalink > a:focus,
+        span.permalink > a:active {
+            background: transparent !important;
+            text-decoration: none;
+            font-weight: normal;
+            color: grey !important;
+        }
+        .permalink abbr {
+            border: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://sglaser.github.io/respec/stylesheets/unofficial-nvidia.css">
+</head>
+
+<body class="h-entry" role="document" id="respecDocument">
+    <div class="head" role="contentinfo" id="respecHeader">
+
+        <p>
+            <a href="https://www.nvidia.com/">
+
+                <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg">
+
+            </a>
+        </p>
+
+
+        <div id="respec-banner">
+            <span id="respec-banner-status">Working Draft</span>&nbsp;—&nbsp;
+
+            <span id="respec-banner-maturity">06 July 2014</span>&nbsp;—&nbsp;
+
+            <span id="respec-banner-spec-name">NV Refman Example</span>&nbsp;&nbsp;&nbsp;
+        </div>
+
+        <h1 class="title p-name" id="title" property="dcterms:title">NV Refman Example</h1>
+
+
+        <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-07-06T11:50:10.000Z" class="nolink" id="x06-july-2014">
+        <time class="dt-published" datetime="2014-07-06">06 July 2014</time>
+    </h2>
+
+        <dl>
+
+            <dt>This version:</dt>
+            <dd>
+                <a class="u-url" href="http://sglaser.github.io/respec/examples/test-nv-ref.html">http://sglaser.github.io/respec/examples/test-nv-ref.html</a>
+            </dd>
+
+
+            <dt>Latest published version:</dt>
+            <dd>
+                <a class="u-url" href="http://sglaser.github.io/respec/examples/test-nv-ref.html">http://sglaser.github.io/respec/examples/test-nv-ref.html</a>
+            </dd>
+
+
+            <dt>Latest editor's draft:</dt>
+            <dd><a class="u-url" href="ed-draft-uri">ed-draft-uri</a>
+            </dd>
+
+
+            <dt>Test suite:</dt>
+            <dd><a class="u-url" href="test-suite-uri">test-suite-uri</a>
+            </dd>
+
+
+            <dt>Implementation report:</dt>
+            <dd><a class="u-url" href="implementation-report-uri">implementation-report-uri</a>
+            </dd>
+
+
+            <dt>Bug tracker:</dt>
+            <dd><a href="http://nvbugs">file a bug</a>
+            </dd>
+
+
+            <dt>Previous version:</dt>
+            <dd><a class="u-url" rel="dcterms:replaces" href="previous-version">previous-version</a>
+            </dd>
+
+
+        </dl>
+
+
+        <p class="copyright">
+            Copyright © 2014
+            <a href="https://www.nvidia.com/">Nvidia, Inc</a>
+            <sup>®</sup>
+        </p>
+
+
+        <hr>
+    </div>
+    <section class="introductory" id="abstract" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#abstract" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2>
+
+        <p>
+            This is a very simple Abstract.
+        </p>
+    </section>
+    <section id="sotd" class="introductory" typeof="bibo:Chapter" resource="#sotd" rel="bibo:Chapter">
+        <h2 aria-level="1" role="heading" id="h2_sotd">Status of This Document</h2>
+
+
+        <p>
+            This document is intended to become a part of the specification for an Nvidia product. This particular document is a <strong>Working Draft</strong> document.
+        </p>
+
+
+        <p>
+            Comments should be filed using NVBugs: &lt;a href='http://nvbugs'&gt;file a bug&lt;/a&gt;.
+        </p>
+
+
+        <p>
+            This is a custom Status of this Document Paragraph.
+        </p>
+
+
+    </section>
+    <section class="introductory" id="toc">
+        <h2 aria-level="1" role="heading" id="h2_toc">Table of Contents</h2>
+        <ul class="toc" role="directory" id="respecContents">
+            <li class="tocline">
+                <a href="#sect-json-example-register-figure" class="tocxref"><span class="secno section-level-1">1<span class="secno-decoration"> </span></span><span class="sectitle">JSON Example Register Figure</span></a>
+            </li>
+            <li class="tocline">
+                <a href="#sect-intel-pte" class="tocxref"><span class="secno section-level-1">2<span class="secno-decoration"> </span></span><span class="sectitle">Intel PTE</span></a>
+            </li>
+        </ul>
+    </section>
+
+    <section id="sect-json-example-register-figure">
+        <!--OddPage-->
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-json-example-register-figure">
+    <span class="secno section-level-1">1<span class="secno-decoration"> </span></span><span class="sec-title">JSON Example Register Figure</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-json-example-register-figure" property="url" aria-label="Permalink for sect-json-example-register-figure" title="Permalink for sect-json-example-register-figure"><span property="title" content="1 JSON Example Register Figure">§</span></a></span>
+</h2>
+
+        <div class="example">
+            <div class="example-title"><span>Example 1</span>
+            </div><pre class="example">for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields
+
+ any nested div.json, pre.json, or span.json within figure.register is parsed for json content
+ the width argument describes the register width (defaults to 32 bits)
+ the unused item is name used for bit fields that are not otherwise defined (defaults "RsvdP")
+ var width               = Number(pget(reg, "width", 32));
+ var unused              = String(pget(reg, "unused", "RsvdP"));
+ var defaultAttr         = String(pget(reg, "defaultAttr", "other"));
+ var cellWidth           = Number(pget(reg, "cellWidth", 16));
+ var cellHeight          = Number(pget(reg, "cellHeight", 32));
+ var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));
+ var cellValueTop        = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
+ var cellBitValueTop     = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
+ var cellNameTop         = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
+ var bracketHeight       = Number(pget(reg, "bracketHeight", 4));
+ var cellTop             = Number(pget(reg, "cellTop", 16));
+ var figName             = String(pget(reg, "name", "???"));
+ var fields              = pget(reg, "fields", { }); // default to empty register
+
+ Fields are indexed by field name. Items in in a field are:
+  name      Name of the field (default is the index of the field)
+  msb       bit number of the most significant bit (or only bit)
+  lsb       bit number of the least significant bit (or only bit)
+  unused    true if field is considered "unused"
+  attr      field type (e.g. other, rw, ro, rw1c, ros, ...)
+  class     class name for the &lt;g&gt; (group) SVG element for the field
+  value     value of the field contents. Either a single string, or an array of strings
+            where the array length is the width of the field (in bits).
+            Array element [0] is the LSB of the field.
+
+&lt;figure class="register"&gt;
+
+&lt;pre class="json"&gt;
+{
+    "width":    48,
+    "unused": "Bogus",
+    "fields":
+        {
+            "field 4:0":
+                {
+                    "msb":  4,
+                    "lsb":  0,
+                    "attr": "ro"
+                },
+            "Very long name that will never fit":
+                {
+                    "msb": 7,
+                    "lsb": 6
+                },
+            "bit9":
+                {
+                    "msb": 9
+                },
+            "bit10":
+                {
+                    "lsb":   10,
+                    "class": "svg_error"
+                },
+            "bit11":
+                {
+                    "lsb": 11
+                },
+            "bit12":
+                {
+                    "lsb":   12,
+                    "value": "1"
+                },
+            "bit13":
+                {
+                    "lsb":  13,
+                    "href": "field-bit13"
+                },
+            "bit 20:14":
+                {
+                    "lsb":   14,
+                    "msb":   24,
+                    "value": "value"
+                },
+            "byte":
+                {
+                    "lsb":   25,
+                    "msb":   32,
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
+                }
+        }
+}
+&lt;/pre&gt;
+&lt;figcaption&gt;Graph for JSON Defined Register Example&lt;/figcaption&gt;
+&lt;/figure&gt;</pre>
+        </div>
+
+        <figure class="register" id="fig-json-defined-register-example">
+
+            <!-- for figures.register.pcisig_reg, the data-table attribute is the ID of the PCISIG style table describing the fields -->
+
+            <!-- any nested div.json, pre.json, or span.json within figure.register is parsed for json content -->
+            <!-- the width argument describes the register width (defaults to 32 bits) -->
+            <!-- the unused item is name used for bit fields that are not otherwise defined (defaults "RsvdP" -->
+            <!-- var width               = Number(pget(reg, "width", 32));-->
+            <!-- var unused              = String(pget(reg, "unused", "RsvdP"));-->
+            <!-- var defaultAttr         = String(pget(reg, "defaultAttr", "other"));-->
+            <!-- var cellWidth           = Number(pget(reg, "cellWidth", 16));-->
+            <!-- var cellHeight          = Number(pget(reg, "cellHeight", 32));-->
+            <!-- var cellInternalHeight  = Number(pget(reg, "cellInternalHeight", 8));-->
+            <!-- var bracketHeight       = Number(pget(reg, "bracketHeight", 4));-->
+            <!-- var cellTop             = Number(pget(reg, "cellTop", 16));-->
+            <!-- var figName             = String(pget(reg, "name", "???"));-->
+            <!-- var fields              = pget(reg, "fields", [ ]); // default to empty register-->
+
+            <!-- Fields are in arbitrary order. Items in in a field are: -->
+            <!--  name      Name of the field -->
+            <!--  msb       bit number of the most significant bit (or only bit) -->
+            <!--  lsb       bit number of the least significant bit (or only bit) -->
+            <!--  unused    true if field is considered "unused" -->
+            <!--  attr      field type (e.g. other, rw, ro, rw1c, ros, ...) -->
+            <pre class="json" style="display: none;">            
+            {
+                "width":    48,
+                "unused": "Bogus",
+                "fields":
+                    {
+                        "field 4:0":
+                            {
+                                "msb":  4,
+                                "lsb":  0,
+                                "attr": "ro"
+                            },
+                        "Very long name that will never fit":
+                            {
+                                "msb": 7,
+                                "lsb": 6
+                            },
+                        "bit9":
+                            {
+                                "msb": 9
+                            },
+                        "bit10":
+                            {
+                                "lsb":   10,
+                                "class": "svg_error"
+                            },
+                        "bit11":
+                            {
+                                "lsb": 11
+                            },
+                        "bit12":
+                            {
+                                "lsb":   12,
+                                "value": "1"
+                            },
+                        "bit13":
+                            {
+                                "lsb":  13
+                            },
+                        "bit 20:14":
+                            {
+                                "lsb":   14,
+                                "msb":   24,
+                                "value": "value"
+                            },
+                        "byte":
+                            {
+                                "lsb":   25,
+                                "msb":   32,
+                                "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
+                            }
+                    }
+            }
+        </pre>
+            <div class="svg hasSVG">
+                <svg version="1.1" width="1010px" height="236px" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="regpict-json-defined-register-example-field-4-0" class="regFieldInternal regAttr_ro regLink ">
+                        <text x="768" y="12" class="regBitNum">0</text>
+                        <text x="704" y="12" class="regBitNum">4</text>
+                        <line x1="776" y1="16" x2="776" y2="-3" class="regBitNumLine"></line>
+                        <line x1="696" y1="16" x2="696" y2="-3" class="regBitNumLine"></line>
+                        <rect x="696" y="16" width="80" height="32" class="regFieldBox"></rect>
+                        <line x1="760" y1="40" x2="760" y2="48" class="regFieldBox"></line>
+                        <line x1="744" y1="40" x2="744" y2="48" class="regFieldBox"></line>
+                        <line x1="728" y1="40" x2="728" y2="48" class="regFieldBox"></line>
+                        <line x1="712" y1="40" x2="712" y2="48" class="regFieldBox"></line>
+                        <text x="736" y="32" class="regFieldName">field 4:0</text>
+                    </g>
+                    <g class="regFieldInternal regAttr_bogus regLink regFieldUnused">
+                        <text x="688" y="12" class="regBitNum">5</text>
+                        <line x1="696" y1="16" x2="696" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="680" y1="16" x2="680" y2="-3" class="regBitNumLine"></line>
+                        <rect x="680" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="688" y="32" class="regFieldName">B</text>
+                    </g>
+                    <g id="regpict-json-defined-register-example-very-long-name-that-will-never-fit" class="regFieldExternal regAttr_other regLink  regFieldExternal0">
+                        <text x="672" y="12" class="regBitNum">6</text>
+                        <text x="656" y="12" class="regBitNum">7</text>
+                        <line x1="680" y1="16" x2="680" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="648" y1="16" x2="648" y2="-3" class="regBitNumLine"></line>
+                        <rect x="648" y="16" width="32" height="32" class="regFieldBox"></rect>
+                        <line x1="664" y1="40" x2="664" y2="48" class="regFieldBox"></line>
+                        <text x="784" y="68" class="regFieldName">Very long name that will never fit</text>
+                        <path d="M648,48l16,4L680,48" class="regBitBracket" fill="none"></path>
+                        <path d="M664,52V63.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g class="regFieldInternal regAttr_bogus regLink regFieldUnused">
+                        <text x="640" y="12" class="regBitNum">8</text>
+                        <line x1="648" y1="16" x2="648" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="632" y1="16" x2="632" y2="-3" class="regBitNumLine"></line>
+                        <rect x="632" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="640" y="32" class="regFieldName">B</text>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit9" class="regFieldExternal regAttr_other regLink  regFieldExternal0">
+                        <text x="624" y="12" class="regBitNum">9</text>
+                        <line x1="632" y1="16" x2="632" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="616" y1="16" x2="616" y2="-3" class="regBitNumLine"></line>
+                        <rect x="616" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="784" y="89" class="regFieldName">bit9</text>
+                        <path d="M616,48l8,4L632,48" class="regBitBracket" fill="none"></path>
+                        <path d="M624,52V84.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit10" class="regFieldExternal regAttr_other regLink svg_error regFieldExternal1">
+                        <text x="608" y="12" class="regBitNum">10</text>
+                        <line x1="616" y1="16" x2="616" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="600" y1="16" x2="600" y2="-3" class="regBitNumLine"></line>
+                        <rect x="600" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="784" y="110" class="regFieldName">bit10</text>
+                        <path d="M600,48l8,4L616,48" class="regBitBracket" fill="none"></path>
+                        <path d="M608,52V105.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit11" class="regFieldExternal regAttr_other regLink  regFieldExternal1">
+                        <text x="592" y="12" class="regBitNum">11</text>
+                        <line x1="600" y1="16" x2="600" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="584" y1="16" x2="584" y2="-3" class="regBitNumLine"></line>
+                        <rect x="584" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="784" y="131" class="regFieldName">bit11</text>
+                        <path d="M584,48l8,4L600,48" class="regBitBracket" fill="none"></path>
+                        <path d="M592,52V126.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit12" class="regFieldExternal regAttr_other regLink  regFieldExternal0">
+                        <text x="576" y="12" class="regBitNum">12</text>
+                        <line x1="584" y1="16" x2="584" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="568" y1="16" x2="568" y2="-3" class="regBitNumLine"></line>
+                        <rect x="568" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="784" y="152" class="regFieldName">bit12</text>
+                        <text x="576" y="36" class="regFieldValue">1</text>
+                        <path d="M568,48l8,4L584,48" class="regBitBracket" fill="none"></path>
+                        <path d="M576,52V147.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit13" class="regFieldExternal regAttr_other regLink  regFieldExternal0">
+                        <text x="560" y="12" class="regBitNum">13</text>
+                        <line x1="568" y1="16" x2="568" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="552" y1="16" x2="552" y2="-3" class="regBitNumLine"></line>
+                        <a xlink:href="#field-json-defined-register-example-bit13">
+                            <rect x="552" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        </a>
+                        <a xlink:href="#field-json-defined-register-example-bit13">
+                            <text x="784" y="173" class="regFieldName">bit13</text>
+                        </a>
+                        <path d="M552,48l8,4L568,48" class="regBitBracket" fill="none"></path>
+                        <path d="M560,52V168.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-bit-20-14" class="regFieldExternal regAttr_other regLink  regFieldExternal1">
+                        <text x="544" y="12" class="regBitNum">14</text>
+                        <text x="384" y="12" class="regBitNum">24</text>
+                        <line x1="552" y1="16" x2="552" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="376" y1="16" x2="376" y2="-3" class="regBitNumLine"></line>
+                        <a xlink:href="#field-bit-20-14">
+                            <rect x="376" y="16" width="176" height="32" class="regFieldBox"></rect>
+                        </a>
+                        <line x1="536" y1="40" x2="536" y2="48" class="regFieldBox"></line>
+                        <line x1="520" y1="40" x2="520" y2="48" class="regFieldBox"></line>
+                        <line x1="504" y1="40" x2="504" y2="48" class="regFieldBox"></line>
+                        <line x1="488" y1="40" x2="488" y2="48" class="regFieldBox"></line>
+                        <line x1="472" y1="40" x2="472" y2="48" class="regFieldBox"></line>
+                        <line x1="456" y1="40" x2="456" y2="48" class="regFieldBox"></line>
+                        <line x1="440" y1="40" x2="440" y2="48" class="regFieldBox"></line>
+                        <line x1="424" y1="40" x2="424" y2="48" class="regFieldBox"></line>
+                        <line x1="408" y1="40" x2="408" y2="48" class="regFieldBox"></line>
+                        <line x1="392" y1="40" x2="392" y2="48" class="regFieldBox"></line>
+                        <a xlink:href="#field-bit-20-14">
+                            <text x="784" y="194" class="regFieldName">bit 20:14</text>
+                        </a>
+                        <text x="464" y="32" class="regFieldValue">value</text>
+                        <path d="M376,48l88,4L552,48" class="regBitBracket" fill="none"></path>
+                        <path d="M464,52V189.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-json-defined-register-example-byte" class="regFieldExternal regAttr_other regLink  regFieldExternal1">
+                        <text x="368" y="12" class="regBitNum">25</text>
+                        <text x="256" y="12" class="regBitNum">32</text>
+                        <line x1="376" y1="16" x2="376" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="248" y1="16" x2="248" y2="-3" class="regBitNumLine"></line>
+                        <a xlink:href="#field-json-defined-register-example-byte">
+                            <rect x="248" y="16" width="128" height="32" class="regFieldBox"></rect>
+                        </a>
+                        <line x1="360" y1="40" x2="360" y2="48" class="regFieldBox"></line>
+                        <line x1="344" y1="40" x2="344" y2="48" class="regFieldBox"></line>
+                        <line x1="328" y1="40" x2="328" y2="48" class="regFieldBox"></line>
+                        <line x1="312" y1="40" x2="312" y2="48" class="regFieldBox"></line>
+                        <line x1="296" y1="40" x2="296" y2="48" class="regFieldBox"></line>
+                        <line x1="280" y1="40" x2="280" y2="48" class="regFieldBox"></line>
+                        <line x1="264" y1="40" x2="264" y2="48" class="regFieldBox"></line>
+                        <a xlink:href="#field-json-defined-register-example-byte">
+                            <text x="784" y="215" class="regFieldName">byte</text>
+                        </a>
+                        <text x="368" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-0">A</text>
+                        <text x="352" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-1">B</text>
+                        <text x="336" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-2">C</text>
+                        <text x="320" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-3">D</text>
+                        <text x="304" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-4">E</text>
+                        <text x="288" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-5">F</text>
+                        <text x="272" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-6">G</text>
+                        <text x="256" y="36" class="regFieldValue regFieldBitValue regFieldBitValue-7 regFieldBitValue-msb">H</text>
+                        <path d="M248,48l64,4L376,48" class="regBitBracket" fill="none"></path>
+                        <path d="M312,52V210.25H782.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g class="regFieldInternal regAttr_bogus regLink regFieldUnused">
+                        <text x="240" y="12" class="regBitNum">33</text>
+                        <text x="16" y="12" class="regBitNum">47</text>
+                        <line x1="248" y1="16" x2="248" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="8" y1="16" x2="8" y2="-3" class="regBitNumLine"></line>
+                        <rect x="8" y="16" width="240" height="32" class="regFieldBox"></rect>
+                        <line x1="232" y1="40" x2="232" y2="48" class="regFieldBox"></line>
+                        <line x1="216" y1="40" x2="216" y2="48" class="regFieldBox"></line>
+                        <line x1="200" y1="40" x2="200" y2="48" class="regFieldBox"></line>
+                        <line x1="184" y1="40" x2="184" y2="48" class="regFieldBox"></line>
+                        <line x1="168" y1="40" x2="168" y2="48" class="regFieldBox"></line>
+                        <line x1="152" y1="40" x2="152" y2="48" class="regFieldBox"></line>
+                        <line x1="136" y1="40" x2="136" y2="48" class="regFieldBox"></line>
+                        <line x1="120" y1="40" x2="120" y2="48" class="regFieldBox"></line>
+                        <line x1="104" y1="40" x2="104" y2="48" class="regFieldBox"></line>
+                        <line x1="88" y1="40" x2="88" y2="48" class="regFieldBox"></line>
+                        <line x1="72" y1="40" x2="72" y2="48" class="regFieldBox"></line>
+                        <line x1="56" y1="40" x2="56" y2="48" class="regFieldBox"></line>
+                        <line x1="40" y1="40" x2="40" y2="48" class="regFieldBox"></line>
+                        <line x1="24" y1="40" x2="24" y2="48" class="regFieldBox"></line>
+                        <text x="128" y="32" class="regFieldName">Bogus</text>
+                    </g>
+                </svg>
+            </div>
+            <figcaption>
+                <span class="figdecoration">Figure </span><span class="figno">1-1</span><span class="figdecoration">: </span><span class="figtitle">JSON Defined Register Example</span>
+            </figcaption>
+        </figure>
+        <p>These are references to fields that were defined as terms in this JSON example.</p>
+        <ul>
+            <li>
+                <a href="#regpict-json-defined-register-example-field-4-0" class="internalDFN regpict">field 4:0</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;field 4:0&lt;/a&gt;
+            </li>
+            <li>
+                <a href="#regpict-json-defined-register-example-very-long-name-that-will-never-fit" class="internalDFN regpict">Very long name that will never fit</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;Very long name that will never fit&lt;/a&gt;
+            </li>
+            <li><a href="#regpict-json-defined-register-example-bit9" class="internalDFN regpict">bit9</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit9&lt;/a&gt;
+            </li>
+            <li><a href="#regpict-json-defined-register-example-bit10" class="internalDFN regpict">bit10</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit10&lt;/a&gt;
+            </li>
+            <li><a href="#regpict-json-defined-register-example-bit11" class="internalDFN regpict">bit11</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit11&lt;/a&gt;
+            </li>
+            <li><a href="#regpict-json-defined-register-example-bit12" class="internalDFN regpict">bit12</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit12&lt;/a&gt;
+            </li>
+            <li>
+                <a class="field internalDFN" href="#field-bit-20-14">bit 20:14</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit 20:14&lt;/a&gt;
+            </li>
+            <li>
+                <a class="regpict internalDFN" href="#regpict-json-defined-register-example-bit-20-14">bit 20:14</a>&nbsp;&nbsp;&nbsp;&lt;a class="regpict"&gt;bit 20:14&lt;/a&gt;
+            </li>
+            <li>
+                <dfn class="field" title="bit 20:14|json defined register example bit 20:14" id="field-bit-20-14">bit 20:14</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" title="bit 20:14|json define register example bit 20:14"&gt;bit 20:14&lt;/dfn&gt;
+            </li>
+            <li><a href="#regpict-json-defined-register-example-bit13" class="internalDFN regpict">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a&gt;bit13&lt;/a&gt;
+            </li>
+            <li>
+                <a class="field internalDFN regpict" href="#regpict-json-defined-register-example-bit13">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="field"&gt;bit13&lt;/a&gt;
+            </li>
+            <li>
+                <a class="regpict internalDFN" href="#regpict-json-defined-register-example-bit13">bit13</a>&nbsp;&nbsp;&nbsp;&lt;a class="regpict"&gt;bit13&lt;/a&gt;
+            </li>
+            <li>
+                <a href="#regpict-json-defined-register-example-bit13">bit 13</a>&nbsp;&nbsp;&nbsp;&lt;a href="#regpict-json-defined-register-example-bit13"&gt;bit 13&lt;/a&gt;
+            </li>
+            <li>
+                <dfn class="field" id="field-json-defined-register-example-bit13"><a href="#regpict-json-defined-register-example-bit13">JSON Defined Register Example bit13</a></dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field"&gt;JSON Defined Register Example bit13&lt;/dfn&gt;
+                <ul>
+                    <li>this is the definition for
+                        <a class="field internalDFN" href="#field-json-defined-register-example-bit13">JSON Defined Register Example bit13</a>
+                    </li>
+                    <li>it should be referenced by
+                        <a class="regpict internalDFN field" href="#field-json-defined-register-example-bit13">JSON Defined Register Example bit13</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <dfn class="field" id="field-json-defined-register-example-byte"><a href="#regpict-json-defined-register-example-byte">JSON:byte</a></dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" id="field-json-defined-register-example-byte"&gt;JSON Defined Register Example byte&lt;/dfn&gt;
+                <ul>
+                    <li>this is the definition for
+                        <a class="field internalDFN" href="#field-json-defined-register-example-byte">JSON:byte</a>
+                    </li>
+                    <li>it should be referenced by
+                        <a class="regpict internalDFN" href="#regpict-json-defined-register-example-byte">byte</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <dfn class="field" title="JSON Defined Register Example bit13-x" id="field-json-defined-register-example-bit13-x">bit13</dfn>&nbsp;&nbsp;&nbsp;&lt;dfn class="field" title=""JSON Defined Register Example bit13"&gt;bit13&lt;/dfn&gt; - this is a <b>duplicate</b> definition for
+                <a class="field internalDFN regpict" href="#regpict-json-defined-register-example-bit13">bit13</a>
+            </li>
+        </ul>
+
+    </section>
+
+    <section id="sect-intel-pte">
+        <!--OddPage-->
+        <h2 class="section-level-1" aria-level="1" role="heading" id="h2_sect-intel-pte">
+    <span class="secno section-level-1">2<span class="secno-decoration"> </span></span><span class="sec-title">Intel PTE</span><span typeof="bookmark" class="permalink">&nbsp;<a href="#sect-intel-pte" property="url" aria-label="Permalink for sect-intel-pte" title="Permalink for sect-intel-pte"><span property="title" content="2 Intel PTE">§</span></a></span>
+</h2>
+        <pre>#define INTEL_PTE                                      0x00000058   /* RWI8R */
+#define INTEL_PTE_MUST_BE_ONE                                 0:0   /* RWIVF */
+#define INTEL_PTE_MUST_BE_ONE_INIT                            0x1   /* RWI-V */
+#define INTEL_PTE_RW                                          1:1   /* RW-VF */
+#define INTEL_PTE_US                                          2:2   /* RW-VF */
+#define INTEL_PTE_PWT                                         3:3   /* RW-VF */
+#define INTEL_PTE_PCD                                         4:4   /* RW-VF */
+#define INTEL_PTE_A                                           5:5   /* RW-VF */
+#define INTEL_PTE_IGNORED6                                    6:6   /* RW-VF */
+#define INTEL_PTE_MUST_BE_ZERO                                7:7   /* RWIVF */
+#define INTEL_PTE_MUST_BE_ZERO_INIT                           0x0   /* RWI-V */
+#define INTEL_PTE_IGNORED9_8                                  9:8   /* RW-VF */
+#define INTEL_PTE_EA                                        10:10   /* RW-VF */
+#define INTEL_PTE_IGNORED11                                 11:11   /* RW-VF */
+#define INTEL_PTE_FRAME_4K                                  47:12   /* RW-VF */
+#define INTEL_PTE_RESERVED_HAW                              51:48   /* RWIVF */
+#define INTEL_PTE_RESERVED_HAW_INIT                           0x0   /* RWI-V */
+#define INTEL_PTE_IGNORED62_52                              62:52   /* RW-VF */
+#define INTEL_PTE_XD                                        63:63   /* RW-VF */
+
+
+</pre>
+        <style>
+            .regpict-highlight rect.regFieldBox {
+                fill: lightgrey;
+            }
+            .regpict-highlight text:not(.regBitNum) {
+                fill: blue;
+            }
+        </style>
+        <figure class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-unused="reserved" data-json="{ &quot;fields&quot;: { &quot;INTEL_PTE_A&quot;:  { &quot;class&quot;: &quot;regpict-highlight&quot;, &quot;value&quot;: &quot;0&quot; },
+                                     &quot;INTEL_PTE_XD&quot;: { &quot;class&quot;: &quot;regpict-highlight&quot;, &quot;value&quot;: &quot;1&quot; },
+                                     &quot;INTEL_PTE_RESERVED_HAW&quot;:  { &quot;class&quot;: &quot;regpict-highlight&quot; } } }" id="fig-intel-pte-example">
+            <div class="svg hasSVG">
+                <svg version="1.1" width="1268px" height="362px" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="regpict-intel-pte-example-intel_pte_must_be_one" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="1024" y="12" class="regBitNum">0</text>
+                        <line x1="1032" y1="16" x2="1032" y2="-3" class="regBitNumLine"></line>
+                        <line x1="1016" y1="16" x2="1016" y2="-3" class="regBitNumLine"></line>
+                        <rect x="1016" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="68" class="regFieldName">INTEL_PTE_MUST_BE_ONE</text>
+                        <path d="M1016,48l8,4L1032,48" class="regBitBracket" fill="none"></path>
+                        <path d="M1024,52V63.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_rw" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="1008" y="12" class="regBitNum">1</text>
+                        <line x1="1016" y1="16" x2="1016" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="1000" y1="16" x2="1000" y2="-3" class="regBitNumLine"></line>
+                        <rect x="1000" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="89" class="regFieldName">INTEL_PTE_RW</text>
+                        <path d="M1000,48l8,4L1016,48" class="regBitBracket" fill="none"></path>
+                        <path d="M1008,52V84.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_us" class="regFieldExternal regAttr_rw regLink  regFieldExternal1">
+                        <text x="992" y="12" class="regBitNum">2</text>
+                        <line x1="1000" y1="16" x2="1000" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="984" y1="16" x2="984" y2="-3" class="regBitNumLine"></line>
+                        <rect x="984" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="110" class="regFieldName">INTEL_PTE_US</text>
+                        <path d="M984,48l8,4L1000,48" class="regBitBracket" fill="none"></path>
+                        <path d="M992,52V105.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_pwt" class="regFieldExternal regAttr_rw regLink  regFieldExternal1">
+                        <text x="976" y="12" class="regBitNum">3</text>
+                        <line x1="984" y1="16" x2="984" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="968" y1="16" x2="968" y2="-3" class="regBitNumLine"></line>
+                        <rect x="968" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="131" class="regFieldName">INTEL_PTE_PWT</text>
+                        <path d="M968,48l8,4L984,48" class="regBitBracket" fill="none"></path>
+                        <path d="M976,52V126.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_pcd" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="960" y="12" class="regBitNum">4</text>
+                        <line x1="968" y1="16" x2="968" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="952" y1="16" x2="952" y2="-3" class="regBitNumLine"></line>
+                        <rect x="952" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="152" class="regFieldName">INTEL_PTE_PCD</text>
+                        <path d="M952,48l8,4L968,48" class="regBitBracket" fill="none"></path>
+                        <path d="M960,52V147.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_a" class="regFieldExternal regAttr_rw regLink regpict-highlight regFieldExternal0">
+                        <text x="944" y="12" class="regBitNum">5</text>
+                        <line x1="952" y1="16" x2="952" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="936" y1="16" x2="936" y2="-3" class="regBitNumLine"></line>
+                        <rect x="936" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="173" class="regFieldName">INTEL_PTE_A</text>
+                        <text x="944" y="36" class="regFieldValue">0</text>
+                        <path d="M936,48l8,4L952,48" class="regBitBracket" fill="none"></path>
+                        <path d="M944,52V168.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_ignored6" class="regFieldExternal regAttr_rw regLink  regFieldExternal1">
+                        <text x="928" y="12" class="regBitNum">6</text>
+                        <line x1="936" y1="16" x2="936" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="920" y1="16" x2="920" y2="-3" class="regBitNumLine"></line>
+                        <rect x="920" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="194" class="regFieldName">INTEL_PTE_IGNORED6</text>
+                        <path d="M920,48l8,4L936,48" class="regBitBracket" fill="none"></path>
+                        <path d="M928,52V189.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_must_be_zero" class="regFieldExternal regAttr_rw regLink  regFieldExternal1">
+                        <text x="912" y="12" class="regBitNum">7</text>
+                        <line x1="920" y1="16" x2="920" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="904" y1="16" x2="904" y2="-3" class="regBitNumLine"></line>
+                        <rect x="904" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="215" class="regFieldName">INTEL_PTE_MUST_BE_ZERO</text>
+                        <path d="M904,48l8,4L920,48" class="regBitBracket" fill="none"></path>
+                        <path d="M912,52V210.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_ignored9_8" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="896" y="12" class="regBitNum">8</text>
+                        <text x="880" y="12" class="regBitNum">9</text>
+                        <line x1="904" y1="16" x2="904" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="872" y1="16" x2="872" y2="-3" class="regBitNumLine"></line>
+                        <rect x="872" y="16" width="32" height="32" class="regFieldBox"></rect>
+                        <line x1="888" y1="40" x2="888" y2="48" class="regFieldBox"></line>
+                        <text x="1040" y="236" class="regFieldName">INTEL_PTE_IGNORED9_8</text>
+                        <path d="M872,48l16,4L904,48" class="regBitBracket" fill="none"></path>
+                        <path d="M888,52V231.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_ea" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="864" y="12" class="regBitNum">10</text>
+                        <line x1="872" y1="16" x2="872" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="856" y1="16" x2="856" y2="-3" class="regBitNumLine"></line>
+                        <rect x="856" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="257" class="regFieldName">INTEL_PTE_EA</text>
+                        <path d="M856,48l8,4L872,48" class="regBitBracket" fill="none"></path>
+                        <path d="M864,52V252.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_ignored11" class="regFieldExternal regAttr_rw regLink  regFieldExternal1">
+                        <text x="848" y="12" class="regBitNum">11</text>
+                        <line x1="856" y1="16" x2="856" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="840" y1="16" x2="840" y2="-3" class="regBitNumLine"></line>
+                        <rect x="840" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="278" class="regFieldName">INTEL_PTE_IGNORED11</text>
+                        <path d="M840,48l8,4L856,48" class="regBitBracket" fill="none"></path>
+                        <path d="M848,52V273.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_frame_4k" class="regFieldInternal regAttr_rw regLink ">
+                        <text x="832" y="12" class="regBitNum">12</text>
+                        <text x="272" y="12" class="regBitNum">47</text>
+                        <line x1="840" y1="16" x2="840" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="264" y1="16" x2="264" y2="-3" class="regBitNumLine"></line>
+                        <rect x="264" y="16" width="576" height="32" class="regFieldBox"></rect>
+                        <line x1="824" y1="40" x2="824" y2="48" class="regFieldBox"></line>
+                        <line x1="808" y1="40" x2="808" y2="48" class="regFieldBox"></line>
+                        <line x1="792" y1="40" x2="792" y2="48" class="regFieldBox"></line>
+                        <line x1="776" y1="40" x2="776" y2="48" class="regFieldBox"></line>
+                        <line x1="760" y1="40" x2="760" y2="48" class="regFieldBox"></line>
+                        <line x1="744" y1="40" x2="744" y2="48" class="regFieldBox"></line>
+                        <line x1="728" y1="40" x2="728" y2="48" class="regFieldBox"></line>
+                        <line x1="712" y1="40" x2="712" y2="48" class="regFieldBox"></line>
+                        <line x1="696" y1="40" x2="696" y2="48" class="regFieldBox"></line>
+                        <line x1="680" y1="40" x2="680" y2="48" class="regFieldBox"></line>
+                        <line x1="664" y1="40" x2="664" y2="48" class="regFieldBox"></line>
+                        <line x1="648" y1="40" x2="648" y2="48" class="regFieldBox"></line>
+                        <line x1="632" y1="40" x2="632" y2="48" class="regFieldBox"></line>
+                        <line x1="616" y1="40" x2="616" y2="48" class="regFieldBox"></line>
+                        <line x1="600" y1="40" x2="600" y2="48" class="regFieldBox"></line>
+                        <line x1="584" y1="40" x2="584" y2="48" class="regFieldBox"></line>
+                        <line x1="568" y1="40" x2="568" y2="48" class="regFieldBox"></line>
+                        <line x1="552" y1="40" x2="552" y2="48" class="regFieldBox"></line>
+                        <line x1="536" y1="40" x2="536" y2="48" class="regFieldBox"></line>
+                        <line x1="520" y1="40" x2="520" y2="48" class="regFieldBox"></line>
+                        <line x1="504" y1="40" x2="504" y2="48" class="regFieldBox"></line>
+                        <line x1="488" y1="40" x2="488" y2="48" class="regFieldBox"></line>
+                        <line x1="472" y1="40" x2="472" y2="48" class="regFieldBox"></line>
+                        <line x1="456" y1="40" x2="456" y2="48" class="regFieldBox"></line>
+                        <line x1="440" y1="40" x2="440" y2="48" class="regFieldBox"></line>
+                        <line x1="424" y1="40" x2="424" y2="48" class="regFieldBox"></line>
+                        <line x1="408" y1="40" x2="408" y2="48" class="regFieldBox"></line>
+                        <line x1="392" y1="40" x2="392" y2="48" class="regFieldBox"></line>
+                        <line x1="376" y1="40" x2="376" y2="48" class="regFieldBox"></line>
+                        <line x1="360" y1="40" x2="360" y2="48" class="regFieldBox"></line>
+                        <line x1="344" y1="40" x2="344" y2="48" class="regFieldBox"></line>
+                        <line x1="328" y1="40" x2="328" y2="48" class="regFieldBox"></line>
+                        <line x1="312" y1="40" x2="312" y2="48" class="regFieldBox"></line>
+                        <line x1="296" y1="40" x2="296" y2="48" class="regFieldBox"></line>
+                        <line x1="280" y1="40" x2="280" y2="48" class="regFieldBox"></line>
+                        <text x="552" y="32" class="regFieldName">INTEL_PTE_FRAME_4K</text>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_reserved_haw" class="regFieldExternal regAttr_rw regLink regpict-highlight regFieldExternal1">
+                        <text x="256" y="12" class="regBitNum">48</text>
+                        <text x="208" y="12" class="regBitNum">51</text>
+                        <line x1="264" y1="16" x2="264" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="200" y1="16" x2="200" y2="-3" class="regBitNumLine"></line>
+                        <rect x="200" y="16" width="64" height="32" class="regFieldBox"></rect>
+                        <line x1="248" y1="40" x2="248" y2="48" class="regFieldBox"></line>
+                        <line x1="232" y1="40" x2="232" y2="48" class="regFieldBox"></line>
+                        <line x1="216" y1="40" x2="216" y2="48" class="regFieldBox"></line>
+                        <text x="1040" y="299" class="regFieldName">INTEL_PTE_RESERVED_HAW</text>
+                        <path d="M200,48l32,4L264,48" class="regBitBracket" fill="none"></path>
+                        <path d="M232,52V294.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_ignored62_52" class="regFieldExternal regAttr_rw regLink  regFieldExternal0">
+                        <text x="192" y="12" class="regBitNum">52</text>
+                        <text x="32" y="12" class="regBitNum">62</text>
+                        <line x1="200" y1="16" x2="200" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="24" y1="16" x2="24" y2="-3" class="regBitNumLine"></line>
+                        <rect x="24" y="16" width="176" height="32" class="regFieldBox"></rect>
+                        <line x1="184" y1="40" x2="184" y2="48" class="regFieldBox"></line>
+                        <line x1="168" y1="40" x2="168" y2="48" class="regFieldBox"></line>
+                        <line x1="152" y1="40" x2="152" y2="48" class="regFieldBox"></line>
+                        <line x1="136" y1="40" x2="136" y2="48" class="regFieldBox"></line>
+                        <line x1="120" y1="40" x2="120" y2="48" class="regFieldBox"></line>
+                        <line x1="104" y1="40" x2="104" y2="48" class="regFieldBox"></line>
+                        <line x1="88" y1="40" x2="88" y2="48" class="regFieldBox"></line>
+                        <line x1="72" y1="40" x2="72" y2="48" class="regFieldBox"></line>
+                        <line x1="56" y1="40" x2="56" y2="48" class="regFieldBox"></line>
+                        <line x1="40" y1="40" x2="40" y2="48" class="regFieldBox"></line>
+                        <text x="1040" y="320" class="regFieldName">INTEL_PTE_IGNORED62_52</text>
+                        <path d="M24,48l88,4L200,48" class="regBitBracket" fill="none"></path>
+                        <path d="M112,52V315.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                    <g id="regpict-intel-pte-example-intel_pte_xd" class="regFieldExternal regAttr_rw regLink regpict-highlight regFieldExternal0">
+                        <text x="16" y="12" class="regBitNum">63</text>
+                        <line x1="24" y1="16" x2="24" y2="-3" class="regBitNumLine_Hide"></line>
+                        <line x1="8" y1="16" x2="8" y2="-3" class="regBitNumLine"></line>
+                        <rect x="8" y="16" width="16" height="32" class="regFieldBox"></rect>
+                        <text x="1040" y="341" class="regFieldName">INTEL_PTE_XD</text>
+                        <text x="16" y="36" class="regFieldValue">1</text>
+                        <path d="M8,48l8,4L24,48" class="regBitBracket" fill="none"></path>
+                        <path d="M16,52V336.25H1038.4" class="regBitLine" fill="none"></path>
+                    </g>
+                </svg>
+            </div>
+            <figcaption>
+                <span class="figdecoration">Figure </span><span class="figno">2-1</span><span class="figdecoration">: </span><span class="figtitle">Intel PTE Example</span>
+            </figcaption>
+        </figure>
+
+        <div class="example">
+            <div class="example-title"><span>Example 2</span>
+            </div><pre class="example">&lt;pre data-include="intel.ref" data-include-filter="PTE"&gt;&lt;/pre&gt;
+&lt;style&gt;
+    .regpict-highlight rect {
+        fill: lightgrey;
+    }
+    .regpict-highlight text:not(.regBitNum) {
+        fill: blue;
+    }
+&lt;/style&gt;
+&lt;figure class="register nv_refman" data-href="intel.ref" data-register="INTEL_PTE" data-unused="reserved"
+            data-json='{ "fields": { "INTEL_PTE_A":  { "class": "regpict-highlight", "value": "0" },
+                                     "INTEL_PTE_XD": { "class": "regpict-highlight", "value": "1" },
+                                     "INTEL_PTE_RESERVED_HAW":  { "class": "regpict-highlight" } } }'&gt;
+    &lt;figcaption&gt;Intel PTE Example&lt;/figcaption&gt;
+&lt;/figure&gt;</pre>
+        </div>
+        <ul>
+            <li>intel_pte_must_be_one
+                <a href="#regpict-intel-pte-example-intel_pte_must_be_one" class="internalDFN regpict">INTEL_PTE_MUST_BE_ONE</a>
+            </li>
+            <li>intel_pte_MUST_BE_ONE
+                <a href="#regpict-intel-pte-example-intel_pte_must_be_one" class="internalDFN regpict">INTEL_PTE_MUST_BE_ONE</a>
+            </li>
+            <li>intel_pte_RW <a href="#regpict-intel-pte-example-intel_pte_rw" class="internalDFN regpict">INTEL_PTE_RW</a>
+            </li>
+            <li>INTEL_PTE_RW <a href="#regpict-intel-pte-example-intel_pte_rw" class="internalDFN regpict">INTEL_PTE_RW</a>
+            </li>
+            <li>INTEL_PTE_XD <a href="#regpict-intel-pte-example-intel_pte_xd" class="internalDFN regpict">INTEL_PTE_XD</a>
+            </li>
+            <li>intel_pte_PWT
+                <a href="#regpict-intel-pte-example-intel_pte_pwt" class="internalDFN regpict">INTEL_PTE_PWT</a>
+            </li>
+
+            <!--#define INTEL_PTE                                      0x00000058   /* RWI8R */-->
+            <!--#define INTEL_PTE_MUST_BE_ONE                                 0:0   /* RWIVF */-->
+            <!--#define INTEL_PTE_MUST_BE_ONE_INIT                            0x1   /* RWI-V */-->
+            <!--#define INTEL_PTE_RW                                          1:1   /* RW-VF */-->
+            <!--#define INTEL_PTE_US                                          2:2   /* RW-VF */-->
+            <!--#define INTEL_PTE_PWT                                         3:3   /* RW-VF */-->
+            <!--#define INTEL_PTE_PCD                                         4:4   /* RW-VF */-->
+            <!--#define INTEL_PTE_A                                           5:5   /* RW-VF */-->
+            <!--#define INTEL_PTE_IGNORED6                                    6:6   /* RW-VF */-->
+            <!--#define INTEL_PTE_MUST_BE_ZERO                                7:7   /* RWIVF */-->
+            <!--#define INTEL_PTE_MUST_BE_ZERO_INIT                           0x0   /* RWI-V */-->
+            <!--#define INTEL_PTE_IGNORED9_8                                  9:8   /* RW-VF */-->
+            <!--#define INTEL_PTE_EA                                        10:10   /* RW-VF */-->
+            <!--#define INTEL_PTE_IGNORED11                                 11:11   /* RW-VF */-->
+            <!--#define INTEL_PTE_FRAME_4K                                  47:12   /* RW-VF */-->
+            <!--#define INTEL_PTE_RESERVED_HAW                              51:48   /* RWIVF */-->
+            <!--#define INTEL_PTE_RESERVED_HAW_INIT                           0x0   /* RWI-V */-->
+            <!--#define INTEL_PTE_IGNORED62_52                              62:52   /* RW-VF */-->
+            <!--#define INTEL_PTE_XD                                        63:63   /* RW-VF */-->
+
+        </ul>
+    </section>
+
+
+    <section id="definition-map" class="introductory appendix">
+        <h2 aria-level="1" role="heading" id="h2_definition-map">Definition Map</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kind</th>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>HTML</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>field</td>
+                    <td>bit 20:14</td>
+                    <td><a href="#field-bit-20-14">field-bit-20-14</a>
+                    </td>
+                    <td>bit 20:14</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>bit-20-14</td>
+                    <td><a href="#field-bit-20-14">field-bit-20-14</a>
+                    </td>
+                    <td>bit 20:14</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json defined register example bit 20:14</td>
+                    <td><a href="#field-bit-20-14">field-bit-20-14</a>
+                    </td>
+                    <td>bit 20:14</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json defined register example bit13</td>
+                    <td><a href="#field-json-defined-register-example-bit13">field-json-defined-register-example-bit13</a>
+                    </td>
+                    <td>JSON Defined Register Example bit13</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json defined register example bit13-x</td>
+                    <td><a href="#field-json-defined-register-example-bit13-x">field-json-defined-register-example-bit13-x</a>
+                    </td>
+                    <td>bit13</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json-defined-register-example-bit13</td>
+                    <td><a href="#field-json-defined-register-example-bit13">field-json-defined-register-example-bit13</a>
+                    </td>
+                    <td>JSON Defined Register Example bit13</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json-defined-register-example-bit13-x</td>
+                    <td><a href="#field-json-defined-register-example-bit13-x">field-json-defined-register-example-bit13-x</a>
+                    </td>
+                    <td>bit13</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json-defined-register-example-byte</td>
+                    <td><a href="#field-json-defined-register-example-byte">field-json-defined-register-example-byte</a>
+                    </td>
+                    <td>JSON:byte</td>
+                </tr>
+                <tr>
+                    <td>field</td>
+                    <td>json:byte</td>
+                    <td><a href="#field-json-defined-register-example-byte">field-json-defined-register-example-byte</a>
+                    </td>
+                    <td>JSON:byte</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit 20:14</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-bit-20-14">regpict-json-defined-register-example-bit-20-14</a>
+                    </td>
+                    <td>bit 20:14</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit10</td>
+                    <td><a href="#regpict-json-defined-register-example-bit10">regpict-json-defined-register-example-bit10</a>
+                    </td>
+                    <td>bit10</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit11</td>
+                    <td><a href="#regpict-json-defined-register-example-bit11">regpict-json-defined-register-example-bit11</a>
+                    </td>
+                    <td>bit11</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit12</td>
+                    <td><a href="#regpict-json-defined-register-example-bit12">regpict-json-defined-register-example-bit12</a>
+                    </td>
+                    <td>bit12</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit13</td>
+                    <td><a href="#regpict-json-defined-register-example-bit13">regpict-json-defined-register-example-bit13</a>
+                    </td>
+                    <td>bit13</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>bit9</td>
+                    <td><a href="#regpict-json-defined-register-example-bit9">regpict-json-defined-register-example-bit9</a>
+                    </td>
+                    <td>bit9</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>byte</td>
+                    <td><a href="#regpict-json-defined-register-example-byte">regpict-json-defined-register-example-byte</a>
+                    </td>
+                    <td>byte</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>field 4:0</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-field-4-0">regpict-json-defined-register-example-field-4-0</a>
+                    </td>
+                    <td>field 4:0</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_a</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_a">regpict-intel-pte-example-intel_pte_a</a>
+                    </td>
+                    <td>INTEL_PTE_A</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_ea</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_ea">regpict-intel-pte-example-intel_pte_ea</a>
+                    </td>
+                    <td>INTEL_PTE_EA</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_frame_4k</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_frame_4k">regpict-intel-pte-example-intel_pte_frame_4k</a>
+                    </td>
+                    <td>INTEL_PTE_FRAME_4K</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_ignored11</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored11">regpict-intel-pte-example-intel_pte_ignored11</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED11</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_ignored6</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_ignored6">regpict-intel-pte-example-intel_pte_ignored6</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED6</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_ignored62_52</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored62_52">regpict-intel-pte-example-intel_pte_ignored62_52</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED62_52</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_ignored9_8</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored9_8">regpict-intel-pte-example-intel_pte_ignored9_8</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED9_8</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_must_be_one</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_must_be_one">regpict-intel-pte-example-intel_pte_must_be_one</a>
+                    </td>
+                    <td>INTEL_PTE_MUST_BE_ONE</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_must_be_zero</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_must_be_zero">regpict-intel-pte-example-intel_pte_must_be_zero</a>
+                    </td>
+                    <td>INTEL_PTE_MUST_BE_ZERO</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_pcd</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_pcd">regpict-intel-pte-example-intel_pte_pcd</a>
+                    </td>
+                    <td>INTEL_PTE_PCD</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_pwt</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_pwt">regpict-intel-pte-example-intel_pte_pwt</a>
+                    </td>
+                    <td>INTEL_PTE_PWT</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_reserved_haw</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_reserved_haw">regpict-intel-pte-example-intel_pte_reserved_haw</a>
+                    </td>
+                    <td>INTEL_PTE_RESERVED_HAW</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_rw</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_rw">regpict-intel-pte-example-intel_pte_rw</a>
+                    </td>
+                    <td>INTEL_PTE_RW</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_us</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_us">regpict-intel-pte-example-intel_pte_us</a>
+                    </td>
+                    <td>INTEL_PTE_US</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel-pte-example-intel_pte_xd</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_xd">regpict-intel-pte-example-intel_pte_xd</a>
+                    </td>
+                    <td>INTEL_PTE_XD</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_a</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_a">regpict-intel-pte-example-intel_pte_a</a>
+                    </td>
+                    <td>INTEL_PTE_A</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_ea</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_ea">regpict-intel-pte-example-intel_pte_ea</a>
+                    </td>
+                    <td>INTEL_PTE_EA</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_frame_4k</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_frame_4k">regpict-intel-pte-example-intel_pte_frame_4k</a>
+                    </td>
+                    <td>INTEL_PTE_FRAME_4K</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_ignored11</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored11">regpict-intel-pte-example-intel_pte_ignored11</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED11</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_ignored6</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_ignored6">regpict-intel-pte-example-intel_pte_ignored6</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED6</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_ignored62_52</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored62_52">regpict-intel-pte-example-intel_pte_ignored62_52</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED62_52</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_ignored9_8</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_ignored9_8">regpict-intel-pte-example-intel_pte_ignored9_8</a>
+                    </td>
+                    <td>INTEL_PTE_IGNORED9_8</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_must_be_one</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_must_be_one">regpict-intel-pte-example-intel_pte_must_be_one</a>
+                    </td>
+                    <td>INTEL_PTE_MUST_BE_ONE</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_must_be_zero</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_must_be_zero">regpict-intel-pte-example-intel_pte_must_be_zero</a>
+                    </td>
+                    <td>INTEL_PTE_MUST_BE_ZERO</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_pcd</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_pcd">regpict-intel-pte-example-intel_pte_pcd</a>
+                    </td>
+                    <td>INTEL_PTE_PCD</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_pwt</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_pwt">regpict-intel-pte-example-intel_pte_pwt</a>
+                    </td>
+                    <td>INTEL_PTE_PWT</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_reserved_haw</td>
+                    <td>
+                        <a href="#regpict-intel-pte-example-intel_pte_reserved_haw">regpict-intel-pte-example-intel_pte_reserved_haw</a>
+                    </td>
+                    <td>INTEL_PTE_RESERVED_HAW</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_rw</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_rw">regpict-intel-pte-example-intel_pte_rw</a>
+                    </td>
+                    <td>INTEL_PTE_RW</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_us</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_us">regpict-intel-pte-example-intel_pte_us</a>
+                    </td>
+                    <td>INTEL_PTE_US</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>intel_pte_xd</td>
+                    <td><a href="#regpict-intel-pte-example-intel_pte_xd">regpict-intel-pte-example-intel_pte_xd</a>
+                    </td>
+                    <td>INTEL_PTE_XD</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit-20-14</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-bit-20-14">regpict-json-defined-register-example-bit-20-14</a>
+                    </td>
+                    <td>bit 20:14</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit10</td>
+                    <td><a href="#regpict-json-defined-register-example-bit10">regpict-json-defined-register-example-bit10</a>
+                    </td>
+                    <td>bit10</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit11</td>
+                    <td><a href="#regpict-json-defined-register-example-bit11">regpict-json-defined-register-example-bit11</a>
+                    </td>
+                    <td>bit11</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit12</td>
+                    <td><a href="#regpict-json-defined-register-example-bit12">regpict-json-defined-register-example-bit12</a>
+                    </td>
+                    <td>bit12</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit13</td>
+                    <td><a href="#regpict-json-defined-register-example-bit13">regpict-json-defined-register-example-bit13</a>
+                    </td>
+                    <td>bit13</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-bit9</td>
+                    <td><a href="#regpict-json-defined-register-example-bit9">regpict-json-defined-register-example-bit9</a>
+                    </td>
+                    <td>bit9</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-byte</td>
+                    <td><a href="#regpict-json-defined-register-example-byte">regpict-json-defined-register-example-byte</a>
+                    </td>
+                    <td>byte</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-field-4-0</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-field-4-0">regpict-json-defined-register-example-field-4-0</a>
+                    </td>
+                    <td>field 4:0</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>json-defined-register-example-very-long-name-that-will-never-fit</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-very-long-name-that-will-never-fit">regpict-json-defined-register-example-very-long-name-that-will-never-fit</a>
+                    </td>
+                    <td>Very long name that will never fit</td>
+                </tr>
+                <tr>
+                    <td>regpict</td>
+                    <td>very long name that will never fit</td>
+                    <td>
+                        <a href="#regpict-json-defined-register-example-very-long-name-that-will-never-fit">regpict-json-defined-register-example-very-long-name-that-will-never-fit</a>
+                    </td>
+                    <td>Very long name that will never fit</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section id="xref-map" class="introductory appendix">
+        <h2 aria-level="1" role="heading" id="h2_xref-map">Section, Figure and Table ID Map</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1&nbsp;</td>
+                    <td>JSON Example Register Figure</td>
+                    <td><a href="#sect-json-example-register-figure">sect-json-example-register-figure</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2&nbsp;</td>
+                    <td>Intel PTE</td>
+                    <td><a href="#sect-intel-pte">sect-intel-pte</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+
+</html>

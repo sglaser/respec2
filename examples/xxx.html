@@ -4,11 +4,12 @@
     <meta charset="utf-8" />
     <title>PCISIG ReSpec Example</title>
     <!-- // <script src='http://w3.dev/2009/dap/ReSpec.js/js/respec.js' class='remove'></script> -->
-    <!-- // <script src='../js/require.js' data-main='../js/profile-w3c-common' async class='remove'></script>-->
-    <!-- // <script src='../builds/respec-w3c-common.js' async class='remove'></script> -->
-       <script src="respec-debug.js" async="async" class="remove"></script>
+     <script src='../js/require.js' data-main='../js/profile-pcisig-common' async class='remove'></script>
+    <!-- // <script src='../builds/respec-pcisig-common.js' async class='remove'></script> -->
+       <!--<script src="respec-debug.js" async="async" class="remove"></script>-->
     <!-- // <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script> -->
-    <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
+      <!-- // <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' async class='remove'></script> -->
+       <!--<script src='http://sglaser.github.io/respec/builds/respec-pcisig-common.js' async class='remove'></script>-->
     <script class="remove">
       var respecConfig = {
               specStatus:   "WD/Author-Review/0.1"
@@ -253,10 +254,10 @@
     </section>
       <section>
     <h2>PCISIG style Registers</h2>
-    <figure class="register pcisig_reg" data-table="#reg1">
+    <figure class="register pcisig_reg" data-table="#tbl-pcisig-style-register-1">
         <figcaption>PCISIG-Style Register #1</figcaption>
     </figure>
-    <table class="pcisig_reg" id="reg1">
+    <table class="pcisig_reg">
         <caption>PCISIG-Style Register #1</caption>
         <thead>
             <tr>
@@ -659,6 +660,27 @@
     </table>
     <p class="impnote" title="Use of the No RO-enabled PR-PR Passing Bit">
         The No RO-enabled PR-PR Passing bit allows platforms to utilize PCI Express switching elements on the path between a requester and completer for requesters that could benefit from a slightly less 5 relaxed ordering model. An example is a device that cannot ensure that multiple overlapping posted writes to the same address are outstanding at the same time. The method by which such a device is enabled to utilize this mode is beyond the scope of this specification.</p>
+
+    <section><h2>Field referenced</h2>
+        <ul>
+            <li><a>Completion Timeout Ranges Supported</a></li>
+            <li><a>Completion Timeout Disable Supported</a></li>
+            <li><a>ARI Forwarding Supported</a></li>
+            <li><a>AtomicOp Routing Supported</a></li>
+            <li><a>32-bit AtomicOp Completer Supported</a></li>
+            <li><a>64-bit AtomicOp Completer Supported</a></li>
+            <li><a>128-bit CAS Completer Supported</a></li>
+            <li><a>No RO-enabled PR-PR Passing</a></li>
+            <li><a>LTR Mechanism Supported</a></li>
+            <li><a>TPH Completer Supported</a></li>
+            <li><a>LN System CLS</a></li>
+            <li><a>OBFF Supported</a></li>
+            <li><a>Extended Fmt Field Supported</a></li>
+            <li><a>End-End TLP Prefix Supported</a></li>
+            <li><a>Max End-End TLP Prefixes</a></li>
+            <li><a>FRS Supported</a></li>
+        </ul>
+    </section>
 </section>
     <section>
       <h2>Name <a href="http://berjon.com/">clashes</a> after <span>and <a href="http://w3.org/"
