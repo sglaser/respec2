@@ -192,28 +192,33 @@ define(
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
                 if (refs.length) {
-                    var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
-                    $.ajax({
-                        dataType:   "json"
-                    ,   url:        url
-                    ,   success:    function (data) {
-                            conf.biblio = data || {};
-                            // override biblio data
-                            if (conf.localBiblio) {
+                    if (conf.onlyLocalBiblio) {
+                        conf.biblio = { };
+                        bibref(conf, msg);
+                    } else {
+                        var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                        $.ajax({
+                                   dataType: "json"
+                                   , url: url
+                                   , success: function(data) {
+                                conf.biblio = data || {};
+                                // override biblio data
+                                if (conf.localBiblio) {
                                     for (var k in conf.localBiblio) {
                                         if (conf.localBiblio.hasOwnProperty(k)) {
                                             conf.biblio[k] = conf.localBiblio[k];
                                         }
                                     }
+                                }
+                                bibref(conf, msg);
+                                finish();
                             }
-                            bibref(conf, msg);
-                            finish();
-                        }
-                    ,   error:      function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                            finish();
-                        }
-                    });
+                            , error:        function(xhr, status, error) {
+                                msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                                finish();
+                            }
+                               });
+                    }
                 } else {
                     finish();
                 }
