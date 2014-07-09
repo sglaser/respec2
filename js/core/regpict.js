@@ -1,5 +1,6 @@
 /*globals define */
-/*jshint jquery: true, browser: true*/
+/*jslint plusplus:true, white:true, vars:true, regexp:true, nomen:true */
+/*jshint jquery:true, browser:true, funcscope:true, laxbreak:true, laxcomma:true */
 
 // Module core/regpict
 // Handles register pictures in the document. This encompasses two primary operations. One is
@@ -14,7 +15,7 @@ define(
         "use strict";
 
         function pget(obj, prop, def) {
-            if ((obj !== null) && prop in obj) {
+            if ((obj !== null) && obj.hasOwnProperty(prop)) {
                 return obj[prop];
             } else {
                 return def;
@@ -43,25 +44,25 @@ define(
             for (var index in fields) {
                 if (fields.hasOwnProperty(index)) {
                     var item = fields[index];
-                    if (("msb" in item) && !("lsb" in item)) {
+                    if (item.hasOwnProperty("msb") && !item.hasOwnProperty("lsb")) {
                         item.lsb = item.msb;
                     }
-                    if (("lsb" in item) && !("msb" in item)) {
+                    if (item.hasOwnProperty("lsb") && !item.hasOwnProperty("msb")) {
                         item.msb = item.lsb;
                     }
-                    if (!("unused" in item)) {
+                    if (!item.hasOwnProperty("unused")) {
                         item.unused = false;
                     }
-                    if (!("attr" in item)) {
+                    if (!item.hasOwnProperty("attr")) {
                         item.attr = defaultAttr;
                     }
-                    if (!("name" in item)) {
+                    if (!item.hasOwnProperty("name")) {
                         item.name = index;
                     }
-                    if (!("value" in item)) {
+                    if (!item.hasOwnProperty("value")) {
                         item.value = "";
                     }
-                    if (!("class" in item)) {
+                    if (!item.hasOwnProperty("class")) {
                         item.class = "";
                     }
                     //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
