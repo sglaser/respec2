@@ -17985,6 +17985,7 @@ define(
     }
 );
 
+/*globals define */
 
 // Module core/biblio
 // Handles bibliographic references
@@ -17994,18 +17995,29 @@ define(
 define(
     'core/biblio',[],
     function () {
+        
         var getRefKeys = function (conf) {
             var informs = conf.informativeReferences
             ,   norms = conf.normativeReferences
             ,   del = []
             ,   getKeys = function (obj) {
                     var res = [];
-                    for (var k in obj) res.push(k);
+                    for (var k in obj) {
+                        if (obj.hasOwnProperty(k)) {
+                            res.push(k);
+                        }
+                    }
                     return res;
                 }
             ;
-            for (var k in informs) if (norms[k]) del.push(k);
-            for (var i = 0; i < del.length; i++) delete informs[del[i]];
+            for (var k in informs) {
+                if (informs.hasOwnProperty(k) && norms[k]) {
+                    del.push(k);
+                }
+            }
+            for (var i = 0; i < del.length; i++) {
+                delete informs[del[i]];
+            }
             return {
                 informativeReferences: getKeys(informs),
                 normativeReferences: getKeys(norms)
@@ -18024,38 +18036,57 @@ define(
         ,   "REC":      "W3C Recommendation"
         };
         var stringifyRef = function(ref) {
-            if (typeof ref === "string") return ref;
+            if (typeof ref === "string") {
+                return ref;
+            }
             var output = "";
             if (ref.authors && ref.authors.length) {
                 output += ref.authors.join("; ");
-                if (ref.etAl) output += " et al";
+                if (ref.etAl) {
+                    output += " et al";
+                }
                 output += ". ";
             }
-            if (ref.href) output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
-            else output += '<cite>' + ref.title + '</cite>. ';
-            if (ref.date) output += ref.date + ". ";
-            if (ref.status) output += (REF_STATUSES[ref.status] || ref.status) + ". ";
-            if (ref.href) output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
+            if (ref.href) {
+                output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
+            } else {
+                output += '<cite>' + ref.title + '</cite>. ';
+            }
+            if (ref.date) {
+                output += ref.date + ". ";
+            }
+            if (ref.status) {
+                output += (REF_STATUSES[ref.status] || ref.status) + ". ";
+            }
+            if (ref.href) {
+                output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
+            }
             return output;
         };
         var bibref = function (conf, msg) {
             // this is in fact the bibref processing portion
             var badrefs = {}
-            ,   refs = getRefKeys(conf)
-            ,   informs = refs.informativeReferences
-            ,   norms = refs.normativeReferences
+            ,   temp = getRefKeys(conf)
+            ,   informs = temp.informativeReferences
+            ,   norms = temp.normativeReferences
             ,   aliases = {}
             ;
 
-            if (!informs.length && !norms.length && !conf.refNote) return;
+            if (!informs.length && !norms.length && !conf.refNote) {
+                return;
+            }
             var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
-            if (conf.refNote) $("<p></p>").html(conf.refNote).appendTo($refsec);
+            if (conf.refNote) {
+                $("<p></p>").html(conf.refNote).appendTo($refsec);
+            }
 
             var types = ["Normative", "Informative"];
             for (var i = 0; i < types.length; i++) {
                 var type = types[i]
-                ,   refs = (type == "Normative") ? norms : informs;
-                if (!refs.length) continue;
+                ,   refs = (type === "Normative") ? norms : informs;
+                if (!refs.length) {
+                    continue;
+                }
                 var $sec = $("<section><h3></h3></section>")
                                 .appendTo($refsec)
                                 .find("h3")
@@ -18065,7 +18096,9 @@ define(
                 $sec.makeID(null, type + " references");
                 refs.sort();
                 var $dl = $("<dl class='bibliography'></dl>").appendTo($sec);
-                if (conf.doRDFa !== false) $dl.attr("about", "");
+                if (conf.doRDFa !== false) {
+                    $dl.attr("about", "");
+                }
                 for (var j = 0; j < refs.length; j++) {
                     var ref = refs[j];
                     $("<dt></dt>")
@@ -18075,8 +18108,11 @@ define(
                         ;
                     var $dd = $("<dd></dd>").appendTo($dl);
                     if (this.doRDFa !== false) {
-                        if (type === "Normative") $dd.attr("rel", "dcterms:requires");
-                        else $dd.attr("rel", "dcterms:references");
+                        if (type === "Normative") {
+                            $dd.attr("rel", "dcterms:requires");
+                        } else {
+                            $dd.attr("rel", "dcterms:references");
+                        }
                     }
                     var refcontent = conf.biblio[ref]
                     ,   circular = {}
@@ -18094,24 +18130,30 @@ define(
                         }
                     }
                     aliases[key] = aliases[key] || [];
-                    if (aliases[key].indexOf(ref) < 0) aliases[key].push(ref);
+                    if (aliases[key].indexOf(ref) < 0) {
+                        aliases[key].push(ref);
+                    }
                     if (refcontent) {
                         $dd.html(stringifyRef(refcontent) + "\n");
                     }
                     else {
-                        if (!badrefs[ref]) badrefs[ref] = 0;
+                        if (!badrefs[ref]) {
+                            badrefs[ref] = 0;
+                        }
                         badrefs[ref]++;
                         $dd.html("<em style='color: #f00'>Reference not found.</em>\n");
                     }
                 }
             }
             for (var k in aliases) {
-                if (aliases[k].length > 1) {
+                if (aliases.hasOwnProperty(k) && (aliases[k].length > 1)) {
                     msg.pub("warn", "[" + k + "] is referenced in " + aliases[k].length + " ways (" + aliases[k].join(", ") + "). This causes duplicate entries in the reference section.");
                 }
             }
             for (var item in badrefs) {
-                if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
+                if (badrefs.hasOwnProperty(item)) {
+                    msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
+                }
             }
         };
         
@@ -18128,7 +18170,7 @@ define(
                 ;
                 if (conf.localBiblio) {
                     for (var k in conf.localBiblio) {
-                        if (typeof conf.localBiblio[k].aliasOf !== "undefined") {
+                        if (conf.localBiblio.hasOwnProperty(k) && (typeof conf.localBiblio[k].aliasOf !== "undefined")) {
                             localAliases.push(conf.localBiblio[k].aliasOf);
                         }
                     }
@@ -18137,26 +18179,37 @@ define(
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
                 if (refs.length) {
-                    var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
-                    $.ajax({
-                        dataType:   "json"
-                    ,   url:        url
-                    ,   success:    function (data) {
-                            conf.biblio = data || {};
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                    if (conf.onlyLocalBiblio) {
+                        conf.biblio = { };
+                        bibref(conf, msg);
+                        finish();
+                    } else {
+                        var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                        $.ajax({
+                                   dataType: "json"
+                                   , url: url
+                                   , success: function(data) {
+                                conf.biblio = data || {};
+                                // override biblio data
+                                if (conf.localBiblio) {
+                                    for (var k in conf.localBiblio) {
+                                        if (conf.localBiblio.hasOwnProperty(k)) {
+                                            conf.biblio[k] = conf.localBiblio[k];
+                                        }
+                                    }
+                                }
+                                bibref(conf, msg);
+                                finish();
                             }
-                            bibref(conf, msg);
-                            finish();
-                        }
-                    ,   error:      function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                            finish();
-                        }
-                    });
+                            , error:        function(xhr, status, error) {
+                                msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                                finish();
+                            }
+                               });
+                    }
+                } else {
+                    finish();
                 }
-                else finish();
             }
         };
     }
@@ -19605,7 +19658,8 @@ $.svg = new SVGManager();
 define("jquery-svg", function(){});
 
 /*globals define */
-/*jshint jquery: true, browser: true*/
+/*jslint plusplus:true, white:true, vars:true, regexp:true, nomen:true */
+/*jshint jquery:true, browser:true, funcscope:true, laxbreak:true, laxcomma:true */
 
 // Module core/regpict
 // Handles register pictures in the document. This encompasses two primary operations. One is
@@ -19620,7 +19674,7 @@ define(
         
 
         function pget(obj, prop, def) {
-            if ((obj !== null) && prop in obj) {
+            if ((obj !== null) && obj.hasOwnProperty(prop)) {
                 return obj[prop];
             } else {
                 return def;
@@ -19649,25 +19703,25 @@ define(
             for (var index in fields) {
                 if (fields.hasOwnProperty(index)) {
                     var item = fields[index];
-                    if (("msb" in item) && !("lsb" in item)) {
+                    if (item.hasOwnProperty("msb") && !item.hasOwnProperty("lsb")) {
                         item.lsb = item.msb;
                     }
-                    if (("lsb" in item) && !("msb" in item)) {
+                    if (item.hasOwnProperty("lsb") && !item.hasOwnProperty("msb")) {
                         item.msb = item.lsb;
                     }
-                    if (!("unused" in item)) {
+                    if (!item.hasOwnProperty("unused")) {
                         item.unused = false;
                     }
-                    if (!("attr" in item)) {
+                    if (!item.hasOwnProperty("attr")) {
                         item.attr = defaultAttr;
                     }
-                    if (!("name" in item)) {
+                    if (!item.hasOwnProperty("name")) {
                         item.name = index;
                     }
-                    if (!("value" in item)) {
+                    if (!item.hasOwnProperty("value")) {
                         item.value = "";
                     }
-                    if (!("class" in item)) {
+                    if (!item.hasOwnProperty("class")) {
                         item.class = "";
                     }
                     //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
