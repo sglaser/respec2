@@ -193,7 +193,7 @@ define(
                                 .concat(localAliases);
                 if (refs.length) {
                     if (conf.onlyLocalBiblio) {
-                        conf.biblio = { };
+                        conf.biblio = conf.localBiblio || {};
                         bibref(conf, msg);
                         finish();
                     } else {
