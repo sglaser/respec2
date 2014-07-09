@@ -195,6 +195,7 @@ define(
                     if (conf.onlyLocalBiblio) {
                         conf.biblio = { };
                         bibref(conf, msg);
+                        finish();
                     } else {
                         var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
                         $.ajax({
