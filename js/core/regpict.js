@@ -17,14 +17,13 @@ define(
         function pget(obj, prop, def) {
             if ((obj !== null) && obj.hasOwnProperty(prop)) {
                 return obj[prop];
-            } else {
-                return def;
             }
+            return def;
         }
 
         function draw_regpict(divsvg, svg, reg) {
             var width = Number(pget(reg, "width", 32));
-            var unused = String(pget(reg, "unused", "RsvdP"));
+            var defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
             var defaultAttr = String(pget(reg, "defaultAttr", "other"));
             var cellWidth = Number(pget(reg, "cellWidth", 16));
             var cellHeight = Number(pget(reg, "cellHeight", 32));
@@ -37,7 +36,7 @@ define(
             var figName = String(pget(reg, "name", "???"));
             var fields = pget(reg, "fields", { }); // default to empty register
 
-            //console.log("draw_regpict: width=" + width + " unused ='" + unused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
+            //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
 
             // sanitize field array to avoid subsequent problems
@@ -50,8 +49,8 @@ define(
                     if (item.hasOwnProperty("lsb") && !item.hasOwnProperty("msb")) {
                         item.msb = item.lsb;
                     }
-                    if (!item.hasOwnProperty("unused")) {
-                        item.unused = false;
+                    if (!item.hasOwnProperty("isUnused")) {
+                        item.isUnused = false;
                     }
                     if (!item.hasOwnProperty("attr")) {
                         item.attr = defaultAttr;
@@ -62,10 +61,10 @@ define(
                     if (!item.hasOwnProperty("value")) {
                         item.value = "";
                     }
-                    if (!item.hasOwnProperty("addClass")) {
-                        item.addClass = "";
+                    if (!item.hasOwnProperty("class")) {
+                        item.class = "";
                     }
-                    //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
+                    //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " isUnused=" + item.isUnused + " name='" + item.name + "'");
 
                 }
             }
@@ -98,12 +97,13 @@ define(
                         index = index + "_" + lsb;  // _unused_msb_lsb
                     }
                     fields[index] = {
-                        "msb":    i - 1,
-                        "lsb":    lsb,
-                        "name": ((i - lsb) * 2 - 1) >= unused.length ? unused : unused[0].toUpperCase(), // use full name if if fits, else use 1st char
-                        "attr":   unused.toLowerCase(),   // attribute is name
-                        "unused": true,
-                        "value":  ""
+                        "msb":      (i - 1),
+                        "lsb":      lsb,
+                        "name":     ((i - lsb) * 2 - 1) >=
+                                    defaultUnused.length ? defaultUnused : defaultUnused[0].toUpperCase(), // use full name if if fits, else use 1st char
+                        "attr":     defaultUnused.toLowerCase(),   // attribute is name
+                        "isUnused": true,
+                        "value":    ""
                     };
                     for (j = lsb; j < i; j++) {
                         bitarray[j] = index;
@@ -156,7 +156,7 @@ define(
                             svg.line(g,
                                      rightOf(f.lsb), cellTop,
                                      rightOf(f.lsb), cellTop - text.clientHeight,
-                                     { "class_": (f.lsb === 0)? "regBitNumLine" : "regBitNumLine_Hide"});
+                                     { "class_": (f.lsb === 0) ? "regBitNumLine" : "regBitNumLine_Hide"});
                             svg.line(g,
                                      leftOf(f.msb), cellTop,
                                      leftOf(f.msb), cellTop - text.clientHeight,
@@ -164,7 +164,7 @@ define(
                             if ("addClass" in f && typeof f.addClass === "string") {
                                 gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
                             }
-                            if (f.unused) {
+                            if (f.isUnused) {
                                 gAddClass.push("regFieldUnused");
                             }
                             svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
@@ -180,7 +180,7 @@ define(
                             text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
                                             svg.createText().string(f.name),
                                             { "class_": "regFieldName" });
-                            if (!f.unused) {
+                            if (!f.isUnused) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
                                 var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
@@ -194,9 +194,9 @@ define(
                                                  svg.createText().string(f.value[i]),
                                                  {
                                                      "class_": ("regFieldValue regFieldBitValue" +
-                                                         " regFieldBitValue-" + i.toString() +
-                                                         ((i === (f.value.length - 1)) ?
-                                                          " regFieldBitValue-msb" : ""))
+                                                                " regFieldBitValue-" + i.toString() +
+                                                                ((i === (f.value.length - 1)) ?
+                                                                    " regFieldBitValue-msb" : ""))
                                                  });
                                     }
                                 } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
@@ -227,7 +227,7 @@ define(
                              " msb=" + f.msb +
                              " lsb=" + f.lsb +
                              " attr=" + f.attr +
-                             " unused=" + f.unused +
+                             " isUnused=" + f.isUnused +
                              (("id" in f) ? f.id : ""));
                              console.log(" text.clientWidth=" + text.clientWidth +
                              " text_width=" + text_width +
@@ -244,8 +244,8 @@ define(
                                 ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                                 svg.change(text,
                                            {
-                                               x:      rightOf(-0.5),
-                                               y:      nextBitLine,
+                                               x:        rightOf(-0.5),
+                                               y:        nextBitLine,
                                                "class_": "regFieldName"
                                            });
                                 p = svg.createPath();
@@ -255,7 +255,7 @@ define(
                                 svg.path(g, p,
                                          {
                                              "class_": "regBitBracket",
-                                             fill:   "none"
+                                             fill:     "none"
                                          });
                                 p = svg.createPath();
                                 p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
@@ -264,7 +264,7 @@ define(
                                 svg.path(g, p,
                                          {
                                              "class_": "regBitLine",
-                                             fill:   "none"
+                                             fill:     "none"
                                          });
                                 gAddClass[0] = "regFieldExternal";
                                 gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
@@ -277,8 +277,8 @@ define(
                 }
             }
             svg.configure({
-                              height:        nextBitLine + "px",
-                              width:         (max_text_width + rightOf(-1)) + "px",
+                              height: nextBitLine + "px",
+                              width: (max_text_width + rightOf(-1)) + "px",
 //                              viewBox:       "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine,
                               "xmlns:xlink": "http://www.w3.org/1999/xlink"
                           });
@@ -332,7 +332,7 @@ define(
 
                         temp = $fig.attr("data-unused");
                         if (temp !== null && temp !== undefined && temp !== "") {
-                            json.unused = temp;
+                            json.defaultUnused = temp;
                         }
 
                         temp = $fig.attr("data-href");
@@ -390,13 +390,13 @@ define(
                                         attr = "other";
                                     }
                                     var unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|unused)$/i;
-                                    var unused = !!unusedAttr.test(attr);
-//                                    console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  unused=" + unused);
+                                    var isUnused = !!unusedAttr.test(attr);
+//                                    console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
                                     parsed.fields[fieldName] = {
-                                        msb:    msb,
-                                        lsb:    lsb,
-                                        attr:   attr,
-                                        unused: unused
+                                        msb:      msb,
+                                        lsb:      lsb,
+                                        attr:     attr,
+                                        isUnused: isUnused
                                     };
                                 }
                             });
@@ -405,10 +405,11 @@ define(
 //                            console.log("json=" + JSON.stringify(json, null, 2));
                         }
 
-                        if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") && json.hasOwnProperty("register")) {
+                        if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") &&
+                            json.hasOwnProperty("register")) {
                             parsed = { fields: { } };
-                            pattern =
-                                new RegExp("^#\\s*define\\s+(" + json.register + ")(\\w*)\\s+(\\S*)\\s*/\\*\\s*(\\S\\S\\S\\S\\S)\\s*\\*/\\s*$");
+                            pattern = new RegExp("^#\\s*define\\s+(" + json.register +
+                                                 ")(\\w*)\\s+(\\S*)\\s*/\\*\\s*(\\S\\S\\S\\S\\S)\\s*\\*/\\s*$");
                             bitpattern = /(\d+):(\d+)/;
                             if (!!conf.ajaxIsLocal) {
                                 $.ajaxSetup({ isLocal: true});
@@ -464,8 +465,8 @@ define(
                                        error:    function(xhr, status, error) {
                                            msg.pub("error",
                                                    "regpict/nv_refman: Error including file data-href=" + json.href +
-                                                       " data-register=" + json.register + " : " +
-                                                       status + " (" + error + ")");
+                                                   " data-register=" + json.register + " : " +
+                                                   status + " (" + error + ")");
                                        }
                                    });
                         }
