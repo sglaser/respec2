@@ -19721,8 +19721,8 @@ define(
                     if (!item.hasOwnProperty("value")) {
                         item.value = "";
                     }
-                    if (!item.hasOwnProperty("class")) {
-                        item.class = "";
+                    if (!item.hasOwnProperty("addClass")) {
+                        item.addClass = "";
                     }
                     //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " unused=" + item.unused + " name='" + item.name + "'");
 
@@ -19799,46 +19799,46 @@ define(
                 for (i in fields) {
                     if (fields.hasOwnProperty(i)) {
                         f = fields[i];
-                        var gclass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
+                        var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
                             text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                                             svg.createText().string(f.lsb), {
-                                    class_: "regBitNum"
+                                    "class_": "regBitNum"
                                 });
                             if (f.lsb !== f.msb) {
                                 svg.text(g, middleOf(f.msb), cellTop - 4,
                                          svg.createText().string(f.msb), {
-                                        class_: "regBitNum"
+                                        "class_": "regBitNum"
                                     });
                             }
                             svg.line(g,
                                      rightOf(f.lsb), cellTop,
                                      rightOf(f.lsb), cellTop - text.clientHeight,
-                                     { class_: (f.lsb === 0)? "regBitNumLine" : "regBitNumLine_Hide"});
+                                     { "class_": (f.lsb === 0)? "regBitNumLine" : "regBitNumLine_Hide"});
                             svg.line(g,
                                      leftOf(f.msb), cellTop,
                                      leftOf(f.msb), cellTop - text.clientHeight,
-                                     { class_: "regBitNumLine" });
-                            if ("class" in f && typeof f.class === "string") {
-                                gclass = gclass.concat(f.class.split(/\s+/));
+                                     { "class_": "regBitNumLine" });
+                            if ("addClass" in f && typeof f.addClass === "string") {
+                                gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
                             }
                             if (f.unused) {
-                                gclass.push("regFieldUnused");
+                                gAddClass.push("regFieldUnused");
                             }
                             svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
                                      0, 0, {
-                                    class_: "regFieldBox"
+                                    "class_": "regFieldBox"
                                 });
                             for (j = f.lsb + 1; j <= f.msb; j++) {
                                 svg.line(g,
                                          rightOf(j), cellTop + cellHeight - cellInternalHeight,
                                          rightOf(j), cellTop + cellHeight,
-                                         { class_: "regFieldBox" });
+                                         { "class_": "regFieldBox" });
                             }
                             text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
                                             svg.createText().string(f.name),
-                                            { class_: "regFieldName" });
+                                            { "class_": "regFieldName" });
                             if (!f.unused) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
                                 var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
@@ -19852,7 +19852,7 @@ define(
                                                  cellBitValueTop,
                                                  svg.createText().string(f.value[i]),
                                                  {
-                                                     class_: ("regFieldValue regFieldBitValue" +
+                                                     "class_": ("regFieldValue regFieldBitValue" +
                                                          " regFieldBitValue-" + i.toString() +
                                                          ((i === (f.value.length - 1)) ?
                                                           " regFieldBitValue-msb" : ""))
@@ -19862,11 +19862,11 @@ define(
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
                                              (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
                                              svg.createText().string(f.value),
-                                             { class_: "regFieldValue" });
+                                             { "class_": "regFieldValue" });
                                 } else {
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
                                              svg.createText().string("INVALID VALUE"),
-                                             { class_: "svg_error" });
+                                             { "class_": "svg_error" });
                                 }
                             }
                             var text_width = text.clientWidth;
@@ -19905,7 +19905,7 @@ define(
                                            {
                                                x:      rightOf(-0.5),
                                                y:      nextBitLine,
-                                               class_: "regFieldName"
+                                               "class_": "regFieldName"
                                            });
                                 p = svg.createPath();
                                 p.move(leftOf(f.msb), cellTop + cellHeight);
@@ -19913,7 +19913,7 @@ define(
                                 p.line(rightOf(f.lsb), cellTop + cellHeight);
                                 svg.path(g, p,
                                          {
-                                             class_: "regBitBracket",
+                                             "class_": "regBitBracket",
                                              fill:   "none"
                                          });
                                 p = svg.createPath();
@@ -19922,15 +19922,15 @@ define(
                                 p.horiz(rightOf(-0.4));
                                 svg.path(g, p,
                                          {
-                                             class_: "regBitLine",
+                                             "class_": "regBitLine",
                                              fill:   "none"
                                          });
-                                gclass[0] = "regFieldExternal";
-                                gclass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
+                                gAddClass[0] = "regFieldExternal";
+                                gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
                                 nextBitLine += text_height + 2;
                                 bitLineCount = (bitLineCount + 1) % 4;
                             }
-                            svg.change(g, { class_: gclass.join(" ") });
+                            svg.change(g, { "class_": gAddClass.join(" ") });
                         }
                     }
                 }
