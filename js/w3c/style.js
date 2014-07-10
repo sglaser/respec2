@@ -37,6 +37,9 @@ define(
                 else if (statStyle !== "NONE") {
                     css += "www.w3.org/StyleSheets/TR/W3C-" + statStyle;
                 }
+                if (conf.cssOverride) {
+                    css = conf.cssOverride;
+                }
                 utils.linkCSS(doc, css);
                 msg.pub("end", "w3c/style");
                 cb();
