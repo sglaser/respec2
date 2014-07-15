@@ -43,9 +43,9 @@ define(
                 title = this.text();
             }
             title = title.toLowerCase().replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
-            console.log("pre-title= \"" + title + "\"");
+//            console.log("pre-title= \"" + title + "\"");
             title = title.split(/[\|]+/);
-            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
+//            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
             return title;
         };
 
