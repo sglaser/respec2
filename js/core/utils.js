@@ -64,7 +64,7 @@ define(
                 inc,
                 doc;
             //id = id.split(/[^\-.0-9a-z_]+/i).join("-").replace(/^-+/, "").replace(/-+$/, "");
-            id = id.replace(/[^\-.0-9a-z_]+/ig, "-").replace(/^-+/, "").replace(/-+$/, "");
+            id = id.replace(/[^\-\.0-9a-z_]+/ig, "-").replace(/^-+/, "").replace(/-+$/, "");
             if (/\.$/.test(id)) {
                 id += "x"; // trailing . doesn't play well with jQuery
             }
