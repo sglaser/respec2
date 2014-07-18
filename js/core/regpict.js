@@ -143,14 +143,19 @@ define(
                         var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
-                            text = svg.text(g, middleOf(f.lsb), cellTop - 4,
-                                            svg.createText().string(f.lsb), {
-                                    "class_": "regBitNum"
-                                });
-                            if (f.lsb !== f.msb) {
-                                svg.text(g, middleOf(f.msb), cellTop - 4,
-                                         svg.createText().string(f.msb), {
-                                        "class_": "regBitNum"
+                            if (f.lsb === f.msb) {
+                                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
+                                                svg.createText().string(f.lsb), {
+                                        "class_": "regBitNumSingle"
+                                    });
+                            } else {
+                                text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
+                                                svg.createText().string(f.lsb), {
+                                        "class_": "regBitNumLSB"
+                                    });
+                                text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
+                                                svg.createText().string(f.msb), {
+                                        "class_": "regBitNumMSB"
                                     });
                             }
                             svg.line(g,
