@@ -235,11 +235,15 @@ define(
             // take a document and either a link or an array of links to CSS and appends a <link/> element
             // to the head pointing to each
             linkCSS:  function (doc, styles) {
+                var $head = $('head', doc);
                 if (!$.isArray(styles)) {
                     styles = [styles];
                 }
                 $.each(styles, function (i, css) {
-                    $('head', doc).append($("<link/>").attr({ rel: 'stylesheet', href: css }));
+                    $head.append($("<link/>").attr({ rel: 'stylesheet', href: css }));
+                });
+                $('[data-position=end]', $head).each(function() {
+                   $head.append($(this));
                 });
             },
 
