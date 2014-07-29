@@ -34,6 +34,7 @@ define(
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
             var cellTop = Number(pget(reg, "cellTop", 16));
             var figName = String(pget(reg, "name", "???"));
+            var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
             var fields = pget(reg, "fields", { }); // default to empty register
 
             //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
@@ -281,10 +282,15 @@ define(
                     }
                 }
             }
+            var scale = 1.0;
+            max_text_width = max_text_width + rightOf(-1);
+            if ((maxFigWidth > 0) && (max_text_width > maxFigWidth)) {
+                scale = maxFigWidth / max_text_width;
+            }
             svg.configure({
-                              height: nextBitLine + "px",
-                              width: (max_text_width + rightOf(-1)) + "px",
-//                              viewBox:       "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine,
+                              height:      (scale * nextBitLine) + "px",
+                              width:       (scale * max_text_width) + "px",
+                              viewBox:     "0 0 " + max_text_width + " " + nextBitLine,
                               "xmlns:xlink": "http://www.w3.org/1999/xlink"
                           });
         }
