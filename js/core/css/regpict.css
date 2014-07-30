@@ -20,6 +20,14 @@ text.regBitNumStart {
     font-size: 8pt;
 }
 
+text.regBitWidth {
+    text-anchor: middle;
+    fill: none;
+    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 11pt;
+}
+
 g line.regBitNumLine {
 	stroke: grey;
 	stroke-width: 1px;
@@ -122,6 +130,7 @@ svg.regpict {
 	color: green;
 }
 
+svg *.svg_error text:not(.regBitWidth),
 svg *.svg_error text:not(.regBitNumMiddle),
 svg *.svg_error text:not(.regBitNumEnd),
 svg *.svg_error text:not(.regBitNumStart) {
@@ -166,4 +175,8 @@ figure pre.json {
     g.regLink:focus text.regBitNumEnd
     { fill: blue; font-weight: bold; font-size: 9pt; }
 
+    g.regLink:hover text.regBitWidth,
+    g.regLink:focus text.regBitWidth {
+        fill: blue;
+    }
 }

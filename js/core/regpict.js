@@ -32,7 +32,8 @@ define(
             var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
             var cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
-            var cellTop = Number(pget(reg, "cellTop", 16));
+            var cellTop = Number(pget(reg, "cellTop", 32));
+            var bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
             var figName = String(pget(reg, "name", "???"));
             var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
             var figLeft = Number(pget(reg, "figLeft", 32));
@@ -301,6 +302,11 @@ define(
                                         { "class_": "regFieldBox" });
                                 }
                             }
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop - bitWidthPos,
+                                            svg.createText().string((f.msb === f.lsb)
+                                                                        ? "1 bit"
+                                                                        : (f.msb - f.lsb + 1) + " bits"),
+                                            { "class_": "regBitWidth" });
                             text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop,
                                             svg.createText().string(f.name),
                                             { "class_": "regFieldName" });
