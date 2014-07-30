@@ -18262,7 +18262,7 @@ define(
 );
 
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNumSingle {\n    text-anchor: middle;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumLSB {\n    text-anchor: end;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumMSB {\n    text-anchor: start;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ng line.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\ng line.regBitNumLine_Hide {\n    stroke: none;\n    stroke-width: 1px;\n}\n\ng rect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\ng.regAttr_rsvd rect.regFieldBox,\ng.regAttr_rsvdp rect.regFieldBox,\ng.regAttr_rsvdz rect.regFieldBox,\ng.regAttr_reserved rect.regFieldBox,\ng.regAttr_unused rect.regFieldBox {\n\tfill: white;\n}\n\ng.regFieldExternal line.regFieldBox,\ng.regFieldInternal line.regFieldBox {\n\tstroke: black;\n}\n\ng.regFieldUnused line.regFieldBox {\n\tstroke: grey;\n}\n\ng.regFieldUnused text.regFieldName,\ng.regFieldUnused text.regFieldValue {\n\tfill: grey;\n}\n\ng text.regFieldValue,\ng.regFieldInternal text.regFieldName {\n    text-anchor: middle;\n}\n\ng text.regFieldName,\ng text.regFieldValue {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\ng.regFieldExternal1 path.regBitLine,\ng.regFieldExternal1 path.regBitBracket {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitLine {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitBracket {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text:not(.regBitNumSingle),\nsvg *.svg_error text:not(.regBitNumLSB),\nsvg *.svg_error text:not(.regBitNumMSB) {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}\n\n@media screen {\n    g.regLink:hover rect.regFieldBox,\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\n    \n    g.regLink:hover line.regBitNumLine,\n    g.regLink:focus line.regBitNumLine,\n    g.regLink:hover line.regBitNumLine_Hide,\n    g.regLink:focus line.regBitNumLine_Hide,\n    g.regLink:hover line.regFieldBox,\n    g.regLink:focus line.regFieldBox,\n    g.regLink:hover path.regBitLine,\n    g.regLink:focus path.regBitLine,\n    g.regLink.regFieldExternal:hover path.regBitBracket,\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\n\n    g.regLink:hover text.regFieldName,\n    g.regLink:focus text.regFieldName,\n    g.regLink.regFieldExternal:hover text.regFieldValue,\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\n\n    g.regLink:hover text.regBitNumSingle,\n    g.regLink:focus text.regBitNumSingle,\n    g.regLink:hover text.regBitNumLSB,\n    g.regLink:focus text.regBitNumLSB,\n    g.regLink:hover text.regBitNumMSB,\n    g.regLink:focus text.regBitNumMSB\n    { fill: blue; font-weight: bold; font-size: 9pt; }\n\n}';});
+define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNumMiddle {\n    text-anchor: middle;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumEnd {\n    text-anchor: end;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumStart {\n    text-anchor: start;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ng line.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\ng line.regBitNumLine_Hide {\n    stroke: none;\n    stroke-width: 1px;\n}\n\ng rect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\ng.regAttr_rsvd rect.regFieldBox,\ng.regAttr_rsvdp rect.regFieldBox,\ng.regAttr_rsvdz rect.regFieldBox,\ng.regAttr_reserved rect.regFieldBox,\ng.regAttr_unused rect.regFieldBox {\n\tfill: white;\n}\n\ng.regFieldExternal line.regFieldBox,\ng.regFieldInternal line.regFieldBox {\n\tstroke: black;\n}\n\ng.regFieldUnused line.regFieldBox {\n\tstroke: grey;\n}\n\ng.regFieldUnused text.regFieldName,\ng.regFieldUnused text.regFieldValue {\n\tfill: grey;\n}\n\ng.regFieldHidden text.regFieldName,\ng.regFieldHidden text.regFieldValue,\ng.regFieldHidden path.regBitLine,\ng.regFieldHidden path.regBitBracket,\ng.regFieldHidden line.regFieldBox,\ng.regFieldHidden rect.regFieldBox,\ng.regFieldHidden line.regBitNumLine,\ng.regFieldHidden line.regBitNumLine_Hide,\ng.regFieldHidden text.regBitNumStart,\ng.regFieldHidden text.regBitNumMiddle,\ng.regFieldHidden text.regBitNumEnd,\ng.regFieldHidden text.regFieldExtendsLeft,\ng.regFieldHidden text.regFieldExtendsRight {\n    fill: none;\n    stroke: none;\n}\n\ng text.regFieldValue,\ng.regFieldInternal text.regFieldName {\n    text-anchor: middle;\n}\n\ng.regFieldOverflowLSB text.regBitNumEnd,\ng text.regFieldExtendsRight {\n    text-anchor: start;\n}\n\ng.regFieldOverflowMSB text.regBitNumStart,\ng text.regFieldExtendsLeft {\n    text-anchor: end;\n}\n\ng text.regFieldName,\ng text.regFieldValue {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\ng.regFieldExternal1 path.regBitLine,\ng.regFieldExternal1 path.regBitBracket {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitLine {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitBracket {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text:not(.regBitNumMiddle),\nsvg *.svg_error text:not(.regBitNumEnd),\nsvg *.svg_error text:not(.regBitNumStart) {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}\n\n@media screen {\n    g.regLink:hover rect.regFieldBox,\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\n    \n    g.regLink:hover line.regBitNumLine,\n    g.regLink:focus line.regBitNumLine,\n    g.regLink:hover line.regBitNumLine_Hide,\n    g.regLink:focus line.regBitNumLine_Hide,\n    g.regLink:hover line.regFieldBox,\n    g.regLink:focus line.regFieldBox,\n    g.regLink:hover path.regBitLine,\n    g.regLink:focus path.regBitLine,\n    g.regLink.regFieldExternal:hover path.regBitBracket,\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\n\n    g.regLink:hover text.regFieldName,\n    g.regLink:focus text.regFieldName,\n    g.regLink.regFieldExternal:hover text.regFieldValue,\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\n\n    g.regLink:hover text.regBitNumMiddle,\n    g.regLink:focus text.regBitNumMiddle,\n    g.regLink:hover text.regBitNumStart,\n    g.regLink:focus text.regBitNumStart,\n    g.regLink:hover text.regBitNumEnd,\n    g.regLink:focus text.regBitNumEnd\n    { fill: blue; font-weight: bold; font-size: 9pt; }\n\n}';});
 
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
@@ -19691,14 +19691,30 @@ define(
             var cellWidth = Number(pget(reg, "cellWidth", 16));
             var cellHeight = Number(pget(reg, "cellHeight", 32));
             var cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-            var cellValueTop = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
-            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
-            var cellNameTop = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
+            var cellValueTop = Number(pget(reg, "cellValueTop", 16)); // top of text for regFieldValueInternal
+            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
+            var cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
             var cellTop = Number(pget(reg, "cellTop", 16));
             var figName = String(pget(reg, "name", "???"));
+            var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
+            var figLeft = Number(pget(reg, "figLeft", 32));
+            var visibleLSB = Number(pget(reg, "visibleLSB", 0));
+            var visibleMSB = Number(pget(reg, "visibleMSB", width));
             var fields = pget(reg, "fields", { }); // default to empty register
 
+            if (visibleMSB < 0) {
+                visibleMSB = 0;
+            }
+            if (visibleMSB > width) {
+                visibleMSB = width;
+            }
+            if (visibleLSB < 0) {
+                visibleLSB = 0;
+            }
+            if (visibleLSB > width) {
+                visibleLSB = width;
+            }
             //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
 
@@ -19781,17 +19797,41 @@ define(
 
             // x position of left edge of bit i
             function leftOf(i) {
-                return cellWidth * (width - i - 0.5);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i - 0.5 - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB - 1 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width -  visibleLSB - i - 1 - (width - visibleMSB));
+                }
             }
 
             // x position of right edge of bit i
             function rightOf(i) {
-                return cellWidth * (width - i + 0.5);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i + 0.5 - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB + 1 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width - visibleLSB - i + 1 - (width - visibleMSB));
+                }
             }
 
             // x position of middle of bit i
             function middleOf(i) {
-                return cellWidth * (width - i);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB - 0.5 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width - visibleLSB - i - 0.5 - (width - visibleMSB));
+                }
             }
 
             var g, p, f, text;
@@ -19806,29 +19846,106 @@ define(
                         var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
+                            var bitnum_width;
                             if (f.lsb === f.msb) {
                                 text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                                                 svg.createText().string(f.lsb), {
-                                        "class_": "regBitNumSingle"
+                                        "class_": "regBitNumMiddle"
                                     });
+                                /*console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4));
+                                bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > cellWidth) {
+                                    svg.change(text,
+                                               {
+                                                   x: middleOf(f.lsb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              middleOf(f.lsb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
+                                               });
+                                    console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }*/
                             } else {
-                                text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
-                                                svg.createText().string(f.lsb), {
-                                        "class_": "regBitNumLSB"
-                                    });
-                                text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
-                                                svg.createText().string(f.msb), {
-                                        "class_": "regBitNumMSB"
-                                    });
+                                if (f.lsb < visibleLSB) {
+                                    gAddClass.push("regFieldOverflowLSB");
+                                    text = svg.text(g, rightOf(f.lsb) + 2, cellTop - 4,
+                                                    svg.createText().string("... " + f.lsb), {
+                                            "class_": "regBitNumEnd"
+                                        });
+                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+                                } else {
+                                    text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
+                                                    svg.createText().string(f.lsb), {
+                                            "class_": "regBitNumEnd"
+                                        });
+                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                }
+                                /*bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
+                                     svg.change(text,
+                                               {
+                                                   x: middleOf(f.lsb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              rightOf(f.lsb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
+                                               });
+                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }*/
+                                if (f.msb > visibleMSB) {
+                                    gAddClass.push("regFieldOverflowMSB");
+                                    text = svg.text(g, leftOf(f.msb) - 2, cellTop - 4,
+                                                    svg.createText().string(f.msb + " ..."), {
+                                            "class_": "regBitNumStart"
+                                        });
+                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                } else {
+                                    text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
+                                             text = svg.createText().string(f.msb), {
+                                            "class_": "regBitNumStart"
+                                        });
+                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+                                }
+                                /*bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.msb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
+                                    svg.change(text,
+                                               {
+                                                   x: middleOf(f.msb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              leftOf(f.msb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
+                                               });
+                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }*/
                             }
-                            svg.line(g,
-                                     rightOf(f.lsb), cellTop,
-                                     rightOf(f.lsb), cellTop - text.clientHeight,
-                                     { "class_": (f.lsb === 0) ? "regBitNumLine" : "regBitNumLine_Hide"});
-                            svg.line(g,
-                                     leftOf(f.msb), cellTop,
-                                     leftOf(f.msb), cellTop - text.clientHeight,
-                                     { "class_": "regBitNumLine" });
+                            if (f.lsb >= visibleLSB) {
+                                svg.line(g,
+                                    rightOf(f.lsb), cellTop,
+                                    rightOf(f.lsb), cellTop - text.clientHeight,
+                                    { "class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
+                            }
+                            if (f.msb <= visibleMSB) {
+                                svg.line(g,
+                                    leftOf(f.msb), cellTop,
+                                    leftOf(f.msb), cellTop - text.clientHeight,
+                                    { "class_": "regBitNumLine" });
+                            }
                             if ("addClass" in f && typeof f.addClass === "string") {
                                 gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
                             }
@@ -19840,15 +19957,17 @@ define(
                                     "class_": "regFieldBox"
                                 });
                             for (j = f.lsb + 1; j <= f.msb; j++) {
-                                svg.line(g,
-                                         rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                         rightOf(j), cellTop + cellHeight,
-                                         { "class_": "regFieldBox" });
+                                if ((j >= visibleLSB) && (j <= visibleMSB)) {
+                                    svg.line(g,
+                                        rightOf(j), cellTop + cellHeight - cellInternalHeight,
+                                        rightOf(j), cellTop + cellHeight,
+                                        { "class_": "regFieldBox" });
+                                }
                             }
-                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop,
                                             svg.createText().string(f.name),
                                             { "class_": "regFieldName" });
-                            if (!f.isUnused) {
+                            if ((!f.isUnused) && (f.msb <= visibleMSB) && (f.lsb >= visibleLSB)) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
                                 var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
@@ -19858,7 +19977,7 @@ define(
                                 if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
                                     for (i = 0; i < f.value.length; ++i) {
                                         svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
-                                                 cellBitValueTop,
+                                                 cellTop + cellBitValueTop,
                                                  svg.createText().string(f.value[i]),
                                                  {
                                                      "class_": ("regFieldValue regFieldBitValue" +
@@ -19869,11 +19988,11 @@ define(
                                     }
                                 } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                                             (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
+                                             cellTop + (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
                                              svg.createText().string(f.value),
                                              { "class_": "regFieldValue" });
                                 } else {
-                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellValueTop,
                                              svg.createText().string("INVALID VALUE"),
                                              { "class_": "svg_error" });
                                 }
@@ -19907,47 +20026,66 @@ define(
                             /* if field has a specified value,
                              the field name is too wide for the box,
                              or the field name is too tall for the box */
-                            if ((f.value !== "") ||
-                                ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
-                                ((text_height + 2) > (cellHeight - cellInternalHeight))) {
-                                svg.change(text,
-                                           {
-                                               x:        rightOf(-0.5),
-                                               y:        nextBitLine,
-                                               "class_": "regFieldName"
-                                           });
-                                p = svg.createPath();
-                                p.move(leftOf(f.msb), cellTop + cellHeight);
-                                p.line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true);
-                                p.line(rightOf(f.lsb), cellTop + cellHeight);
-                                svg.path(g, p,
-                                         {
-                                             "class_": "regBitBracket",
-                                             fill:     "none"
-                                         });
-                                p = svg.createPath();
-                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
-                                p.vert(nextBitLine - text_height / 4);
-                                p.horiz(rightOf(-0.4));
-                                svg.path(g, p,
-                                         {
-                                             "class_": "regBitLine",
-                                             fill:     "none"
-                                         });
-                                gAddClass[0] = "regFieldExternal";
-                                gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
-                                nextBitLine += text_height + 2;
-                                bitLineCount = (bitLineCount + 1) % 4;
+                            if ((f.lsb > visibleMSB) || (f.msb < visibleLSB)) {
+                                gAddClass[0] = "regFieldHidden";
+                            } else {
+                                if ((f.value !== "") ||
+                                    ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
+                                    ((text_height + 2) > (cellHeight - cellInternalHeight))) {
+                                    svg.change(text,
+                                        {
+                                            x: rightOf(-0.5),
+                                            y: nextBitLine,
+                                            "class_": "regFieldName"
+                                        });
+                                    p = svg.createPath();
+                                    p.move(leftOf(f.msb), cellTop + cellHeight);
+                                    p.line(((rightOf(f.lsb) - leftOf(f.msb)) / 2), bracketHeight, true);
+                                    p.line(rightOf(f.lsb), cellTop + cellHeight);
+                                    svg.path(g, p,
+                                        {
+                                            "class_": "regBitBracket",
+                                            fill: "none"
+                                        });
+                                    p = svg.createPath();
+                                    p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
+                                    p.vert(nextBitLine - text_height / 4);
+                                    p.horiz(rightOf(-0.4));
+                                    svg.path(g, p,
+                                        {
+                                            "class_": "regBitLine",
+                                            fill: "none"
+                                        });
+                                    gAddClass[0] = "regFieldExternal";
+                                    gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
+                                    nextBitLine += text_height + 2;
+                                    bitLineCount = (bitLineCount + 1) % 4;
+                                }
+                            }
+                            if ((f.msb > visibleLSB) && (f.lsb < visibleLSB)) {
+                                svg.text(g, rightOf(0) + 2, cellTop + cellNameTop,
+                                    svg.createText().string("..."),
+                                    { "class_": "regFieldExtendsRight" });
+                            }
+                            if ((f.msb > visibleMSB) && (f.lsb < visibleMSB)) {
+                                svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop,
+                                    svg.createText().string("..."),
+                                    { "class_": "regFieldExtendsLeft" });
                             }
                             svg.change(g, { "class_": gAddClass.join(" ") });
                         }
                     }
                 }
             }
+            var scale = 1.0;
+            max_text_width = max_text_width + rightOf(-1);
+            if ((maxFigWidth > 0) && (max_text_width > maxFigWidth)) {
+                scale = maxFigWidth / max_text_width;
+            }
             svg.configure({
-                              height: nextBitLine + "px",
-                              width: (max_text_width + rightOf(-1)) + "px",
-//                              viewBox:       "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine,
+                              height:      (scale * nextBitLine) + "px",
+                              width:       (scale * max_text_width) + "px",
+                              viewBox:     "0 0 " + max_text_width + " " + nextBitLine,
                               "xmlns:xlink": "http://www.w3.org/1999/xlink"
                           });
         }
@@ -20094,7 +20232,8 @@ define(
                                                    var match = pattern.exec(lines[i]);
                                                    if (match) {
                                                        if (!json.hasOwnProperty("width")) {
-                                                           if ((match[2] === "") && (match[4].substr(4, 1) === "R")) {
+                                                           if ((match[2] === "") &&
+                                                               (match[4].substr(4, 1) === "R")) {
                                                                var w = match[4].substr(3, 1);
                                                                if (w === "2") {
                                                                    parsed.width = 16;
@@ -20107,7 +20246,8 @@ define(
                                                                }
                                                            }
                                                        }
-                                                       if ((match[2] !== "") && (match[4].substr(4, 1) === "F")) {
+                                                       if ((match[2] !== "") &&
+                                                           (match[4].substr(4, 1) === "F")) {
                                                            var bits = bitpattern.exec(match[3]);
                                                            if (bits) {
                                                                parsed.fields[match[1] + match[2]] = {
@@ -20132,7 +20272,8 @@ define(
                                        },
                                        error:    function(xhr, status, error) {
                                            msg.pub("error",
-                                                   "regpict/nv_refman: Error including file data-href=" + json.href +
+                                                   "regpict/nv_refman: Error including file data-href=" +
+                                                   json.href +
                                                    " data-register=" + json.register + " : " +
                                                    status + " (" + error + ")");
                                        }

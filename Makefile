@@ -1,5 +1,4 @@
 all: w3c pcisig nvidia
-	cp builds/respec-nvidia-common.js ~/Desktop/PCIe_on_NVLink/respec-nvidia.common.js
 
 w3c:
 	node tools/test-build.js
@@ -7,11 +6,16 @@ w3c:
 	node tools/build-w3c-common.js
 
 pcisig:
-	node tools-pcisig/example-build.js
 	node tools-pcisig/test-build.js
+	node tools-pcisig/example-build.js
 	node tools-pcisig/build-pcisig-common.js
 
 nv nvidia:
-	node tools-nvidia/example-build.js
 	node tools-nvidia/test-build.js
+	node tools-nvidia/example-build.js
 	node tools-nvidia/build-nvidia-common.js
+
+nv1:
+	node tools-nvidia/build-nvidia-common.js
+	cp builds/respec-nvidia-common.js ~/Desktop/NVLink/PCIe_on_NVLink/
+
