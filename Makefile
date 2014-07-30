@@ -1,4 +1,5 @@
 all: w3c pcisig nvidia
+	cp builds/respec-nvidia-common.js ~/Desktop/PCIe_on_NVLink/respec-nvidia.common.js
 
 w3c:
 	node tools/test-build.js

@@ -28,9 +28,9 @@ define(
             var cellWidth = Number(pget(reg, "cellWidth", 16));
             var cellHeight = Number(pget(reg, "cellHeight", 32));
             var cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-            var cellValueTop = Number(pget(reg, "cellValueTop", 32)); // top of text for regFieldValueInternal
-            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 36)); // top of text for regFieldBitValue
-            var cellNameTop = Number(pget(reg, "cellNameTop", 32)); // top of text for regFieldNameInternal
+            var cellValueTop = Number(pget(reg, "cellValueTop", 16)); // top of text for regFieldValueInternal
+            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
+            var cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
             var cellTop = Number(pget(reg, "cellTop", 16));
             var figName = String(pget(reg, "name", "???"));
@@ -156,7 +156,7 @@ define(
                                 text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
                                                 svg.createText().string(f.msb), {
                                         "class_": "regBitNumMSB"
-                                    });
+                                               });
                             }
                             svg.line(g,
                                      rightOf(f.lsb), cellTop,
@@ -182,12 +182,13 @@ define(
                                          rightOf(j), cellTop + cellHeight,
                                          { "class_": "regFieldBox" });
                             }
-                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop,
                                             svg.createText().string(f.name),
                                             { "class_": "regFieldName" });
                             if (!f.isUnused) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
-                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
+                                var unique_id = $temp_dom.makeID("regpict",
+                                                                 (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
                                 svg.change(g, { id: unique_id });
                             }
@@ -195,7 +196,7 @@ define(
                                 if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
                                     for (i = 0; i < f.value.length; ++i) {
                                         svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
-                                                 cellBitValueTop,
+                                                 cellTop + cellBitValueTop,
                                                  svg.createText().string(f.value[i]),
                                                  {
                                                      "class_": ("regFieldValue regFieldBitValue" +
@@ -206,11 +207,11 @@ define(
                                     }
                                 } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
                                     svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                                             (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
+                                             cellTop + (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
                                              svg.createText().string(f.value),
                                              { "class_": "regFieldValue" });
                                 } else {
-                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellValueTop,
+                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellValueTop,
                                              svg.createText().string("INVALID VALUE"),
                                              { "class_": "svg_error" });
                                 }
@@ -263,7 +264,8 @@ define(
                                              fill:     "none"
                                          });
                                 p = svg.createPath();
-                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
+                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)),
+                                       cellTop + cellHeight + bracketHeight);
                                 p.vert(nextBitLine - text_height / 4);
                                 p.horiz(rightOf(-0.4));
                                 svg.path(g, p,
@@ -431,7 +433,8 @@ define(
                                                    var match = pattern.exec(lines[i]);
                                                    if (match) {
                                                        if (!json.hasOwnProperty("width")) {
-                                                           if ((match[2] === "") && (match[4].substr(4, 1) === "R")) {
+                                                           if ((match[2] === "") &&
+                                                               (match[4].substr(4, 1) === "R")) {
                                                                var w = match[4].substr(3, 1);
                                                                if (w === "2") {
                                                                    parsed.width = 16;
@@ -444,7 +447,8 @@ define(
                                                                }
                                                            }
                                                        }
-                                                       if ((match[2] !== "") && (match[4].substr(4, 1) === "F")) {
+                                                       if ((match[2] !== "") &&
+                                                           (match[4].substr(4, 1) === "F")) {
                                                            var bits = bitpattern.exec(match[3]);
                                                            if (bits) {
                                                                parsed.fields[match[1] + match[2]] = {
@@ -469,7 +473,8 @@ define(
                                        },
                                        error:    function(xhr, status, error) {
                                            msg.pub("error",
-                                                   "regpict/nv_refman: Error including file data-href=" + json.href +
+                                                   "regpict/nv_refman: Error including file data-href=" +
+                                                   json.href +
                                                    " data-register=" + json.register + " : " +
                                                    status + " (" + error + ")");
                                        }
@@ -504,4 +509,6 @@ define(
                 cb();
             }
         };
-    });
+    }
+)
+;

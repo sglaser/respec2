@@ -1,19 +1,19 @@
 /* --- REGPICT --- */
-text.regBitNumSingle {
+text.regBitNumMiddle {
     text-anchor: middle;
     fill: grey;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     font-size: 8pt;
 }
 
-text.regBitNumLSB {
+text.regBitNumEnd {
     text-anchor: end;
     fill: grey;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     font-size: 8pt;
 }
 
-text.regBitNumMSB {
+text.regBitNumStart {
     text-anchor: start;
     fill: grey;
     font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
@@ -95,9 +95,9 @@ svg.regpict {
 	color: green;
 }
 
-svg *.svg_error text:not(.regBitNumSingle),
-svg *.svg_error text:not(.regBitNumLSB),
-svg *.svg_error text:not(.regBitNumMSB) {
+svg *.svg_error text:not(.regBitNumMiddle),
+svg *.svg_error text:not(.regBitNumEnd),
+svg *.svg_error text:not(.regBitNumStart) {
     fill: red;
     font-size: 12pt;
     font-weight: bold;
@@ -131,12 +131,12 @@ figure pre.json {
     g.regLink.regFieldExternal:hover text.regFieldValue,
     g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }
 
-    g.regLink:hover text.regBitNumSingle,
-    g.regLink:focus text.regBitNumSingle,
-    g.regLink:hover text.regBitNumLSB,
-    g.regLink:focus text.regBitNumLSB,
-    g.regLink:hover text.regBitNumMSB,
-    g.regLink:focus text.regBitNumMSB
+    g.regLink:hover text.regBitNumMiddle,
+    g.regLink:focus text.regBitNumMiddle,
+    g.regLink:hover text.regBitNumStart,
+    g.regLink:focus text.regBitNumStart,
+    g.regLink:hover text.regBitNumEnd,
+    g.regLink:focus text.regBitNumEnd
     { fill: blue; font-weight: bold; font-size: 9pt; }
 
 }
