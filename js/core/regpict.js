@@ -143,20 +143,75 @@ define(
                         var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
+                            var bitnum_width;
                             if (f.lsb === f.msb) {
                                 text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                                                 svg.createText().string(f.lsb), {
-                                        "class_": "regBitNumSingle"
+                                        "class_": "regBitNumMiddle"
                                     });
+                                console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4));
+                                bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > cellWidth) {
+                                    svg.change(text,
+                                               {
+                                                   x: middleOf(f.lsb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              middleOf(f.lsb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
+                                               });
+                                    console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }
                             } else {
                                 text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
                                                 svg.createText().string(f.lsb), {
-                                        "class_": "regBitNumLSB"
+                                        "class_": "regBitNumEnd"
                                     });
+                                console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
+                                    svg.change(text,
+                                               {
+                                                   x: middleOf(f.lsb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              rightOf(f.lsb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
+                                               });
+                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }
                                 text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
                                                 svg.createText().string(f.msb), {
-                                        "class_": "regBitNumMSB"
+                                        "class_": "regBitNumStart"
+                                    });
+                                console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                bitnum_width = text.clientWidth;
+                                if (bitnum_width === 0) {
+                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
+                                    bitnum_width = String(f.msb).length * 4; // Assume 4px per character on average
+                                }
+                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
+                                    svg.change(text,
+                                               {
+                                                   x: middleOf(f.msb),
+                                                   y: cellTop,
+                                                   transform: "rotate(270, " +
+                                                              leftOf(f.msb) + ", " +
+                                                              (cellTop - 4) + ")",
+                                                   "class_": "regBitNumStart"
                                                });
+                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
+                                }
                             }
                             svg.line(g,
                                      rightOf(f.lsb), cellTop,
