@@ -275,13 +275,13 @@ define(
                             if (f.lsb >= visibleLSB) {
                                 svg.line(g,
                                     rightOf(f.lsb), cellTop,
-                                    rightOf(f.lsb), cellTop - text.clientHeight,
+                                    rightOf(f.lsb), cellTop - (text.clientHeight * 0.75),
                                     { "class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
                             }
                             if (f.msb <= visibleMSB) {
                                 svg.line(g,
                                     leftOf(f.msb), cellTop,
-                                    leftOf(f.msb), cellTop - text.clientHeight,
+                                    leftOf(f.msb), cellTop - (text.clientHeight * 0.75),
                                     { "class_": "regBitNumLine" });
                             }
                             if ("addClass" in f && typeof f.addClass === "string") {
