@@ -34,8 +34,24 @@ define(
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
             var cellTop = Number(pget(reg, "cellTop", 16));
             var figName = String(pget(reg, "name", "???"));
+            var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
+            var figLeft = Number(pget(reg, "figLeft", 32));
+            var visibleLSB = Number(pget(reg, "visibleLSB", 0));
+            var visibleMSB = Number(pget(reg, "visibleMSB", width));
             var fields = pget(reg, "fields", { }); // default to empty register
 
+            if (visibleMSB < 0) {
+                visibleMSB = 0;
+            }
+            if (visibleMSB > width) {
+                visibleMSB = width;
+            }
+            if (visibleLSB < 0) {
+                visibleLSB = 0;
+            }
+            if (visibleLSB > width) {
+                visibleLSB = width;
+            }
             //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
             //console.log("draw_regpict: fields=" + fields.toString());
 
@@ -118,17 +134,41 @@ define(
 
             // x position of left edge of bit i
             function leftOf(i) {
-                return cellWidth * (width - i - 0.5);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i - 0.5 - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB - 1 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width -  visibleLSB - i - 1 - (width - visibleMSB));
+                }
             }
 
             // x position of right edge of bit i
             function rightOf(i) {
-                return cellWidth * (width - i + 0.5);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i + 0.5 - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB + 1 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width - visibleLSB - i + 1 - (width - visibleMSB));
+                }
             }
 
             // x position of middle of bit i
             function middleOf(i) {
-                return cellWidth * (width - i);
+                if (i > visibleMSB) {
+                    return figLeft + 0;
+                } else if (i >= visibleLSB) {
+                    return figLeft + cellWidth * (width - i - (width - visibleMSB));
+                } else if (i > 0) {
+                    return figLeft + cellWidth * (width - visibleLSB - 0.5 - (width - visibleMSB));
+                } else {
+                    return figLeft + cellWidth * (width - visibleLSB - i - 0.5 - (width - visibleMSB));
+                }
             }
 
             var g, p, f, text;
@@ -140,7 +180,7 @@ define(
                 for (i in fields) {
                     if (fields.hasOwnProperty(i)) {
                         f = fields[i];
-                        var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
+                        var gAddClass = ["regFieldInternal", "regAttr_" + f.attr];
                         if (b === f.lsb) {
                             g = svg.group();
                             var bitnum_width;
@@ -213,14 +253,18 @@ define(
                                     console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
                                 }
                             }
-                            svg.line(g,
-                                     rightOf(f.lsb), cellTop,
-                                     rightOf(f.lsb), cellTop - text.clientHeight,
-                                     { "class_": (f.lsb === 0) ? "regBitNumLine" : "regBitNumLine_Hide"});
-                            svg.line(g,
-                                     leftOf(f.msb), cellTop,
-                                     leftOf(f.msb), cellTop - text.clientHeight,
-                                     { "class_": "regBitNumLine" });
+                            if (f.lsb >= visibleLSB) {
+                                svg.line(g,
+                                    rightOf(f.lsb), cellTop,
+                                    rightOf(f.lsb), cellTop - text.clientHeight,
+                                    { "class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
+                            }
+                            if (f.msb <= visibleMSB) {
+                                svg.line(g,
+                                    leftOf(f.msb), cellTop,
+                                    leftOf(f.msb), cellTop - text.clientHeight,
+                                    { "class_": "regBitNumLine" });
+                            }
                             if ("addClass" in f && typeof f.addClass === "string") {
                                 gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
                             }
@@ -232,20 +276,22 @@ define(
                                     "class_": "regFieldBox"
                                 });
                             for (j = f.lsb + 1; j <= f.msb; j++) {
-                                svg.line(g,
-                                         rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                         rightOf(j), cellTop + cellHeight,
-                                         { "class_": "regFieldBox" });
+                                if ((j >= visibleLSB) && (j <= visibleMSB)) {
+                                    svg.line(g,
+                                        rightOf(j), cellTop + cellHeight - cellInternalHeight,
+                                        rightOf(j), cellTop + cellHeight,
+                                        { "class_": "regFieldBox" });
+                                }
                             }
-                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop,
+                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellNameTop,
                                             svg.createText().string(f.name),
                                             { "class_": "regFieldName" });
-                            if (!f.isUnused) {
+                            if ((!f.isUnused) && (f.msb <= visibleMSB) && (f.lsb >= visibleLSB)) {
                                 var $temp_dom = $("<span></span>").prependTo(divsvg);
-                                var unique_id = $temp_dom.makeID("regpict",
-                                                                 (f.id ? f.id : (figName + "-" + f.name)));
+                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
                                 $temp_dom.remove();
                                 svg.change(g, { id: unique_id });
+                                gAddClass.push("regLink");
                             }
                             if (f.value !== "") {
                                 if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
@@ -300,48 +346,66 @@ define(
                             /* if field has a specified value,
                              the field name is too wide for the box,
                              or the field name is too tall for the box */
-                            if ((f.value !== "") ||
-                                ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
-                                ((text_height + 2) > (cellHeight - cellInternalHeight))) {
-                                svg.change(text,
-                                           {
-                                               x:        rightOf(-0.5),
-                                               y:        nextBitLine,
-                                               "class_": "regFieldName"
-                                           });
-                                p = svg.createPath();
-                                p.move(leftOf(f.msb), cellTop + cellHeight);
-                                p.line((f.msb - f.lsb + 1) * cellWidth / 2, bracketHeight, true);
-                                p.line(rightOf(f.lsb), cellTop + cellHeight);
-                                svg.path(g, p,
-                                         {
-                                             "class_": "regBitBracket",
-                                             fill:     "none"
-                                         });
-                                p = svg.createPath();
-                                p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)),
-                                       cellTop + cellHeight + bracketHeight);
-                                p.vert(nextBitLine - text_height / 4);
-                                p.horiz(rightOf(-0.4));
-                                svg.path(g, p,
-                                         {
-                                             "class_": "regBitLine",
-                                             fill:     "none"
-                                         });
-                                gAddClass[0] = "regFieldExternal";
-                                gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
-                                nextBitLine += text_height + 2;
-                                bitLineCount = (bitLineCount + 1) % 4;
+                            if ((f.lsb > visibleMSB) || (f.msb < visibleLSB)) {
+                                gAddClass[0] = "regFieldHidden";
+                            } else {
+                                if ((f.value !== "") ||
+                                    ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
+                                    ((text_height + 2) > (cellHeight - cellInternalHeight))) {
+                                    svg.change(text,
+                                        {
+                                            x: rightOf(-0.5),
+                                            y: nextBitLine,
+                                            "class_": "regFieldName"
+                                        });
+                                    p = svg.createPath();
+                                    p.move(leftOf(f.msb), cellTop + cellHeight);
+                                    p.line(((rightOf(f.lsb) - leftOf(f.msb)) / 2), bracketHeight, true);
+                                    p.line(rightOf(f.lsb), cellTop + cellHeight);
+                                    svg.path(g, p,
+                                        {
+                                            "class_": "regBitBracket",
+                                            fill: "none"
+                                        });
+                                    p = svg.createPath();
+                                    p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
+                                    p.vert(nextBitLine - text_height / 4);
+                                    p.horiz(rightOf(-0.4));
+                                    svg.path(g, p,
+                                        {
+                                            "class_": "regBitLine",
+                                            fill: "none"
+                                        });
+                                    gAddClass[0] = "regFieldExternal";
+                                    gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
+                                    nextBitLine += text_height + 2;
+                                    bitLineCount = (bitLineCount + 1) % 4;
+                                }
+                            }
+                            if ((f.msb > visibleLSB) && (f.lsb < visibleLSB)) {
+                                svg.text(g, rightOf(0) + 2, cellNameTop,
+                                    svg.createText().string("..."),
+                                    { "class_": "regFieldExtendsRight" });
+                            }
+                            if ((f.msb > visibleMSB) && (f.lsb < visibleMSB)) {
+                                svg.text(g, leftOf(f.msb) - 2, cellNameTop,
+                                    svg.createText().string("..."),
+                                    { "class_": "regFieldExtendsLeft" });
                             }
                             svg.change(g, { "class_": gAddClass.join(" ") });
                         }
                     }
                 }
             }
+            var scale = 1.0;
+            max_text_width = max_text_width + rightOf(-1);
+            if ((maxFigWidth > 0) && (max_text_width > maxFigWidth)) {
+                scale = maxFigWidth / max_text_width;
+            }
             svg.configure({
-                              height: nextBitLine + "px",
-                              width: (max_text_width + rightOf(-1)) + "px",
-//                              viewBox:       "0 0 " + (max_text_width + rightOf(-1)) + " " + nextBitLine,
+                              height:      (scale * nextBitLine) + "px",
+                              width:       (scale * max_text_width) + "px",
+                              viewBox:     "0 0 " + max_text_width + " " + nextBitLine,
                               "xmlns:xlink": "http://www.w3.org/1999/xlink"
                           });
         }
@@ -564,6 +628,4 @@ define(
                 cb();
             }
         };
-    }
-)
-;
+    });
