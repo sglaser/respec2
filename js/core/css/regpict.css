@@ -58,9 +58,36 @@ g.regFieldUnused text.regFieldValue {
 	fill: grey;
 }
 
+g.regFieldHidden text.regFieldName,
+g.regFieldHidden text.regFieldValue,
+g.regFieldHidden path.regBitLine,
+g.regFieldHidden path.regBitBracket,
+g.regFieldHidden line.regFieldBox,
+g.regFieldHidden rect.regFieldBox,
+g.regFieldHidden line.regBitNumLine,
+g.regFieldHidden line.regBitNumLine_Hide,
+g.regFieldHidden text.regBitNumSingle,
+g.regFieldHidden text.regBitNumLSB,
+g.regFieldHidden text.regBitNumMSB,
+g.regFieldHidden text.regFieldExtendsLeft,
+g.regFieldHidden text.regFieldExtendsRight {
+    fill: none;
+    stroke: none;
+}
+
 g text.regFieldValue,
 g.regFieldInternal text.regFieldName {
     text-anchor: middle;
+}
+
+g.regFieldOverflowLSB text.regBitNumLSB,
+g text.regFieldExtendsRight {
+    text-anchor: start;
+}
+
+g.regFieldOverflowMSB text.regBitNumMSB,
+g text.regFieldExtendsLeft {
+    text-anchor: end;
 }
 
 g text.regFieldName,
