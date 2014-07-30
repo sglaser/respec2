@@ -184,7 +184,7 @@ define(
                         var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
                         if (b === f.lsb) {
                             g = svg.group();
-                            var bitnum_width;
+                            //var bitnum_width;
                             if (f.lsb === f.msb) {
                                 text = svg.text(g, middleOf(f.lsb), cellTop - 4,
                                                 svg.createText().string(f.lsb), {
