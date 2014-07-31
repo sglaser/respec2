@@ -19878,13 +19878,13 @@ define(
                                                     svg.createText().string("... " + f.lsb), {
                                             "class_": "regBitNumEnd"
                                         });
-                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
                                 } else {
                                     text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
                                                     svg.createText().string(f.lsb), {
                                             "class_": "regBitNumEnd"
                                         });
-                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
@@ -19909,13 +19909,13 @@ define(
                                                     svg.createText().string(f.msb + " ..."), {
                                             "class_": "regBitNumStart"
                                         });
-                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
                                 } else {
                                     text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
                                              text = svg.createText().string(f.msb), {
                                             "class_": "regBitNumStart"
                                         });
-                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
@@ -20286,13 +20286,8 @@ define(
                                    });
                         }
 
-                        if (json === null) {
-                            msg.pub("warn",
-                                    "core/regpict: no register definition " + $fig.get(0).outerHTML);
-                        }
-
                         // invent a div to hold the svg, if necessary
-                        var $divsvg = $("div.svg", this);
+                        var $divsvg = $("div.svg", this).last();
                         if ($divsvg.length === 0) {
                             var $cap = $("figcaption", this);
                             if ($cap.length > 0) {
@@ -20302,12 +20297,58 @@ define(
                                 //console.log("inserting div.svg at end of <figure>");
                                 $(this).append('<div class="svg"></div>');
                             }
-                            $divsvg = $("div.svg", this);
+                            $divsvg = $("div.svg", this).last();
                         }
-                        if (json !== null) {
-                            $divsvg.first().svg(function(svg) {
+
+                        function merge_json(result, me) {
+                            var $me = $(me);
+                            var parents = $me.attr("data-parents");
+                            if (parents !== null && parents !== undefined && parents !== "") {
+                                // console.log("parents = \"" + parents + "\"");
+                                parents = parents.split(/\s+/);
+                                var i;
+                                for (i = 0; i < parents.length; i++) {
+                                    var $temp = $("#" + parents[i]);
+                                    // console.log("merging: #" + parents[i]);
+                                    if ($temp.length > 0) {
+                                        // console.log("merge_json: adding \"" + $temp[0].textContent + "\"");
+                                        merge_json(result, $temp[0]);
+                                        //$.extend(true, result, $.parseJSON($temp[0].textContent));
+                                        // console.log("result=" + JSON.stringify(result, null, 2));
+                                        $temp.hide();
+                                    }
+                                }
+                            }
+                            // console.log("merge_json: adding \"" + me.textContent + "\"");
+                            $.extend(true, result, $.parseJSON(me.textContent));
+                            // console.log("result=" + JSON.stringify(result, null, 2));
+                            $(me).hide();
+                        }
+
+                        var $render = $("pre.render,div.render,span.render", $fig);
+                        if ($render.length > 0) {
+                            $render.each(function(index) {
+                                var temp_json = { };
+                                $.extend(true, temp_json, json);
+                                // console.log("temp_json=" + JSON.stringify(temp_json, null, 2));
+                                merge_json(temp_json, this);
+                                $(this).hide();
+                                $divsvg.last().makeID("svg", "render-" + index);
+                                $divsvg.last().svg(function(svg) {
+                                    draw_regpict(this, svg, temp_json);
+                                });
+                                if (index < ($render.length - 1)) {
+                                    $divsvg.after('<div class="svg"></div>');
+                                    $divsvg = $("div.svg", $fig).last();
+                                }
+                            });
+                        } else if (json !== null) {
+                            $divsvg.last().svg(function(svg) {
                                 draw_regpict(this, svg, json);
                             });
+                        } else {
+                            msg.pub("warn",
+                                    "core/regpict: no register definition " + $fig.get(0).outerHTML);
                         }
                     });
                 msg.pub("end", "core/regpict");
