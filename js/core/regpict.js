@@ -78,9 +78,6 @@ define(
                     if (!item.hasOwnProperty("value")) {
                         item.value = "";
                     }
-                    if (!item.hasOwnProperty("class")) {
-                        item.class = "";
-                    }
                     //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " isUnused=" + item.isUnused + " name='" + item.name + "'");
 
                 }
@@ -284,7 +281,7 @@ define(
                                     leftOf(f.msb), cellTop - (text.clientHeight * 0.75),
                                     { "class_": "regBitNumLine" });
                             }
-                            if ("addClass" in f && typeof f.addClass === "string") {
+                            if (f.hasOwnProperty("addClass") && typeof f.addClass === "string") {
                                 gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
                             }
                             if (f.isUnused) {
