@@ -215,13 +215,13 @@ define(
                                                     svg.createText().string("... " + f.lsb), {
                                             "class_": "regBitNumEnd"
                                         });
-                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
                                 } else {
                                     text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
                                                     svg.createText().string(f.lsb), {
                                             "class_": "regBitNumEnd"
                                         });
-                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
@@ -246,13 +246,13 @@ define(
                                                     svg.createText().string(f.msb + " ..."), {
                                             "class_": "regBitNumStart"
                                         });
-                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
                                 } else {
                                     text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
                                              text = svg.createText().string(f.msb), {
                                             "class_": "regBitNumStart"
                                         });
-                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
