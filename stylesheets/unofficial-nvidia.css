@@ -222,7 +222,7 @@ table {
 }
 
 /*table th {
-    background: rgb(118,185,0) /* #0060A9 ;
+    background-color: rgb(118,185,0) /* #0060A9 ;
     color: white;
 }*/
 
@@ -476,7 +476,7 @@ g.regFieldExternal0 path.regBitBracket {
 }
 
 g.highlight rect.regFieldBox {
-    fill: lightyellow
+    fill: lightyellow;
 }
 @media screen {
     span.footnote-contents {
