@@ -91,7 +91,11 @@ p.copyright small { font-size: small; }
 
 @media screen {
     /* hide from IE3 */
-    a[href]:hover { fill: #ffa; }
+    a[href]:hover,
+    a[href].internalDFN:hover {
+        background-color: #ffa;
+        fill: #ffa;
+    }
 }
 
 pre { margin-left: 2em; }
@@ -471,6 +475,9 @@ g.regFieldExternal0 path.regBitBracket {
     stroke-width: 1px;
 }
 
+g.highlight rect.regFieldBox {
+    fill: lightyellow
+}
 @media screen {
     span.footnote-contents {
         display:    none;

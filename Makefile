@@ -18,4 +18,5 @@ nv nvidia:
 nv1:
 	node tools-nvidia/build-nvidia-common.js
 	cp builds/respec-nvidia-common.js ~/Desktop/NVLink/PCIe_on_NVLink/
+	cp stylesheets/unofficial-nvidia.css ~/Desktop/NVLink/PCIe_on_NVLink/
 
