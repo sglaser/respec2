@@ -1,5 +1,5 @@
 /*globals define */
-
+/*jshint jquery: true, laxcomma: true */
 // Module core/biblio
 // Handles bibliographic references
 // Configuration:
