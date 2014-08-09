@@ -1,5 +1,5 @@
 /* globals define */
-/* jshint browser: true, jquery: true */
+/* jshint browser: true, jquery: true, laxcomma: true */
 
 // Module core/examples
 // Manages examples, including marking them up, numbering, inserting the title,

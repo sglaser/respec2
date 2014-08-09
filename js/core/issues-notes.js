@@ -1,4 +1,5 @@
-
+/*globals define */
+/*jshint jquery: true, laxcomma: true*/
 // Module core/issues-notes
 // Manages issues and notes, including marking them up, numbering, inserting the title,
 // and injecting the style sheet.
