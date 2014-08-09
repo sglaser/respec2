@@ -1,8 +1,8 @@
-/* ReSpec 3.2.17 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.18 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec */
 /* See also NVIDIA source: https://github.com/sglaser/respec */
-respecVersion = '3.2.17';
+respecVersion = '3.2.18';
 respecVersionNVIDIA = '0.0.1';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
