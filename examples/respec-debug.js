@@ -15632,7 +15632,7 @@ define(
                         df.appendChild(doc.createTextNode(t));
                         if (matched) {
                             // RFC 2119
-                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|(?:NOT\s+)?REQUIRED|(?:STRONGLY\s+)?(?:NOT\s+)?RECOMMENDED|(?:INDEPENDENTLY\s+)?OPTIONAL|(?:NOT\s+)?PERMITTED/.test(matched)) {
+                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|(?:NOT\s+)?REQUIRED|(?:STRONGLY\s+)?(?:NOT\s+)?RECOMMENDED|(?:INDEPENDENTLY\s+)?OPTIONAL|(?:NOT\s+)?PERMITTED|MAY/.test(matched)) {
                                 df.appendChild($("<em/>").attr({ "class": "rfc2119", title: matched }).text(matched)[0]);
                             }
                             // BIBREF
@@ -15686,7 +15686,7 @@ define(
 define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
 /* globals define */
-/* jshint browser: true, jquery: true */
+/* jshint browser: true, jquery: true, laxcomma: true */
 
 // Module core/examples
 // Manages examples, including marking them up, numbering, inserting the title,
@@ -15775,7 +15775,8 @@ define(
 
 define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title     { color: #e05252; }\ndiv.note-title      { color: #2b2; }\ndiv.impnote-title   { color: #0060A9; }\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue, div.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue, .note, .impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note, div.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n\n.issue {\n    border-color: #e05252;\n    background:   #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background:   #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9; \n    background:   #E5F4FF;\n}\n\n\n';});
 
-
+/*globals define */
+/*jshint jquery: true, laxcomma: true*/
 // Module core/issues-notes
 // Manages issues and notes, including marking them up, numbering, inserting the title,
 // and injecting the style sheet.
