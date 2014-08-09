@@ -58,7 +58,7 @@ define(
                         df.appendChild(doc.createTextNode(t));
                         if (matched) {
                             // RFC 2119
-                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|(?:NOT\s+)?REQUIRED|(?:STRONGLY\s+)?(?:NOT\s+)?RECOMMENDED|(?:INDEPENDENTLY\s+)?OPTIONAL|(?:NOT\s+)?PERMITTED/.test(matched)) {
+                            if (/MUST(?:\s+NOT)?|SHOULD(?:\s+NOT)?|SHALL(?:\s+NOT)?|(?:NOT\s+)?REQUIRED|(?:STRONGLY\s+)?(?:NOT\s+)?RECOMMENDED|(?:INDEPENDENTLY\s+)?OPTIONAL|(?:NOT\s+)?PERMITTED|MAY/.test(matched)) {
                                 df.appendChild($("<em/>").attr({ "class": "rfc2119", title: matched }).text(matched)[0]);
                             }
                             // BIBREF
