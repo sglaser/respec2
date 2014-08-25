@@ -531,11 +531,11 @@ define(
                                     } else {
                                         fieldName = $dfn.first().text().trim();
                                     }
-                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|unused|other)$/i;
+                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
                                     if (!validAttr.test(attr)) {
                                         attr = "other";
                                     }
-                                    var unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|unused)$/i;
+                                    var unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused)$/i;
                                     var isUnused = !!unusedAttr.test(attr);
 //                                    console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
                                     parsed.fields[fieldName] = {
