@@ -1,14 +1,20 @@
 <div class="head">
+{{#if overrideLogo}}
+<p>        {{#if overrideLogoURI}}<a href='{{overrideLogoURI}}'>{{/if}}
+            <img {{#if overrideLogoWidth}}width='{{overrideLogoWidth}}'{{/if}}
+                 {{#if overrideLogoHeight}}height='{{overrideLogoHeight}}'{{/if}}
+                 src='{{overrideLogo}}'
+                 {{#if overrideLogoAlt}}alt='{{overrideLogoAlt}}'{{else}}alt='Logo'{{/if}}/>
+        {{#if overrideLogoURI}}</a>{{/if}}
+</p>
+{{else}}
 {{#if prependLogo}}
 <p>
     <a href="https://www.nvidia.com/">
-    {{#if logoOverride}}
-        <img width="270" height="230" alt="Nvidia Logo" src="{{logoOverride}}"/>
-    {{else}}
         <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>
-    {{/if}}
     </a>
 </p>
+{{/if}}
 {{/if}}
     
 <div id="respec-banner">
