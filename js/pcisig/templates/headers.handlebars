@@ -1,30 +1,23 @@
 <div class="head">
-{{#if overrideLogo}}
-<p>
-    {{#if overrideLogoURI}}<a href='{{overrideLogoURI}}'>{{/if}}
-    <img {{#if overrideLogoWidth}}width='{{overrideLogoWidth}}'{{/if}}
-         {{#if overrideLogoHeight}}height='{{overrideLogoHeight}}'{{/if}}
-         src='{{overrideLogo}}'
-         {{#if overrideLogoAlt}}alt='{{overrideLogoAlt}}'{{else}}alt='Logo'{{/if}}/>
-    {{#if overrideLogoURI}}</a>{{/if}}
-</p>
+{{#if logos}}
+    {{showLogos logos}}
 {{else}}
-{{#if prependPCIeLogo}}
+    {{#if prependPCIeLogo}}
 <p>
     <a href="https://www.pcisig.com/">
         <img width="210" height="80" alt="PCI Express Logo"
              src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg"/>
     </a>
 </p>
-{{/if}}
-{{#if prependPCISIGLogo}}
+    {{/if}}
+    {{#if prependPCISIGLogo}}
 <p>
     <a href="https://www.pcisig.com/">
         <img width="210" height="108" alt="PCISIG Logo"
              src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>
     </a>
 </p>
-{{/if}}
+    {{/if}}
 {{/if}}
 <div id="respec-banner">
     <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;
