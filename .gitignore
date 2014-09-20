@@ -8,3 +8,5 @@ bevy.json
 *.zip
 respec
 .idea
+www.w3.org.zip
+examples/respec
