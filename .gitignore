@@ -10,3 +10,5 @@ respec
 .idea
 www.w3.org.zip
 examples/respec
+documentation-old/
+.brackets.json
