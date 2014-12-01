@@ -14,7 +14,7 @@ define(
                   " You can find more about the W3C version from the information in the" +
                   " <a href='http://w3.org/respec/'>documentation</a>." +
                   " Bugs in the W3C version may be reported in" +
-                  " <a href='https://github.com/darobin/respec/issues'>File it!</a>.</p>").appendTo($halp);
+                  " <a href='https://github.com/w3c/respec/issues'>File it!</a>.</p>").appendTo($halp);
 
                 ui.freshModal("About ReSpec", $halp);
             }
