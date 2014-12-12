@@ -216,6 +216,14 @@ dl dt {
     margin-bottom: 0.25em;
 }
 
+dl.wide dt {
+    width 20%;
+}
+
+dl.extra_wide dt {
+    width 30%;
+}
+
 table {
     border-collapse: collapse;
     border-bottom:   3px solid #0060A9;
@@ -355,6 +363,20 @@ table dl {
 table dt {
     float:       left;
     width:       12%;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+table dl.wide dt {
+    float:       left;
+    width:       20%;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+table dl.extra_wide dt {
+    float:       left;
+    width:       30%;
     margin-left: 6px;
     font-weight: bold;
 }
