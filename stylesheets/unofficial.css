@@ -217,11 +217,11 @@ dl dt {
 }
 
 dl.wide dt {
-    width 20%;
+    width: 20%;
 }
 
 dl.extra_wide dt {
-    width 30%;
+    width: 30%;
 }
 
 table {
@@ -443,8 +443,8 @@ body {
     position:                 fixed;
     top:                      -15px;
     height:                   20px;
-    left:                     -595px;
-    width:                    600px;
+    left:                     -695px;
+    width:                    700px;
     margin:                   0 0 0 0;
     text-align:               right;
     padding:                  4px 4px 4px 4px;
@@ -515,12 +515,14 @@ g.highlight rect.regFieldBox {
     }
 
     a.sec-ref span.sec-title,
-    a.sec-ref span.secno-decoration,
-    a.tocxref span.secno-decoration,
-    a.fig-ref span.figdecoration,
+    a.sec-ref span.sec-decoration,
+    a.tocxref span.sec-decoration,
+    a.fig-ref span.figdecoration1,
     a.fig-ref span.figtitle,
-    a.tbl-ref span.tbldecoration,
-    a.tbl-ref span.tbltitle {
+    a.fig-ref span.formerFootnote,
+    a.tbl-ref span.tbldecoration1,
+    a.tbl-ref span.tbltitle,
+    a.tbl-ref span.formerFootnote {
         display: none;
     }
 

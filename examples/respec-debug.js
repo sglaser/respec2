@@ -4,7 +4,6 @@
 /* See also NVIDIA source: https://github.com/sglaser/respec */
 respecVersion = '3.2.30';
 respecVersionNVIDIA = '0.0.1';
-
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -11397,6 +11396,8 @@ return jQuery;
 
 }));
 
+define("jquery", function(){});
+
 /*jshint
     expr:   true
 */
@@ -13134,7 +13135,8 @@ o,p,q)?e.get(h,function(c){e.finishLoad(a,d.strip,c,b,f)}):c([g],function(a){e.f
 b,d)},d)}};if(e.createXhr())e.get=function(a,c){var b=e.createXhr();b.open("GET",a,!0);b.onreadystatechange=function(){b.readyState===4&&c(b.responseText)};b.send(null)};else if(typeof process!=="undefined"&&process.versions&&process.versions.node)l=require.nodeRequire("fs"),e.get=function(a,c){var b=l.readFileSync(a,"utf8");b.indexOf("\ufeff")===0&&(b=b.substring(1));c(b)};else if(typeof Packages!=="undefined")e.get=function(a,c){var b=new java.io.File(a),f=java.lang.System.getProperty("line.separator"),
 b=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(b),"utf-8")),d,e,h="";try{d=new java.lang.StringBuffer;(e=b.readLine())&&e.length()&&e.charAt(0)===65279&&(e=e.substring(1));for(d.append(e);(e=b.readLine())!==null;)d.append(f),d.append(e);h=String(d.toString())}finally{b.close()}c(h)};return e})})();
 
-define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\r\n * ReSpec 3 CSS\r\n * Robin Berjon - http://berjon.com/\r\n *****************************************************************/\r\n\r\n/* --- INLINES --- */\r\nem.rfc2119 { \r\n    text-transform:     lowercase;\r\n    font-variant:       small-caps;\r\n    font-style:         normal;\r\n    font-size:          larger;\r\n    color:              #900;\r\n}\r\n\r\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\r\n    border: none;\r\n}\r\n\r\ndfn {\r\n    font-weight:    bold;\r\n}\r\n\r\na.internalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px solid #99c;\r\n    text-decoration:    none;\r\n}\r\n\r\na.externalDFN {\r\n    color:  inherit;\r\n    border-bottom:  1px dotted #ccc;\r\n    text-decoration:    none;\r\n}\r\n\r\na.bibref {\r\n    text-decoration:    none;\r\n}\r\n\r\ncite .bibref {\r\n    font-style: normal;\r\n}\r\n\r\ncode {\r\n    color:  #C83500;\r\n}\r\n\r\n/* --- TOC --- */\r\n.toc a, .tof a, .tot a {\r\n    text-decoration:    none;\r\n}\r\n\r\n.tocline a .secno,\r\n.tofline a .figno,\r\n.totline a .tblno {\r\n    color:  #000;\r\n}\r\n\r\nul.toc > li.tocline,\r\nul.tof > li.tofline,\r\nul.tot > li.totline {\r\n    list-style: none outside none;\r\n}\r\n\r\n.caption {\r\n    margin-top: 0.5em;\r\n    font-style:   italic;\r\n}\r\n\r\n/* --- TABLE --- */\r\ntable.simple {\r\n    border-spacing: 0;\r\n    border-collapse:    collapse;\r\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\r\n}\r\n\r\n.simple th {\r\n    background: #0060A9; /* #38197a; /*#005a9c;*/\r\n    color:  #fff;\r\n    padding:    3px 5px;\r\n    text-align: left;\r\n}\r\n\r\n.simple th[scope="row"] {\r\n    background: inherit;\r\n    color:  inherit;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple td {\r\n    padding:    3px 10px;\r\n    border-top: 1px solid #ddd;\r\n}\r\n\r\n.simple tr:nth-child(even) {\r\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\r\n}\r\n\r\n/* --- DL --- */\r\n.section dd > p:first-child {\r\n    margin-top: 0;\r\n}\r\n\r\n.section dd > p:last-child {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.section dd {\r\n    margin-bottom:  1em;\r\n}\r\n\r\n.section dl.attrs dd, .section dl.eldef dd {\r\n    margin-bottom:  0;\r\n}\r\n\r\nspan.respec-error {\r\n    color: red;\r\n    font-size: 12pt;\r\n    font-weight: bold;\r\n    font-family: monospace;\r\n}\r\n\r\n@media print {\r\n    .removeOnSave {\r\n        display: none;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/respec2.css',[],function () { return '/*****************************************************************\n * ReSpec 3 CSS\n * Robin Berjon - http://berjon.com/\n *****************************************************************/\n\n/* --- INLINES --- */\nem.rfc2119 { \n    text-transform:     lowercase;\n    font-variant:       small-caps;\n    font-style:         normal;\n    font-size:          larger;\n    color:              #900;\n}\n\nh1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {\n    border: none;\n}\n\ndfn {\n    font-weight:    bold;\n}\n\na.internalDFN {\n    color:  inherit;\n    border-bottom:  1px solid #99c;\n    text-decoration:    none;\n}\n\na.externalDFN {\n    color:  inherit;\n    border-bottom:  1px dotted #ccc;\n    text-decoration:    none;\n}\n\na.bibref {\n    text-decoration:    none;\n}\n\ncite .bibref {\n    font-style: normal;\n}\n\ncode {\n    color:  #C83500;\n}\n\n/* --- TOC --- */\n.toc a, .tof a, .tot a {\n    text-decoration:    none;\n}\n\n.tocline a .secno,\n.tofline a .figno,\n.totline a .tblno {\n    color:  #000;\n}\n\nul.toc > li.tocline,\nul.tof > li.tofline,\nul.tot > li.totline {\n    list-style: none outside none;\n}\n\n.caption {\n    margin-top: 0.5em;\n    font-style:   italic;\n}\n\n/* --- TABLE --- */\ntable.simple {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    border-bottom:  3px solid #0060A9; /* #38197a; pcisig purple */ /* respec orig #005a9c;*/\n}\n\n.simple th {\n    background: #0060A9; /* #38197a; /*#005a9c;*/\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n}\n\n.simple th[scope="row"] {\n    background: inherit;\n    color:  inherit;\n    border-top: 1px solid #ddd;\n}\n\n.simple td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n}\n\n.simple tr:nth-child(even) {\n    background: #E5F4FF; /* ß#F6F1FE; /*#f0f6ff;*/\n}\n\n/* --- DL --- */\n.section dd > p:first-child {\n    margin-top: 0;\n}\n\n.section dd > p:last-child {\n    margin-bottom: 0;\n}\n\n.section dd {\n    margin-bottom:  1em;\n}\n\n.section dl.attrs dd, .section dl.eldef dd {\n    margin-bottom:  0;\n}\n\nspan.respec-error {\n    color: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-family: monospace;\n}\n\n@media print {\n    .removeOnSave {\n        display: none;\n    }\n}\n';});
 
 
 // Module core/style
@@ -15074,9 +15076,11 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
     };
 });
 
-define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\r\n{{#if logos}}\r\n    {{showLogos logos}}\r\n{{else}}\r\n    {{#if prependLogo}}\r\n<p>\r\n    <a href="https://www.nvidia.com/">\r\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\r\n    </a>\r\n</p>\r\n    {{/if}}\r\n{{/if}}\r\n    \r\n<div id="respec-banner">\r\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\r\n    {{#if publishHumanDate}}\r\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\r\n    {{/if}}\r\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\r\n</div>\r\n    \r\n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\r\n    \r\n{{#if subtitle}}\r\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\r\n{{/if}}\r\n    \r\n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\r\n    content="{{publishISODate}}"{{/if}} class="nolink">\r\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\r\n</h2>\r\n    \r\n<dl>\r\n    {{#if thisVersion}}\r\n        <dt>This version:</dt>\r\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\r\n    {{/if}}\r\n    \r\n    {{#if latestVersion}}\r\n        <dt>Latest published version:</dt>\r\n        <dd><a class="u-url" href="{{latestVersion}}">{{latestVersion}}</a></dd>\r\n    {{/if}}\r\n\r\n    {{#if edDraftURI}}\r\n        <dt>Latest editor\'s draft:</dt>\r\n        <dd><a class="u-url" href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\r\n    {{/if}}\r\n\r\n    {{#if testSuiteURI}}\r\n        <dt>Test suite:</dt>\r\n        <dd><a class="u-url" href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\r\n    {{/if}}\r\n\r\n    {{#if implementationReportURI}}\r\n        <dt>Implementation report:</dt>\r\n        <dd><a class="u-url" href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\r\n    {{/if}}\r\n\r\n    {{#if bugTrackerHTML}}\r\n        <dt>Bug tracker:</dt>\r\n        <dd>{{{bugTrackerHTML}}}</dd>\r\n    {{/if}}\r\n\r\n    {{#if prevVersion}}\r\n        <dt>Previous version:</dt>\r\n        <dd><a class="u-url" {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\r\n    {{/if}}\r\n\r\n    {{#if editors}}\r\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\r\n        {{showPeople "Editor" editors}}\r\n    {{/if}}\r\n\r\n    {{#if authors}}\r\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\r\n        {{showPeople "Author" authors}}\r\n    {{/if}}\r\n\r\n    {{#if otherLinks}}\r\n        {{#each otherLinks}}\r\n            {{#if key}}\r\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\r\n                {{#if data}}\r\n                    {{#each data}}\r\n                        {{#if value}}\r\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\r\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\r\n                            </dd>\r\n                        {{else}}\r\n                            {{#if href}}\r\n                                <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\r\n                            {{/if}}\r\n                        {{/if}}\r\n                    {{/each}}\r\n                {{else}}\r\n                    {{#if value}}\r\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\r\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\r\n                        </dd>\r\n                    {{else}}\r\n                        {{#if href}}\r\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\r\n                        {{/if}}\r\n                    {{/if}}\r\n                {{/if}}\r\n            {{/if}}\r\n        {{/each}}\r\n    {{/if}}\r\n\r\n</dl>\r\n    \r\n{{#if errata}}\r\n<p>\r\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\r\n    reported since publication.\r\n</p>\r\n{{/if}}\r\n    \r\n{{#if alternateFormats}}\r\n<p>\r\n    {{#if multipleAlternates}}\r\n    This document is also available in these non-normative formats:\r\n    {{else}}\r\n    This document is also available in this non-normative format:\r\n    {{/if}}\r\n    {{{alternatesHTML}}}\r\n</p>\r\n{{/if}}\r\n\r\n{{#if overrideCopyright}}\r\n    {{{overrideCopyright}}}\r\n{{else}}\r\n    <p class="copyright">\r\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\r\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\r\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\r\n        <sup>&reg;</sup>\r\n    </p>\r\n{{/if}}\r\n\r\n    <hr/>\r\n</div>\r\n');});
 
-define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\r\n    \r\n    {{#if isUnofficial}}\r\n    <p>\r\n        This document is a working draft.\r\n        It has no official standing of any kind and does not represent the support or consensus of any group.\r\n    </p>\r\n    {{else}}\r\n        {{#if isNoTrack}}\r\n        <p>\r\n            This document is an Nvidia internal document.\r\n            It has no official standing of any kind and does not represent consensus of any group.\r\n        </p>\r\n        {{else}}\r\n            {{#if isFinal}}\r\n            <p>\r\n                This document is considered a final publication.\r\n                Nvidia may publish errata to this document and may develop future revisions to this document.\r\n            </p>\r\n            {{else}}\r\n            <p>\r\n                This document is intended to become a part of the specification for an Nvidia product.\r\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\r\n            </p>\r\n            {{/if}}\r\n        {{/if}}\r\n    {{/if}}\r\n\r\n    {{#if humanReviewEndDate}}\r\n    <p>\r\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\r\n    </p>\r\n    {{/if}}\r\n\r\n    {{#if bugTrackerHTML}}\r\n    <p>\r\n        Comments should be filed using NVBugs: {{bugTrackerHTML}}.\r\n    </p>\r\n    {{/if}}\r\n\r\n    {{#if commentsPDF}}\r\n    <p>\r\n        Comments should be added to the PDF review <a class="u-url" href="{{commentsPDF}}">{{commentsPDF}}</a>.\r\n    </p>\r\n    {{/if}}\r\n\r\n    {{#if commentsEmail}}\r\n    <p>\r\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\r\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\r\n    </p>\r\n    {{/if}}\r\n\r\n{{{sotdCustomParagraph}}}\r\n\r\n</section>\r\n');});
+define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if logos}}\n    {{showLogos logos}}\n{{else}}\n    {{#if prependLogo}}\n<p>\n    <a href="https://www.nvidia.com/">\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\n    </a>\n</p>\n    {{/if}}\n{{/if}}\n    \n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if publishHumanDate}}\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n    \n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n    \n{{#if subtitle}}\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n    \n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\n    content="{{publishISODate}}"{{/if}} class="nolink">\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n    \n<dl>\n    {{#if thisVersion}}\n        <dt>This version:</dt>\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    {{/if}}\n    \n    {{#if latestVersion}}\n        <dt>Latest published version:</dt>\n        <dd><a class="u-url" href="{{latestVersion}}">{{latestVersion}}</a></dd>\n    {{/if}}\n\n    {{#if edDraftURI}}\n        <dt>Latest editor\'s draft:</dt>\n        <dd><a class="u-url" href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n\n    {{#if testSuiteURI}}\n        <dt>Test suite:</dt>\n        <dd><a class="u-url" href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n\n    {{#if implementationReportURI}}\n        <dt>Implementation report:</dt>\n        <dd><a class="u-url" href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n        <dt>Bug tracker:</dt>\n        <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n\n    {{#if prevVersion}}\n        <dt>Previous version:</dt>\n        <dd><a class="u-url" {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n\n    {{#if editors}}\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n        {{showPeople "Editor" editors}}\n    {{/if}}\n\n    {{#if authors}}\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n        {{showPeople "Author" authors}}\n    {{/if}}\n\n    {{#if otherLinks}}\n        {{#each otherLinks}}\n            {{#if key}}\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n                {{#if data}}\n                    {{#each data}}\n                        {{#if value}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                            </dd>\n                        {{else}}\n                            {{#if href}}\n                                <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                            {{/if}}\n                        {{/if}}\n                    {{/each}}\n                {{else}}\n                    {{#if value}}\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                        </dd>\n                    {{else}}\n                        {{#if href}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                        {{/if}}\n                    {{/if}}\n                {{/if}}\n            {{/if}}\n        {{/each}}\n    {{/if}}\n\n</dl>\n    \n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n    \n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n\n{{#if overrideCopyright}}\n    {{{overrideCopyright}}}\n{{else}}\n    <p class="copyright">\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\n        <sup>&reg;</sup>\n    </p>\n{{/if}}\n\n    <hr/>\n</div>\n');});
+
+
+define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    \n    {{#if isUnofficial}}\n    <p>\n        This document is a working draft.\n        It has no official standing of any kind and does not represent the support or consensus of any group.\n    </p>\n    {{else}}\n        {{#if isNoTrack}}\n        <p>\n            This document is an Nvidia internal document.\n            It has no official standing of any kind and does not represent consensus of any group.\n        </p>\n        {{else}}\n            {{#if isFinal}}\n            <p>\n                This document is considered a final publication.\n                Nvidia may publish errata to this document and may develop future revisions to this document.\n            </p>\n            {{else}}\n            <p>\n                This document is intended to become a part of the specification for an Nvidia product.\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\n            </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n\n    {{#if humanReviewEndDate}}\n    <p>\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\n    </p>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n    <p>\n        Comments should be filed using NVBugs: {{bugTrackerHTML}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsPDF}}\n    <p>\n        Comments should be added to the PDF review <a class="u-url" href="{{commentsPDF}}">{{commentsPDF}}</a>.\n    </p>\n    {{/if}}\n\n    {{#if commentsEmail}}\n    <p>\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n    </p>\n    {{/if}}\n\n{{{sotdCustomParagraph}}}\n\n</section>\n');});
 
 /*jshint
     forin: false, laxcomma:true, jquery:true
@@ -15444,7 +15448,8 @@ define(
     }
 );
 
-define('tmpl!nvidia/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\r\n<p>\r\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\r\n    implementation notes,\r\n    and notes in this specification are non-normative. Everything else in this specification is\r\n    normative.\r\n</p>\r\n<p>\r\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\r\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\r\n</p>\r\n<p>\r\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\r\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\r\n    and NOT PERMITTED are also available.\r\n</p>\r\n<p>\r\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\r\n    Experience has found this term to be confusing and thus it is not used by Nvidia.\r\n</p>\r\n');});
+
+define('tmpl!nvidia/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also available.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing and thus it is not used by Nvidia.\n</p>\n');});
 
 /*globals define*/
 /*jshint browser:true, jquery:true */
@@ -15730,7 +15735,8 @@ define(
     }
 );
 
-define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\r\ndiv.example-title {\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.example-title span {\r\n    text-transform: uppercase;   \r\n}\r\naside.example, div.example, div.illegal-example {\r\n    padding: 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\ndiv.illegal-example { color: red }\r\ndiv.illegal-example p { color: black }\r\naside.example, div.example {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n    border-color: #e0cb52;\r\n    background: #fcfaee;    \r\n}\r\n\r\naside.example div.example {\r\n    border-left-width: .1em;\r\n    border-color: #999;\r\n    background: #fff;\r\n}\r\naside.example div.example div.example-title {\r\n    color: #999;\r\n}\r\n';});
+
+define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
 /* globals define */
 /* jshint browser: true, jquery: true, laxcomma: true */
@@ -15819,7 +15825,8 @@ define(
     }
 );
 
-define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title,\r\ndiv.note-title,\r\ndiv.impnote-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title     { color: #e05252; }\r\ndiv.note-title      { color: #2b2; }\r\ndiv.impnote-title   { color: #0060A9; }\r\ndiv.issue-title span,\r\ndiv.note-title span,\r\ndiv.impnote-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue, div.impnote {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child,\r\n.issue > p:first-child,\r\n.impnote > p:first-child {\r\n    margin-top: 0;\r\n}\r\n.issue, .note, .impnote {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note, div.impnote {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note,\r\nspan.issue,\r\nspan.impnote {\r\n    padding: .1em .5em .15em;\r\n}\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background:   #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background:   #e9fbe9;\r\n}\r\n.impnote {\r\n    border-color: #0060A9; \r\n    background:   #E5F4FF;\r\n}\r\n\r\n\r\n';});
+
+define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\ndiv.issue-title,\ndiv.note-title,\ndiv.impnote-title {\n    padding-right:  1em;\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.issue-title     { color: #e05252; }\ndiv.note-title      { color: #2b2; }\ndiv.impnote-title   { color: #0060A9; }\ndiv.issue-title span,\ndiv.note-title span,\ndiv.impnote-title span {\n    text-transform: uppercase;\n}\ndiv.note, div.issue, div.impnote {\n    margin-top: 1em;\n    margin-bottom: 1em;\n}\n.note > p:first-child,\n.issue > p:first-child,\n.impnote > p:first-child {\n    margin-top: 0;\n}\n.issue, .note, .impnote {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n}\ndiv.issue, div.note, div.impnote {\n    padding: 1em 1.2em 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\nspan.note,\nspan.issue,\nspan.impnote {\n    padding: .1em .5em .15em;\n}\n\n.issue {\n    border-color: #e05252;\n    background:   #fbe9e9;\n}\n.note {\n    border-color: #52e052;\n    background:   #e9fbe9;\n}\n.impnote {\n    border-color: #0060A9; \n    background:   #E5F4FF;\n}\n\n\n';});
 
 /*globals define */
 /*jshint jquery: true, laxcomma: true*/
@@ -15971,7 +15978,8 @@ define(
         };
     }
 );
-define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\r\ncode.prettyprint {\r\n    color:  inherit;\r\n}\r\n\r\n/* this from google-code-prettify */\r\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\r\n';});
+
+define('text!core/css/highlight.css',[],function () { return '/* HIGHLIGHTS */\ncode.prettyprint {\n    color:  inherit;\n}\n\n/* this from google-code-prettify */\n.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}\n';});
 
 // Copyright (C) 2006 Google Inc.
 //
@@ -17677,7 +17685,8 @@ define(
     }
 );
 
-define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\r\ndiv.practice {\r\n    border: solid #bebebe 1px;\r\n    margin: 2em 1em 1em 2em;\r\n}\r\n\r\nspan.practicelab {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n    font-weight: bold;\r\n    font-style: italic;\r\n    background: #dfffff;\r\n    position: relative;\r\n    padding: 0 0.5em;\r\n    top: -1.5em;\r\n}\r\n\r\np.practicedesc {\r\n    margin: 1.5em 0.5em 1em 1em;\r\n}\r\n\r\n@media screen {\r\n    p.practicedesc {\r\n        position: relative;\r\n        top: -2em;\r\n        padding: 0;\r\n        margin: 1.5em 0.5em -1em 1em;\r\n    }\r\n}\r\n';});
+
+define('text!core/css/bp.css',[],function () { return '/* --- Best Practices --- */\ndiv.practice {\n    border: solid #bebebe 1px;\n    margin: 2em 1em 1em 2em;\n}\n\nspan.practicelab {\n    margin: 1.5em 0.5em 1em 1em;\n    font-weight: bold;\n    font-style: italic;\n    background: #dfffff;\n    position: relative;\n    padding: 0 0.5em;\n    top: -1.5em;\n}\n\np.practicedesc {\n    margin: 1.5em 0.5em 1em 1em;\n}\n\n@media screen {\n    p.practicedesc {\n        position: relative;\n        top: -2em;\n        padding: 0;\n        margin: 1.5em 0.5em -1em 1em;\n    }\n}\n';});
 
 /*globals define */
 /*jshint browser:true, jquery:true */
@@ -17749,7 +17758,8 @@ define(
             //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $("<span class='" + label + "decoration'/>");
+            var decoration_num = 1;
+            var $cur = $("<span class='" + label + "decoration " + label + "decoration0'/>");
             $cap.html("");
             //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
@@ -17768,7 +17778,8 @@ define(
                         if ($cur.text() !== "") {
                             $cap.append($cur);
                         }
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
@@ -17779,7 +17790,8 @@ define(
                             $cap.append($cur);
                         }
                         $cap.append($title);
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     default:
                         $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
@@ -17849,6 +17861,7 @@ define(
                         var $tofCap = $cap.clone();
                         $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
                         $tofCap.find("dfn").renameElement("span").removeAttr("id");
+                        $tofCap.find("span.footnote").attr("class", "formerFootnote");
 						tof.push($("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
 								.find(".tocxref")
                                 .append($tofCap.contents())
@@ -17857,7 +17870,7 @@ define(
 				}
 
                 // Update all anchors with empty content that reference a figure ID
-                $("a[href]", doc).each(function () {
+                $("a[href^='#fig']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
                     if (!id) return;
@@ -17865,6 +17878,8 @@ define(
                     if (figMap[id]) {
                         $a.addClass("fig-ref");
                         if ($a.html() === "") $a.append(figMap[id]);
+                    } else {
+                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });
                 
@@ -17915,7 +17930,8 @@ define(
             //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $("<span class='" + label + "decoration'/>");
+            var decoration_num = 1;
+            var $cur = $("<span class='" + label + "decoration " + label + "decoration0'/>");
             $cap.html("");
             //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
@@ -17934,7 +17950,8 @@ define(
                         if ($cur.text() !== "") {
                             $cap.append($cur);
                         }
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
@@ -17945,7 +17962,8 @@ define(
                             $cap.append($cur);
                         }
                         $cap.append($title);
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     default:
                         $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
@@ -17991,6 +18009,7 @@ define(
                             var $totCap = $cap.clone();
                             $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
                             $totCap.find("dfn").renameElement("span").removeAttr("id");
+                            $totCap.find("span.footnote").attr("class", "formerFootnote");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
 									.append($totCap.contents())
@@ -18000,7 +18019,7 @@ define(
                 }
 
                 // Update all anchors with empty content that reference a table ID
-                $("a[href]", doc).each(function () {
+                $("a[href^='#tbl']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
                     if (! id) return;
@@ -18008,6 +18027,8 @@ define(
                     if (tblMap[id]) {
                         $a.addClass("tbl-ref");
                         if ($a.html() === "") $a.append(tblMap[id]);
+                    } else {
+                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <table>.");
                     }
                 });
                 
@@ -18309,7 +18330,8 @@ define(
     }
 );
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\r\ntext.regBitNumMiddle {\r\n    text-anchor: middle;\r\n    fill: grey;\r\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n    font-size: 8pt;\r\n}\r\n\r\ntext.regBitNumEnd {\r\n    text-anchor: end;\r\n    fill: grey;\r\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n    font-size: 8pt;\r\n}\r\n\r\ntext.regBitNumStart {\r\n    text-anchor: start;\r\n    fill: grey;\r\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n    font-size: 8pt;\r\n}\r\n\r\ntext.regBitWidth {\r\n    text-anchor: middle;\r\n    fill: none;\r\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n    font-weight: bold;\r\n    font-size: 11pt;\r\n}\r\n\r\ng line.regBitNumLine {\r\n\tstroke: grey;\r\n\tstroke-width: 1px;\r\n}\r\n\r\ng line.regBitNumLine_Hide {\r\n    stroke: none;\r\n    stroke-width: 1px;\r\n}\r\n\r\ng rect.regFieldBox {\r\n\tfill: white;\r\n\tstroke: black;\r\n\tstroke-width: 1.5px;\r\n}\r\n\r\ng.regAttr_rsvd rect.regFieldBox,\r\ng.regAttr_rsvdp rect.regFieldBox,\r\ng.regAttr_rsvdz rect.regFieldBox,\r\ng.regAttr_reserved rect.regFieldBox,\r\ng.regAttr_unused rect.regFieldBox {\r\n\tfill: white;\r\n}\r\n\r\ng.regFieldExternal line.regFieldBox,\r\ng.regFieldInternal line.regFieldBox {\r\n\tstroke: black;\r\n}\r\n\r\ng.regFieldUnused line.regFieldBox {\r\n\tstroke: grey;\r\n}\r\n\r\ng.regFieldUnused text.regFieldName,\r\ng.regFieldUnused text.regFieldValue {\r\n\tfill: grey;\r\n}\r\n\r\ng.regFieldHidden text.regFieldName,\r\ng.regFieldHidden text.regFieldValue,\r\ng.regFieldHidden path.regBitLine,\r\ng.regFieldHidden path.regBitBracket,\r\ng.regFieldHidden line.regFieldBox,\r\ng.regFieldHidden rect.regFieldBox,\r\ng.regFieldHidden line.regBitNumLine,\r\ng.regFieldHidden line.regBitNumLine_Hide,\r\ng.regFieldHidden text.regBitNumStart,\r\ng.regFieldHidden text.regBitNumMiddle,\r\ng.regFieldHidden text.regBitNumEnd,\r\ng.regFieldHidden text.regFieldExtendsLeft,\r\ng.regFieldHidden text.regFieldExtendsRight {\r\n    fill: none;\r\n    stroke: none;\r\n}\r\n\r\ng text.regFieldValue,\r\ng.regFieldInternal text.regFieldName {\r\n    text-anchor: middle;\r\n}\r\n\r\ng.regFieldOverflowLSB text.regBitNumEnd,\r\ng text.regFieldExtendsRight {\r\n    text-anchor: start;\r\n}\r\n\r\ng.regFieldOverflowMSB text.regBitNumStart,\r\ng text.regFieldExtendsLeft {\r\n    text-anchor: end;\r\n}\r\n\r\ng text.regFieldName,\r\ng text.regFieldValue {\r\n\tfont-size: 11pt;\r\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\r\n}\r\n\r\ng.regFieldExternal1 path.regBitLine,\r\ng.regFieldExternal1 path.regBitBracket {\r\n\tstroke: black;\r\n\tstroke-width: 1px;\r\n}\r\n\r\ng.regFieldExternal0 path.regBitLine {\r\n\tstroke: green;\r\n    stroke-dasharray: 4,2;\r\n\tstroke-width: 1px;\r\n}\r\n\r\ng.regFieldExternal0 path.regBitBracket {\r\n    stroke: green;\r\n    stroke-width: 1px;\r\n}\r\n\r\nsvg text.regFieldValue {\r\n    fill: #0060A9;\r\n    font-family: monospace;\r\n}\r\n\r\nsvg.regpict {\r\n\tcolor: green;\r\n}\r\n\r\nsvg *.svg_error text:not(.regBitWidth),\r\nsvg *.svg_error text:not(.regBitNumMiddle),\r\nsvg *.svg_error text:not(.regBitNumEnd),\r\nsvg *.svg_error text:not(.regBitNumStart) {\r\n    fill: red;\r\n    font-size: 12pt;\r\n    font-weight: bold;\r\n    font-style: normal;\r\n    font-family: monospace;\r\n}\r\n\r\nfigure div.json,\r\nfigure pre.json {\r\n    color: rgb(0,90,156);\r\n    display: inherit;\r\n}\r\n\r\n@media screen {\r\n    g.regLink:hover rect.regFieldBox,\r\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\r\n    \r\n    g.regLink:hover line.regBitNumLine,\r\n    g.regLink:focus line.regBitNumLine,\r\n    g.regLink:hover line.regBitNumLine_Hide,\r\n    g.regLink:focus line.regBitNumLine_Hide,\r\n    g.regLink:hover line.regFieldBox,\r\n    g.regLink:focus line.regFieldBox,\r\n    g.regLink:hover path.regBitLine,\r\n    g.regLink:focus path.regBitLine,\r\n    g.regLink.regFieldExternal:hover path.regBitBracket,\r\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\r\n\r\n    g.regLink:hover text.regFieldName,\r\n    g.regLink:focus text.regFieldName,\r\n    g.regLink.regFieldExternal:hover text.regFieldValue,\r\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\r\n\r\n    g.regLink:hover text.regBitNumMiddle,\r\n    g.regLink:focus text.regBitNumMiddle,\r\n    g.regLink:hover text.regBitNumStart,\r\n    g.regLink:focus text.regBitNumStart,\r\n    g.regLink:hover text.regBitNumEnd,\r\n    g.regLink:focus text.regBitNumEnd\r\n    { fill: blue; font-weight: bold; font-size: 9pt; }\r\n\r\n    g.regLink:hover text.regBitWidth,\r\n    g.regLink:focus text.regBitWidth {\r\n        fill: blue;\r\n    }\r\n}';});
+
+define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNumMiddle {\n    text-anchor: middle;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumEnd {\n    text-anchor: end;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumStart {\n    text-anchor: start;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitWidth {\n    text-anchor: middle;\n    fill: none;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-weight: bold;\n    font-size: 11pt;\n}\n\ng line.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\ng line.regBitNumLine_Hide {\n    stroke: none;\n    stroke-width: 1px;\n}\n\ng rect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\ng.regAttr_rsvd rect.regFieldBox,\ng.regAttr_rsvdp rect.regFieldBox,\ng.regAttr_rsvdz rect.regFieldBox,\ng.regAttr_reserved rect.regFieldBox,\ng.regAttr_unused rect.regFieldBox {\n\tfill: white;\n}\n\ng.regFieldExternal line.regFieldBox,\ng.regFieldInternal line.regFieldBox {\n\tstroke: black;\n}\n\ng.regFieldUnused line.regFieldBox {\n\tstroke: grey;\n}\n\ng.regFieldUnused text.regFieldName,\ng.regFieldUnused text.regFieldValue {\n\tfill: grey;\n}\n\ng.regFieldHidden text.regFieldName,\ng.regFieldHidden text.regFieldValue,\ng.regFieldHidden path.regBitLine,\ng.regFieldHidden path.regBitBracket,\ng.regFieldHidden line.regFieldBox,\ng.regFieldHidden rect.regFieldBox,\ng.regFieldHidden line.regBitNumLine,\ng.regFieldHidden line.regBitNumLine_Hide,\ng.regFieldHidden text.regBitNumStart,\ng.regFieldHidden text.regBitNumMiddle,\ng.regFieldHidden text.regBitNumEnd,\ng.regFieldHidden text.regFieldExtendsLeft,\ng.regFieldHidden text.regFieldExtendsRight {\n    fill: none;\n    stroke: none;\n}\n\ng text.regFieldValue,\ng.regFieldInternal text.regFieldName {\n    text-anchor: middle;\n}\n\ng.regFieldOverflowLSB text.regBitNumEnd,\ng text.regFieldExtendsRight {\n    text-anchor: start;\n}\n\ng.regFieldOverflowMSB text.regBitNumStart,\ng text.regFieldExtendsLeft {\n    text-anchor: end;\n}\n\ng text.regFieldName,\ng text.regFieldValue {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\ng.regFieldExternal1 path.regBitLine,\ng.regFieldExternal1 path.regBitBracket {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitLine {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitBracket {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text:not(.regBitWidth),\nsvg *.svg_error text:not(.regBitNumMiddle),\nsvg *.svg_error text:not(.regBitNumEnd),\nsvg *.svg_error text:not(.regBitNumStart) {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}\n\n@media screen {\n    g.regLink:hover rect.regFieldBox,\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\n    \n    g.regLink:hover line.regBitNumLine,\n    g.regLink:focus line.regBitNumLine,\n    g.regLink:hover line.regBitNumLine_Hide,\n    g.regLink:focus line.regBitNumLine_Hide,\n    g.regLink:hover line.regFieldBox,\n    g.regLink:focus line.regFieldBox,\n    g.regLink:hover path.regBitLine,\n    g.regLink:focus path.regBitLine,\n    g.regLink.regFieldExternal:hover path.regBitBracket,\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\n\n    g.regLink:hover text.regFieldName,\n    g.regLink:focus text.regFieldName,\n    g.regLink.regFieldExternal:hover text.regFieldValue,\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\n\n    g.regLink:hover text.regBitNumMiddle,\n    g.regLink:focus text.regBitNumMiddle,\n    g.regLink:hover text.regBitNumStart,\n    g.regLink:focus text.regBitNumStart,\n    g.regLink:hover text.regBitNumEnd,\n    g.regLink:focus text.regBitNumEnd\n    { fill: blue; font-weight: bold; font-size: 9pt; }\n\n    g.regLink:hover text.regBitWidth,\n    g.regLink:focus text.regBitWidth {\n        fill: blue;\n    }\n}';});
 
 /* http://keith-wood.name/svg.html
    SVG for jQuery v1.4.5.
@@ -20741,8 +20763,9 @@ define(
                     if (!isIntro) {
                         map += "<span class='sec-prefix'>" + (appendixMode ? "Appendix" : (isTopLevel ? "Chapter" : "Section")) + " </span>";
                         map += "<span class='secno secno-level-" + secnos.length + "'>" + secno + "</span>";
+                        map += "<span class='sec-decoration'>: </span>";
                     }
-                    map += "<span class='sec-title'> " + title + "</span>";
+                    map += "<span class='sec-title'>" + title + "</span>";
                     secMap[id] = map;
 //                    (isIntro ? "" : ("<span class='sec-prefix'>"+ kind + "</span>") +
 //                        ("<span class='secno' data-level='" + secnos.length + "'>" + secno + "</span> ")) +
@@ -20805,13 +20828,15 @@ define(
                 }
 
                 // Update all anchors with empty content that reference a section ID
-                $("a[href^='#']:not(.tocxref)", doc).each(function () {
+                $("a[href^='#sect']:not(.tocxref)", doc).each(function () {
                     var $a = $(this);
                     if ($a.html() !== "") return;
                     var id = $a.attr("href").slice(1);
                     if (secMap[id]) {
                         $a.addClass('sec-ref');
                         $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
+                    } else {
+                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                     }
                 });
 
@@ -20840,7 +20865,8 @@ define(
     }
 );
 
-define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\r\n{{#if permalinkHide}}\r\n    section > *:hover > span.permalink {\r\n        visibility: visible;\r\n    }\r\n{{/if}}\r\n\r\n.permalink {\r\n    width:          1px;\r\n    height:         1px;\r\n    overflow:       visible;\r\n    font-size:      10pt;\r\n    font-style:     normal;\r\n    vertical-align: middle;\r\n    margin-left:    4px;\r\n    {{#if permalinkEdge}}\r\n        float:      right;\r\n    {{/if}}\r\n    {{#if permalinkHide}}\r\n        visibility: hidden;\r\n    {{/if}}\r\n}\r\n\r\nspan.permalink > a,\r\nspan.permalink > a:link,\r\nspan.permalink > a:visited,\r\nspan.permalink > a:hover,\r\nspan.permalink > a:focus,\r\nspan.permalink > a:active\r\n{\r\n    background:       transparent !important;\r\n    text-decoration:  none;\r\n    font-weight:      normal;\r\n    color:            grey !important;\r\n}\r\n\r\n.permalink abbr {\r\n    border:0;\r\n}\r\n\r\n{{#if permalinkHide}}\r\n    @media print {\r\n        .permalink,\r\n        section > *:hover > span.permalink {\r\n            visibility: hidden;\r\n        }\r\n    }\r\n{{/if}}\r\n');});
+
+define('tmpl!w3c/templates/permalinks.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('/* --- PERMALINKS --- */\n{{#if permalinkHide}}\n    section > *:hover > span.permalink {\n        visibility: visible;\n    }\n{{/if}}\n\n.permalink {\n    width:          1px;\n    height:         1px;\n    overflow:       visible;\n    font-size:      10pt;\n    font-style:     normal;\n    vertical-align: middle;\n    margin-left:    4px;\n    {{#if permalinkEdge}}\n        float:      right;\n    {{/if}}\n    {{#if permalinkHide}}\n        visibility: hidden;\n    {{/if}}\n}\n\nspan.permalink > a,\nspan.permalink > a:link,\nspan.permalink > a:visited,\nspan.permalink > a:hover,\nspan.permalink > a:focus,\nspan.permalink > a:active\n{\n    background:       transparent !important;\n    text-decoration:  none;\n    font-weight:      normal;\n    color:            grey !important;\n}\n\n.permalink abbr {\n    border:0;\n}\n\n{{#if permalinkHide}}\n    @media print {\n        .permalink,\n        section > *:hover > span.permalink {\n            visibility: hidden;\n        }\n    }\n{{/if}}\n');});
 
 // Module w3c/permalinks
 // Adds "permalinks" into the document at sections with explicit IDs
@@ -21164,5 +21190,6 @@ define('profile-nvidia-common',[
             });
         }
 );
+
 
 require(['profile-nvidia-common']);

@@ -216,6 +216,14 @@ dl dt {
     margin-bottom: 0.25em;
 }
 
+dl.wide dt {
+    width: 20%;
+}
+
+dl.extra_wide dt {
+    width: 30%;
+}
+
 table {
     border-collapse: collapse;
     border-bottom:   3px solid rgb(118, 185, 0); /* #0060A9 */
@@ -359,6 +367,20 @@ table dt {
     font-weight: bold;
 }
 
+table dl.wide dt {
+    float:       left;
+    width:       20%;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+table dl.extra_wide dt {
+    float:       left;
+    width:       30%;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
 td dl dd {
     overflow:      hidden;
     margin-bottom: 0.5em;
@@ -421,8 +443,8 @@ body {
     position:                 fixed;
     top:                      -15px;
     height:                   20px;
-    left:                     -595px;
-    width:                    600px;
+    left:                     -695px;
+    width:                    700px;
     margin:                   0 0 0 0;
     text-align:               right;
     padding:                  4px 4px 4px 4px;
@@ -464,13 +486,13 @@ h5 {
     /* PCIe Logo Blue */
 }
 
-g.regFieldExternal0 path.regBitLine {
+path.regBitLine0 {
     stroke:           rgb(118, 185, 0); /* #0060A9 */
     stroke-dasharray: 4, 2;
     stroke-width:     1px;
 }
 
-g.regFieldExternal0 path.regBitBracket {
+path.regBitBracket0 {
     stroke:       rgb(118, 185, 0); /* #0060A9 */
     stroke-width: 1px;
 }
@@ -478,6 +500,7 @@ g.regFieldExternal0 path.regBitBracket {
 g.highlight rect.regFieldBox {
     fill: lightyellow;
 }
+
 @media screen {
     span.footnote-contents {
         display:    none;
@@ -492,12 +515,14 @@ g.highlight rect.regFieldBox {
     }
 
     a.sec-ref span.sec-title,
-    a.sec-ref span.secno-decoration,
-    a.tocxref span.secno-decoration,
-    a.fig-ref span.figdecoration,
+    a.sec-ref span.sec-decoration,
+    a.tocxref span.sec-decoration,
+    a.fig-ref span.figdecoration1,
     a.fig-ref span.figtitle,
-    a.tbl-ref span.tbldecoration,
-    a.tbl-ref span.tbltitle {
+    a.fig-ref span.formerFootnote,
+    a.tbl-ref span.tbldecoration1,
+    a.tbl-ref span.tbltitle,
+    a.tbl-ref span.formerFootnote {
         display: none;
     }
 

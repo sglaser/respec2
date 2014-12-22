@@ -18,7 +18,8 @@ define(
             //console.log("title='" + $title[0].outerHTML + "'");
             var adjfmt = " " + fmt.replace(/%%/g, "%\\");
             var sfmt = adjfmt.split("%");
-            var $cur = $("<span class='" + label + "decoration'/>");
+            var decoration_num = 1;
+            var $cur = $("<span class='" + label + "decoration " + label + "decoration0'/>");
             $cap.html("");
             //console.log("$cap='" + $cap[0].outerHTML + "'");
             //console.log("fmt=\"" + adjfmt + "\"");
@@ -37,7 +38,8 @@ define(
                         if ($cur.text() !== "") {
                             $cap.append($cur);
                         }
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     case "\\":$cur.append(doc.createTextNode("%")); break;
                     case "#": $cur.append(doc.createTextNode(num[0])); break;
@@ -48,7 +50,8 @@ define(
                             $cap.append($cur);
                         }
                         $cap.append($title);
-                        $cur = $("<span class='" + label + "decoration'/>");
+                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
+                        decoration_num = decoration_num + 1;
                         break;
                     default:
                         $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
@@ -94,6 +97,7 @@ define(
                             var $totCap = $cap.clone();
                             $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
                             $totCap.find("dfn").renameElement("span").removeAttr("id");
+                            $totCap.find("span.footnote").attr("class", "formerFootnote");
 							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
 									.find(".tocxref")
 									.append($totCap.contents())
@@ -103,7 +107,7 @@ define(
                 }
 
                 // Update all anchors with empty content that reference a table ID
-                $("a[href]", doc).each(function () {
+                $("a[href^='#tbl']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
                     if (! id) return;
@@ -111,6 +115,8 @@ define(
                     if (tblMap[id]) {
                         $a.addClass("tbl-ref");
                         if ($a.html() === "") $a.append(tblMap[id]);
+                    } else {
+                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <table>.");
                     }
                 });
                 

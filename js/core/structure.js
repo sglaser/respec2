@@ -64,8 +64,9 @@ define(
                     if (!isIntro) {
                         map += "<span class='sec-prefix'>" + (appendixMode ? "Appendix" : (isTopLevel ? "Chapter" : "Section")) + " </span>";
                         map += "<span class='secno secno-level-" + secnos.length + "'>" + secno + "</span>";
+                        map += "<span class='sec-decoration'>: </span>";
                     }
-                    map += "<span class='sec-title'> " + title + "</span>";
+                    map += "<span class='sec-title'>" + title + "</span>";
                     secMap[id] = map;
 //                    (isIntro ? "" : ("<span class='sec-prefix'>"+ kind + "</span>") +
 //                        ("<span class='secno' data-level='" + secnos.length + "'>" + secno + "</span> ")) +
@@ -128,13 +129,15 @@ define(
                 }
 
                 // Update all anchors with empty content that reference a section ID
-                $("a[href^='#']:not(.tocxref)", doc).each(function () {
+                $("a[href^='#sect']:not(.tocxref)", doc).each(function () {
                     var $a = $(this);
                     if ($a.html() !== "") return;
                     var id = $a.attr("href").slice(1);
                     if (secMap[id]) {
                         $a.addClass('sec-ref');
                         $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
+                    } else {
+                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                     }
                 });
 
