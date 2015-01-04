@@ -113,7 +113,9 @@ define(
                     id = id.substring(1);
                     if (tblMap[id]) {
                         $a.addClass("tbl-ref");
-                        if ($a.html() === "") $a.append(tblMap[id]);
+                        if ($a.html() === "") {
+                            $a.append(tblMap[id].clone());
+                        }
                     } else {
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <table>.");
                     }

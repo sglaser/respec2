@@ -139,7 +139,9 @@ define(
                     id = id.substring(1);
                     if (figMap[id]) {
                         $a.addClass("fig-ref");
-                        if ($a.html() === "") $a.append(figMap[id]);
+                        if ($a.html() === "") {
+                            $a.append(figMap[id].clone());
+                        }
                     } else {
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
