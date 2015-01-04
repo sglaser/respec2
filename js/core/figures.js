@@ -136,7 +136,6 @@ define(
                 $("a[href^='#fig']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
-                    if (!id) return;
                     id = id.substring(1);
                     if (figMap[id]) {
                         $a.addClass("fig-ref");

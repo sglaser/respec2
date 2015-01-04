@@ -17873,7 +17873,6 @@ define(
                 $("a[href^='#fig']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
-                    if (!id) return;
                     id = id.substring(1);
                     if (figMap[id]) {
                         $a.addClass("fig-ref");
@@ -18022,7 +18021,6 @@ define(
                 $("a[href^='#tbl']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
-                    if (! id) return;
                     id = id.substring(1);
                     if (tblMap[id]) {
                         $a.addClass("tbl-ref");
