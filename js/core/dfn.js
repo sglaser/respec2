@@ -13,7 +13,6 @@ define(
             run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
-<<<<<<< HEAD
                 if (!conf.definitionMap) {
                     conf.definitionMap = {};
                 }
@@ -22,6 +21,11 @@ define(
                 }
 
                 //console.log("\n\n\n\n");
+
+                $("[dfn-for]").each(function() {
+                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
+                    this.removeAttribute("dfn-for");
+                });
 
                 $("table[id] dfn.field", doc).each(function() {
                     var $dfn = $(this);
@@ -138,26 +142,7 @@ define(
                             //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
                             //console.log("");
                         }
-=======
-                $("[dfn-for]").each(function() {
-                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
-                    this.removeAttribute("dfn-for");
-                });
-                if (!conf.definitionMap) conf.definitionMap = {};
-                $("dfn").each(function () {
-                    var dfn = $(this);
-                    if (dfn.attr("for")) {
-                        dfn.attr("data-dfn-for", dfn.attr("for").toLowerCase());
-                        dfn.removeAttr("for");
-                    } else {
-                        dfn.attr("data-dfn-for", (dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
                     }
-                    var title = dfn.dfnTitle();
-                    if (!conf.definitionMap[title]) {
-                        conf.definitionMap[title] = [];
->>>>>>> w3c-develop
-                    }
-                    conf.definitionMap[title].push(dfn);
                 });
 
                 //console.log("\n\n\n\n");
