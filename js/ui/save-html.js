@@ -77,19 +77,15 @@ define(
             }
             // convert the document to a string (HTML)
         ,   toString:    function () {
+                respecEvents.pub("save", "toString")
                 var str = "<!DOCTYPE html"
                 ,   dt = doc.doctype;
                 if (dt && dt.publicId) str += " PUBLIC '" + dt.publicId + "' '" + dt.systemId + "'";
                 str += ">\n<html";
-                var ats = doc.documentElement.attributes
-                ,   prefixAtr = "";
+                var ats = doc.documentElement.attributes;
                 for (var i = 0; i < ats.length; i++) {
                     var an = ats[i].name;
                     if (an === "xmlns" || an === "xml:lang") continue;
-                    if (an === "prefix") {
-                        prefixAtr = ats[i].value;
-                        continue;
-                    }
                     str += " " + an + "=\"" + utils.xmlEscape(ats[i].value) + "\"";
                 }
                 str += ">\n";
@@ -101,6 +97,7 @@ define(
             }
             // convert the document to XML, pass 5 as mode for XHTML5
         ,   toXML:        function (mode) {
+                respecEvents.pub("save", "toXML" + mode)
                 var rootEl = doc.documentElement.cloneNode(true);
                 cleanup(rootEl);
                 if (mode !== 5) {
@@ -119,14 +116,9 @@ define(
                 if (dt && dt.publicId) str += " PUBLIC '" + dt.publicId + "' '" + dt.systemId + "'";
                 else if (mode !== 5) {
                     if (conf.doRDFa) {
-                        if (conf.doRDFa === "1.1") { // use the standard RDFa 1.1 doctype
-                            str += " PUBLIC '-//W3C//DTD XHTML+RDFa 1.1//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd'";
-                        }
-                        else { // use the standard RDFa doctype
-                            str += " PUBLIC '-//W3C//DTD XHTML+RDFa 1.0//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd'";
-                        }
-                    }
-                    else {
+                        // use the standard RDFa 1.1 doctype
+                        str += " PUBLIC '-//W3C//DTD XHTML+RDFa 1.1//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd'";
+                    } else {
                         str += " PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'";
                     }
                 }
@@ -193,6 +185,7 @@ define(
             // data needed for diff marking - submit the form so that the response populates
             // page with the diff marked version
         ,   toDiffHTML:  function () {
+                respecEvents.pub("save", "toDiffHTML")
                 var base = window.location.href.replace(/\/[^\/]*$/, "/")
                 ,   str = "<!DOCTYPE html>\n<html>\n" +
                           "<head><title>Diff form</title></head>\n" +

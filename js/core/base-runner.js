@@ -27,7 +27,13 @@
         pub:    function (topic) {
             var args = Array.prototype.slice.call(arguments);
             args.shift();
-            if (embedded && window.postMessage) parent.postMessage({ topic: topic, args: args}, "*");
+            if (embedded && window.postMessage) {
+                // Make sure all args are structured-cloneable.
+                args = args.map(function(arg) {
+                    return (arg.stack || arg) + '';
+                });
+                parent.postMessage({ topic: topic, args: args}, "*");
+            }
             $.each(handlers[topic] || [], function () {
                 this.apply(GLOBAL, args);
             });
@@ -62,6 +68,9 @@ if (window.console) {
     });
     respecEvents.sub("start-all", function () {
         console.log("RESPEC PROCESSING STARTED");
+        if ("respecVersion" in window && respecVersion) {
+            console.log("RESPEC Version: " + respecVersion) ;
+        }
     });
     respecEvents.sub("end-all", function () {
         console.log("RESPEC DONE!");
@@ -88,7 +97,7 @@ define(
                     }
                 });
                 respecEvents.pub("start", "core/base-runner");
-                
+
                 // the first in the plugs is going to be us
                 plugs.shift();
 

@@ -1,6 +1,6 @@
 
 // Module core/dfn
-// Handles the processing and linking of <dfn> and <a> elements.
+// Finds all <dfn> elements and populates conf.definitionMap to identify them.
 define(
     [],
     function () {
@@ -8,26 +8,24 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
+                $("[dfn-for]").each(function() {
+                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
+                    this.removeAttribute("dfn-for");
+                });
                 if (!conf.definitionMap) conf.definitionMap = {};
                 $("dfn").each(function () {
-                    var title = $(this).dfnTitle();
-                    if (conf.definitionMap[title]) msg.pub("error", "Duplicate definition of '" + title + "'");
-                    conf.definitionMap[title] = $(this).makeID("dfn", title);
-                });
-                $("a:not([href])").each(function () {
-                    var $ant = $(this);
-                    if ($ant.hasClass("externalDFN")) return;
-                    var title = $ant.dfnTitle();
-                    if (conf.definitionMap[title] && !(conf.definitionMap[title] instanceof Function)) {
-                        $ant.attr("href", "#" + conf.definitionMap[title]).addClass("internalDFN");
+                    var dfn = $(this);
+                    if (dfn.attr("for")) {
+                        dfn.attr("data-dfn-for", dfn.attr("for").toLowerCase());
+                        dfn.removeAttr("for");
+                    } else {
+                        dfn.attr("data-dfn-for", (dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
                     }
-                    else {
-                        // ignore WebIDL
-                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                            msg.pub("warn", "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
-                        }
-                        $ant.replaceWith($ant.contents());
+                    var title = dfn.dfnTitle();
+                    if (!conf.definitionMap[title]) {
+                        conf.definitionMap[title] = [];
                     }
+                    conf.definitionMap[title].push(dfn);
                 });
                 msg.pub("end", "core/dfn");
                 cb();

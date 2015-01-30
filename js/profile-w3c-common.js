@@ -10,7 +10,7 @@ var requireConfig = {
 };
 if ("respecVersion" in window && respecVersion) {
     requireConfig.paths = {
-        "ui":   "https://darobin.github.io/respec/js/ui"
+        "ui":   "https://w3c.github.io/respec/js/ui"
     };
 }
 require.config(requireConfig);
@@ -30,6 +30,8 @@ define([
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
+        ,   "core/dfn"
+        ,   "w3c/rfc2119"
         ,   "core/examples"
         ,   "core/issues-notes"
         ,   "core/requirements"
@@ -38,14 +40,15 @@ define([
         ,   "core/figures"
         ,   "core/tables"
         ,   "core/biblio"
-        ,   "core/rdfa"
+        ,   "core/webidl-contiguous"
         ,   "core/webidl-oldschool"
-        ,   "core/dfn"
+        ,   "core/link-to-dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
+        ,   "core/rdfa"
         ,   "w3c/aria"
         ,   "core/shiv"
         ,   "core/remove-respec"

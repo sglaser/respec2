@@ -97,9 +97,9 @@ define(
                     return "(" + arr.join(" or ") + ")";
                 }
                 else {
-                    var matched = /^(sequence|Promise)<(.+)>$/.exec(text);
+                    var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(text);
                     if (matched)
-                        return matched[1] + "&lt;<a>" + matched[2] + "</a>&gt;";
+                        return matched[1] + "&lt;<a>" + datatype(matched[2]) + "</a>&gt;";
 
                     return "<a>" + text + "</a>";
                 }
@@ -117,7 +117,7 @@ define(
             setID:  function (obj, match) {
                 obj.id = match;
                 obj.refId = obj.id.replace(/[^a-zA-Z_\-]/g, "");
-		obj.unescapedId = (obj.id[0] == "_" ? obj.id.slice(1) : obj.id);
+                obj.unescapedId = (obj.id[0] == "_" ? obj.id.slice(1) : obj.id);
             }
         ,   nullable:   function (obj, type) {
                 obj.nullable = false;
@@ -410,7 +410,7 @@ define(
 
                 // MEMBER
                 obj.type = "member";
-                this.setID(obj, str);
+                this.setID(obj, str || "EMPTY");
                 obj.refId = sn.sanitiseID(obj.id); // override with different ID type
                 return obj;
             },
@@ -672,7 +672,7 @@ define(
             },
 
             parseParameterized: function (str) {
-                var matched = /^(sequence|Promise)<(.+)>$/.exec(str);
+                var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(str);
                 if (!matched)
                     return null;
                 return { type: matched[1], parameter: matched[2] };
@@ -1394,7 +1394,7 @@ define(
                 if (!conf.noIDLSorting) conf.noIDLSorting = false;
                 if (!conf.noIDLSectionTitle) conf.noIDLSectionTitle = false;
                 sn = new simpleNode(document);
-                var $idl = $(".idl", doc)
+                var $idl = $(".idl", doc).not("pre")
                 ,   finish = function () {
                         msg.pub("end", "core/webidl");
                         cb();
