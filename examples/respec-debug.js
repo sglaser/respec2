@@ -20551,7 +20551,7 @@ define(
 
                 //console.log("\n\n\n\n");
 
-                $("a:not([href])", doc)
+                $("a:not([href]):not([tabindex])", doc)
                     .filter(
                     function() {
                         return (this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href") === null);
