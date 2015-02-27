@@ -18,7 +18,7 @@ Want to change a bibliographical reference?
 ===========================================
 
 Bibliographical references have been moved out of ReSpec. You want to use this: 
-https://github.com/tobie/specref
+http://www.specref.org/
 
 Want to see complete documentation?
 ===================================
@@ -106,7 +106,6 @@ Once these dependencies are installed, running the test suite should be as simpl
 ```
 $ npm test
 ```
-
 
 [jasmine]: http://pivotal.github.io/jasmine/
 [travis]: https://travis-ci.org/w3c/respec

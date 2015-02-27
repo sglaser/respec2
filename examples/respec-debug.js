@@ -1,9 +1,7 @@
-/* ReSpec 3.2.36 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.42 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
-/* See original source for licenses: https://github.com/w3c/respec */
-/* See also NVIDIA source: https://github.com/sglaser/respec */
-respecVersion = '3.2.36';
-respecVersionNVIDIA = '0.0.1';
+/* See original source for licenses: https://github.com/darobin/respec. */
+respecVersion = '3.2.42';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -13473,35 +13471,56 @@ define(
     }
 );
 
-/*globals define */
-/*jshint browser: true */
 
-// Module nvidia/style
-// Inserts a link to the appropriate Nvidia style for the specification's maturity level.
+// Module w3c/style
+// Inserts a link to the appropriate W3C style for the specification's maturity level.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
 define(
-    'nvidia/style',["core/utils"/*,
-     "text!../../stylesheets/unofficial-nvidia.css"*/],
-    function (utils/*, inlinecss*/) {
-        
+    'w3c/style',["core/utils"],
+    function (utils) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "nvidia/style");
-                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for nvidia/style");
+                msg.pub("start", "w3c/style");
+                if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for w3c/style");
                 var statStyle = conf.specStatus;
+                if (statStyle === "FPWD"    ||
+                    statStyle === "LC"      ||
+                    statStyle === "WD-NOTE" ||
+                    statStyle === "LC-NOTE") statStyle = "WD";
+                if (statStyle === "FPWD-NOTE") statStyle = "WG-NOTE";
+                if (statStyle === "finding" || statStyle === "draft-finding") statStyle = "base";
                 var css = "https://";
-                css += "sglaser.github.io/";
-                css += "respec/stylesheets/unofficial-nvidia.css";
+                if (statStyle === "unofficial") {
+                    css += "www.w3.org/StyleSheets/TR/w3c-unofficial";
+                }
+                else if (statStyle === "base") {
+                    css += "www.w3.org/StyleSheets/TR/base";
+                }
+                else if (statStyle === "CG-DRAFT" || statStyle === "CG-FINAL" ||
+                         statStyle === "BG-DRAFT" || statStyle === "BG-FINAL") {
+                    // note: normally, the ".css" is not used in W3C, but here specifically it clashes
+                    // with a PNG of the same base name. CONNEG must die.
+                    css += "www.w3.org/community/src/css/spec/" + statStyle.toLowerCase() + ".css";
+                }
+                else if (statStyle === "webspec") {
+                    css = "https://specs.webplatform.org/assets/css/kraken.css";
+                    $('<link rel="icon" href="https://specs.webplatform.org/assets/img/icon.png">', doc)
+                        .appendTo($("head"));
+                    $(doc.createElement("script"))
+                        .attr({ async: "async", src: "https://specs.webplatform.org/assets/js/kraken.js"})
+                        .appendTo($("head"))
+                        ;
+                }
+                else {
+                    css += "www.w3.org/StyleSheets/TR/W3C-" + statStyle;
+                }
                 if (conf.cssOverride) {
                     css = conf.cssOverride;
                 }
                 utils.linkCSS(doc, css);
-//                $("<style/>").appendTo($("head", $(doc))).text(inlinecss);
-//                console.log("inlinecss.length = " + inlinecss.length);
-
-                msg.pub("end", "nvidia/style");
+                msg.pub("end", "w3c/style");
                 cb();
             }
         };
@@ -15083,23 +15102,32 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
 });
 
 
-define('tmpl!nvidia/templates/headers.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<div class="head">\n{{#if logos}}\n    {{showLogos logos}}\n{{else}}\n    {{#if prependLogo}}\n<p>\n    <a href="https://www.nvidia.com/">\n        <img width="270" height="230" alt="Nvidia Logo" src="https://sglaser.github.io/respec/stylesheets/NV/NVLogo_2D.svg"/>\n    </a>\n</p>\n    {{/if}}\n{{/if}}\n    \n<div id="respec-banner">\n    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;\n    {{#if publishHumanDate}}\n        <span id="respec-banner-maturity">{{publishHumanDate}}</span>&nbsp;&mdash;&nbsp;\n    {{/if}}\n    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;\n</div>\n    \n<h1 class="title p-name" id="title"{{#if doRDFa}} property="dcterms:title"{{/if}}>{{title}}</h1>\n    \n{{#if subtitle}}\n    <h2 {{#if doRDFa}}property="bibo:subtitle" {{/if}}id="subtitle" class="nolink">{{subtitle}}</h2>\n{{/if}}\n    \n<h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime"\n    content="{{publishISODate}}"{{/if}} class="nolink">\n    <time class="dt-published" datetime="{{dashDate}}">{{publishHumanDate}}</time>\n</h2>\n    \n<dl>\n    {{#if thisVersion}}\n        <dt>This version:</dt>\n        <dd><a class="u-url" href="{{thisVersion}}">{{thisVersion}}</a></dd>\n    {{/if}}\n    \n    {{#if latestVersion}}\n        <dt>Latest published version:</dt>\n        <dd><a class="u-url" href="{{latestVersion}}">{{latestVersion}}</a></dd>\n    {{/if}}\n\n    {{#if edDraftURI}}\n        <dt>Latest editor\'s draft:</dt>\n        <dd><a class="u-url" href="{{edDraftURI}}">{{edDraftURI}}</a></dd>\n    {{/if}}\n\n    {{#if testSuiteURI}}\n        <dt>Test suite:</dt>\n        <dd><a class="u-url" href="{{testSuiteURI}}">{{testSuiteURI}}</a></dd>\n    {{/if}}\n\n    {{#if implementationReportURI}}\n        <dt>Implementation report:</dt>\n        <dd><a class="u-url" href="{{implementationReportURI}}">{{implementationReportURI}}</a></dd>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n        <dt>Bug tracker:</dt>\n        <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n\n    {{#if prevVersion}}\n        <dt>Previous version:</dt>\n        <dd><a class="u-url" {{#if doRDFa}}rel="dcterms:replaces" {{/if}}href="{{prevVersion}}">{{prevVersion}}</a></dd>\n    {{/if}}\n\n    {{#if editors}}\n        <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n        {{showPeople "Editor" editors}}\n    {{/if}}\n\n    {{#if authors}}\n        <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n        {{showPeople "Author" authors}}\n    {{/if}}\n\n    {{#if otherLinks}}\n        {{#each otherLinks}}\n            {{#if key}}\n                <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n                {{#if data}}\n                    {{#each data}}\n                        {{#if value}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}>\n                                {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                            </dd>\n                        {{else}}\n                            {{#if href}}\n                                <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                            {{/if}}\n                        {{/if}}\n                    {{/each}}\n                {{else}}\n                    {{#if value}}\n                        <dd {{#if class}}class="{{class}}"{{/if}}>\n                            {{#if href}}<a href="{{href}}">{{/if}}{{value}}{{#if href}}</a>{{/if}}\n                        </dd>\n                    {{else}}\n                        {{#if href}}\n                            <dd {{#if class}}class="{{class}}"{{/if}}><a href="{{href}}">{{href}}</a></dd>\n                        {{/if}}\n                    {{/if}}\n                {{/if}}\n            {{/if}}\n        {{/each}}\n    {{/if}}\n\n</dl>\n    \n{{#if errata}}\n<p>\n    Please check the <a href="{{errata}}"><strong>{{errata}}</strong></a> for any errors or issues\n    reported since publication.\n</p>\n{{/if}}\n    \n{{#if alternateFormats}}\n<p>\n    {{#if multipleAlternates}}\n    This document is also available in these non-normative formats:\n    {{else}}\n    This document is also available in this non-normative format:\n    {{/if}}\n    {{{alternatesHTML}}}\n</p>\n{{/if}}\n\n{{#if overrideCopyright}}\n    {{{overrideCopyright}}}\n{{else}}\n    <p class="copyright">\n        Copyright &copy; {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}} {{#if\n        additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href="https://www.nvidia.com/">Nvidia, Inc</a>\n        <sup>&reg;</sup>\n    </p>\n{{/if}}\n\n    <hr/>\n</div>\n');});
+define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n      {{#if logos}}\n        {{showLogos logos}}\n      {{else}}\n        {{#if prependW3C}}\n            <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'></a>\n        {{/if}}\n      {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time {{#if doRDFa}}property="dcterms:issued"{{/if}}class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>Latest published version:</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>Bug tracker:</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr>\n</div>\n');});
 
 
-define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n    \n    {{#if isUnofficial}}\n    <p>\n        This document is a working draft.\n        It has no official standing of any kind and does not represent the support or consensus of any group.\n    </p>\n    {{else}}\n        {{#if isNoTrack}}\n        <p>\n            This document is an Nvidia internal document.\n            It has no official standing of any kind and does not represent consensus of any group.\n        </p>\n        {{else}}\n            {{#if isFinal}}\n            <p>\n                This document is considered a final publication.\n                Nvidia may publish errata to this document and may develop future revisions to this document.\n            </p>\n            {{else}}\n            <p>\n                This document is intended to become a part of the specification for an Nvidia product.\n                This particular document is a <strong>{{specStatusLong}}</strong> document.\n            </p>\n            {{/if}}\n        {{/if}}\n    {{/if}}\n\n    {{#if humanReviewEndDate}}\n    <p>\n        The review period for this document ends on <b>{{humanReviewEndDate}}</b>.\n    </p>\n    {{/if}}\n\n    {{#if bugTrackerHTML}}\n    <p>\n        Comments should be filed using NVBugs: {{bugTrackerHTML}}.\n    </p>\n    {{/if}}\n\n    {{#if commentsPDF}}\n    <p>\n        Comments should be added to the PDF review <a class="u-url" href="{{commentsPDF}}">{{commentsPDF}}</a>.\n    </p>\n    {{/if}}\n\n    {{#if commentsEmail}}\n    <p>\n        Comments should be sent to <a href=\'mailto:{{commentsEmail}}@exhange.nvidia.com{{#if subjectPrefix}}?subject={{subjectPrefix}}{{/if}}\'>{{commentsEmail}}@exchange.nvidia.com</a>\n        {{#if subjectPrefix}} with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n    </p>\n    {{/if}}\n\n{{{sotdCustomParagraph}}}\n\n</section>\n');});
+define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>This section describes the status of this document at the time of its publication.\n          Other documents may supersede this document. A list of current W3C publications and the\n          latest revision of this technical report can be found in the <a\n          href=\'http://www.w3.org/TR/\'>W3C technical reports index</a> at\n          http://www.w3.org/TR/.</em>\n        </p>\n        {{#unless sotdAfterWGinfo}}\n        {{{sotdCustomParagraph}}}\n        {{/unless}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefixEnc}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPER}}\n              W3C Advisory Committee Members are invited to\n              send formal review comments on this Proposed\n              Edited Recommendation to the W3C Team until\n              {{humanPEREnd}}. \n              Members of the Advisory Committee will find the\n              appropriate review form for this document by\n              consulting their list of current\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            {{#unless isPER}}\n            All comments are welcome.\n            {{/unless}}\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if sotdAfterWGinfo}}\n        {{{sotdCustomParagraph}}\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isRec}}\n          <p>\n            This document has been reviewed by W3C Members, by software developers, and by other W3C\n            groups and interested parties, and is endorsed by the Director as a W3C Recommendation.\n            It is a stable document and may be used as reference material or cited from another\n            document. W3C\'s role in making the Recommendation is to draw attention to the\n            specification and to promote its widespread deployment. This enhances the functionality\n            and interoperability of the Web.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" property=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if isNewProcess}}\n          <p>This document is governed by the <a id="w3c_process_revision"\n            href="http://www.w3.org/2014/Process-20140801/">1 August 2014 W3C Process Document</a>.\n          </p>\n        {{else}}\n          <p>\n            This document is governed by the  <a id="w3c_process_revision"\n            href="http://www.w3.org/2005/10/Process-20051014/">14 October 2005 W3C Process Document</a>.\n          </p>\n        {{/if}}\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
+
+
+define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'></a>\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dc:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2>{{longStatus}} <time {{#if doRDFa}}property="dc:issued"{{/if}}class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#if thisVersion}}\n      <dt>This version:</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    {{/if}}\n    {{#if latestVersion}}\n      <dt>Latest published version:</dt>\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\n    {{/if}}\n    {{#if edDraftURI}}\n      <dt>Latest editor\'s draft:</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>Bug tracker:</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if prevVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#unless isCGFinal}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/unless}}\n    <dt>Editor{{#if multipleEditors}}s{{/if}}:</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>Author{{#if multipleAuthors}}s{{/if}}:</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats: \n      {{else}}\n        This document is also available in this non-normative format: \n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  <p class=\'copyright\'>\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n    the Contributors to the {{title}} Specification, published by the\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\n    {{#if isCGFinal}}\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\n    {{else}}\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\n    {{/if}}\n  </p>\n  <hr>\n</div>\n');});
+
+
+define('tmpl!w3c/templates/cgbg-sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>Status of This Document</h2>\n  <p>\n    This specification was published by the <a href=\'{{wgURI}}\'>{{wg}}</a>.\n    It is not a W3C Standard nor is it on the W3C Standards Track.\n    {{#if isCGFinal}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/final/">W3C Community Final Specification Agreement (FSA)</a> \n      other conditions apply.\n    {{else}}\n      Please note that under the \n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>\n      there is a limited opt-out and other conditions apply.\n    {{/if}}\n    Learn more about \n    <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.\n  </p>\n  {{#unless sotdAfterWGinfo}}\n  {{{sotdCustomParagraph}}}\n  {{/unless}}\n    {{#if wgPublicList}}\n      <p>If you wish to make comments regarding this document, please send them to \n      <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefixEnc}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n      (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n      <a\n        href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n      with <code>{{subjectPrefix}}</code> at the start of your\n      email\'s subject{{/if}}.</p>\n    {{/if}}\n  {{#if sotdAfterWGinfo}}\n  {{{sotdCustomParagraph}}}\n  {{/if}}\n</section>\n');});
+
+
+define('tmpl!w3c/templates/webspecs-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<header>\n  <a href="http://specs.webplatform.org/" id="logo">\n    <img alt="Web Platform Specs logo" height="50" src="https://specs.webplatform.org/assets/img/logo.svg" width="50"><br>\n    Web Platform Specs\n  </a>\n  <h1>{{title}}</h1>\n  {{#if subtitle}}\n    <h2>{{subtitle}}</h2>\n  {{/if}}\n  <div id="meta">\n    <button class=\'contributors linkalike\' data-repository="{{repository}}">contributors</button>•\n    <a href="https://github.com/{{repository}}/issues">bugs</a>\n    •\n    <a href="https://github.com/{{repository}}">fork me</a>\n    •\n    <a href="{{licenseInfo.url}}" title="{{licenseInfo.name}}" rel="license">{{licenseInfo.short}}</a>\n    •\n    <span class="date">{{shortISODate}} (<a href="https://github.com/{{repository}}/commits">commit log</a>)</span>\n  </div>\n</header>\n');});
 
 /*jshint
-    forin: false, laxcomma:true, jquery:true
+    forin: false
 */
 /*global Handlebars*/
 
-/*global define, self, respecEvents, respecConfig */
-
-// Module nvidia/headers
+// Module w3c/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
-//  - editors: an array of people editing the document. People are defined using:
+//  - shortName: the small name that is used after /TR/ in published reports (required)
+//  - editors: an array of people editing the document (at least one is required). People
+//      are defined using:
 //          - name: the person's name (required)
 //          - url: URI for the person's home page
 //          - company: the person's company
@@ -15110,18 +15138,8 @@ define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //  - subtitle: a subtitle for the specification
 //  - publishDate: the date to use for the publication, default to document.lastModified, and
 //      failing that to now. The format is YYYY-MM-DD or a Date object.
-//  - previousPublishDate: The date on which the previous version was published.
-//  - previousMaturity: The specStatus of the previous version
-//
-//  - thisVersion: the URI to the dated current version of the document.
-//  - latestVersion: the URI to the latest (undated) version of the document.
-//  - prevVersion: the URI to the previous (dated) version of the document.
-//
-//  - reviewEndDate: The date for the end of the review period (if any) The format is YYY-MM-DD or a Date object
-//  - commentsPDF: The URI of the Acrobat Review enabled PDF file for this review.
-//  - commentsEmail: email address that should get comments
-//  - subjectPrefix: the string that is expected to be used as a subject prefix for email comments
-//
+//  - previousPublishDate: the date on which the previous version was published.
+//  - previousMaturity: the specStatus of the previous version
 //  - errata: the URI of the errata document, if any
 //  - alternateFormats: a list of alternate formats for the document, each of which being
 //      defined by:
@@ -15139,12 +15157,42 @@ define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //          - id: optional id for the logo, permits custom CSS (wraps logo in <span id=>)
 //          - each logo element must specifiy either src or alt
 //  - testSuiteURI: the URI to the test suite, if any
+//  - implementationReportURI: the URI to the implementation report, if any
 //  - bugTracker: and object with the following details
 //      - open: pointer to the list of open bugs
 //      - new: pointer to where to raise new bugs
-//  - additionalCopyrightHolders: a copyright owner in addition to nvidia
+//  - noRecTrack: set to true if this document is not intended to be on the Recommendation track
+//  - edDraftURI: the URI of the Editor's Draft for this document, if any. Required if
+//      specStatus is set to "ED".
+//  - additionalCopyrightHolders: a copyright owner in addition to W3C (or the only one if specStatus
+//      is unofficial)
+//  - overrideCopyright: provides markup to completely override the copyright
 //  - copyrightStart: the year from which the copyright starts running
-
+//  - prevED: the URI of the previous Editor's Draft if it has moved
+//  - prevRecShortname: the short name of the previous Recommendation, if the name has changed
+//  - prevRecURI: the URI of the previous Recommendation if not directly generated from
+//    prevRecShortname.
+//  - wg: the name of the WG in charge of the document. This may be an array in which case wgURI
+//      and wgPatentURI need to be arrays as well, of the same length and in the same order
+//  - wgURI: the URI to the group's page, or an array of such
+//  - wgPatentURI: the URI to the group's patent information page, or an array of such. NOTE: this
+//      is VERY IMPORTANT information to provide and get right, do not just paste this without checking
+//      that you're doing it right
+//  - wgPublicList: the name of the mailing list where discussion takes place. Note that this cannot
+//      be an array as it is assumed that there is a single list to discuss the document, even if it
+//      is handled by multiple groups
+//  - charterDisclosureURI: used for IGs (when publishing IG-NOTEs) to provide a link to the IPR commitment
+//      defined in their charter.
+//  - addPatentNote: used to add patent-related information to the SotD, for instance if there's an open
+//      PAG on the document.
+//  - thisVersion: the URI to the dated current version of the specification. ONLY ever use this for CG/BG
+//      documents, for all others it is autogenerated.
+//  - latestVersion: the URI to the latest (undated) version of the specification. ONLY ever use this for CG/BG
+//      documents, for all others it is autogenerated.
+//  - prevVersion: the URI to the previous (dated) version of the specification. ONLY ever use this for CG/BG
+//      documents, for all others it is autogenerated.
+//  - subjectPrefix: the string that is expected to be used as a subject prefix when posting to the mailing
+//      list of the group.
 //  - otherLinks: an array of other links that you might want in the header (e.g., link github, twitter, etc).
 //         Example of usage: [{key: "foo", href:"http://b"}, {key: "bar", href:"http://"}].
 //         Allowed values are:
@@ -15152,73 +15200,88 @@ define('tmpl!nvidia/templates/sotd.handlebars', ['handlebars'], function (hb) { 
 //          - value: The value that will appear in the <dd> (e.g., "GitHub"). Optional.
 //          - href: a URL for the value (e.g., "http://foo.com/issues"). Optional.
 //          - class: a string representing CSS classes. Optional.
+//  - license: can be one of the following
+//      - "w3c", currently the default (restrictive) license
+//      - "cc-by", which is experimentally available in some groups (but likely to be phased out).
+//          Note that this is a dual licensing regime.
+//      - "cc0", an extremely permissive license. This only works with the webspecs specStatus,
+//          and it is only recommended if you are working on a document that is intended to be
+//          pushed to the WHATWG
+//      - "w3c-software", a permissive and attributions license (but GPL-compatible). This is only
+//          available with webspecs and is the recommended value. It is the default for webspecs.
 
 define(
-    'nvidia/headers',["handlebars"
-    , "core/utils"
-    , "tmpl!nvidia/templates/headers.handlebars"
-    , "tmpl!nvidia/templates/sotd.handlebars"
+    'w3c/headers',["handlebars"
+    ,"core/utils"
+    ,"tmpl!w3c/templates/headers.html"
+    ,"tmpl!w3c/templates/sotd.html"
+    ,"tmpl!w3c/templates/cgbg-headers.html"
+    ,"tmpl!w3c/templates/cgbg-sotd.html"
+    ,"tmpl!w3c/templates/webspecs-headers.html"
     ],
-    function (hb, utils, headersTmpl, sotdTmpl) {
-        
-        
+    function (hb, utils, headersTmpl, sotdTmpl, cgbgHeadersTmpl, cgbgSotdTmpl, wsHeadersTmpl) {
         Handlebars.registerHelper("showPeople", function (name, items) {
             // stuff to handle RDFa
-            var re = "",
-                rp = "",
-                rm = "",
-                rn = "",
-                rwu = "",
-                rpu = "";
-
-            if (this.doRDFa !== false) {
+            var re = "", rp = "", rm = "", rn = "", rwu = "", rpu = "", bn = "",
+            editorid = "";
+            if (this.doRDFa) {
                 if (name === "Editor") {
-                    re = " rel='bibo:editor'";
-                    if (this.doRDFa !== "1.0") re += " inlist=''";
-                } else if (name === "Author") {
-                    re = " rel='dcterms:contributor'";
+                    bn = "_:editor0";
+                    re = " property='bibo:editor' resource='" + bn + "'";
+                    rp = " property='rdf:first' typeof='foaf:Person'";
+                }
+                else if (name === "Author") {
+                    rp = " property='dc:contributor' typeof='foaf:Person'";
                 }
                 rn = " property='foaf:name'";
-                rm = " rel='foaf:mbox'";
-                rp = " typeof='foaf:Person'";
-                rwu = " rel='foaf:workplaceHomepage'";
-                rpu = " rel='foaf:homepage'";
+                rm = " property='foaf:mbox'";
+                rwu = " property='foaf:workplaceHomepage'";
+                rpu = " property='foaf:homepage'";
             }
-            
             var ret = "";
-
             for (var i = 0, n = items.length; i < n; i++) {
                 var p = items[i];
-                if (this.doRDFa !== false)
-                    ret += "<dd class='p-author h-card vcard' " + re + "><span" + rp + ">";
-                else
-                    ret += "<dd class='p-author h-card vcard'>";
-                if (p.url) {
-                    if (this.doRDFa !== false) {
-                        ret += "<a class='u-url url p-name fn' " + rpu + rn + " content='" + p.name + "' href='" + p.url + "'>" + p.name + "</a>";
-                    } else {
-                        ret += "<a class='u-url url p-name fn' href='" + p.url + "'>" + p.name + "</a>";
-                    }
+                if (p.w3cid) {
+                    editorid = " data-editor-id='" + parseInt(p.w3cid, 10) + "'";
+                }
+                if (this.doRDFa) {
+                  ret += "<dd class='p-author h-card vcard' " + re + editorid + "><span" + rp + ">";
+                  if (name === "Editor") {
+                    // Update to next sequence in rdf:List
+                    bn = (i < n - 1) ? ("_:editor" + (i + 1)) : "rdf:nil";
+                    re = " resource='" + bn + "'";
+                  }
                 } else {
+                  ret += "<dd class='p-author h-card vcard'" + editorid + ">";
+                }
+                if (p.url) {
+                    if (this.doRDFa) {
+                        ret += "<meta" + rn + " content='" + p.name + "'><a class='u-url url p-name fn' " + rpu + " href='" + p.url + "'>"+ p.name + "</a>";
+                    }
+                    else {
+                        ret += "<a class='u-url url p-name fn' href='" + p.url + "'>"+ p.name + "</a>";
+                    }
+                }
+                else {
                     ret += "<span" + rn + " class='p-name fn'>" + p.name + "</span>";
                 }
                 if (p.company) {
                     ret += ", ";
-                    if (p.companyURL)
-                        ret += "<a" + rwu + " class='p-org org h-org h-card' href='" + p.companyURL + "'>" + p.company + "</a>";
-                    else
-                        ret += p.company;
+                    if (p.companyURL) ret += "<a" + rwu + " class='p-org org h-org h-card' href='" + p.companyURL + "'>" + p.company + "</a>";
+                    else ret += p.company;
                 }
                 if (p.mailto) {
                     ret += ", <span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>";
                 }
                 if (p.note) ret += " (" + p.note + ")";
-                if (this.doRDFa !== false) ret += "</span>\n";
+                if (this.doRDFa) {
+                  ret += "</span>\n";
+                  if (name === "Editor") ret += "<span property='rdf:rest' resource='" + bn + "'></span>\n";
+                }
                 ret += "</dd>\n";
             }
             return new Handlebars.SafeString(ret);
         });
-
 
         Handlebars.registerHelper("showLogos", function (items) {
             var ret = "<p>";
@@ -15237,82 +15300,181 @@ define(
                     } else {
                         ret += " alt='Logo " + (i+1) + "'";
                     }
-                    ret += "/>"
+                    ret += ">";
                 } else if (p.alt) {
                     ret += p.alt;
                 }
                 if (p.url) ret += "</a>";
                 if (p.id) ret += "</span>";
             }
-            ret += "</p>"
+            ret += "</p>";
             return new Handlebars.SafeString(ret);
         });
 
-
         return {
-            status2Text: {
-                WD:             "Working Draft",
-                ED:             "Editor's Draft",
-                REVIEW:         "Review Draft",
-                TP:             "TechPubs Draft",
-                RC:             "Release Candidate",
-                PUBLISH:        "Published",
-                POR:            "Plan of Record",
-
-                NOTE:           "Note",
-                confidential:   "Confidential",
-                unofficial:     "Unofficial",
-                base:           "Document"
-            },
-            noTrackStatus: ["NOTE", "confidential", "unofficial", "base"],
-            run: function (conf, doc, cb, msg) {
-                msg.pub("start", "nvidia/headers");
-
-                if (conf.doRDFa !== false) {
-                    if (conf.doRDFa === undefined) {
-                        conf.doRDFa = '1.1';
-                    }
+            status2maturity:    {
+                FPWD:           "WD"
+            ,   LC:             "WD"
+            ,   FPLC:           "WD"
+            ,   "FPWD-NOTE":    "NOTE"
+            ,   "WD-NOTE":      "WD"
+            ,   "LC-NOTE":      "LC"
+            ,   "IG-NOTE":      "NOTE"
+            ,   "WG-NOTE":      "NOTE"
+            }
+        ,   status2rdf: {
+                NOTE:           "w3p:NOTE",
+                WD:             "w3p:WD",
+                LC:             "w3p:LastCall",
+                CR:             "w3p:CR",
+                PR:             "w3p:PR",
+                REC:            "w3p:REC",
+                PER:            "w3p:PER",
+                RSCND:          "w3p:RSCND"
+            }
+        ,   status2text: {
+                NOTE:           "Working Group Note"
+            ,   "WG-NOTE":      "Working Group Note"
+            ,   "CG-NOTE":      "Co-ordination Group Note"
+            ,   "IG-NOTE":      "Interest Group Note"
+            ,   "Member-SUBM":  "Member Submission"
+            ,   "Team-SUBM":    "Team Submission"
+            ,   MO:             "Member-Only Document"
+            ,   ED:             "Editor's Draft"
+            ,   FPWD:           "First Public Working Draft"
+            ,   WD:             "Working Draft"
+            ,   "FPWD-NOTE":    "Working Group Note"
+            ,   "WD-NOTE":      "Working Draft"
+            ,   "LC-NOTE":      "Working Draft"
+            ,   FPLC:           "First Public and Last Call Working Draft"
+            ,   LC:             "Last Call Working Draft"
+            ,   CR:             "Candidate Recommendation"
+            ,   PR:             "Proposed Recommendation"
+            ,   PER:            "Proposed Edited Recommendation"
+            ,   REC:            "Recommendation"
+            ,   RSCND:          "Rescinded Recommendation"
+            ,   unofficial:     "Unofficial Draft"
+            ,   base:           "Document"
+            ,   finding:        "TAG Finding"
+            ,   "draft-finding": "Draft TAG Finding"
+            ,   "CG-DRAFT":     "Draft Community Group Report"
+            ,   "CG-FINAL":     "Final Community Group Report"
+            ,   "BG-DRAFT":     "Draft Business Group Report"
+            ,   "BG-FINAL":     "Final Business Group Report"
+            }
+        ,   status2long:    {
+                "FPWD-NOTE":    "First Public Working Group Note"
+            ,   "LC-NOTE":      "Last Call Working Draft"
+            }
+        ,   recTrackStatus: ["FPWD", "WD", "FPLC", "LC", "CR", "PR", "PER", "REC"]
+        ,   noTrackStatus:  ["MO", "unofficial", "base", "finding", "draft-finding", "CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL", "webspec"]
+        ,   cgbg:           ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
+        ,   precededByAn:   ["ED", "IG-NOTE"]
+        ,   licenses: {
+                cc0:    {
+                    name:   "Creative Commons 0 Public Domain Dedication"
+                ,   short:  "CC0"
+                ,   url:    "http://creativecommons.org/publicdomain/zero/1.0/"
                 }
+            ,   "w3c-software": {
+                    name:   "W3C Software Notice and License"
+                ,   short:  "W3C"
+                ,   url:    "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231"
+                }
+            ,   "cc-by": {
+                    name:   "Creative Commons Attribution 4.0 International Public License"
+                ,   short:  "CC-BY"
+                ,   url:    "http://creativecommons.org/licenses/by/4.0/legalcode"
+                }
+            }
+        ,   run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "w3c/headers");
 
-                if (!conf.figFmt) conf.figFmt = "%(Figure %1%c-%#%): %t";
-                if (!conf.tblFmt) conf.tblFmt = "%(Table %1%c-%#%): %t";
-
+                // Default include RDFa document metadata
+                if (conf.doRDFa === undefined) conf.doRDFa = true;
                 // validate configuration and derive new configuration values
-                if (!conf.license) conf.license = "nvidia";
+                if (!conf.license) conf.license = (conf.specStatus === "webspec") ? "w3c-software" : "w3c";
+                conf.isCCBY = conf.license === "cc-by";
+                if (conf.specStatus === "webspec" && !$.inArray(conf.license, ["cc0", "w3c-software"]))
+                    msg.pub("error", "You cannot use that license with WebSpecs.");
+                if (conf.specStatus !== "webspec" && !$.inArray(conf.license, ["cc-by", "w3c"]))
+                    msg.pub("error", "You cannot use that license with that type of document.");
+                conf.licenseInfo = this.licenses[conf.license];
+                conf.isCGBG = $.inArray(conf.specStatus, this.cgbg) >= 0;
+                conf.isCGFinal = conf.isCGBG && /G-FINAL$/.test(conf.specStatus);
+                conf.isBasic = (conf.specStatus === "base");
+                conf.isWebSpec = (conf.specStatus === "webspec");
+                conf.isRegular = (!conf.isCGBG && !conf.isBasic && !conf.isWebSpec);
                 if (!conf.specStatus) msg.pub("error", "Missing required configuration: specStatus");
+                if (conf.isRegular && !conf.shortName) msg.pub("error", "Missing required configuration: shortName");
+                if (conf.isWebSpec && !conf.repository) msg.pub("error", "Missing required configuration: repository (as in 'darobin/respec')");
                 conf.title = doc.title || "No Title";
                 if (!conf.subtitle) conf.subtitle = "";
                 if (!conf.publishDate) {
                     conf.publishDate = utils.parseLastModified(doc.lastModified);
-                } else {
-                    if (!(conf.publishDate instanceof Date))
-                        conf.publishDate = utils.parseSimpleDate(conf.publishDate);
+                }
+                else {
+                    if (!(conf.publishDate instanceof Date)) conf.publishDate = utils.parseSimpleDate(conf.publishDate);
                 }
                 conf.publishYear = conf.publishDate.getFullYear();
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
-                if (conf.reviewEndDate) {
-                    conf.humanReviewEndDate = utils.humanDate(conf.reviewEndDate);
-                }
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
-                if (conf.specStatus in this.status2Text) {
-                    conf.specStatusLong = this.status2Text[conf.specStatus];
-                } else {
-                    conf.specStatusLong = conf.specStatus;
-                }
-
+                conf.isRecTrack = conf.noRecTrack ? false : $.inArray(conf.specStatus, this.recTrackStatus) >= 0;
+                conf.anOrA = $.inArray(conf.specStatus, this.precededByAn) >= 0 ? "an" : "a";
+                conf.isTagFinding = conf.specStatus === "finding" || conf.specStatus === "draft-finding";
                 if (!conf.edDraftURI) {
                     conf.edDraftURI = "";
+                    if (conf.specStatus === "ED") msg.pub("warn", "Editor's Drafts should set edDraftURI.");
                 }
-
+                conf.maturity = (this.status2maturity[conf.specStatus]) ? this.status2maturity[conf.specStatus] : conf.specStatus;
+                var publishSpace = "TR";
+                if (conf.specStatus === "Member-SUBM") publishSpace = "Submission";
+                else if (conf.specStatus === "Team-SUBM") publishSpace = "TeamSubmission";
+                if (conf.isRegular) conf.thisVersion =  "http://www.w3.org/" + publishSpace + "/" +
+                                                          conf.publishDate.getFullYear() + "/" +
+                                                          conf.maturity + "-" + conf.shortName + "-" +
+                                                          utils.concatDate(conf.publishDate) + "/";
+                if (conf.specStatus === "ED") conf.thisVersion = conf.edDraftURI;
+                if (conf.isRegular) conf.latestVersion = "http://www.w3.org/" + publishSpace + "/" + conf.shortName + "/";
+                if (conf.isTagFinding) {
+                    conf.latestVersion = "http://www.w3.org/2001/tag/doc/" + conf.shortName;
+                    conf.thisVersion = conf.latestVersion + "-" + utils.concatDate(conf.publishDate, "-");
+                }
+                if (conf.previousPublishDate) {
+                    if (!conf.previousMaturity && !conf.isTagFinding)
+                        msg.pub("error", "previousPublishDate is set, but not previousMaturity");
+                    if (!(conf.previousPublishDate instanceof Date))
+                        conf.previousPublishDate = utils.parseSimpleDate(conf.previousPublishDate);
+                    var pmat = (this.status2maturity[conf.previousMaturity]) ? this.status2maturity[conf.previousMaturity] :
+                                                                               conf.previousMaturity;
+                    if (conf.isTagFinding) {
+                        conf.prevVersion = conf.latestVersion + "-" + utils.concatDate(conf.previousPublishDate, "-");
+                    }
+                    else if (conf.isCGBG) {
+                        conf.prevVersion = conf.prevVersion || "";
+                    }
+                    else if (conf.isBasic || conf.isWebSpec) {
+                        conf.prevVersion = "";
+                    }
+                    else {
+                        conf.prevVersion = "http://www.w3.org/TR/" + conf.previousPublishDate.getFullYear() + "/" + pmat + "-" +
+                                           conf.shortName + "-" + utils.concatDate(conf.previousPublishDate) + "/";
+                    }
+                }
+                else {
+                    if (!/NOTE$/.test(conf.specStatus) && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
+                        msg.pub("error", "Document on track but no previous version.");
+                    if (!conf.prevVersion) conf.prevVersion = "";
+                }
+                if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
+                if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
                 var peopCheck = function (i, it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
-
-                $.each(conf.editors || [], peopCheck);
+                $.each(conf.editors, peopCheck);
                 $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors && conf.editors.length > 1;
+                conf.multipleEditors = conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
-
                 $.each(conf.alternateFormats || [], function (i, it) {
                     if (!it.uri || !it.label) msg.pub("error", "All alternate formats must have a uri and a label.");
                 });
@@ -15322,97 +15484,136 @@ define(
                     optional += (alt.hasOwnProperty('type') && alt.type) ? " type='" + alt.type + "'" : "";
                     return "<a rel='alternate' href='" + alt.uri + "'" + optional + ">" + alt.label + "</a>";
                 });
-
                 if (conf.bugTracker) {
                     if (conf.bugTracker["new"] && conf.bugTracker.open) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker["new"] + "'>file a bug</a>" +
-                            " (<a href='" + conf.bugTracker.open + "'>open bugs</a>)";
-                    } else if (conf.bugTracker.open) {
+                                              " (<a href='" + conf.bugTracker.open + "'>open bugs</a>)";
+                    }
+                    else if (conf.bugTracker.open) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker.open + "'>open bugs</a>";
-                    } else if (conf.bugTracker["new"]) {
+                    }
+                    else if (conf.bugTracker["new"]) {
                         conf.bugTrackerHTML = "<a href='" + conf.bugTracker["new"] + "'>file a bug</a>";
                     }
                 }
-
-                if (conf.copyrightStart && conf.copyrightStart === conf.publishYear) conf.copyrightStart = "";
-                conf.isUnofficial = conf.specStatus === "unofficial";
-                conf.prependLogo = conf.isUnofficial || !conf.isNoTrack;
-                conf.isFinal = (conf.specStatus === "PUBLISH");
-                conf.isPublished = conf.specStatus === "PUBLISH";
+                if (conf.copyrightStart && conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
+                for (var k in this.status2text) {
+                    if (this.status2long[k]) continue;
+                    this.status2long[k] = this.status2text[k];
+                }
+                conf.longStatus = this.status2long[conf.specStatus];
+                conf.textStatus = this.status2text[conf.specStatus];
+                if (this.status2rdf[conf.specStatus]) {
+                    conf.rdfStatus = this.status2rdf[conf.specStatus];
+                }
+                conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
+                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
+                                           !conf.isNoTrack);
+                if (/NOTE$/.test(conf.specStatus) && !conf.prevVersion) conf.showPreviousVersion = false;
+                if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
+                conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
+                conf.isRec = (conf.isRecTrack && conf.specStatus === "REC");
+                if (conf.isRec && !conf.errata)
+                    msg.pub("error", "Recommendations must have an errata link.");
+                conf.notRec = (conf.specStatus !== "REC");
+                conf.isUnofficial = conf.specStatus === "unofficial" || /\.css$/.test(conf.specStatus) || conf.specStatus === "NONE";
+                conf.prependW3C = !conf.isUnofficial;
+                conf.isED = (conf.specStatus === "ED");
+                conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
+                conf.isCR = (conf.specStatus === "CR");
+                conf.isPR = (conf.specStatus === "PR");
+                conf.isPER = (conf.specStatus === "PER");
+                conf.isMO = (conf.specStatus === "MO");
+                conf.isIGNote = (conf.specStatus === "IG-NOTE");
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate);
+                conf.shortISODate = conf.publishISODate.replace(/T.*/, "");
+                conf.processVersion = conf.processVersion || "2014";
+                conf.isNewProcess = conf.processVersion == "2014";
                 // configuration done - yay!
 
                 // annotate html element with RFDa
                 if (conf.doRDFa) {
-                    var $html = $("html");
                     if (conf.rdfStatus) {
-                        $html.attr("typeof", "bibo:Document " + conf.rdfStatus);
+                        $("html").attr("typeof", "bibo:Document "+conf.rdfStatus ) ;
                     } else {
-                        $html.attr("typeof", "bibo:Document ");
+                        $("html").attr("typeof", "bibo:Document ") ;
                     }
-                    $html.attr("about", "");
-                    $html.attr("property", "dcterms:language");
-                    $html.attr("content", "en");
-                    var prefixes = "bibo: http://purl.org/ontology/bibo/";
-                    if (conf.doRDFa !== '1.1') {
-                        $html.attr("version", "XHTML+RDFa 1.0");
-                        prefixes += " dcterms: http://purl.org/dc/terms/";
-                        prefixes += " foaf: http://xmlns.com/foaf/0.1/";
-                        prefixes += " xsd: http://www.w3.org/2001/XMLSchema#";
-                    }
-                    $html.attr("prefix", prefixes);
+                    var prefixes = "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
+                    $("html").attr("prefix", prefixes);
+                    $("html>head").prepend($("<meta lang='' property='dc:language' content='en'>"));
                 }
-
                 // insert into document and mark with microformat
-                $("body", doc).prepend($(headersTmpl(conf)))
-                    .addClass("h-entry");
+                var bp;
+                if (conf.isCGBG) bp = cgbgHeadersTmpl(conf);
+                else if (conf.isWebSpec) bp = wsHeadersTmpl(conf);
+                else bp = headersTmpl(conf);
+                $("body", doc).prepend($(bp)).addClass("h-entry");
 
                 // handle SotD
                 var $sotd = $("#sotd");
-                if ((!conf.isNoTrack) && !$sotd.length)
+                if ((conf.isCGBG || !conf.isNoTrack || conf.isTagFinding) && !$sotd.length)
                     msg.pub("error", "A custom SotD paragraph is required for your type of document.");
                 conf.sotdCustomParagraph = $sotd.html();
                 $sotd.remove();
-
-                $(sotdTmpl(conf)).insertAfter($("#abstract"));
-
-                msg.pub("end", "nvidia/headers");
-                cb();
-            }
-        };
-    }
-);
-/*global define */
-
-/* jshint browser: true */
-
-// Module core/footnotes
-//  Handles footnotes.
-
-// CONFIGURATION:
-
-define(
-    'core/footnotes',[],function () {
-        
-
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/footnotes");
-                var $footnotes= $("span.footnote", doc);
-                if ($footnotes.length) {
-                    $footnotes.each(function(index) {
-                        $(this).prepend("<span class='footnote-online'> [Footnote: </span>")
-                            .append("<span class='footnote-online'>] </span>");
-                        var id = "footnote-" + (index+1);
-                        var span = "<span class='footnote-contents' id='footnote-" + (index+1) + "'></span>";
-                        var input = "<input type='checkbox' name='footnote-" + (index+1) +
-                                                       "' value='#footnote-" + (index+1) + "'></input>";
-                        $(this).wrapInner(span)
-                            .prepend(input);
+                // NOTE:
+                //  When arrays, wg and wgURI have to be the same length (and in the same order).
+                //  Technically wgURI could be longer but the rest is ignored.
+                //  However wgPatentURI can be shorter. This covers the case where multiple groups
+                //  publish together but some aren't used for patent policy purposes (typically this
+                //  happens when one is foolish enough to do joint work with the TAG). In such cases,
+                //  the groups whose patent policy applies need to be listed first, and wgPatentURI
+                //  can be shorter — but it still needs to be an array.
+                var wgPotentialArray = [conf.wg, conf.wgURI, conf.wgPatentURI];
+                if (
+                    wgPotentialArray.some(function (it) { return $.isArray(it); }) &&
+                    wgPotentialArray.some(function (it) { return !$.isArray(it); })
+                ) msg.pub("error", "If one of 'wg', 'wgURI', or 'wgPatentURI' is an array, they all have to be.");
+                if ($.isArray(conf.wg)) {
+                    conf.multipleWGs = conf.wg.length > 1;
+                    conf.wgHTML = utils.joinAnd(conf.wg, function (wg, idx) {
+                        return "<a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
                     });
+                    var pats = [];
+                    for (var i = 0, n = conf.wg.length; i < n; i++) {
+                        pats.push("<a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>" + conf.wg[i] + "</a>");
+                    }
+                    conf.wgPatentHTML = pats.join(", ");
                 }
-                msg.pub("end", "core/footnotes");
+                else {
+                    conf.multipleWGs = false;
+                    conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
+                }
+                if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
+                if (conf.specStatus === "PR" && !conf.lcEnd) msg.pub("error", "Status is PR but no lcEnd is specified (needed to indicate end of previous LC)");
+                conf.humanLCEnd = utils.humanDate(conf.lcEnd || "");
+                if (conf.specStatus === "CR" && !conf.crEnd) msg.pub("error", "Status is CR but no crEnd is specified");
+                conf.humanCREnd = utils.humanDate(conf.crEnd || "");
+                if (conf.specStatus === "PR" && !conf.prEnd) msg.pub("error", "Status is PR but no prEnd is specified");
+                conf.humanPREnd = utils.humanDate(conf.prEnd || "");
+                conf.humanPEREnd = utils.humanDate(conf.perEnd || "");
+                if (conf.specStatus === "PER" && !conf.perEnd) msg.pub("error", "Status is PER but no perEnd is specified");
+
+                conf.recNotExpected = (!conf.isRecTrack && conf.maturity == "WD" && conf.specStatus !== "FPWD-NOTE");
+                if (conf.isIGNote && !conf.charterDisclosureURI)
+                    msg.pub("error", "IG-NOTEs must link to charter's disclosure section using charterDisclosureURI");
+                // ensure subjectPrefix is encoded before using template
+                if (conf.subjectPrefix !== '') conf.subjectPrefixEnc = encodeURIComponent(conf.subjectPrefix);
+                var sotd;
+                if (conf.isCGBG) sotd = cgbgSotdTmpl(conf);
+                else if (conf.isWebSpec) sotd = null;
+                else sotd = sotdTmpl(conf);
+                if (sotd) $(sotd).insertAfter($("#abstract"));
+
+                if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
+                    msg.pub("error", "CR, PR, and REC documents need to have an implementationReportURI defined.");
+                }
+                if (conf.isTagFinding && !conf.sotdCustomParagraph) {
+                    msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
+                                     "please specify one using a <code><section></code> element with ID=sotd.");
+                }
+
+                msg.pub("end", "w3c/headers");
                 cb();
             }
         };
@@ -15454,23 +15655,21 @@ define(
 );
 
 
-define('tmpl!nvidia/templates/conformance.handlebars', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n    implementation notes,\n    and notes in this specification are non-normative. Everything else in this specification is\n    normative.\n</p>\n<p>\n    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED,\n    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n<p>\n    The key words SHALL, SHALL NOT, NOT RECOMMENDED, STRONGLY RECOMMENDED,\n    NOT RECOMMENDED, STRONGLY NOT RECOMMENDED, INDEPENDENTLY OPTIONAL, PERMITTED,\n    and NOT PERMITTED are also available.\n</p>\n<p>\n    The term <em class="rfc2119">MAY</em> is described in [[!RFC2119]].\n    Experience has found this term to be confusing and thus it is not used by Nvidia.\n</p>\n');});
+define('tmpl!w3c/templates/conformance.html', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n  and notes in this specification are non-normative. Everything else in this specification is\n  normative.\n</p>\n<p id=\'respecRFC2119\'>\n  to be interpreted as described in [[!RFC2119]].\n</p>\n');});
 
-/*globals define*/
-/*jshint browser:true, jquery:true */
 
-// Module nvidia/conformance
+// Module w3c/conformance
 // Handle the conformance section properly.
 
 define(
-    'nvidia/conformance',["tmpl!nvidia/templates/conformance.handlebars"],
+    'w3c/conformance',["tmpl!w3c/templates/conformance.html"],
     function (confoTmpl) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "nvidia/conformance");
+                msg.pub("start", "w3c/conformance");
                 var $confo = $("#conformance");
                 if ($confo.length) $confo.prepend(confoTmpl(conf));
-                msg.pub("end", "nvidia/conformance");
+                msg.pub("end", "w3c/conformance");
                 cb();
             }
         };
@@ -15735,8 +15934,316 @@ define(
     }
 );
 
+/* jshint browser: true */
+/* jshint jquery: true */
+/* global define */
+// Module core/dfn
+// Finds all <dfn> elements and populates conf.definitionMap to identify them.
+define(
+    'core/dfn',[],
+    function() {
+        
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
+                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
+        return {
+            run: function(conf, doc, cb, msg) {
+                msg.pub("start", "core/dfn");
+                doc.normalize();
+                if (!conf.definitionMap) {
+                    conf.definitionMap = {};
+                }
+                if (!conf.definitionHTML) {
+                    conf.definitionHTML = {};
+                }
+
+                //console.log("\n\n\n\n");
+
+                $("[dfn-for]").each(function() {
+                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
+                    this.removeAttribute("dfn-for");
+                });
+
+                $("table[id] dfn.field", doc).each(function() {
+                    var $dfn = $(this);
+                    var $parent_table = $dfn.parents("table[id]")[0];
+                    var base_id = "field-" + $parent_table.id.replace(/^tbl-/, "") + "-";
+                    var title = $dfn.dfnTitle();
+                    $dfn.attr("data-dfn-for", $parent_table.id);
+                    //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
+                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
+
+                    if (conf.definitionMap[base_id + title[0]]) {
+                        msg.pub("error", "Duplicate definition '" + base_id + title[0] + "'");
+                        $dfn.append("<span class=\"respec-error\"> Definition '" + base_id + title[0] + "' is defined more than once </span>");
+                    }
+                    var id = $dfn.makeID(null, base_id + title[0]);
+                    //console.log("<dfn class=\"field\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
+                    conf.definitionMap[id] = id;
+                    conf.definitionHTML[id] = $dfn.html();
+                    for (i = 0; i < title.length; i++) {
+                        //console.log("<dfn" + i + " class=\"field\" title=\"" + base_id + title[i] + "\">" + $dfn.html() + "</dfn>");
+                        conf.definitionMap[base_id + title[i]] = conf.definitionMap[id];
+                        conf.definitionHTML[base_id + title[i]] = conf.definitionHTML[id];
+                    }
+
+                });
+
+                //console.log("\n\n\n\n");
+
+                $("dfn", doc).each(function() {
+                    var $dfn = $(this);
+                    if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
+                        return;
+                    }
+                    if ($dfn.attr("for")) {
+                        $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
+                        $dfn.removeAttr("for");
+                    } else {
+                        $dfn.attr("data-dfn-for", ($dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
+                    }
+                    var tag = dfnClass[0];  // default "dfn"
+                    for (var i = 1; i < dfnClass.length; i++) {
+                        if ($dfn.hasClass(dfnClass[i])) {
+                            tag = dfnClass[i];
+                        }
+                    }
+                    var title = $dfn.dfnTitle();
+                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
+                    if (conf.definitionMap[tag + "-" + title[0]]) {
+                        msg.pub("error", "Duplicate definition '" + tag + "-" + title[0] + "'");
+                        $dfn.append("<span class=\"respec-error\"> Definition '" + tag + "-" + title[0] + "' is defined more than once </span>");
+                    }
+                    var id = $dfn.makeID(tag, title[0]);
+                    //console.log("<dfn class=\"" + tag + "\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
+                    conf.definitionMap[id] = id;
+                    conf.definitionHTML[id] = $dfn.html();
+                    for (i = 0; i < title.length; i++) {
+                        //console.log("<dfn" + i + " class=\"" + tag + "\" title=\"" + tag + "-" + title[i] + "\">" + $dfn.html() + "</dfn>");
+                        conf.definitionMap[tag + "-" + title[i]] = conf.definitionMap[id];
+                        conf.definitionHTML[tag + "-" + title[i]] = conf.definitionHTML[id];
+                    }
+                });
+
+                //console.log("\n\n\n\n");
+
+                $("div.hasSVG g[id]", doc).each(function() {
+                    var $text = $("text.regFieldName", this).first();
+                    if ($text) {
+                        var title = $text.dfnTitle();
+                        var id = $(this).attr("id");
+                        //console.log("<dfn class=\"regpict\" id=\"" + id + "\">" + $(this).text() + "</dfn>");
+                        conf.definitionMap[id] = id;
+                        conf.definitionHTML[id] = $text.text();
+                        var found = null;
+                        for (i = 0; i < title.length; i++) {
+                            //console.log("<dfn" + i + " class=\"regpict\" title=\"regpict-" + title[i] + "\">" + $(this).text() + "</dfn>");
+                            conf.definitionMap["regpict-" + title[i]] = id;
+                            conf.definitionHTML["regpict-" + title[i]] = conf.definitionHTML[id];
+                            if (conf.definitionMap["field-" + title[i]]) {
+                                found = conf.definitionMap["field-" + title[i]];
+                            }
+                        }
+                        id = id.replace(/^regpict-/, "field-");
+                        if (conf.definitionMap[id]) {
+                            found = conf.definitionMap[id];
+                        }
+                        if (found) {
+                            var $rect = $("rect.regFieldBox", this).first();
+                            //console.log("Map[field-" + title + "]=" + conf.definitionMap["field-" + title]);
+                            //console.log(" $rect.length= " + $rect.length);
+                            //console.log(" $rect[0] is " + $rect[0]);
+                            //console.log(" wrapping field-" + title);
+                            var a = doc.createElementNS("http://www.w3.org/2000/svg", "a");
+                            a.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
+//                            a.setAttribute("class", "regLink");
+//                            a.setAttribute("target", "_parent");
+                            $rect.wrap(a);
+//                            $rect[0].setAttribute("class", $rect[0].getAttribute("class") + " regLink");
+//                            $rect[0].setAttributeNS("http://www.w3.org/2000/svg", "class",
+//                                                    $rect[0].getAttributeNS("http://www.w3.org/2000/svg", "class") + " regLink");
+                            var b = doc.createElementNS("http://www.w3.org/2000/svg", "a");
+                            b.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
+//                            b.setAttribute("class", "regLink");
+//                            b.setAttribute("target", "_parent");
+//                            b.setAttributeNS("http://www.w3.org/1999/xhtml", "class", "field internalDFN");
+//                            b.setAttributeNS("http://www.w3.org/2000/svg", "class", "field internalDFN");
+                            $text.wrap(b);
+//                            $text[0].setAttribute("class", $text[0].getAttribute("class") + " regLink");
+                        }
+                    }
+                });
+
+                //console.log("\n\n\n\n");
+
+                $("dfn.field", doc).each(function() {
+                    var id = this.id.replace(/^field-/,"#regpict-");
+                    if (id !== this.id) {
+                        //console.log("field-->regpict: looking for " + this.id + " --> " + id);
+                        var $regpict = $(id, doc);
+                        if ($regpict.length > 0) {
+                            $(this).wrapInner("<a href=\"" + id + "\"></a>");
+                            //console.log("field-->regpict: <dfn class=\"" + this["class"] +
+                            //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
+                            //console.log("");
+                        }
+                    }
+                });
+
+                //console.log("\n\n\n\n");
+
+                $("a:not([href]):not([tabindex])", doc)
+                    .filter(
+                    function() {
+                        return (this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href") === null);
+                    })
+                    .each(
+                    function() {
+                        //console.log("a:not([href]): " + this.tagName + "  " + this.namespaceURI + "  " + this.outerHTML);
+                        var $ant = $(this);
+                        if ($ant.hasClass("externalDFN")) {
+                            return;
+                        }
+                        /*var hrefNode = this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
+                         if (hrefNode) {
+                         console.log("  getAttributeNS() localName=" + hrefNode.localName +
+                         " nodeName=" + hrefNode.nodeName +
+                         " nodeType=" + hrefNode.nodeType +
+                         " namespaceURI=" + hrefNode.namespaceURI);
+                         return;
+                         }*/
+                        var title = $ant.dfnTitle()[0];
+                        var tag = null;
+                        var temp = $ant.attr("class");
+                        var i;
+                        if (temp) {
+                            //console.log("class=" + temp);
+                            temp = temp.split(/\s+/);
+                            for (i = 0; i < temp.length; i++) {
+                                //console.log("checking " + temp[i] + "-" + title);
+                                if (conf.definitionMap[temp[i] + "-" + title]) {
+                                    tag = temp[i];
+                                    //console.log("found " + temp[i] + "-" + title);
+                                }
+                            }
+                        }
+                        if (tag === null) {
+                            for (i = 0; i < dfnClass.length; i++) {
+                                if (conf.definitionMap[dfnClass[i] + "-" + title]) {
+                                    if (tag === null) {
+                                        tag = dfnClass[i];
+                                    } else {
+                                        tag = tag + "-" + dfnClass[i];
+                                    }
+                                }
+                            }
+                        }
+                        if (tag !== null) {
+                            //console.log("tag= " + tag);
+                            if (tag === "regpict-field" || tag === "field-regpict") {
+                                tag = "field";
+                            }
+                            //console.log("tag= " + tag);
+                            var warn = null;
+                            if (tag.match(/-/)) {
+                                warn = "Ambiguous reference to '(" + tag + ")-" + title + "'";
+                                tag = tag.split("-")[0];
+                                warn = warn + ", resolved as '" + tag + "'";
+                                msg.pub("warn", warn);
+                            }
+                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title])
+                                .addClass("internalDFN")
+                                .addClass(tag);
+                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
+                                $ant.html(conf.definitionHTML[tag + "-" + title]);
+                            }
+                            if (warn !== null) {
+                                $ant.append("<span class=\"respec-error\"> " + warn + " </span>");
+                            }
+                            //console.log("result: " + $ant[0].outerHTML);
+                        }
+                        else {
+                            // ignore WebIDL
+                            if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
+                                msg.pub("warn",
+                                        "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                            }
+                            $ant.replaceWith($ant.contents());
+                        }
+                    }
+                )
+                ;
+                if (conf.addDefinitionMap) {
+                    msg.pub("start", "core/dfn/addDefinitionMap");
+                    var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
+                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    var keys = Object.keys(conf.definitionMap).sort();
+                    for (var i = 0; i < keys.length; i++) {
+                        var d = keys[i];
+                        var item = d.split(/-/);
+                        var kind = item.shift();
+                        var id = conf.definitionMap[d];
+                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"" + "#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                    }
+                    msg.pub("end", "core/dfn/addDefinitionMap");
+                }
+                msg.pub("end", "core/dfn");
+                cb();
+            }
+        }
+            ;
+    }
+)
+;
+
+// Module w3c/rfc2119
+// update the 2119 terms section with the terms actually used
+
+define(
+    'w3c/rfc2119',["core/utils"],
+    function (utils) {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "w3c/rfc2119");
+                var $confo = $("#respecRFC2119");
+                if ($confo.length) {
+                    // do we have a list of used RFC2119 items in
+                    // conf.respecRFC2119
+                    var used = Object.getOwnPropertyNames(conf.respecRFC2119).sort() ;
+                    if (used && used.length) {
+                        // put in the 2119 clause and reference
+                        var str = "The " ;
+                        var mapper = function(item) {
+                            var ret = "<em class='rfc2119' title='"+item+"'>"+item+"</em>" ;
+                            return ret;
+                        };
+
+                        if (used.length > 1) {
+                            str += "key words " + utils.joinAnd(used, mapper) + " are ";
+                        } 
+                        else {
+                            str += "key word " + utils.joinAnd(used, mapper) + " is " ;
+                        }
+                        str += $confo[0].innerHTML ;
+                        $confo[0].innerHTML = str ;
+                    }
+                    else {
+                        // there are no terms used - remove the
+                        // clause
+                        $confo.remove() ;
+                    }
+                }
+                msg.pub("end", "w3c/rfc2119");
+                cb();
+            }
+        };
+    }
+);
+
 
 define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
+
+
+define('text!core/css/examples-webspecs.css',[],function () { return '/* --- EXAMPLES CONFLICTING WITH WEBSPECS --- */\naside.example:before, div.example:before, div.illegal-example:before, pre.example:before {\n    content:    "" !important;\n    display:    none;\n}\ndiv.example-title {\n    color: #ef0000;\n}\n';});
 
 /* globals define */
 /* jshint browser: true, jquery: true, laxcomma: true */
@@ -15749,10 +16256,8 @@ define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES ---
 // be used by a containing shell to extract all examples.
 
 define(
-    'core/examples',["text!core/css/examples.css"],
-    function (css) {
-        
-
+    'core/examples',["text!core/css/examples.css", "text!core/css/examples-webspecs.css"],
+    function (css, cssKraken) {
         var makeTitle = function ($el, num, report) {
             var txt = (num > 0) ? " " + num : ""
             ,   $tit = $("<div class='example-title'><span>Example" + txt + "</span></div>");
@@ -15772,8 +16277,8 @@ define(
                 ,   $tit
                 ;
                 if ($exes.length) {
-                    if (!(conf.noReSpecCSS))
-                        $(doc).find("head link").first().before($("<style/>").text(css));
+                    if (conf.specStatus === "webspec") css += cssKraken;
+                    $(doc).find("head link").first().before($("<style/>").text(css));
                     $exes.each(function (i, ex) {
                         var $ex = $(ex)
                         ,   report = { number: num, illegal: $ex.hasClass("illegal-example") }
@@ -17913,155 +18418,6 @@ define(
     }
 );
 
-/*globals define */
-
-// Module core/table
-// Handles tables in the document. This enables enable the generation of a Table of Tables wherever there is a #tot element
-// to be found as well as normalise the titles of tables.
-
-define(
-    'core/tables',["core/utils"],
-    function (utils) {
-        
-        var make_fig_num = function (fmt, doc, chapter, $cap, label, num) {
-            //console.log("\n\nmake_"+label+"_num(fmt='" + fmt + "' chapter='" + chapter +"' $cap='" + $cap[0].outerHTML + "' label='" + label + "' num='" + num + "'");
-            if (fmt === null || fmt === "" || fmt === "%t" || fmt === "%") {
-                $cap.wrapInner($("<span class='" + label + "title'/>"));
-                return num;
-            }
-            var $title = $cap.clone().renameElement("span").attr("class", label + "title");
-            //console.log("title='" + $title[0].outerHTML + "'");
-            var adjfmt = " " + fmt.replace(/%%/g, "%\\");
-            var sfmt = adjfmt.split("%");
-            var decoration_num = 1;
-            var $cur = $("<span class='" + label + "decoration " + label + "decoration0'/>");
-            $cap.html("");
-            //console.log("$cap='" + $cap[0].outerHTML + "'");
-            //console.log("fmt=\"" + adjfmt + "\"");
-            var added = 0;
-            for (var i = 0; i < sfmt.length; i++) {
-                var s = sfmt[i];
-                switch (s.substr(0,1)) {
-                    case " ": break;
-                    case "(":
-                        if ($cur.text() !== "") {
-                            $cap.append($cur);
-                        }
-                        $cur = $("<span class='" + label + "no'/>");
-                        break;
-                    case ")":
-                        if ($cur.text() !== "") {
-                            $cap.append($cur);
-                        }
-                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
-                        decoration_num = decoration_num + 1;
-                        break;
-                    case "\\":$cur.append(doc.createTextNode("%")); break;
-                    case "#": $cur.append(doc.createTextNode(num[0])); break;
-                    case "c": $cur.append(doc.createTextNode(chapter)); break;
-                    case "1": if (num[1] !== chapter) num = [1, chapter]; break;
-                    case "t":
-                        if ($cur.text() !== "") {
-                            $cap.append($cur);
-                        }
-                        $cap.append($title);
-                        $cur = $("<span class='" + label + "decoration " + label + "decoration" + decoration_num + "'/>");
-                        decoration_num = decoration_num + 1;
-                        break;
-                    default:
-                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
-                        break;
-                }
-                $cur.append(doc.createTextNode(s.substr(1)));
-                //console.log("s=\"" + s + "\"" + "  chapter=" + chapter + "  $cur.html=\"" + $cur[0].outerHTML + "\"");
-            }
-            if ($cur.text() !== "") {
-                $cap.append($cur);
-            }
-            num[0]++;
-            //console.log("returning $cap='" + $cap[0].outerHTML + "' num='" + num + "'");
-
-            return num;
-        };
-
-        return {
-            run:        function (conf, doc, cb, msg) {
-                msg.pub("start", "core/tables");
-                if (!conf.tblFmt) conf.tblFmt = "";//Table %(%1%c-%#%): %t";
-                //conf.tblFmt = "";
-
-                // process all tables
-                var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
-				for (var i = 0; i < $secs.length; i++) {
-					var $sec = $($secs[i], doc);
-                    if ($sec.hasClass("appendix") && !appendixMode) {
-                        lastNonAppendix = i;
-                        appendixMode = true;
-                    }
-                    var chapter = i + 1;
-                    if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
-                    $("table", $sec).each(function () {
-						var $tbl = $(this)
-						,   $cap = $tbl.find("caption")
-						,   id = $tbl.makeID("tbl", $cap.text());
-						if ($cap.length) {
-							// if caption exists, add Table # and class
-							num = make_fig_num(conf.tblFmt, doc, chapter ,$cap, "tbl", num);
-							tblMap[id] = $cap.contents().clone();
-                            var $totCap = $cap.clone();
-                            $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
-                            $totCap.find("dfn").renameElement("span").removeAttr("id");
-                            $totCap.find("span.footnote").attr("class", "formerFootnote");
-							tot.push($("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
-									.find(".tocxref")
-									.append($totCap.contents())
-									.end());
-						}
-					});
-                }
-
-                // Update all anchors with empty content that reference a table ID
-                $("a[href^='#tbl']", doc).each(function () {
-                    var $a = $(this)
-                    ,   id = $a.attr("href");
-                    id = id.substring(1);
-                    if (tblMap[id]) {
-                        $a.addClass("tbl-ref");
-                        if ($a.html() === "") {
-                            $a.append(tblMap[id].clone());
-                        }
-                    } else {
-                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <table>.");
-                    }
-                });
-                
-                // Create a Table of Tables if a section with id 'tot' exists.
-                var $tot = $("#tot", doc);
-                if (tot.length && $tot.length) {
-                    // if it has a parent section, don't touch it
-                    // if it has a class of appendix or introductory, don't touch it
-                    // if all the preceding section siblings are introductory, make it introductory
-                    // if there is a preceding section sibling which is an appendix, make it appendix
-                    if (! $tot.hasClass("appendix") && ! $tot.hasClass("introductory") && ! $tot.parents("section").length) {
-                        if ($tot.prevAll("section.introductory").length === $tot.prevAll("section").length) {
-                            $tot.addClass("introductory");
-                        } else if ($tot.prevAll("appendix").length) {
-                            $tot.addClass("appendix");
-                        }
-                    }
-                    $tot.append($("<h2>Table of Tables</h2>"));
-                    $tot.append($("<ul class='tot'/>"));
-                    var $ul = $tot.find("ul");
-                    while (tot.length) $ul.append(tot.shift());
-                }
-                msg.pub("end", "core/tables");
-                cb();
-            }
-        };
-    }
-);
-
 
 // Module core/biblio
 // Handles bibliographic references
@@ -18240,2420 +18596,3227 @@ define(
 );
 
 
-// Module core/rdfa
-// Support for RDFa is spread to multiple places in the code, including templates, as needed by
-// the HTML being generated in various places. This is for parts that don't fit anywhere in
-// particular
 
-define(
-    'core/rdfa',[],
-    function () {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/rdfa");
-                if (conf.doRDFa) {
-                    $("section").each(function () {
-                        var $sec = $(this)
-                        ,   resource = ""
-                        ,   $fc = $sec.children("h1,h2,h3,h4,h5,h6").first()
-                        ,   ref = $sec.attr("id")
-                        ,   fcref = null
-                        ;
-                        if (ref) {
-                            resource = "#" + ref;
+(function () {
+    var tokenise = function (str) {
+        var tokens = []
+        ,   re = {
+                "float":        /^-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][-+]?[0-9]+)?|[0-9]+[Ee][-+]?[0-9]+)/
+            ,   "integer":      /^-?(0([Xx][0-9A-Fa-f]+|[0-7]*)|[1-9][0-9]*)/
+            ,   "identifier":   /^[A-Z_a-z][0-9A-Z_a-z]*/
+            ,   "string":       /^"[^"]*"/
+            ,   "whitespace":   /^(?:[\t\n\r ]+|[\t\n\r ]*((\/\/.*|\/\*(.|\n|\r)*?\*\/)[\t\n\r ]*))+/
+            ,   "other":        /^[^\t\n\r 0-9A-Z_a-z]/
+            }
+        ,   types = []
+        ;
+        for (var k in re) types.push(k);
+        while (str.length > 0) {
+            var matched = false;
+            for (var i = 0, n = types.length; i < n; i++) {
+                var type = types[i];
+                str = str.replace(re[type], function (tok) {
+                    tokens.push({ type: type, value: tok });
+                    matched = true;
+                    return "";
+                });
+                if (matched) break;
+            }
+            if (matched) continue;
+            throw new Error("Token stream not progressing");
+        }
+        return tokens;
+    };
+    
+    var parse = function (tokens, opt) {
+        var line = 1;
+        tokens = tokens.slice();
+        
+        var FLOAT = "float"
+        ,   INT = "integer"
+        ,   ID = "identifier"
+        ,   STR = "string"
+        ,   OTHER = "other"
+        ;
+        
+        var WebIDLParseError = function (str, line, input, tokens) {
+            this.message = str;
+            this.line = line;
+            this.input = input;
+            this.tokens = tokens;
+        };
+        WebIDLParseError.prototype.toString = function () {
+            return this.message + ", line " + this.line + " (tokens: '" + this.input + "')\n" +
+                   JSON.stringify(this.tokens, null, 4);
+        };
+        
+        var error = function (str) {
+            var tok = "", numTokens = 0, maxTokens = 5;
+            while (numTokens < maxTokens && tokens.length > numTokens) {
+                tok += tokens[numTokens].value;
+                numTokens++;
+            }
+            throw new WebIDLParseError(str, line, tok, tokens.slice(0, 5));
+        };
+        
+        var last_token = null;
+        
+        var consume = function (type, value) {
+            if (!tokens.length || tokens[0].type !== type) return;
+            if (typeof value === "undefined" || tokens[0].value === value) {
+                 last_token = tokens.shift();
+                 if (type === ID) last_token.value = last_token.value.replace(/^_/, "");
+                 return last_token;
+             }
+        };
+        
+        var ws = function () {
+            if (!tokens.length) return;
+            if (tokens[0].type === "whitespace") {
+                var t = tokens.shift();
+                t.value.replace(/\n/g, function (m) { line++; return m; });
+                return t;
+            }
+        };
+        
+        var all_ws = function (store, pea) { // pea == post extended attribute, tpea = same for types
+            var t = { type: "whitespace", value: "" };
+            while (true) {
+                var w = ws();
+                if (!w) break;
+                t.value += w.value;
+            }
+            if (t.value.length > 0) {
+                if (store) {
+                    var w = t.value
+                    ,   re = {
+                            "ws":                   /^([\t\n\r ]+)/
+                        ,   "line-comment":         /^\/\/(.*)\n?/m
+                        ,   "multiline-comment":    /^\/\*((?:.|\n|\r)*?)\*\//
                         }
-                        else if ($fc.length) {
-                            ref = $fc.attr("id");
-                            if (ref) {
-                                resource = "#" + ref;
-                                fcref = ref;
-                            }
-                        }
-                        var property = "bibo:hasPart";
-                        // Headings on everything but boilerplate
-                        if (!resource.match(/#(abstract|sotd|toc)$/)) {
-                            $sec.attr({
-                                "typeof":   "bibo:Chapter"
-                            ,   resource:   resource
-                            ,   property:   property
+                    ,   wsTypes = []
+                    ;
+                    for (var k in re) wsTypes.push(k);
+                    while (w.length) {
+                        var matched = false;
+                        for (var i = 0, n = wsTypes.length; i < n; i++) {
+                            var type = wsTypes[i];
+                            w = w.replace(re[type], function (tok, m1) {
+                                store.push({ type: type + (pea ? ("-" + pea) : ""), value: m1 });
+                                matched = true;
+                                return "";
                             });
+                            if (matched) break;
                         }
-                        // create a heading triple too, as per the role spec
-                        // since we should not be putting an @role on 
-                        // h* elements with a value of heading, but we 
-                        // still want the semantic markup
-                        if ($fc.length) {
-                            if (!fcref) {
-                                // if there is no ID on the heading itself.  Add one
-                                fcref = $fc.makeID("h", ref) ;
-                            }
-                            // set the subject to the ID of the heading
-                            $fc.attr({ resource: "#" + fcref }) ;
-                            // nest the contents in a span so we can set the predicate
-                            // and object
-                            $fc.wrapInner( "<span property='xhv:role' resource='xhv:heading'></span>" );
-                        }
+                        if (matched) continue;
+                        throw new Error("Surprising white space construct."); // this shouldn't happen
+                    }
+                }
+                return t;
+            }
+        };
+        
+        var integer_type = function () {
+            var ret = "";
+            all_ws();
+            if (consume(ID, "unsigned")) ret = "unsigned ";
+            all_ws();
+            if (consume(ID, "short")) return ret + "short";
+            if (consume(ID, "long")) {
+                ret += "long";
+                all_ws();
+                if (consume(ID, "long")) return ret + " long";
+                return ret;
+            }
+            if (ret) error("Failed to parse integer type");
+        };
+        
+        var float_type = function () {
+            var ret = "";
+            all_ws();
+            if (consume(ID, "unrestricted")) ret = "unrestricted ";
+            all_ws();
+            if (consume(ID, "float")) return ret + "float";
+            if (consume(ID, "double")) return ret + "double";
+            if (ret) error("Failed to parse float type");
+        };
+        
+        var primitive_type = function () {
+            var num_type = integer_type() || float_type();
+            if (num_type) return num_type;
+            all_ws();
+            if (consume(ID, "boolean")) return "boolean";
+            if (consume(ID, "byte")) return "byte";
+            if (consume(ID, "octet")) return "octet";
+        };
+        
+        var const_value = function () {
+            if (consume(ID, "true")) return { type: "boolean", value: true };
+            if (consume(ID, "false")) return { type: "boolean", value: false };
+            if (consume(ID, "null")) return { type: "null" };
+            if (consume(ID, "Infinity")) return { type: "Infinity", negative: false };
+            if (consume(ID, "NaN")) return { type: "NaN" };
+            var ret = consume(FLOAT) || consume(INT);
+            if (ret) return { type: "number", value: 1 * ret.value };
+            var tok = consume(OTHER, "-");
+            if (tok) {
+                if (consume(ID, "Infinity")) return { type: "Infinity", negative: true };
+                else tokens.unshift(tok);
+            }
+        };
+        
+        var type_suffix = function (obj) {
+            while (true) {
+                all_ws();
+                if (consume(OTHER, "?")) {
+                    if (obj.nullable) error("Can't nullable more than once");
+                    obj.nullable = true;
+                }
+                else if (consume(OTHER, "[")) {
+                    all_ws();
+                    consume(OTHER, "]") || error("Unterminated array type");
+                    if (!obj.array) {
+                        obj.array = 1;
+                        obj.nullableArray = [obj.nullable];
+                    }
+                    else {
+                        obj.array++;
+                        obj.nullableArray.push(obj.nullable);
+                    }
+                    obj.nullable = false;
+                }
+                else return;
+            }
+        };
+        
+        var single_type = function () {
+            var prim = primitive_type()
+            ,   ret = { sequence: false, generic: null, nullable: false, array: false, union: false }
+            ,   name
+            ,   value
+            ;
+            if (prim) {
+                ret.idlType = prim;
+            }
+            else if (name = consume(ID)) {
+                value = name.value;
+                all_ws();
+                // Generic types
+                if (consume(OTHER, "<")) {
+                    // backwards compat
+                    if (value === "sequence") {
+                        ret.sequence = true;
+                    }
+                    ret.generic = value;
+                    ret.idlType = type() || error("Error parsing generic type " + value);
+                    all_ws();
+                    if (!consume(OTHER, ">")) error("Unterminated generic type " + value);
+                    all_ws();
+                    if (consume(OTHER, "?")) ret.nullable = true;
+                    return ret;
+                }
+                else {
+                    ret.idlType = value;
+                }
+            }
+            else {
+                return;
+            }
+            type_suffix(ret);
+            if (ret.nullable && !ret.array && ret.idlType === "any") error("Type any cannot be made nullable");
+            return ret;
+        };
+        
+        var union_type = function () {
+            all_ws();
+            if (!consume(OTHER, "(")) return;
+            var ret = { sequence: false, generic: null, nullable: false, array: false, union: true, idlType: [] };
+            var fst = type() || error("Union type with no content");
+            ret.idlType.push(fst);
+            while (true) {
+                all_ws();
+                if (!consume(ID, "or")) break;
+                var typ = type() || error("No type after 'or' in union type");
+                ret.idlType.push(typ);
+            }
+            if (!consume(OTHER, ")")) error("Unterminated union type");
+            type_suffix(ret);
+            return ret;
+        };
+        
+        var type = function () {
+            return single_type() || union_type();
+        };
+        
+        var argument = function (store) {
+            var ret = { optional: false, variadic: false };
+            ret.extAttrs = extended_attrs(store);
+            all_ws(store, "pea");
+            var opt_token = consume(ID, "optional");
+            if (opt_token) {
+                ret.optional = true;
+                all_ws();
+            }
+            ret.idlType = type();
+            if (!ret.idlType) {
+                if (opt_token) tokens.unshift(opt_token);
+                return;
+            }
+            var type_token = last_token;
+            if (!ret.optional) {
+                all_ws();
+                if (tokens.length >= 3 &&
+                    tokens[0].type === "other" && tokens[0].value === "." &&
+                    tokens[1].type === "other" && tokens[1].value === "." &&
+                    tokens[2].type === "other" && tokens[2].value === "."
+                    ) {
+                    tokens.shift();
+                    tokens.shift();
+                    tokens.shift();
+                    ret.variadic = true;
+                }
+            }
+            all_ws();
+            var name = consume(ID);
+            if (!name) {
+                if (opt_token) tokens.unshift(opt_token);
+                tokens.unshift(type_token);
+                return;
+            }
+            ret.name = name.value;
+            if (ret.optional) {
+                all_ws();
+                ret["default"] = default_();
+            }
+            return ret;
+        };
+        
+        var argument_list = function (store) {
+            var ret = []
+            ,   arg = argument(store ? ret : null)
+            ;
+            if (!arg) return;
+            ret.push(arg);
+            while (true) {
+                all_ws(store ? ret : null);
+                if (!consume(OTHER, ",")) return ret;
+                var nxt = argument(store ? ret : null) || error("Trailing comma in arguments list");
+                ret.push(nxt);
+            }
+        };
+        
+        var type_pair = function () {
+            all_ws();
+            var k = type();
+            if (!k) return;
+            all_ws()
+            if (!consume(OTHER, ",")) return;
+            all_ws();
+            var v = type();
+            if (!v) return;
+            return [k, v];
+        };
+        
+        var simple_extended_attr = function (store) {
+            all_ws();
+            var name = consume(ID);
+            if (!name) return;
+            var ret = {
+                name: name.value
+            ,   "arguments": null
+            };
+            all_ws();
+            var eq = consume(OTHER, "=");
+            if (eq) {
+                var rhs;
+                all_ws();
+                if (rhs = consume(ID)) {
+                  ret.rhs = rhs
+                }
+                else if (consume(OTHER, "(")) {
+                    rhs = [];
+                    var id = consume(ID);
+                    if (id) {
+                      rhs = [id.value];
+                    }
+                    identifiers(rhs);
+                    consume(OTHER, ")") || error("Unexpected token in extended attribute argument list or type pair");
+                    ret.rhs = rhs;
+                }
+                if (!ret.rhs) return error("No right hand side to extended attribute assignment");
+            }
+            all_ws();
+            if (consume(OTHER, "(")) {
+                var args, pair;
+                // [Constructor(DOMString str)]
+                if (args = argument_list(store)) {
+                    ret["arguments"] = args;
+                }
+                // [MapClass(DOMString, DOMString)]
+                else if (pair = type_pair()) {
+                    ret.typePair = pair;
+                }
+                // [Constructor()]
+                else {
+                    ret["arguments"] = [];
+                }
+                all_ws();
+                consume(OTHER, ")") || error("Unexpected token in extended attribute argument list or type pair");
+            }
+            return ret;
+        };
+        
+        // Note: we parse something simpler than the official syntax. It's all that ever
+        // seems to be used
+        var extended_attrs = function (store) {
+            var eas = [];
+            all_ws(store);
+            if (!consume(OTHER, "[")) return eas;
+            eas[0] = simple_extended_attr(store) || error("Extended attribute with not content");
+            all_ws();
+            while (consume(OTHER, ",")) {
+                eas.push(simple_extended_attr(store) || error("Trailing comma in extended attribute"));
+                all_ws();
+            }
+            consume(OTHER, "]") || error("No end of extended attribute");
+            return eas;
+        };
+        
+        var default_ = function () {
+            all_ws();
+            if (consume(OTHER, "=")) {
+                all_ws();
+                var def = const_value();
+                if (def) {
+                    return def;
+                }
+                else if (consume(OTHER, "[")) {
+                    if (!consume(OTHER, "]")) error("Default sequence value must be empty");
+                    return { type: "sequence", value: [] };
+                }
+                else {
+                    var str = consume(STR) || error("No value for default");
+                    str.value = str.value.replace(/^"/, "").replace(/"$/, "");
+                    return str;
+                }
+            }
+        };
+        
+        var const_ = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "const")) return;
+            var ret = { type: "const", nullable: false };
+            all_ws();
+            var typ = primitive_type();
+            if (!typ) {
+                typ = consume(ID) || error("No type for const");
+                typ = typ.value;
+            }
+            ret.idlType = typ;
+            all_ws();
+            if (consume(OTHER, "?")) {
+                ret.nullable = true;
+                all_ws();
+            }
+            var name = consume(ID) || error("No name for const");
+            ret.name = name.value;
+            all_ws();
+            consume(OTHER, "=") || error("No value assignment for const");
+            all_ws();
+            var cnt = const_value();
+            if (cnt) ret.value = cnt;
+            else error("No value for const");
+            all_ws();
+            consume(OTHER, ";") || error("Unterminated const");
+            return ret;
+        };
+        
+        var inheritance = function () {
+            all_ws();
+            if (consume(OTHER, ":")) {
+                all_ws();
+                var inh = consume(ID) || error ("No type in inheritance");
+                return inh.value;
+            }
+        };
+        
+        var operation_rest = function (ret, store) {
+            all_ws();
+            if (!ret) ret = {};
+            var name = consume(ID);
+            ret.name = name ? name.value : null;
+            all_ws();
+            consume(OTHER, "(") || error("Invalid operation");
+            ret["arguments"] = argument_list(store) || [];
+            all_ws();
+            consume(OTHER, ")") || error("Unterminated operation");
+            all_ws();
+            consume(OTHER, ";") || error("Unterminated operation");
+            return ret;
+        };
+        
+        var callback = function (store) {
+            all_ws(store, "pea");
+            var ret;
+            if (!consume(ID, "callback")) return;
+            all_ws();
+            var tok = consume(ID, "interface");
+            if (tok) {
+                tokens.unshift(tok);
+                ret = interface_();
+                ret.type = "callback interface";
+                return ret;
+            }
+            var name = consume(ID) || error("No name for callback");
+            ret = { type: "callback", name: name.value };
+            all_ws();
+            consume(OTHER, "=") || error("No assignment in callback");
+            all_ws();
+            ret.idlType = return_type();
+            all_ws();
+            consume(OTHER, "(") || error("No arguments in callback");
+            ret["arguments"] = argument_list(store) || [];
+            all_ws();
+            consume(OTHER, ")") || error("Unterminated callback");
+            all_ws();
+            consume(OTHER, ";") || error("Unterminated callback");
+            return ret;
+        };
+
+        var attribute = function (store) {
+            all_ws(store, "pea");
+            var grabbed = []
+            ,   ret = {
+                type:           "attribute"
+            ,   "static":       false
+            ,   stringifier:    false
+            ,   inherit:        false
+            ,   readonly:       false
+            };
+            if (consume(ID, "static")) {
+                ret["static"] = true;
+                grabbed.push(last_token);
+            }
+            else if (consume(ID, "stringifier")) {
+                ret.stringifier = true;
+                grabbed.push(last_token);
+            }
+            var w = all_ws();
+            if (w) grabbed.push(w);
+            if (consume(ID, "inherit")) {
+                if (ret["static"] || ret.stringifier) error("Cannot have a static or stringifier inherit");
+                ret.inherit = true;
+                grabbed.push(last_token);
+                var w = all_ws();
+                if (w) grabbed.push(w);
+            }
+            if (consume(ID, "readonly")) {
+                ret.readonly = true;
+                grabbed.push(last_token);
+                var w = all_ws();
+                if (w) grabbed.push(w);
+            }
+            if (!consume(ID, "attribute")) {
+                tokens = grabbed.concat(tokens);
+                return;
+            }
+            all_ws();
+            ret.idlType = type() || error("No type in attribute");
+            if (ret.idlType.sequence) error("Attributes cannot accept sequence types");
+            all_ws();
+            var name = consume(ID) || error("No name in attribute");
+            ret.name = name.value;
+            all_ws();
+            consume(OTHER, ";") || error("Unterminated attribute");
+            return ret;
+        };
+        
+        var return_type = function () {
+            var typ = type();
+            if (!typ) {
+                if (consume(ID, "void")) {
+                    return "void";
+                }
+                else error("No return type");
+            }
+            return typ;
+        };
+        
+        var operation = function (store) {
+            all_ws(store, "pea");
+            var ret = {
+                type:           "operation"
+            ,   getter:         false
+            ,   setter:         false
+            ,   creator:        false
+            ,   deleter:        false
+            ,   legacycaller:   false
+            ,   "static":       false
+            ,   stringifier:    false
+            };
+            while (true) {
+                all_ws();
+                if (consume(ID, "getter")) ret.getter = true;
+                else if (consume(ID, "setter")) ret.setter = true;
+                else if (consume(ID, "creator")) ret.creator = true;
+                else if (consume(ID, "deleter")) ret.deleter = true;
+                else if (consume(ID, "legacycaller")) ret.legacycaller = true;
+                else break;
+            }
+            if (ret.getter || ret.setter || ret.creator || ret.deleter || ret.legacycaller) {
+                all_ws();
+                ret.idlType = return_type();
+                operation_rest(ret, store);
+                return ret;
+            }
+            if (consume(ID, "static")) {
+                ret["static"] = true;
+                ret.idlType = return_type();
+                operation_rest(ret, store);
+                return ret;
+            }
+            else if (consume(ID, "stringifier")) {
+                ret.stringifier = true;
+                all_ws();
+                if (consume(OTHER, ";")) return ret;
+                ret.idlType = return_type();
+                operation_rest(ret, store);
+                return ret;
+            }
+            ret.idlType = return_type();
+            all_ws();
+            if (consume(ID, "iterator")) {
+                all_ws();
+                ret.type = "iterator";
+                if (consume(ID, "object")) {
+                    ret.iteratorObject = "object";
+                }
+                else if (consume(OTHER, "=")) {
+                    all_ws();
+                    var name = consume(ID) || error("No right hand side in iterator");
+                    ret.iteratorObject = name.value;
+                }
+                all_ws();
+                consume(OTHER, ";") || error("Unterminated iterator");
+                return ret;
+            }
+            else {
+                operation_rest(ret, store);
+                return ret;
+            }
+        };
+        
+        var identifiers = function (arr) {
+            while (true) {
+                all_ws();
+                if (consume(OTHER, ",")) {
+                    all_ws();
+                    var name = consume(ID) || error("Trailing comma in identifiers list");
+                    arr.push(name.value);
+                }
+                else break;
+            }
+        };
+        
+        var serialiser = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "serializer")) return;
+            var ret = { type: "serializer" };
+            all_ws();
+            if (consume(OTHER, "=")) {
+                all_ws();
+                if (consume(OTHER, "{")) {
+                    ret.patternMap = true;
+                    all_ws();
+                    var id = consume(ID);
+                    if (id && id.value === "getter") {
+                        ret.names = ["getter"];
+                    }
+                    else if (id && id.value === "inherit") {
+                        ret.names = ["inherit"];
+                        identifiers(ret.names);
+                    }
+                    else if (id) {
+                        ret.names = [id.value];
+                        identifiers(ret.names);
+                    }
+                    else {
+                        ret.names = [];
+                    }
+                    all_ws();
+                    consume(OTHER, "}") || error("Unterminated serializer pattern map");
+                }
+                else if (consume(OTHER, "[")) {
+                    ret.patternList = true;
+                    all_ws();
+                    var id = consume(ID);
+                    if (id && id.value === "getter") {
+                        ret.names = ["getter"];
+                    }
+                    else if (id) {
+                        ret.names = [id.value];
+                        identifiers(ret.names);
+                    }
+                    else {
+                        ret.names = [];
+                    }
+                    all_ws();
+                    consume(OTHER, "]") || error("Unterminated serializer pattern list");
+                }
+                else {
+                    var name = consume(ID) || error("Invalid serializer");
+                    ret.name = name.value;
+                }
+                all_ws();
+                consume(OTHER, ";") || error("Unterminated serializer");
+                return ret;
+            }
+            else if (consume(OTHER, ";")) {
+                // noop, just parsing
+            }
+            else {
+                ret.idlType = return_type();
+                all_ws();
+                ret.operation = operation_rest(null, store);
+            }
+            return ret;
+        };
+        
+        var interface_ = function (isPartial, store) {
+            all_ws(isPartial ? null : store, "pea");
+            if (!consume(ID, "interface")) return;
+            all_ws();
+            var name = consume(ID) || error("No name for interface");
+            var mems = []
+            ,   ret = {
+                type:   "interface"
+            ,   name:   name.value
+            ,   partial:    false
+            ,   members:    mems
+            };
+            if (!isPartial) ret.inheritance = inheritance() || null;
+            all_ws();
+            consume(OTHER, "{") || error("Bodyless interface");
+            while (true) {
+                all_ws(store ? mems : null);
+                if (consume(OTHER, "}")) {
+                    all_ws();
+                    consume(OTHER, ";") || error("Missing semicolon after interface");
+                    return ret;
+                }
+                var ea = extended_attrs(store ? mems : null);
+                all_ws();
+                var cnt = const_(store ? mems : null);
+                if (cnt) {
+                    cnt.extAttrs = ea;
+                    ret.members.push(cnt);
+                    continue;
+                }
+                var mem = serialiser(store ? mems : null) ||
+                          attribute(store ? mems : null) ||
+                          operation(store ? mems : null) ||
+                          error("Unknown member");
+                mem.extAttrs = ea;
+                ret.members.push(mem);
+            }
+        };
+        
+        var partial = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "partial")) return;
+            var thing = dictionary(true, store) ||
+                        interface_(true, store) ||
+                        error("Partial doesn't apply to anything");
+            thing.partial = true;
+            return thing;
+        };
+        
+        var dictionary = function (isPartial, store) {
+            all_ws(isPartial ? null : store, "pea");
+            if (!consume(ID, "dictionary")) return;
+            all_ws();
+            var name = consume(ID) || error("No name for dictionary");
+            var mems = []
+            ,   ret = {
+                type:   "dictionary"
+            ,   name:   name.value
+            ,   partial:    false
+            ,   members:    mems
+            };
+            if (!isPartial) ret.inheritance = inheritance() || null;
+            all_ws();
+            consume(OTHER, "{") || error("Bodyless dictionary");
+            while (true) {
+                all_ws(store ? mems : null);
+                if (consume(OTHER, "}")) {
+                    all_ws();
+                    consume(OTHER, ";") || error("Missing semicolon after dictionary");
+                    return ret;
+                }
+                var ea = extended_attrs(store ? mems : null);
+                all_ws(store ? mems : null, "pea");
+                var typ = type() || error("No type for dictionary member");
+                all_ws();
+                var name = consume(ID) || error("No name for dictionary member");
+                ret.members.push({
+                    type:       "field"
+                ,   name:       name.value
+                ,   idlType:    typ
+                ,   extAttrs:   ea
+                ,   "default":  default_()
+                });
+                all_ws();
+                consume(OTHER, ";") || error("Unterminated dictionary member");
+            }
+        };
+        
+        var exception = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "exception")) return;
+            all_ws();
+            var name = consume(ID) || error("No name for exception");
+            var mems = []
+            ,   ret = {
+                type:   "exception"
+            ,   name:   name.value
+            ,   members:    mems
+            };
+            ret.inheritance = inheritance() || null;
+            all_ws();
+            consume(OTHER, "{") || error("Bodyless exception");
+            while (true) {
+                all_ws(store ? mems : null);
+                if (consume(OTHER, "}")) {
+                    all_ws();
+                    consume(OTHER, ";") || error("Missing semicolon after exception");
+                    return ret;
+                }
+                var ea = extended_attrs(store ? mems : null);
+                all_ws(store ? mems : null, "pea");
+                var cnt = const_();
+                if (cnt) {
+                    cnt.extAttrs = ea;
+                    ret.members.push(cnt);
+                }
+                else {
+                    var typ = type();
+                    all_ws();
+                    var name = consume(ID);
+                    all_ws();
+                    if (!typ || !name || !consume(OTHER, ";")) error("Unknown member in exception body");
+                    ret.members.push({
+                        type:       "field"
+                    ,   name:       name.value
+                    ,   idlType:    typ
+                    ,   extAttrs:   ea
                     });
                 }
-                msg.pub("end", "core/rdfa");
-                cb();
+            }
+        };
+        
+        var enum_ = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "enum")) return;
+            all_ws();
+            var name = consume(ID) || error("No name for enum");
+            var vals = []
+            ,   ret = {
+                type:   "enum"
+            ,   name:   name.value
+            ,   values: vals
+            };
+            all_ws();
+            consume(OTHER, "{") || error("No curly for enum");
+            var saw_comma = false;
+            while (true) {
+                all_ws(store ? vals : null);
+                if (consume(OTHER, "}")) {
+                    all_ws();
+                    if (saw_comma) error("Trailing comma in enum");
+                    consume(OTHER, ";") || error("No semicolon after enum");
+                    return ret;
+                }
+                var val = consume(STR) || error("Unexpected value in enum");
+                ret.values.push(val.value.replace(/"/g, ""));
+                all_ws(store ? vals : null);
+                if (consume(OTHER, ",")) {
+                    if (store) vals.push({ type: "," });
+                    all_ws(store ? vals : null);
+                    saw_comma = true;
+                }
+                else {
+                    saw_comma = false;
+                }
+            }
+        };
+        
+        var typedef = function (store) {
+            all_ws(store, "pea");
+            if (!consume(ID, "typedef")) return;
+            var ret = {
+                type:   "typedef"
+            };
+            all_ws();
+            ret.typeExtAttrs = extended_attrs();
+            all_ws(store, "tpea");
+            ret.idlType = type() || error("No type in typedef");
+            all_ws();
+            var name = consume(ID) || error("No name in typedef");
+            ret.name = name.value;
+            all_ws();
+            consume(OTHER, ";") || error("Unterminated typedef");
+            return ret;
+        };
+        
+        var implements_ = function (store) {
+            all_ws(store, "pea");
+            var target = consume(ID);
+            if (!target) return;
+            var w = all_ws();
+            if (consume(ID, "implements")) {
+                var ret = {
+                    type:   "implements"
+                ,   target: target.value
+                };
+                all_ws();
+                var imp = consume(ID) || error("Incomplete implements statement");
+                ret["implements"] = imp.value;
+                all_ws();
+                consume(OTHER, ";") || error("No terminating ; for implements statement");
+                return ret;
+            }
+            else {
+                // rollback
+                tokens.unshift(w);
+                tokens.unshift(target);
+            }
+        };
+        
+        var definition = function (store) {
+            return  callback(store)             ||
+                    interface_(false, store)    ||
+                    partial(store)              ||
+                    dictionary(false, store)    ||
+                    exception(store)            ||
+                    enum_(store)                ||
+                    typedef(store)              ||
+                    implements_(store)
+                    ;
+        };
+        
+        var definitions = function (store) {
+            if (!tokens.length) return [];
+            var defs = [];
+            while (true) {
+                var ea = extended_attrs(store ? defs : null)
+                ,   def = definition(store ? defs : null);
+                if (!def) {
+                    if (ea.length) error("Stray extended attributes");
+                    break;
+                }
+                def.extAttrs = ea;
+                defs.push(def);
+            }
+            return defs;
+        };
+        var res = definitions(opt.ws);
+        if (tokens.length) error("Unrecognised tokens");
+        return res;
+    };
+
+    var inNode = typeof module !== "undefined" && module.exports
+    ,   obj = {
+            parse:  function (str, opt) {
+                if (!opt) opt = {};
+                var tokens = tokenise(str);
+                return parse(tokens, opt);
+            }
+    };
+
+    if (inNode) module.exports = obj;
+    else        window.WebIDL2 = obj;
+}());
+
+define("webidl2", function(){});
+
+
+define('tmpl!core/css/webidl-oldschool.css', ['handlebars'], function (hb) { return Handlebars.compile('/* --- WEB IDL --- */\npre.idl {\n    border-top: 1px solid #90b8de;\n    border-bottom: 1px solid #90b8de;\n    padding:    1em;\n    line-height:    120%;\n}\n\npre.idl::before {\n    content:    "WebIDL";\n    display:    block;\n    width:      150px;\n    background: #90b8de;\n    color:  #fff;\n    font-family:    initial;\n    padding:    3px;\n    font-weight:    bold;\n    margin: -1em 0 1em -1em;\n}\n\n.idlType {\n    color:  #ff4500;\n    font-weight:    bold;\n    text-decoration:    none;\n}\n\n/*.idlModule*/\n/*.idlModuleID*/\n/*.idlInterface*/\n.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {\n    font-weight:    bold;\n    color:  #005a9c;\n}\na.idlEnumItem {\n    color:  #000;\n    border-bottom:  1px dotted #ccc;\n    text-decoration: none;\n}\n\n.idlSuperclass {\n    font-style: italic;\n    color:  #005a9c;\n}\n\n/*.idlAttribute*/\n.idlAttrType, .idlFieldType, .idlMemberType {\n    color:  #005a9c;\n}\n.idlAttrName, .idlFieldName, .idlMemberName {\n    color:  #ff4500;\n}\n.idlAttrName a, .idlFieldName a, .idlMemberName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlMethod*/\n.idlMethType, .idlCallbackType {\n    color:  #005a9c;\n}\n.idlMethName {\n    color:  #ff4500;\n}\n.idlMethName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlCtor*/\n.idlCtorName {\n    color:  #ff4500;\n}\n.idlCtorName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlParam*/\n.idlParamType {\n    color:  #005a9c;\n}\n.idlParamName, .idlDefaultValue {\n    font-style: italic;\n}\n\n.extAttr {\n    color:  #666;\n}\n\n/*.idlSectionComment*/\n.idlSectionComment {\n    color: gray;\n}\n\n/*.idlConst*/\n.idlConstType {\n    color:  #005a9c;\n}\n.idlConstName {\n    color:  #ff4500;\n}\n.idlConstName a {\n    color:  #ff4500;\n    border-bottom:  1px dotted #ff4500;\n    text-decoration: none;\n}\n\n/*.idlException*/\n.idlExceptionID {\n    font-weight:    bold;\n    color:  #c00;\n}\n\n.idlTypedefID, .idlTypedefType {\n    color:  #005a9c;\n}\n\n.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {\n    color:  #c00;\n    font-weight:    normal;\n}\n\n.excName a {\n    font-family:    monospace;\n}\n\n.idlRaises a.idlType, .excName a.idlType {\n    border-bottom:  1px dotted #c00;\n}\n\n.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {\n    width:  45px;\n    text-align: center;\n}\n.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }\n.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }\n\n.idlImplements a {\n    font-weight:    bold;\n}\n\ndl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {\n    margin-left:    2em;\n}\n\n.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {\n    font-weight:    normal;\n}\n\n.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {\n    font-weight:    bold;\n    color:  #000;\n    font-family:    monospace;\n}\n\n.attributes dt code, .fields dt code, .dictionary-members dt code {\n    background:  #ffffd2;\n}\n\n.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {\n    color:  #005a9c;\n    background:  transparent;\n    font-family:    inherit;\n    font-weight:    normal;\n    font-style: italic;\n}\n\n.methods dt code {\n    background:  #d9e6f8;\n}\n\n.constants dt code {\n    background:  #ddffd2;\n}\n\n.constructors dt code {\n    background:  #cfc;\n}\n\n.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {\n    margin-bottom:  1em;\n}\n\ntable.parameters, table.exceptions {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    margin: 0.5em 0;\n    width:  100%;\n}\ntable.parameters { border-bottom:  1px solid #90b8de; }\ntable.exceptions { border-bottom:  1px solid #deb890; }\n\n.parameters th, .exceptions th {\n    color:  #fff;\n    padding:    3px 5px;\n    text-align: left;\n    font-family:    initial;\n    font-weight:    normal;\n    text-shadow:    #666 1px 1px 0;\n}\n.parameters th { background: #90b8de; }\n.exceptions th { background: #deb890; }\n\n.parameters td, .exceptions td {\n    padding:    3px 10px;\n    border-top: 1px solid #ddd;\n    vertical-align: top;\n}\n\n.parameters tr:first-child td, .exceptions tr:first-child td {\n    border-top: none;\n}\n\n.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {\n    width:  100px;\n}\n\n.parameters td.prmType {\n    width:  120px;\n}\n\ntable.exceptions table {\n    border-spacing: 0;\n    border-collapse:    collapse;\n    width:  100%;\n}\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'{{obj.idlId}}\'>typedef {{typeExtAttrs obj\n}}<span class=\'idlTypedefType\'>{{idlType obj\n}}</span> <span class=\'idlTypedefID\'>{{#tryLink obj}}{{obj.name}}{{/tryLink}}</span>;</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent\n}}{{idn indent}}<a>{{obj.target}}</a> implements <a>{{obj.implements}}</a>;</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}<span class=\'idlMemberType\'>{{idlType obj}}</span> {{pads pad\n}}<span class=\'idlMemberName\'>{{#tryLink obj}}{{obj.name}}{{/tryLink}}</span>{{#if obj.default\n}} = <span class=\'idlMemberValue\'>{{stringifyIdlConst obj.default}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'{{obj.idlId}}\'>{{extAttr obj indent\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{#tryLink obj}}{{obj.name}}{{/tryLink\n}}</span>{{#if obj.inheritance}} : <span class=\'idlSuperclass\'><a>{{obj.inheritance}}</a></span>{{/if}} {\n{{{children}}}};</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj}}" class="idlEnumItem">{{obj}}</a>"');});
+
+
+define('tmpl!core/templates/webidl-contiguous/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'{{obj.idlId}}\'>{{extAttr obj indent\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{#tryLink obj}}{{obj.name}}{{/tryLink}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
+
+
+define('tmpl!core/templates/webidl-contiguous/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}const <span class=\'idlConstType\'>{{idlType obj}}</span>{{nullable}} {{pads pad\n}}<span class=\'idlConstName\'>{{#tryLink obj}}{{obj.name\n}}{{/tryLink}}</span> = <span class=\'idlConstValue\'>{{stringifyIdlConst obj.value}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/param.html', ['handlebars'], function (hb) { return Handlebars.compile('{{!-- obj is an instance of https://github.com/darobin/webidl2.js#arguments\n--}}<span class=\'idlParam\'>{{extAttrInline obj\n}}{{optional}}<span class=\'idlParamType\'>{{idlType obj}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.name}}</span>{{#if obj.default\n}} = <span class=\'idlDefaultValue\'>{{stringifyIdlConst obj.default}}</span>{{/if}}</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'{{obj.idlId}}\'>{{extAttr obj indent\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{#tryLink obj}}{{obj.name\n}}{{/tryLink}}</span> = <span class=\'idlCallbackType\'>{{idlType obj}}</span> ({{{children}}});</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{idlType obj}}</span> {{pads pad\n}}<span class=\'idlMethName\'>{{#tryLink obj}}{{obj.name}}{{/tryLink}}</span>({{{children}}});</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}{{qualifiers}} attribute <span class=\'idlAttrType\'>{{idlType obj}}</span> {{pads\npad}}<span class=\'idlAttrName\'>{{#tryLink obj}}{{escapeAttributeName obj.name}}{{/tryLink}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}{{#tryLink obj}}serializer{{/tryLink\n}}{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent}}{{idn indent}}// {{comment}}</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\' id="{{obj.idlId}}">{{extAttr obj indent\n}}{{idn indent}}<span class=\'idlFieldType\'>{{idlType obj}}</span> {{pads\npad}}<span class=\'idlFieldName\'>{{#tryLink obj}}{{obj.name}}{{/tryLink}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl-contiguous/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'{{obj.idlId}}\'>{{extAttr obj indent\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{#tryLink obj}}{{obj.name}}{{/tryLink\n}}</span>{{#if obj.inheritance}} : <span class=\'idlSuperclass\'><a>{{obj.inheritance}}</a></span>{{/if}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+
+define('tmpl!core/templates/webidl-contiguous/extended-attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('{{!-- extAttrs should match the structure at https://github.com/darobin/webidl2.js#extended-attributes.\n--}}{{idn indent}}[{{#join extAttrs sep\n  }}<span class=\'{{extAttrClassName}}\'><span class="extAttrName">{{name\n  }}</span>{{#if rhs}}=<span class="extAttrRhs">{{rhs.value}}</span>{{/if\n  }}{{#jsIf arguments}}({{#join arguments ", "}}{{param this}}{{/join}}){{/jsIf\n}}</span>{{/join}}]{{end}}');});
+
+
+define('tmpl!core/templates/webidl-contiguous/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{obj.idlId}}\'>{{extAttr obj indent\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{#tryLink obj}}{{obj.name}}{{/tryLink\n}}</span>{{#if obj.inheritance}} : <span class=\'idlSuperclass\'><a>{{obj.inheritance}}</a></span>{{/if}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+/*global Handlebars */
+
+// Module core/webidl-contiguous
+//  Highlights and links WebIDL marked up inside <pre class="idl">.
+
+// TODO:
+//  - It could be useful to report parsed IDL items as events
+//  - don't use generated content in the CSS!
+
+define(
+    'core/webidl-contiguous',[
+        "handlebars"
+    ,   "webidl2"
+    ,   "tmpl!core/css/webidl-oldschool.css"
+    ,   "tmpl!core/templates/webidl-contiguous/typedef.html"
+    ,   "tmpl!core/templates/webidl-contiguous/implements.html"
+    ,   "tmpl!core/templates/webidl-contiguous/dict-member.html"
+    ,   "tmpl!core/templates/webidl-contiguous/dictionary.html"
+    ,   "tmpl!core/templates/webidl-contiguous/enum-item.html"
+    ,   "tmpl!core/templates/webidl-contiguous/enum.html"
+    ,   "tmpl!core/templates/webidl-contiguous/const.html"
+    ,   "tmpl!core/templates/webidl-contiguous/param.html"
+    ,   "tmpl!core/templates/webidl-contiguous/callback.html"
+    ,   "tmpl!core/templates/webidl-contiguous/method.html"
+    ,   "tmpl!core/templates/webidl-contiguous/attribute.html"
+    ,   "tmpl!core/templates/webidl-contiguous/serializer.html"
+    ,   "tmpl!core/templates/webidl-contiguous/comment.html"
+    ,   "tmpl!core/templates/webidl-contiguous/field.html"
+    ,   "tmpl!core/templates/webidl-contiguous/exception.html"
+    ,   "tmpl!core/templates/webidl-contiguous/extended-attribute.html"
+    ,   "tmpl!core/templates/webidl-contiguous/interface.html"
+    ],
+    function (hb, webidl2, css, idlTypedefTmpl, idlImplementsTmpl, idlDictMemberTmpl, idlDictionaryTmpl,
+                   idlEnumItemTmpl, idlEnumTmpl, idlConstTmpl, idlParamTmpl, idlCallbackTmpl, idlMethodTmpl,
+              idlAttributeTmpl, idlSerializerTmpl, idlCommentTmpl, idlFieldTmpl, idlExceptionTmpl,
+              idlExtAttributeTmpl, idlInterfaceTmpl) {
+        
+        function registerHelpers (msg) {
+            Handlebars.registerHelper("extAttr", function (obj, indent) {
+                return extAttr(obj.extAttrs, indent, /*singleLine=*/false);
+            });
+            Handlebars.registerHelper("extAttrInline", function (obj) {
+                return extAttr(obj.extAttrs, 0, /*singleLine=*/true);
+            });
+            Handlebars.registerHelper("typeExtAttrs", function (obj) {
+                return extAttr(obj.typeExtAttrs, 0, /*singleLine=*/true);
+            });
+            Handlebars.registerHelper("extAttrClassName", function() {
+                var extAttr = this;
+                if (extAttr.name === "Constructor" || extAttr.name === "NamedConstructor") {
+                    return "idlCtor";
+                }
+                return "extAttr";
+            });
+            Handlebars.registerHelper("param", function (obj) {
+                return new Handlebars.SafeString(
+                    idlParamTmpl({
+                        obj:        obj
+                    ,   optional:   obj.optional ? "optional " : ""
+                    ,   variadic:   obj.variadic ? "..." : ""
+                    }));
+            });
+            Handlebars.registerHelper("jsIf", function (condition, options) {
+                if (condition) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
+            });
+            Handlebars.registerHelper("idn", function (indent) {
+                return new Handlebars.SafeString(idn(indent));
+            });
+            Handlebars.registerHelper("idlType", function (obj) {
+                return new Handlebars.SafeString(idlType2Html(obj.idlType));
+            });
+            Handlebars.registerHelper("stringifyIdlConst", function (value) {
+                switch (value.type) {
+                    case "null": return "null";
+                    case "Infinity": return value.negative ? "-Infinity" : "Infinity";
+                    case "NaN": return "NaN";
+                    case "string":
+                    case "number":
+                    case "boolean":
+                    case "sequence":
+                        return JSON.stringify(value.value);
+                    default:
+                        msg.pub("error", "Unexpected constant value type: " + value.type);
+                        return "<Unknown>";
+                }
+            });
+            Handlebars.registerHelper("escapeArgumentName", escapeArgumentName);
+            Handlebars.registerHelper("escapeAttributeName", escapeAttributeName);
+            Handlebars.registerHelper("escapeIdentifier", escapeIdentifier);
+            Handlebars.registerHelper("pads", function (num) {
+                return new Handlebars.SafeString(pads(num));
+            });
+            Handlebars.registerHelper("join", function(arr, between, options) {
+                return new Handlebars.SafeString(arr.map(function(elem) { return options.fn(elem); }).join(between));
+            });
+            // A block helper that emits an <a title> around its contents
+            // if obj.dfn exists. If it exists, that implies that
+            // there's another <dfn> for the object.
+            Handlebars.registerHelper("tryLink", function(obj, options) {
+                var content = options.fn(this);
+                if (obj.dfn) {
+                    var result = "<a for='" + Handlebars.Utils.escapeExpression(obj.linkFor || "") + "'";
+                    if (obj.name) {
+                        result += " title='" + Handlebars.Utils.escapeExpression(obj.name) + "'";
+                    }
+                    result += ">" + content + "</a>";
+                    return result;
+                } else {
+                    return content;
+                }
+            });
+        }
+        function idn (lvl) {
+            var str = "";
+            for (var i = 0; i < lvl; i++) str += "    ";
+            return str;
+        }
+        function idlType2Html (idlType) {
+            if (typeof idlType === "string") {
+                return "<a>" + Handlebars.Utils.escapeExpression(idlType) + "</a>";
+            }
+            var nullable = idlType.nullable ? "?" : "";
+            if (idlType.union) {
+                return '(' + idlType.idlType.map(function(type) {
+                    return idlType2Html(type);
+                }).join(' or ') + ')' + nullable;
+            }
+            if (idlType.array) {
+                var arrayStr = '';
+                for (var i = 0; i < idlType.array; ++i) {
+                    if (idlType.nullableArray[i]) {
+                        arrayStr += '?';
+                    }
+                    arrayStr += '[]';
+                }
+                return idlType2Html({
+                        generic: idlType.generic,
+                        idlType: idlType.idlType,
+                    }) + arrayStr + nullable;
+            }
+            if (idlType.generic) {
+                return Handlebars.Utils.escapeExpression(idlType.generic) + '&lt;' + idlType2Html(idlType.idlType) + '>' + nullable;
+            }
+            return idlType2Html(idlType.idlType) + nullable;
+        }
+        function idlType2Text(idlType) {
+            if (typeof idlType === 'string') {
+                return idlType;
+            }
+            var nullable = idlType.nullable ? "?" : "";
+            if (idlType.union) {
+                return '(' + idlType.idlType.map(function(type) {
+                    return idlType2Text(type);
+                }).join(' or ') + ')' + nullable;
+            }
+            if (idlType.array) {
+                var arrayStr = '';
+                for (var i = 0; i < idlType.array; ++i) {
+                    if (idlType.nullableArray[i]) {
+                        arrayStr += '?';
+                    }
+                    arrayStr += '[]';
+                }
+                return idlType2Text({
+                        generic: idlType.generic,
+                        idlType: idlType.idlType,
+                    }) + arrayStr + nullable;
+            }
+            if (idlType.generic) {
+                return idlType.generic + '<' + idlType2Text(idlType.idlType) + '>' + nullable;
+            }
+            return idlType2Text(idlType.idlType) + nullable;
+        }
+        function pads (num) {
+            // XXX
+            //  this might be more simply done as
+            //  return Array(num + 1).join(" ")
+            var str = "";
+            for (var i = 0; i < num; i++) str += " ";
+            return str;
+        }
+        function extAttr(extAttrs, indent, singleLine) {
+            if (extAttrs.length === 0) {
+                // If there are no extended attributes, omit the [] entirely.
+                return "";
+            }
+            var opt = {
+                extAttrs: extAttrs,
+                indent: indent,
+                sep: singleLine ? ", " : ",\n " + idn(indent),
+                end: singleLine ? " " : "\n",
+            };
+            return new Handlebars.SafeString(idlExtAttributeTmpl(opt));
+        }
+        var idlKeywords = [
+                "ByteString",
+                "DOMString",
+                "Date",
+                "Infinity",
+                "NaN",
+                "RegExp",
+                "USVString",
+                "any",
+                "attribute",
+                "boolean",
+                "byte",
+                "callback",
+                "const",
+                "creator",
+                "deleter",
+                "dictionary",
+                "double",
+                "enum",
+                "false",
+                "float",
+                "getter",
+                "implements",
+                "inherit",
+                "interface",
+                "iterable",
+                "legacycaller",
+                "legacyiterable",
+                "long",
+                "maplike",
+                "null",
+                "object",
+                "octet",
+                "optional",
+                "or",
+                "partial",
+                "readonly",
+                "required",
+                "sequence",
+                "serializer",
+                "setlike",
+                "setter",
+                "short",
+                "static",
+                "stringifier",
+                "true",
+                "typedef",
+                "unrestricted",
+                "unsigned",
+                "void",
+            ]
+        ,   ArgumentNameKeyword = [
+                "attribute",
+                "callback",
+                "const",
+                "creator",
+                "deleter",
+                "dictionary",
+                "enum",
+                "getter",
+                "implements",
+                "inherit",
+                "interface",
+                "iterable",
+                "legacycaller",
+                "legacyiterable",
+                "maplike",
+                "partial",
+                "required",
+                "serializer",
+                "setlike",
+                "setter",
+                "static",
+                "stringifier",
+                "typedef",
+                "unrestricted",
+            ]
+        ,   AttributeNameKeyword = ["required"];
+        function escapeArgumentName(argumentName) {
+            if (idlKeywords.indexOf(argumentName) !== -1 && ArgumentNameKeyword.indexOf(argumentName) === -1)
+                return "_" + argumentName;
+            return argumentName;
+        }
+        function escapeAttributeName(attributeName) {
+            if (idlKeywords.indexOf(attributeName) !== -1 && AttributeNameKeyword.indexOf(attributeName) === -1)
+                return "_" + attributeName;
+            return attributeName;
+        }
+        function escapeIdentifier(identifier) {
+            if (idlKeywords.indexOf(identifier) !== -1)
+                return "_" + identifier;
+            return identifier;
+        }
+
+        // Takes the result of WebIDL2.parse(), an array of definitions.
+        function makeMarkup (parse, msg) {
+            var attr = { "class": "idl" };
+            var $pre = $("<pre></pre>").attr(attr);
+            $pre.html(parse.map(function(defn) { return writeDefinition(defn, -1, msg); })
+                           .join('\n\n'));
+            return $pre;
+        }
+
+        function writeDefinition (obj, indent, msg) {
+            indent++;
+            var opt = { indent: indent, obj: obj };
+            switch (obj.type) {
+                case "typedef":
+                    return idlTypedefTmpl(opt);
+                case "implements":
+                    return idlImplementsTmpl(opt);
+                case "interface":
+                    return writeInterfaceDefinition(opt);
+                case "callback interface":
+                    return writeInterfaceDefinition(opt, "callback ");
+                case "exception":
+                    var maxAttr = 0, maxConst = 0;
+                    obj.members.forEach(function (it) {
+                        var len = idlType2Text(it.idlType).length;
+                        if (it.type === "field")   maxAttr = (len > maxAttr) ? len : maxAttr;
+                        else if (it.type === "const") maxConst = (len > maxConst) ? len : maxConst;
+                    });
+                    var children = obj.members
+                                      .map(function (ch) {
+                                          if (ch.type === "field") return writeField(ch, maxAttr, indent + 1);
+                                          else if (ch.type === "const") return writeConst(ch, maxConst, indent + 1);
+                                      })
+                                      .join("")
+                    ;
+                    return idlExceptionTmpl({ obj: obj, indent: indent, children: children });
+                case "dictionary":
+                    var max = 0;
+                    obj.members.forEach(function (it) {
+                        var len = idlType2Text(it.idlType).length;
+                        max = (len > max) ? len : max;
+                    });
+                    var children = obj.members
+                                      .map(function (it) {
+                                          return writeMember(it, max, indent + 1);
+                                      })
+                                      .join("")
+                    ;
+                    return idlDictionaryTmpl({ obj: obj, indent: indent, children: children, partial: obj.partial ? "partial " : "" });
+                case "callback":
+                    var params = obj.arguments
+                                    .map(function (it) {
+                                        return idlParamTmpl({
+                                            obj:        it
+                                        ,   optional:   it.optional ? "optional " : ""
+                                        ,   variadic:   it.variadic ? "..." : ""
+                                        });
+                                    })
+                                    .join(", ");
+                    return idlCallbackTmpl({
+                        obj:        obj
+                    ,   indent:     indent
+                    ,   children:   params
+                    });
+                case "enum":
+                    var children = obj.values
+                                      .map(function (it) { return idlEnumItemTmpl({ obj: it, parentID: obj.fullPath, indent: indent + 1 }); })
+                                      .join(",\n");
+                    return idlEnumTmpl({obj: obj, indent: indent, children: children });
+                default:
+                    msg.pub("error", "Unexpected object type " + obj.type + " in " + JSON.stringify(obj));
+                    return "";
+            }
+        }
+
+        function writeInterfaceDefinition(opt, callback) {
+            var obj = opt.obj, indent = opt.indent;
+            var maxAttr = 0, maxMeth = 0, maxConst = 0;
+            obj.members.forEach(function (it) {
+                if (it.type === "serializer") return;
+                var len = idlType2Text(it.idlType).length;
+                if (it.static) len += 7;
+                if (it.type === "attribute") maxAttr = (len > maxAttr) ? len : maxAttr;
+                else if (it.type === "operation") maxMeth = (len > maxMeth) ? len : maxMeth;
+                else if (it.type === "const") maxConst = (len > maxConst) ? len : maxConst;
+            });
+            var children = obj.members
+                              .map(function (ch) {
+                                  switch (ch.type) {
+                                      case "attribute": return writeAttribute(ch, maxAttr, indent + 1);
+                                      case "operation": return writeMethod(ch, maxMeth, indent + 1);
+                                      case "const": return writeConst(ch, maxConst, indent + 1);
+                                      case "serializer": return writeSerializer(ch, indent + 1);
+                                      default: throw new Error("Unexpected member type: " + ch.type);
+                                  }
+                              })
+                              .join("")
+            ;
+            return idlInterfaceTmpl({
+                obj:        obj
+            ,   indent:     indent
+            ,   partial:    obj.partial ? "partial " : ""
+            ,   callback:   callback
+            ,   children:   children
+            });
+        }
+
+        function writeField (attr, max, indent) {
+            var pad = max - idlType2Text(attr.idlType).length;
+            return idlFieldTmpl({
+                obj:        attr
+            ,   indent:     indent
+            ,   pad:        pad
+            });
+        }
+
+        function writeAttribute (attr, max, indent) {
+            var len = idlType2Text(attr.idlType).length;
+            var pad = max - len;
+            var qualifiers = "";
+            if (attr.static) qualifiers += "static ";
+            if (attr.stringifier) qualifiers += "stringifier ";
+            if (attr.inherit) qualifiers += "inherit ";
+            if (attr.readonly) qualifiers += "readonly ";
+            qualifiers += "           ";
+            qualifiers = qualifiers.slice(0, 11);
+            return idlAttributeTmpl({
+                obj:            attr
+            ,   indent:         indent
+            ,   qualifiers:     qualifiers
+            ,   pad:            pad
+            });
+        }
+
+        function writeMethod (meth, max, indent) {
+            var params = meth.arguments
+                            .map(function (it) {
+                                return idlParamTmpl({
+                                    obj:        it
+                                ,   optional:   it.optional ? "optional " : ""
+                                ,   variadic:   it.variadic ? "..." : ""
+                                });
+                            })
+                            .join(", ");
+            var len = idlType2Text(meth.idlType).length;
+            if (meth.static) len += 7;
+            var pad = max - len;
+            return idlMethodTmpl({
+                obj:        meth
+            ,   indent:     indent
+            ,   "static":   meth.static ? "static " : ""
+            ,   pad:        pad
+            ,   children:   params
+            });
+        }
+
+        function writeConst (cons, max, indent) {
+            var pad = max - idlType2Text(cons.idlType).length;
+            if (cons.nullable) pad--;
+            return idlConstTmpl({ obj: cons, indent: indent, pad: pad, nullable: cons.nullable ? "?" : ""});
+        }
+
+        function writeComment (comment, indent) {
+            return idlCommentTmpl({ obj: comment, indent: indent, comment: comment.id});
+        }
+
+        function writeSerializer (serializer, indent) {
+            var values = "";
+            if (serializer.patternMap) {
+                values = "{" + serializer.names.join(", ") + "}";
+            }
+            else if (serializer.patternList) {
+                values = "[" + listValues.join(", ") + "]";
+            }
+            else if (serializer.name) {
+                values = serializer.name;
+            }
+            return idlSerializerTmpl({
+                obj:        serializer
+            ,   indent:     indent
+            ,   values:     values
+            });
+        }
+
+        function writeMember (memb, max, indent) {
+            var opt = { obj: memb, indent: indent };
+            opt.pad = max - idlType2Text(memb.idlType).length;
+            return idlDictMemberTmpl(opt);
+        }
+
+        // Each entity defined in IDL is either a top- or second-level entity:
+        // Interface or Interface.member. This function finds the <dfn>
+        // element defining each entity and attaches it to the entity's
+        // 'refTitle' property, and records that it describes an IDL entity by
+        // adding a [data-idl] attribute.
+        function linkDefinitions(parse, definitionMap, parent, msg) {
+            parse.forEach(function(defn) {
+                var name;
+                switch (defn.type) {
+                    // Top-level entities with linkable members.
+                    case "callback interface":
+                    case "dictionary":
+                    case "exception":
+                    case "interface":
+                        linkDefinitions(defn.members, definitionMap, defn.name, msg);
+                        name = defn.name;
+                        defn.idlId = "idl-def-" + name.toLowerCase();
+                        break;
+
+                    // Top-level entities without linkable members.
+                    case "enum":  // TODO: link enum members.
+                    case "callback":
+                    case "typedef":
+                        name = defn.name;
+                        defn.idlId = "idl-def-" + name.toLowerCase();
+                        break;
+
+                    // Members of top-level entities.
+                    case "attribute":
+                    case "const":
+                    case "field":
+                        name = defn.name;
+                        defn.idlId = "idl-def-" + parent.toLowerCase() + "-" + name.toLowerCase();
+                        break;
+                    case "operation":
+                        name = defn.name;
+                        defn.idlId = ("idl-def-" + parent.toLowerCase() + "-" +
+                                      name.toLowerCase() + '(' +
+                                      defn.arguments.map(function(arg) {
+                                          var optional = arg.optional ? "optional-" : "";
+                                          var variadic = arg.variadic ? "..." : "";
+                                          return optional + idlType2Text(arg.idlType).toLowerCase() + variadic;
+                                      }).join(',') + ')');
+                        break;
+                    case "iterator":
+                        name = "iterator";
+                        defn.idlId = "idl-def-" + parent.toLowerCase() + "-" + name.toLowerCase();
+                        break;
+                    case "serializer":
+                        name = "serializer";
+                        defn.idlId = "idl-def-" + parent.toLowerCase() + "-" + name.toLowerCase();
+                        break;
+
+                    case "implements":
+                        // Nothing to link here.
+                        return;
+                    default:
+                        msg.pub("error", "Unexpected type when computing refTitles: " + defn.type);
+                        return;
+                }
+                if (parent) {
+                    defn.linkFor = parent;
+                }
+                defn.dfn = findDfn(parent, name, definitionMap, msg);
+            });
+        }
+
+        // This function looks for a <dfn> element whose title is 'name' and
+        // that is "for" 'parent', which is the empty string when 'name'
+        // refers to a top-level entity. For top-level entities, <dfn>
+        // elements that inherit a non-empty [dfn-for] attribute are also
+        // counted as matching.
+        //
+        // When a matching <dfn> is found, it's given <code> formatting,
+        // marked as an IDL definition, and returned.  If no <dfn> is found,
+        // the function returns 'undefined'.
+        function findDfn(parent, name, definitionMap) {
+            parent = parent.toLowerCase();
+            name = name.toLowerCase();
+            var dfnForArray = definitionMap[name];
+            if (!dfnForArray) {
+                return undefined;
+            }
+            // Definitions that have a title and [for] that exactly match the
+            // IDL entity:
+            var dfns = dfnForArray.filter(function(dfn) {
+                return dfn.attr('data-dfn-for') === parent;
+            });
+            // If this is a top-level entity, and we didn't find anything with
+            // an explicitly empty [for], try <dfn> that inherited a [for].
+            if (dfns.length === 0 && parent === "" && dfnForArray.length === 1) {
+                var dfns = dfnForArray;
+            }
+            if (dfns.length > 1) {
+                msg.pub("error", "Multiple <dfn>s for " + name + " in " + parent);
+            }
+            if (dfns.length === 0) {
+                return undefined;
+            }
+            var dfn = dfns[0];
+            // Mark the definition as code.
+            dfn.attr('id', "dom-" + (parent ? parent + "-" : "") + name)
+            dfn.attr('data-idl', '');
+            dfn.attr('data-dfn-for', parent);
+            if (dfn.children('code').length === 0 && dfn.parents('code').length === 0)
+                dfn.wrapInner('<code></code>');
+            return dfn;
+        }
+
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/webidl-contiguous");
+                registerHelpers(msg);
+                var $idl = $("pre.idl", doc)
+                ,   finish = function () {
+                        msg.pub("end", "core/webidl-contiguous");
+                        cb();
+                    };
+                if (!$idl.length) return finish();
+                if (!$(".idl", doc).not("pre").length) {
+                    $(doc).find("head link").first().before($("<style/>").text(css));
+                }
+
+                var infNames = [];
+                $idl.each(function () {
+                    var parse;
+                    try {
+                        parse = window.WebIDL2.parse($(this).text());
+                    } catch(e) {
+                        msg.pub("error", "Failed to parse <pre>" + $idl.text() + "</pre> as IDL: " + (e.stack || e));
+                        // Skip this <pre> and move on to the next one.
+                        return;
+                    }
+                    linkDefinitions(parse, conf.definitionMap, "", msg);
+                    var $df = makeMarkup(parse, msg);
+                    $df.attr({id: this.id});
+                    $.merge(infNames,
+                            $df.find('.idlInterface,.idlException,.idlDictionary,.idlTypedef,.idlCallback,.idlEnum')
+                               .map(function() { return this.id; }).get());
+                    $(this).replaceWith($df);
+                });
+                doc.normalize();
+                $("a:not([href])").each(function () {
+                    var $ant = $(this);
+                    if ($ant.hasClass("externalDFN")) return;
+                    var name = $ant.dfnTitle();
+                    if (!conf.definitionMap[name] && $.inArray('idl-def-' + name, infNames) !== -1) {
+                        $ant.attr("href", "#idl-def-" + name)
+                            .addClass("idlType")
+                            .wrapInner("<code></code>");
+                    }
+                });
+                finish();
             }
         };
     }
 );
 
 
-define('text!core/css/regpict.css',[],function () { return '/* --- REGPICT --- */\ntext.regBitNumMiddle {\n    text-anchor: middle;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumEnd {\n    text-anchor: end;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitNumStart {\n    text-anchor: start;\n    fill: grey;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-size: 8pt;\n}\n\ntext.regBitWidth {\n    text-anchor: middle;\n    fill: none;\n    font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n    font-weight: bold;\n    font-size: 11pt;\n}\n\ng line.regBitNumLine {\n\tstroke: grey;\n\tstroke-width: 1px;\n}\n\ng line.regBitNumLine_Hide {\n    stroke: none;\n    stroke-width: 1px;\n}\n\ng rect.regFieldBox {\n\tfill: white;\n\tstroke: black;\n\tstroke-width: 1.5px;\n}\n\ng.regAttr_rsvd rect.regFieldBox,\ng.regAttr_rsvdp rect.regFieldBox,\ng.regAttr_rsvdz rect.regFieldBox,\ng.regAttr_reserved rect.regFieldBox,\ng.regAttr_unused rect.regFieldBox {\n\tfill: white;\n}\n\ng.regFieldExternal line.regFieldBox,\ng.regFieldInternal line.regFieldBox {\n\tstroke: black;\n}\n\ng.regFieldUnused line.regFieldBox {\n\tstroke: grey;\n}\n\ng.regFieldUnused text.regFieldName,\ng.regFieldUnused text.regFieldValue {\n\tfill: grey;\n}\n\ng.regFieldHidden text.regFieldName,\ng.regFieldHidden text.regFieldValue,\ng.regFieldHidden path.regBitLine,\ng.regFieldHidden path.regBitBracket,\ng.regFieldHidden line.regFieldBox,\ng.regFieldHidden rect.regFieldBox,\ng.regFieldHidden line.regBitNumLine,\ng.regFieldHidden line.regBitNumLine_Hide,\ng.regFieldHidden text.regBitNumStart,\ng.regFieldHidden text.regBitNumMiddle,\ng.regFieldHidden text.regBitNumEnd,\ng.regFieldHidden text.regFieldExtendsLeft,\ng.regFieldHidden text.regFieldExtendsRight {\n    fill: none;\n    stroke: none;\n}\n\ng text.regFieldValue,\ng.regFieldInternal text.regFieldName {\n    text-anchor: middle;\n}\n\ng.regFieldOverflowLSB text.regBitNumEnd,\ng text.regFieldExtendsRight {\n    text-anchor: start;\n}\n\ng.regFieldOverflowMSB text.regBitNumStart,\ng text.regFieldExtendsLeft {\n    text-anchor: end;\n}\n\ng text.regFieldName,\ng text.regFieldValue {\n\tfont-size: 11pt;\n\tfont-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;\n}\n\ng.regFieldExternal1 path.regBitLine,\ng.regFieldExternal1 path.regBitBracket {\n\tstroke: black;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitLine {\n\tstroke: green;\n    stroke-dasharray: 4,2;\n\tstroke-width: 1px;\n}\n\ng.regFieldExternal0 path.regBitBracket {\n    stroke: green;\n    stroke-width: 1px;\n}\n\nsvg text.regFieldValue {\n    fill: #0060A9;\n    font-family: monospace;\n}\n\nsvg.regpict {\n\tcolor: green;\n}\n\nsvg *.svg_error text:not(.regBitWidth),\nsvg *.svg_error text:not(.regBitNumMiddle),\nsvg *.svg_error text:not(.regBitNumEnd),\nsvg *.svg_error text:not(.regBitNumStart) {\n    fill: red;\n    font-size: 12pt;\n    font-weight: bold;\n    font-style: normal;\n    font-family: monospace;\n}\n\nfigure div.json,\nfigure pre.json {\n    color: rgb(0,90,156);\n    display: inherit;\n}\n\n@media screen {\n    g.regLink:hover rect.regFieldBox,\n    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }\n    \n    g.regLink:hover line.regBitNumLine,\n    g.regLink:focus line.regBitNumLine,\n    g.regLink:hover line.regBitNumLine_Hide,\n    g.regLink:focus line.regBitNumLine_Hide,\n    g.regLink:hover line.regFieldBox,\n    g.regLink:focus line.regFieldBox,\n    g.regLink:hover path.regBitLine,\n    g.regLink:focus path.regBitLine,\n    g.regLink.regFieldExternal:hover path.regBitBracket,\n    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }\n\n    g.regLink:hover text.regFieldName,\n    g.regLink:focus text.regFieldName,\n    g.regLink.regFieldExternal:hover text.regFieldValue,\n    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }\n\n    g.regLink:hover text.regBitNumMiddle,\n    g.regLink:focus text.regBitNumMiddle,\n    g.regLink:hover text.regBitNumStart,\n    g.regLink:focus text.regBitNumStart,\n    g.regLink:hover text.regBitNumEnd,\n    g.regLink:focus text.regBitNumEnd\n    { fill: blue; font-weight: bold; font-size: 9pt; }\n\n    g.regLink:hover text.regBitWidth,\n    g.regLink:focus text.regBitWidth {\n        fill: blue;\n    }\n}';});
-
-/* http://keith-wood.name/svg.html
-   SVG for jQuery v1.4.5.
-   Written by Keith Wood (kbwood{at}iinet.com.au) August 2007.
-   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
-   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
-   Please attribute the author if you use it. */
-
-(function($) { // Hide scope, no $ conflict
-
-/* SVG manager.
-   Use the singleton instance of this class, $.svg, 
-   to interact with the SVG functionality. */
-function SVGManager() {
-	this._settings = []; // Settings to be remembered per SVG object
-	this._extensions = []; // List of SVG extensions added to SVGWrapper
-		// for each entry [0] is extension name, [1] is extension class (function)
-		// the function takes one parameter - the SVGWrapper instance
-	this.regional = []; // Localisations, indexed by language, '' for default (English)
-	this.regional[''] = {errorLoadingText: 'Error loading',
-		notSupportedText: 'This browser does not support SVG'};
-	this.local = this.regional['']; // Current localisation
-	this._uuid = new Date().getTime();
-	this._renesis = detectActiveX('RenesisX.RenesisCtrl');
-}
-
-/* Determine whether a given ActiveX control is available.
-   @param  classId  (string) the ID for the ActiveX control
-   @return  (boolean) true if found, false if not */
-function detectActiveX(classId) {
-	try {
-		return !!(window.ActiveXObject && new ActiveXObject(classId));
-	}
-	catch (e) {
-		return false;
-	}
-}
-
-var PROP_NAME = 'svgwrapper';
-
-$.extend(SVGManager.prototype, {
-	/* Class name added to elements to indicate already configured with SVG. */
-	markerClassName: 'hasSVG',
-
-	/* SVG namespace. */
-	svgNS: 'http://www.w3.org/2000/svg',
-	/* XLink namespace. */
-	xlinkNS: 'http://www.w3.org/1999/xlink',
-
-	/* SVG wrapper class. */
-	_wrapperClass: SVGWrapper,
-
-	/* Camel-case versions of attribute names containing dashes or are reserved words. */
-	_attrNames: {class_: 'class', in_: 'in',
-		alignmentBaseline: 'alignment-baseline', baselineShift: 'baseline-shift',
-		clipPath: 'clip-path', clipRule: 'clip-rule',
-		colorInterpolation: 'color-interpolation',
-		colorInterpolationFilters: 'color-interpolation-filters',
-		colorRendering: 'color-rendering', dominantBaseline: 'dominant-baseline',
-		enableBackground: 'enable-background', fillOpacity: 'fill-opacity',
-		fillRule: 'fill-rule', floodColor: 'flood-color',
-		floodOpacity: 'flood-opacity', fontFamily: 'font-family',
-		fontSize: 'font-size', fontSizeAdjust: 'font-size-adjust',
-		fontStretch: 'font-stretch', fontStyle: 'font-style',
-		fontVariant: 'font-variant', fontWeight: 'font-weight',
-		glyphOrientationHorizontal: 'glyph-orientation-horizontal',
-		glyphOrientationVertical: 'glyph-orientation-vertical',
-		horizAdvX: 'horiz-adv-x', horizOriginX: 'horiz-origin-x',
-		imageRendering: 'image-rendering', letterSpacing: 'letter-spacing',
-		lightingColor: 'lighting-color', markerEnd: 'marker-end',
-		markerMid: 'marker-mid', markerStart: 'marker-start',
-		stopColor: 'stop-color', stopOpacity: 'stop-opacity',
-		strikethroughPosition: 'strikethrough-position',
-		strikethroughThickness: 'strikethrough-thickness',
-		strokeDashArray: 'stroke-dasharray', strokeDashOffset: 'stroke-dashoffset',
-		strokeLineCap: 'stroke-linecap', strokeLineJoin: 'stroke-linejoin',
-		strokeMiterLimit: 'stroke-miterlimit', strokeOpacity: 'stroke-opacity',
-		strokeWidth: 'stroke-width', textAnchor: 'text-anchor',
-		textDecoration: 'text-decoration', textRendering: 'text-rendering',
-		underlinePosition: 'underline-position', underlineThickness: 'underline-thickness',
-		vertAdvY: 'vert-adv-y', vertOriginY: 'vert-origin-y',
-		wordSpacing: 'word-spacing', writingMode: 'writing-mode'},
-
-	/* Add the SVG object to its container. */
-	_attachSVG: function(container, settings) {
-		var svg = (container.namespaceURI == this.svgNS ? container : null);
-		var container = (svg ? null : container);
-		if ($(container || svg).hasClass(this.markerClassName)) {
-			return;
-		}
-		if (typeof settings == 'string') {
-			settings = {loadURL: settings};
-		}
-		else if (typeof settings == 'function') {
-			settings = {onLoad: settings};
-		}
-		$(container || svg).addClass(this.markerClassName);
-		try {
-			if (!svg) {
-				svg = document.createElementNS(this.svgNS, 'svg');
-				svg.setAttribute('version', '1.1');
-				if (container.clientWidth > 0) {
-					svg.setAttribute('width', container.clientWidth);
-				}
-				if (container.clientHeight > 0) {
-					svg.setAttribute('height', container.clientHeight);
-				}
-				container.appendChild(svg);
-			}
-			this._afterLoad(container, svg, settings || {});
-		}
-		catch (e) {
-			if ($.browser.msie) {
-				if (!container.id) {
-					container.id = 'svg' + (this._uuid++);
-				}
-				this._settings[container.id] = settings;
-				container.innerHTML = '<embed type="image/svg+xml" width="100%" ' +
-					'height="100%" src="' + (settings.initPath || '') + 'blank.svg" ' +
-					'pluginspage="http://www.adobe.com/svg/viewer/install/main.html"/>';
-			}
-			else {
-				container.innerHTML = '<p class="svg_error">' +
-					this.local.notSupportedText + '</p>';
-			}
-		}
-	},
-
-	/* SVG callback after loading - register SVG root. */
-	_registerSVG: function() {
-		for (var i = 0; i < document.embeds.length; i++) { // Check all
-			var container = document.embeds[i].parentNode;
-			if (!$(container).hasClass($.svg.markerClassName) || // Not SVG
-					$.data(container, PROP_NAME)) { // Already done
-				continue;
-			}
-			var svg = null;
-			try {
-				svg = document.embeds[i].getSVGDocument();
-			}
-			catch(e) {
-				setTimeout($.svg._registerSVG, 250); // Renesis takes longer to load
-				return;
-			}
-			svg = (svg ? svg.documentElement : null);
-			if (svg) {
-				$.svg._afterLoad(container, svg);
-			}
-		}
-	},
-
-	/* Post-processing once loaded. */
-	_afterLoad: function(container, svg, settings) {
-		var settings = settings || this._settings[container.id];
-		this._settings[container ? container.id : ''] = null;
-		var wrapper = new this._wrapperClass(svg, container);
-		$.data(container || svg, PROP_NAME, wrapper);
-		try {
-			if (settings.loadURL) { // Load URL
-				wrapper.load(settings.loadURL, settings);
-			}
-			if (settings.settings) { // Additional settings
-				wrapper.configure(settings.settings);
-			}
-			if (settings.onLoad && !settings.loadURL) { // Onload callback
-				settings.onLoad.apply(container || svg, [wrapper]);
-			}
-		}
-		catch (e) {
-			alert(e);
-		}
-	},
-
-	/* Return the SVG wrapper created for a given container.
-	   @param  container  (string) selector for the container or
-	                      (element) the container for the SVG object or
-	                      jQuery collection - first entry is the container
-	   @return  (SVGWrapper) the corresponding SVG wrapper element, or null if not attached */
-	_getSVG: function(container) {
-		container = (typeof container == 'string' ? $(container)[0] :
-			(container.jquery ? container[0] : container));
-		return $.data(container, PROP_NAME);
-	},
-
-	/* Remove the SVG functionality from a div.
-	   @param  container  (element) the container for the SVG object */
-	_destroySVG: function(container) {
-		var $container = $(container);
-		if (!$container.hasClass(this.markerClassName)) {
-			return;
-		}
-		$container.removeClass(this.markerClassName);
-		if (container.namespaceURI != this.svgNS) {
-			$container.empty();
-		}
-		$.removeData(container, PROP_NAME);
-	},
-
-	/* Extend the SVGWrapper object with an embedded class.
-	   The constructor function must take a single parameter that is
-	   a reference to the owning SVG root object. This allows the 
-	   extension to access the basic SVG functionality.
-	   @param  name      (string) the name of the SVGWrapper attribute to access the new class
-	   @param  extClass  (function) the extension class constructor */
-	addExtension: function(name, extClass) {
-		this._extensions.push([name, extClass]);
-	},
-
-	/* Does this node belong to SVG?
-	   @param  node  (element) the node to be tested
-	   @return  (boolean) true if an SVG node, false if not */
-	isSVGElem: function(node) {
-		return (node.nodeType == 1 && node.namespaceURI == $.svg.svgNS);
-	}
-});
-
-/* The main SVG interface, which encapsulates the SVG element.
-   Obtain a reference from $().svg('get') */
-function SVGWrapper(svg, container) {
-	this._svg = svg; // The SVG root node
-	this._container = container; // The containing div
-	for (var i = 0; i < $.svg._extensions.length; i++) {
-		var extension = $.svg._extensions[i];
-		this[extension[0]] = new extension[1](this);
-	}
-}
-
-$.extend(SVGWrapper.prototype, {
-
-	/* Retrieve the width of the SVG object. */
-	_width: function() {
-		return (this._container ? this._container.clientWidth : this._svg.width);
-	},
-
-	/* Retrieve the height of the SVG object. */
-	_height: function() {
-		return (this._container ? this._container.clientHeight : this._svg.height);
-	},
-
-	/* Retrieve the root SVG element.
-	   @return  the top-level SVG element */
-	root: function() {
-		return this._svg;
-	},
-
-	/* Configure a SVG node.
-	   @param  node      (element, optional) the node to configure
-	   @param  settings  (object) additional settings for the root
-	   @param  clear     (boolean) true to remove existing attributes first,
-	                     false to add to what is already there (optional)
-	   @return  (SVGWrapper) this root */
-	configure: function(node, settings, clear) {
-		if (!node.nodeName) {
-			clear = settings;
-			settings = node;
-			node = this._svg;
-		}
-		if (clear) {
-			for (var i = node.attributes.length - 1; i >= 0; i--) {
-				var attr = node.attributes.item(i);
-				if (!(attr.nodeName == 'onload' || attr.nodeName == 'version' || 
-						attr.nodeName.substring(0, 5) == 'xmlns')) {
-					node.attributes.removeNamedItem(attr.nodeName);
-				}
-			}
-		}
-		for (var attrName in settings) {
-			node.setAttribute($.svg._attrNames[attrName] || attrName, settings[attrName]);
-		}
-		return this;
-	},
-
-	/* Locate a specific element in the SVG document.
-	   @param  id  (string) the element's identifier
-	   @return  (element) the element reference, or null if not found */
-	getElementById: function(id) {
-		return this._svg.ownerDocument.getElementById(id);
-	},
-
-	/* Change the attributes for a SVG node.
-	   @param  element   (SVG element) the node to change
-	   @param  settings  (object) the new settings
-	   @return  (SVGWrapper) this root */
-	change: function(element, settings) {
-		if (element) {
-			for (var name in settings) {
-				if (settings[name] == null) {
-					element.removeAttribute($.svg._attrNames[name] || name);
-				}
-				else {
-					element.setAttribute($.svg._attrNames[name] || name, settings[name]);
-				}
-			}
-		}
-		return this;
-	},
-
-	/* Check for parent being absent and adjust arguments accordingly. */
-	_args: function(values, names, optSettings) {
-		names.splice(0, 0, 'parent');
-		names.splice(names.length, 0, 'settings');
-		var args = {};
-		var offset = 0;
-		if (values[0] != null && values[0].jquery) {
-			values[0] = values[0][0];
-		}
-		if (values[0] != null && !(typeof values[0] == 'object' && values[0].nodeName)) {
-			args['parent'] = null;
-			offset = 1;
-		}
-		for (var i = 0; i < values.length; i++) {
-			args[names[i + offset]] = values[i];
-		}
-		if (optSettings) {
-			$.each(optSettings, function(i, value) {
-				if (typeof args[value] == 'object') {
-					args.settings = args[value];
-					args[value] = null;
-				}
-			});
-		}
-		return args;
-	},
-
-	/* Add a title.
-	   @param  parent    (element or jQuery) the parent node for the new title (optional)
-	   @param  text      (string) the text of the title
-	   @param  settings  (object) additional settings for the title (optional)
-	   @return  (element) the new title node */
-	title: function(parent, text, settings) {
-		var args = this._args(arguments, ['text']);
-		var node = this._makeNode(args.parent, 'title', args.settings || {});
-		node.appendChild(this._svg.ownerDocument.createTextNode(args.text));
-		return node;
-	},
-
-	/* Add a description.
-	   @param  parent    (element or jQuery) the parent node for the new description (optional)
-	   @param  text      (string) the text of the description
-	   @param  settings  (object) additional settings for the description (optional)
-	   @return  (element) the new description node */
-	describe: function(parent, text, settings) {
-		var args = this._args(arguments, ['text']);
-		var node = this._makeNode(args.parent, 'desc', args.settings || {});
-		node.appendChild(this._svg.ownerDocument.createTextNode(args.text));
-		return node;
-	},
-
-	/* Add a definitions node.
-	   @param  parent    (element or jQuery) the parent node for the new definitions (optional)
-	   @param  id        (string) the ID of this definitions (optional)
-	   @param  settings  (object) additional settings for the definitions (optional)
-	   @return  (element) the new definitions node */
-	defs: function(parent, id, settings) {
-		var args = this._args(arguments, ['id'], ['id']);
-		return this._makeNode(args.parent, 'defs', $.extend(
-			(args.id ? {id: args.id} : {}), args.settings || {}));
-	},
-
-	/* Add a symbol definition.
-	   @param  parent    (element or jQuery) the parent node for the new symbol (optional)
-	   @param  id        (string) the ID of this symbol
-	   @param  x1        (number) the left coordinate for this symbol
-	   @param  y1        (number) the top coordinate for this symbol
-	   @param  width     (number) the width of this symbol
-	   @param  height    (number) the height of this symbol
-	   @param  settings  (object) additional settings for the symbol (optional)
-	   @return  (element) the new symbol node */
-	symbol: function(parent, id, x1, y1, width, height, settings) {
-		var args = this._args(arguments, ['id', 'x1', 'y1', 'width', 'height']);
-		return this._makeNode(args.parent, 'symbol', $.extend({id: args.id,
-			viewBox: args.x1 + ' ' + args.y1 + ' ' + args.width + ' ' + args.height},
-			args.settings || {}));
-	},
-
-	/* Add a marker definition.
-	   @param  parent    (element or jQuery) the parent node for the new marker (optional)
-	   @param  id        (string) the ID of this marker
-	   @param  refX      (number) the x-coordinate for the reference point
-	   @param  refY      (number) the y-coordinate for the reference point
-	   @param  mWidth    (number) the marker viewport width
-	   @param  mHeight   (number) the marker viewport height
-	   @param  orient    (string or int) 'auto' or angle (degrees) (optional)
-	   @param  settings  (object) additional settings for the marker (optional)
-	   @return  (element) the new marker node */
-	marker: function(parent, id, refX, refY, mWidth, mHeight, orient, settings) {
-		var args = this._args(arguments, ['id', 'refX', 'refY',
-			'mWidth', 'mHeight', 'orient'], ['orient']);
-		return this._makeNode(args.parent, 'marker', $.extend(
-			{id: args.id, refX: args.refX, refY: args.refY, markerWidth: args.mWidth, 
-			markerHeight: args.mHeight, orient: args.orient || 'auto'}, args.settings || {}));
-	},
-
-	/* Add a style node.
-	   @param  parent    (element or jQuery) the parent node for the new node (optional)
-	   @param  styles    (string) the CSS styles
-	   @param  settings  (object) additional settings for the node (optional)
-	   @return  (element) the new style node */
-	style: function(parent, styles, settings) {
-		var args = this._args(arguments, ['styles']);
-		var node = this._makeNode(args.parent, 'style', $.extend(
-			{type: 'text/css'}, args.settings || {}));
-		node.appendChild(this._svg.ownerDocument.createTextNode(args.styles));
-		if ($.browser.opera) {
-			$('head').append('<style type="text/css">' + args.styles + '</style>');
-		}
-		return node;
-	},
-
-	/* Add a script node.
-	   @param  parent    (element or jQuery) the parent node for the new node (optional)
-	   @param  script    (string) the JavaScript code
-	   @param  type      (string) the MIME type for the code (optional, default 'text/javascript')
-	   @param  settings  (object) additional settings for the node (optional)
-	   @return  (element) the new script node */
-	script: function(parent, script, type, settings) {
-		var args = this._args(arguments, ['script', 'type'], ['type']);
-		var node = this._makeNode(args.parent, 'script', $.extend(
-			{type: args.type || 'text/javascript'}, args.settings || {}));
-		node.appendChild(this._svg.ownerDocument.createTextNode(args.script));
-		if (!$.browser.mozilla) {
-			$.globalEval(args.script);
-		}
-		return node;
-	},
-
-	/* Add a linear gradient definition.
-	   Specify all of x1, y1, x2, y2 or none of them.
-	   @param  parent    (element or jQuery) the parent node for the new gradient (optional)
-	   @param  id        (string) the ID for this gradient
-	   @param  stops     (string[][]) the gradient stops, each entry is
-	                     [0] is offset (0.0-1.0 or 0%-100%), [1] is colour, 
-						 [2] is opacity (optional)
-	   @param  x1        (number) the x-coordinate of the gradient start (optional)
-	   @param  y1        (number) the y-coordinate of the gradient start (optional)
-	   @param  x2        (number) the x-coordinate of the gradient end (optional)
-	   @param  y2        (number) the y-coordinate of the gradient end (optional)
-	   @param  settings  (object) additional settings for the gradient (optional)
-	   @return  (element) the new gradient node */
-	linearGradient: function(parent, id, stops, x1, y1, x2, y2, settings) {
-		var args = this._args(arguments,
-			['id', 'stops', 'x1', 'y1', 'x2', 'y2'], ['x1']);
-		var sets = $.extend({id: args.id}, 
-			(args.x1 != null ? {x1: args.x1, y1: args.y1, x2: args.x2, y2: args.y2} : {}));
-		return this._gradient(args.parent, 'linearGradient', 
-			$.extend(sets, args.settings || {}), args.stops);
-	},
-
-	/* Add a radial gradient definition.
-	   Specify all of cx, cy, r, fx, fy or none of them.
-	   @param  parent    (element or jQuery) the parent node for the new gradient (optional)
-	   @param  id        (string) the ID for this gradient
-	   @param  stops     (string[][]) the gradient stops, each entry
-	                     [0] is offset, [1] is colour, [2] is opacity (optional)
-	   @param  cx        (number) the x-coordinate of the largest circle centre (optional)
-	   @param  cy        (number) the y-coordinate of the largest circle centre (optional)
-	   @param  r         (number) the radius of the largest circle (optional)
-	   @param  fx        (number) the x-coordinate of the gradient focus (optional)
-	   @param  fy        (number) the y-coordinate of the gradient focus (optional)
-	   @param  settings  (object) additional settings for the gradient (optional)
-	   @return  (element) the new gradient node */
-	radialGradient: function(parent, id, stops, cx, cy, r, fx, fy, settings) {
-		var args = this._args(arguments,
-			['id', 'stops', 'cx', 'cy', 'r', 'fx', 'fy'], ['cx']);
-		var sets = $.extend({id: args.id}, (args.cx != null ?
-			{cx: args.cx, cy: args.cy, r: args.r, fx: args.fx, fy: args.fy} : {}));
-		return this._gradient(args.parent, 'radialGradient', 
-			$.extend(sets, args.settings || {}), args.stops);
-	},
-
-	/* Add a gradient node. */
-	_gradient: function(parent, name, settings, stops) {
-		var node = this._makeNode(parent, name, settings);
-		for (var i = 0; i < stops.length; i++) {
-			var stop = stops[i];
-			this._makeNode(node, 'stop', $.extend(
-				{offset: stop[0], stopColor: stop[1]}, 
-				(stop[2] != null ? {stopOpacity: stop[2]} : {})));
-		}
-		return node;
-	},
-
-	/* Add a pattern definition.
-	   Specify all of vx, vy, xwidth, vheight or none of them.
-	   @param  parent    (element or jQuery) the parent node for the new pattern (optional)
-	   @param  id        (string) the ID for this pattern
-	   @param  x         (number) the x-coordinate for the left edge of the pattern
-	   @param  y         (number) the y-coordinate for the top edge of the pattern
-	   @param  width     (number) the width of the pattern
-	   @param  height    (number) the height of the pattern
-	   @param  vx        (number) the minimum x-coordinate for view box (optional)
-	   @param  vy        (number) the minimum y-coordinate for the view box (optional)
-	   @param  vwidth    (number) the width of the view box (optional)
-	   @param  vheight   (number) the height of the view box (optional)
-	   @param  settings  (object) additional settings for the pattern (optional)
-	   @return  (element) the new pattern node */
-	pattern: function(parent, id, x, y, width, height, vx, vy, vwidth, vheight, settings) {
-		var args = this._args(arguments, ['id', 'x', 'y', 'width', 'height',
-			'vx', 'vy', 'vwidth', 'vheight'], ['vx']);
-		var sets = $.extend({id: args.id, x: args.x, y: args.y,
-			width: args.width, height: args.height}, (args.vx != null ?
-			{viewBox: args.vx + ' ' + args.vy + ' ' + args.vwidth + ' ' + args.vheight} : {}));
-		return this._makeNode(args.parent, 'pattern', $.extend(sets, args.settings || {}));
-	},
-
-	/* Add a clip path definition.
-	   @param  parent  (element) the parent node for the new element (optional)
-	   @param  id      (string) the ID for this path
-	   @param  units   (string) either 'userSpaceOnUse' (default) or 'objectBoundingBox' (optional)
-	   @return  (element) the new clipPath node */
-	clipPath: function(parent, id, units, settings) {
-		var args = this._args(arguments, ['id', 'units']);
-		args.units = args.units || 'userSpaceOnUse';
-		return this._makeNode(args.parent, 'clipPath', $.extend(
-			{id: args.id, clipPathUnits: args.units}, args.settings || {}));
-	},
-
-	/* Add a mask definition.
-	   @param  parent    (element or jQuery) the parent node for the new mask (optional)
-	   @param  id        (string) the ID for this mask
-	   @param  x         (number) the x-coordinate for the left edge of the mask
-	   @param  y         (number) the y-coordinate for the top edge of the mask
-	   @param  width     (number) the width of the mask
-	   @param  height    (number) the height of the mask
-	   @param  settings  (object) additional settings for the mask (optional)
-	   @return  (element) the new mask node */
-	mask: function(parent, id, x, y, width, height, settings) {
-		var args = this._args(arguments, ['id', 'x', 'y', 'width', 'height']);
-		return this._makeNode(args.parent, 'mask', $.extend(
-			{id: args.id, x: args.x, y: args.y, width: args.width, height: args.height},
-			args.settings || {}));
-	},
-
-	/* Create a new path object.
-	   @return  (SVGPath) a new path object */
-	createPath: function() {
-		return new SVGPath();
-	},
-
-	/* Create a new text object.
-	   @return  (SVGText) a new text object */
-	createText: function() {
-		return new SVGText();
-	},
-
-	/* Add an embedded SVG element.
-	   Specify all of vx, vy, vwidth, vheight or none of them.
-	   @param  parent    (element or jQuery) the parent node for the new node (optional)
-	   @param  x         (number) the x-coordinate for the left edge of the node
-	   @param  y         (number) the y-coordinate for the top edge of the node
-	   @param  width     (number) the width of the node
-	   @param  height    (number) the height of the node
-	   @param  vx        (number) the minimum x-coordinate for view box (optional)
-	   @param  vy        (number) the minimum y-coordinate for the view box (optional)
-	   @param  vwidth    (number) the width of the view box (optional)
-	   @param  vheight   (number) the height of the view box (optional)
-	   @param  settings  (object) additional settings for the node (optional)
-	   @return  (element) the new node */
-	svg: function(parent, x, y, width, height, vx, vy, vwidth, vheight, settings) {
-		var args = this._args(arguments, ['x', 'y', 'width', 'height',
-			'vx', 'vy', 'vwidth', 'vheight'], ['vx']);
-		var sets = $.extend({x: args.x, y: args.y, width: args.width, height: args.height}, 
-			(args.vx != null ? {viewBox: args.vx + ' ' + args.vy + ' ' +
-			args.vwidth + ' ' + args.vheight} : {}));
-		return this._makeNode(args.parent, 'svg', $.extend(sets, args.settings || {}));
-	},
-
-	/* Create a group.
-	   @param  parent    (element or jQuery) the parent node for the new group (optional)
-	   @param  id        (string) the ID of this group (optional)
-	   @param  settings  (object) additional settings for the group (optional)
-	   @return  (element) the new group node */
-	group: function(parent, id, settings) {
-		var args = this._args(arguments, ['id'], ['id']);
-		return this._makeNode(args.parent, 'g', $.extend({id: args.id}, args.settings || {}));
-	},
-
-	/* Add a usage reference.
-	   Specify all of x, y, width, height or none of them.
-	   @param  parent    (element or jQuery) the parent node for the new node (optional)
-	   @param  x         (number) the x-coordinate for the left edge of the node (optional)
-	   @param  y         (number) the y-coordinate for the top edge of the node (optional)
-	   @param  width     (number) the width of the node (optional)
-	   @param  height    (number) the height of the node (optional)
-	   @param  ref       (string) the ID of the definition node
-	   @param  settings  (object) additional settings for the node (optional)
-	   @return  (element) the new node */
-	use: function(parent, x, y, width, height, ref, settings) {
-		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'ref']);
-		if (typeof args.x == 'string') {
-			args.ref = args.x;
-			args.settings = args.y;
-			args.x = args.y = args.width = args.height = null;
-		}
-		var node = this._makeNode(args.parent, 'use', $.extend(
-			{x: args.x, y: args.y, width: args.width, height: args.height},
-			args.settings || {}));
-		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
-		return node;
-	},
-
-	/* Add a link, which applies to all child elements.
-	   @param  parent    (element or jQuery) the parent node for the new link (optional)
-	   @param  ref       (string) the target URL
-	   @param  settings  (object) additional settings for the link (optional)
-	   @return  (element) the new link node */
-	link: function(parent, ref, settings) {
-		var args = this._args(arguments, ['ref']);
-		var node = this._makeNode(args.parent, 'a', args.settings);
-		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
-		return node;
-	},
-
-	/* Add an image.
-	   @param  parent    (element or jQuery) the parent node for the new image (optional)
-	   @param  x         (number) the x-coordinate for the left edge of the image
-	   @param  y         (number) the y-coordinate for the top edge of the image
-	   @param  width     (number) the width of the image
-	   @param  height    (number) the height of the image
-	   @param  ref       (string) the path to the image
-	   @param  settings  (object) additional settings for the image (optional)
-	   @return  (element) the new image node */
-	image: function(parent, x, y, width, height, ref, settings) {
-		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'ref']);
-		var node = this._makeNode(args.parent, 'image', $.extend(
-			{x: args.x, y: args.y, width: args.width, height: args.height},
-			args.settings || {}));
-		node.setAttributeNS($.svg.xlinkNS, 'href', args.ref);
-		return node;
-	},
-
-	/* Draw a path.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  path      (string or SVGPath) the path to draw
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	path: function(parent, path, settings) {
-		var args = this._args(arguments, ['path']);
-		return this._makeNode(args.parent, 'path', $.extend(
-			{d: (args.path.path ? args.path.path() : args.path)}, args.settings || {}));
-	},
-
-	/* Draw a rectangle.
-	   Specify both of rx and ry or neither.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  x         (number) the x-coordinate for the left edge of the rectangle
-	   @param  y         (number) the y-coordinate for the top edge of the rectangle
-	   @param  width     (number) the width of the rectangle
-	   @param  height    (number) the height of the rectangle
-	   @param  rx        (number) the x-radius of the ellipse for the rounded corners (optional)
-	   @param  ry        (number) the y-radius of the ellipse for the rounded corners (optional)
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	rect: function(parent, x, y, width, height, rx, ry, settings) {
-		var args = this._args(arguments, ['x', 'y', 'width', 'height', 'rx', 'ry'], ['rx']);
-		return this._makeNode(args.parent, 'rect', $.extend(
-			{x: args.x, y: args.y, width: args.width, height: args.height},
-			(args.rx ? {rx: args.rx, ry: args.ry} : {}), args.settings || {}));
-	},
-
-	/* Draw a circle.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  cx        (number) the x-coordinate for the centre of the circle
-	   @param  cy        (number) the y-coordinate for the centre of the circle
-	   @param  r         (number) the radius of the circle
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	circle: function(parent, cx, cy, r, settings) {
-		var args = this._args(arguments, ['cx', 'cy', 'r']);
-		return this._makeNode(args.parent, 'circle', $.extend(
-			{cx: args.cx, cy: args.cy, r: args.r}, args.settings || {}));
-	},
-
-	/* Draw an ellipse.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  cx        (number) the x-coordinate for the centre of the ellipse
-	   @param  cy        (number) the y-coordinate for the centre of the ellipse
-	   @param  rx        (number) the x-radius of the ellipse
-	   @param  ry        (number) the y-radius of the ellipse
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	ellipse: function(parent, cx, cy, rx, ry, settings) {
-		var args = this._args(arguments, ['cx', 'cy', 'rx', 'ry']);
-		return this._makeNode(args.parent, 'ellipse', $.extend(
-			{cx: args.cx, cy: args.cy, rx: args.rx, ry: args.ry}, args.settings || {}));
-	},
-
-	/* Draw a line.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  x1        (number) the x-coordinate for the start of the line
-	   @param  y1        (number) the y-coordinate for the start of the line
-	   @param  x2        (number) the x-coordinate for the end of the line
-	   @param  y2        (number) the y-coordinate for the end of the line
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	line: function(parent, x1, y1, x2, y2, settings) {
-		var args = this._args(arguments, ['x1', 'y1', 'x2', 'y2']);
-		return this._makeNode(args.parent, 'line', $.extend(
-			{x1: args.x1, y1: args.y1, x2: args.x2, y2: args.y2}, args.settings || {}));
-	},
-
-	/* Draw a polygonal line.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  points    (number[][]) the x-/y-coordinates for the points on the line
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	polyline: function(parent, points, settings) {
-		var args = this._args(arguments, ['points']);
-		return this._poly(args.parent, 'polyline', args.points, args.settings);
-	},
-
-	/* Draw a polygonal shape.
-	   @param  parent    (element or jQuery) the parent node for the new shape (optional)
-	   @param  points    (number[][]) the x-/y-coordinates for the points on the shape
-	   @param  settings  (object) additional settings for the shape (optional)
-	   @return  (element) the new shape node */
-	polygon: function(parent, points, settings) {
-		var args = this._args(arguments, ['points']);
-		return this._poly(args.parent, 'polygon', args.points, args.settings);
-	},
-
-	/* Draw a polygonal line or shape. */
-	_poly: function(parent, name, points, settings) {
-		var ps = '';
-		for (var i = 0; i < points.length; i++) {
-			ps += points[i].join() + ' ';
-		}
-		return this._makeNode(parent, name, $.extend(
-			{points: $.trim(ps)}, settings || {}));
-	},
-
-	/* Draw text.
-	   Specify both of x and y or neither of them.
-	   @param  parent    (element or jQuery) the parent node for the text (optional)
-	   @param  x         (number or number[]) the x-coordinate(s) for the text (optional)
-	   @param  y         (number or number[]) the y-coordinate(s) for the text (optional)
-	   @param  value     (string) the text content or
-	                     (SVGText) text with spans and references
-	   @param  settings  (object) additional settings for the text (optional)
-	   @return  (element) the new text node */
-	text: function(parent, x, y, value, settings) {
-		var args = this._args(arguments, ['x', 'y', 'value']);
-		if (typeof args.x == 'string' && arguments.length < 4) {
-			args.value = args.x;
-			args.settings = args.y;
-			args.x = args.y = null;
-		}
-		return this._text(args.parent, 'text', args.value, $.extend(
-			{x: (args.x && isArray(args.x) ? args.x.join(' ') : args.x),
-			y: (args.y && isArray(args.y) ? args.y.join(' ') : args.y)}, 
-			args.settings || {}));
-	},
-
-	/* Draw text along a path.
-	   @param  parent    (element or jQuery) the parent node for the text (optional)
-	   @param  path      (string) the ID of the path
-	   @param  value     (string) the text content or
-	                     (SVGText) text with spans and references
-	   @param  settings  (object) additional settings for the text (optional)
-	   @return  (element) the new text node */
-	textpath: function(parent, path, value, settings) {
-		var args = this._args(arguments, ['path', 'value']);
-		var node = this._text(args.parent, 'textPath', args.value, args.settings || {});
-		node.setAttributeNS($.svg.xlinkNS, 'href', args.path);
-		return node;
-	},
-
-	/* Draw text. */
-	_text: function(parent, name, value, settings) {
-		var node = this._makeNode(parent, name, settings);
-		if (typeof value == 'string') {
-			node.appendChild(node.ownerDocument.createTextNode(value));
-		}
-		else {
-			for (var i = 0; i < value._parts.length; i++) {
-				var part = value._parts[i];
-				if (part[0] == 'tspan') {
-					var child = this._makeNode(node, part[0], part[2]);
-					child.appendChild(node.ownerDocument.createTextNode(part[1]));
-					node.appendChild(child);
-				}
-				else if (part[0] == 'tref') {
-					var child = this._makeNode(node, part[0], part[2]);
-					child.setAttributeNS($.svg.xlinkNS, 'href', part[1]);
-					node.appendChild(child);
-				}
-				else if (part[0] == 'textpath') {
-					var set = $.extend({}, part[2]);
-					set.href = null;
-					var child = this._makeNode(node, part[0], set);
-					child.setAttributeNS($.svg.xlinkNS, 'href', part[2].href);
-					child.appendChild(node.ownerDocument.createTextNode(part[1]));
-					node.appendChild(child);
-				}
-				else { // straight text
-					node.appendChild(node.ownerDocument.createTextNode(part[1]));
-				}
-			}
-		}
-		return node;
-	},
-
-	/* Add a custom SVG element.
-	   @param  parent    (element or jQuery) the parent node for the new element (optional)
-	   @param  name      (string) the name of the element
-	   @param  settings  (object) additional settings for the element (optional)
-	   @return  (element) the new custom node */
-	other: function(parent, name, settings) {
-		var args = this._args(arguments, ['name']);
-		return this._makeNode(args.parent, args.name, args.settings || {});
-	},
-
-	/* Create a shape node with the given settings. */
-	_makeNode: function(parent, name, settings) {
-		parent = parent || this._svg;
-		var node = this._svg.ownerDocument.createElementNS($.svg.svgNS, name);
-		for (var name in settings) {
-			var value = settings[name];
-			if (value != null && value != null && 
-					(typeof value != 'string' || value != '')) {
-				node.setAttribute($.svg._attrNames[name] || name, value);
-			}
-		}
-		parent.appendChild(node);
-		return node;
-	},
-
-	/* Add an existing SVG node to the diagram.
-	   @param  parent  (element or jQuery) the parent node for the new node (optional)
-	   @param  node    (element) the new node to add or
-	                   (string) the jQuery selector for the node or
-	                   (jQuery collection) set of nodes to add
-	   @return  (SVGWrapper) this wrapper */
-	add: function(parent, node) {
-		var args = this._args((arguments.length == 1 ? [null, parent] : arguments), ['node']);
-		var svg = this;
-		args.parent = args.parent || this._svg;
-		args.node = (args.node.jquery ? args.node : $(args.node));
-		try {
-			if ($.svg._renesis) {
-				throw 'Force traversal';
-			}
-			args.parent.appendChild(args.node.cloneNode(true));
-		}
-		catch (e) {
-			args.node.each(function() {
-				var child = svg._cloneAsSVG(this);
-				if (child) {
-					args.parent.appendChild(child);
-				}
-			});
-		}
-		return this;
-	},
-
-	/* Clone an existing SVG node and add it to the diagram.
-	   @param  parent  (element or jQuery) the parent node for the new node (optional)
-	   @param  node    (element) the new node to add or
-	                   (string) the jQuery selector for the node or
-	                   (jQuery collection) set of nodes to add
-	   @return  (element[]) collection of new nodes */
-	clone: function(parent, node) {
-		var svg = this;
-		var args = this._args((arguments.length == 1 ? [null, parent] : arguments), ['node']);
-		args.parent = args.parent || this._svg;
-		args.node = (args.node.jquery ? args.node : $(args.node));
-		var newNodes = [];
-		args.node.each(function() {
-			var child = svg._cloneAsSVG(this);
-			if (child) {
-				child.id = '';
-				args.parent.appendChild(child);
-				newNodes.push(child);
-			}
-		});
-		return newNodes;
-	},
-
-	/* SVG nodes must belong to the SVG namespace, so clone and ensure this is so.
-	   @param  node  (element) the SVG node to clone
-	   @return  (element) the cloned node */
-	_cloneAsSVG: function(node) {
-		var newNode = null;
-		if (node.nodeType == 1) { // element
-			newNode = this._svg.ownerDocument.createElementNS(
-				$.svg.svgNS, this._checkName(node.nodeName));
-			for (var i = 0; i < node.attributes.length; i++) {
-				var attr = node.attributes.item(i);
-				if (attr.nodeName != 'xmlns' && attr.nodeValue) {
-					if (attr.prefix == 'xlink') {
-						newNode.setAttributeNS($.svg.xlinkNS,
-							attr.localName || attr.baseName, attr.nodeValue);
-					}
-					else {
-						newNode.setAttribute(this._checkName(attr.nodeName), attr.nodeValue);
-					}
-				}
-			}
-			for (var i = 0; i < node.childNodes.length; i++) {
-				var child = this._cloneAsSVG(node.childNodes[i]);
-				if (child) {
-					newNode.appendChild(child);
-				}
-			}
-		}
-		else if (node.nodeType == 3) { // text
-			if ($.trim(node.nodeValue)) {
-				newNode = this._svg.ownerDocument.createTextNode(node.nodeValue);
-			}
-		}
-		else if (node.nodeType == 4) { // CDATA
-			if ($.trim(node.nodeValue)) {
-				try {
-					newNode = this._svg.ownerDocument.createCDATASection(node.nodeValue);
-				}
-				catch (e) {
-					newNode = this._svg.ownerDocument.createTextNode(
-						node.nodeValue.replace(/&/g, '&amp;').
-						replace(/</g, '&lt;').replace(/>/g, '&gt;'));
-				}
-			}
-		}
-		return newNode;
-	},
-
-	/* Node names must be lower case and without SVG namespace prefix. */
-	_checkName: function(name) {
-		name = (name.substring(0, 1) >= 'A' && name.substring(0, 1) <= 'Z' ?
-			name.toLowerCase() : name);
-		return (name.substring(0, 4) == 'svg:' ? name.substring(4) : name);
-	},
-
-	/* Load an external SVG document.
-	   @param  url       (string) the location of the SVG document or
-	                     the actual SVG content
-	   @param  settings  (boolean) see addTo below or
-	                     (function) see onLoad below or
-	                     (object) additional settings for the load with attributes below:
-	                       addTo       (boolean) true to add to what's already there,
-	                                   or false to clear the canvas first
-						   changeSize  (boolean) true to allow the canvas size to change,
-	                                   or false to retain the original
-	                       onLoad      (function) callback after the document has loaded,
-	                                   'this' is the container, receives SVG object and
-	                                   optional error message as a parameter
-	                       parent      (string or element or jQuery) the parent to load
-	                                   into, defaults to top-level svg element
-	   @return  (SVGWrapper) this root */
-	load: function(url, settings) {
-		settings = (typeof settings == 'boolean' ? {addTo: settings} :
-			(typeof settings == 'function' ? {onLoad: settings} :
-			(typeof settings == 'string' ? {parent: settings} : 
-			(typeof settings == 'object' && settings.nodeName ? {parent: settings} :
-			(typeof settings == 'object' && settings.jquery ? {parent: settings} :
-			settings || {})))));
-		if (!settings.parent && !settings.addTo) {
-			this.clear(false);
-		}
-		var size = [this._svg.getAttribute('width'), this._svg.getAttribute('height')];
-		var wrapper = this;
-		// Report a problem with the load
-		var reportError = function(message) {
-			message = $.svg.local.errorLoadingText + ': ' + message;
-			if (settings.onLoad) {
-				settings.onLoad.apply(wrapper._container || wrapper._svg, [wrapper, message]);
-			}
-			else {
-				wrapper.text(null, 10, 20, message);
-			}
-		};
-		// Create a DOM from SVG content
-		var loadXML4IE = function(data) {
-			var xml = new ActiveXObject('Microsoft.XMLDOM');
-			xml.validateOnParse = false;
-			xml.resolveExternals = false;
-			xml.async = false;
-			xml.loadXML(data);
-			if (xml.parseError.errorCode != 0) {
-				reportError(xml.parseError.reason);
-				return null;
-			}
-			return xml;
-		};
-		// Load the SVG DOM
-		var loadSVG = function(data) {
-			if (!data) {
-				return;
-			}
-			if (data.documentElement.nodeName != 'svg') {
-				var errors = data.getElementsByTagName('parsererror');
-				var messages = (errors.length ? errors[0].getElementsByTagName('div') : []); // Safari
-				reportError(!errors.length ? '???' :
-					(messages.length ? messages[0] : errors[0]).firstChild.nodeValue);
-				return;
-			}
-			var parent = (settings.parent ? $(settings.parent)[0] : wrapper._svg);
-			var attrs = {};
-			for (var i = 0; i < data.documentElement.attributes.length; i++) {
-				var attr = data.documentElement.attributes.item(i);
-				if (!(attr.nodeName == 'version' || attr.nodeName.substring(0, 5) == 'xmlns')) {
-					attrs[attr.nodeName] = attr.nodeValue;
-				}
-			}
-			wrapper.configure(parent, attrs, !settings.parent);
-			var nodes = data.documentElement.childNodes;
-			for (var i = 0; i < nodes.length; i++) {
-				try {
-					if ($.svg._renesis) {
-						throw 'Force traversal';
-					}
-					parent.appendChild(wrapper._svg.ownerDocument.importNode(nodes[i], true));
-					if (nodes[i].nodeName == 'script') {
-						$.globalEval(nodes[i].textContent);
-					}
-				}
-				catch (e) {
-					wrapper.add(parent, nodes[i]);
-				}
-			}
-			if (!settings.changeSize) {
-				wrapper.configure(parent, {width: size[0], height: size[1]});
-			}
-			if (settings.onLoad) {
-				settings.onLoad.apply(wrapper._container || wrapper._svg, [wrapper]);
-			}
-		};
-		if (url.match('<svg')) { // Inline SVG
-			loadSVG($.browser.msie ? loadXML4IE(url) :
-				new DOMParser().parseFromString(url, 'text/xml'));
-		}
-		else { // Remote SVG
-			$.ajax({url: url, dataType: ($.browser.msie ? 'text' : 'xml'),
-				success: function(xml) {
-					loadSVG($.browser.msie ? loadXML4IE(xml) : xml);
-				}, error: function(http, message, exc) {
-					reportError(message + (exc ? ' ' + exc.message : ''));
-				}});
-		}
-		return this;
-	},
-
-	/* Delete a specified node.
-	   @param  node  (element or jQuery) the drawing node to remove
-	   @return  (SVGWrapper) this root */
-	remove: function(node) {
-		node = (node.jquery ? node[0] : node);
-		node.parentNode.removeChild(node);
-		return this;
-	},
-
-	/* Delete everything in the current document.
-	   @param  attrsToo  (boolean) true to clear any root attributes as well,
-	                     false to leave them (optional)
-	   @return  (SVGWrapper) this root */
-	clear: function(attrsToo) {
-		if (attrsToo) {
-			this.configure({}, true);
-		}
-		while (this._svg.firstChild) {
-			this._svg.removeChild(this._svg.firstChild);
-		}
-		return this;
-	},
-
-	/* Serialise the current diagram into an SVG text document.
-	   @param  node  (SVG element) the starting node (optional)
-	   @return  (string) the SVG as text */
-	toSVG: function(node) {
-		node = node || this._svg;
-		return (typeof XMLSerializer == 'undefined' ? this._toSVG(node) :
-			new XMLSerializer().serializeToString(node));
-	},
-
-	/* Serialise one node in the SVG hierarchy. */
-	_toSVG: function(node) {
-		var svgDoc = '';
-		if (!node) {
-			return svgDoc;
-		}
-		if (node.nodeType == 3) { // Text
-			svgDoc = node.nodeValue;
-		}
-		else if (node.nodeType == 4) { // CDATA
-			svgDoc = '<![CDATA[' + node.nodeValue + ']]>';
-		}
-		else { // Element
-			svgDoc = '<' + node.nodeName;
-			if (node.attributes) {
-				for (var i = 0; i < node.attributes.length; i++) {
-					var attr = node.attributes.item(i);
-					if (!($.trim(attr.nodeValue) == '' || attr.nodeValue.match(/^\[object/) ||
-							attr.nodeValue.match(/^function/))) {
-						svgDoc += ' ' + (attr.namespaceURI == $.svg.xlinkNS ? 'xlink:' : '') + 
-							attr.nodeName + '="' + attr.nodeValue + '"';
-					}
-				}
-			}	
-			if (node.firstChild) {
-				svgDoc += '>';
-				var child = node.firstChild;
-				while (child) {
-					svgDoc += this._toSVG(child);
-					child = child.nextSibling;
-				}
-				svgDoc += '</' + node.nodeName + '>';
-			}
-				else {
-				svgDoc += '/>';
-			}
-		}
-		return svgDoc;
-	}
-});
-
-/* Helper to generate an SVG path.
-   Obtain an instance from the SVGWrapper object.
-   String calls together to generate the path and use its value:
-   var path = root.createPath();
-   root.path(null, path.move(100, 100).line(300, 100).line(200, 300).close(), {fill: 'red'});
-   or
-   root.path(null, path.move(100, 100).line([[300, 100], [200, 300]]).close(), {fill: 'red'}); */
-function SVGPath() {
-	this._path = '';
-}
-
-$.extend(SVGPath.prototype, {
-	/* Prepare to create a new path.
-	   @return  (SVGPath) this path */
-	reset: function() {
-		this._path = '';
-		return this;
-	},
-
-	/* Move the pointer to a position.
-	   @param  x         (number) x-coordinate to move to or
-	                     (number[][]) x-/y-coordinates to move to
-	   @param  y         (number) y-coordinate to move to (omitted if x is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	move: function(x, y, relative) {
-		relative = (isArray(x) ? y : relative);
-		return this._coords((relative ? 'm' : 'M'), x, y);
-	},
-
-	/* Draw a line to a position.
-	   @param  x         (number) x-coordinate to move to or
-	                     (number[][]) x-/y-coordinates to move to
-	   @param  y         (number) y-coordinate to move to (omitted if x is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	line: function(x, y, relative) {
-		relative = (isArray(x) ? y : relative);
-		return this._coords((relative ? 'l' : 'L'), x, y);
-	},
-
-	/* Draw a horizontal line to a position.
-	   @param  x         (number) x-coordinate to draw to or
-	                     (number[]) x-coordinates to draw to
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	horiz: function(x, relative) {
-		this._path += (relative ? 'h' : 'H') + (isArray(x) ? x.join(' ') : x);
-		return this;
-	},
-
-	/* Draw a vertical line to a position.
-	   @param  y         (number) y-coordinate to draw to or
-	                     (number[]) y-coordinates to draw to
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	vert: function(y, relative) {
-		this._path += (relative ? 'v' : 'V') + (isArray(y) ? y.join(' ') : y);
-		return this;
-	},
-
-	/* Draw a cubic Bézier curve.
-	   @param  x1        (number) x-coordinate of beginning control point or
-	                     (number[][]) x-/y-coordinates of control and end points to draw to
-	   @param  y1        (number) y-coordinate of beginning control point (omitted if x1 is array)
-	   @param  x2        (number) x-coordinate of ending control point (omitted if x1 is array)
-	   @param  y2        (number) y-coordinate of ending control point (omitted if x1 is array)
-	   @param  x         (number) x-coordinate of curve end (omitted if x1 is array)
-	   @param  y         (number) y-coordinate of curve end (omitted if x1 is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	curveC: function(x1, y1, x2, y2, x, y, relative) {
-		relative = (isArray(x1) ? y1 : relative);
-		return this._coords((relative ? 'c' : 'C'), x1, y1, x2, y2, x, y);
-	},
-
-	/* Continue a cubic Bézier curve.
-	   Starting control point is the reflection of the previous end control point.
-	   @param  x2        (number) x-coordinate of ending control point or
-	                     (number[][]) x-/y-coordinates of control and end points to draw to
-	   @param  y2        (number) y-coordinate of ending control point (omitted if x2 is array)
-	   @param  x         (number) x-coordinate of curve end (omitted if x2 is array)
-	   @param  y         (number) y-coordinate of curve end (omitted if x2 is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	smoothC: function(x2, y2, x, y, relative) {
-		relative = (isArray(x2) ? y2 : relative);
-		return this._coords((relative ? 's' : 'S'), x2, y2, x, y);
-	},
-
-	/* Draw a quadratic Bézier curve.
-	   @param  x1        (number) x-coordinate of control point or
-	                     (number[][]) x-/y-coordinates of control and end points to draw to
-	   @param  y1        (number) y-coordinate of control point (omitted if x1 is array)
-	   @param  x         (number) x-coordinate of curve end (omitted if x1 is array)
-	   @param  y         (number) y-coordinate of curve end (omitted if x1 is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	curveQ: function(x1, y1, x, y, relative) {
-		relative = (isArray(x1) ? y1 : relative);
-		return this._coords((relative ? 'q' : 'Q'), x1, y1, x, y);
-	},
-
-	/* Continue a quadratic Bézier curve.
-	   Control point is the reflection of the previous control point.
-	   @param  x         (number) x-coordinate of curve end or
-	                     (number[][]) x-/y-coordinates of points to draw to
-	   @param  y         (number) y-coordinate of curve end (omitted if x is array)
-	   @param  relative  (boolean) true for coordinates relative to the current point,
-	                     false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	smoothQ: function(x, y, relative) {
-		relative = (isArray(x) ? y : relative);
-		return this._coords((relative ? 't' : 'T'), x, y);
-	},
-
-	/* Generate a path command with (a list of) coordinates. */
-	_coords: function(cmd, x1, y1, x2, y2, x3, y3) {
-		if (isArray(x1)) {
-			for (var i = 0; i < x1.length; i++) {
-				var cs = x1[i];
-				this._path += (i == 0 ? cmd : ' ') + cs[0] + ',' + cs[1] +
-					(cs.length < 4 ? '' : ' ' + cs[2] + ',' + cs[3] +
-					(cs.length < 6 ? '': ' ' + cs[4] + ',' + cs[5]));
-			}
-		}
-		else {
-			this._path += cmd + x1 + ',' + y1 + 
-				(x2 == null ? '' : ' ' + x2 + ',' + y2 +
-				(x3 == null ? '' : ' ' + x3 + ',' + y3));
-		}
-		return this;
-	},
-
-	/* Draw an arc to a position.
-	   @param  rx         (number) x-radius of arc or
-	                      (number/boolean[][]) x-/y-coordinates and flags for points to draw to
-	   @param  ry         (number) y-radius of arc (omitted if rx is array)
-	   @param  xRotate    (number) x-axis rotation (degrees, clockwise) (omitted if rx is array)
-	   @param  large      (boolean) true to draw the large part of the arc,
-	                      false to draw the small part (omitted if rx is array)
-	   @param  clockwise  (boolean) true to draw the clockwise arc,
-	                      false to draw the anti-clockwise arc (omitted if rx is array)
-	   @param  x          (number) x-coordinate of arc end (omitted if rx is array)
-	   @param  y          (number) y-coordinate of arc end (omitted if rx is array)
-	   @param  relative   (boolean) true for coordinates relative to the current point,
-	                      false for coordinates being absolute
-	   @return  (SVGPath) this path */
-	arc: function(rx, ry, xRotate, large, clockwise, x, y, relative) {
-		relative = (isArray(rx) ? ry : relative);
-		this._path += (relative ? 'a' : 'A');
-		if (isArray(rx)) {
-			for (var i = 0; i < rx.length; i++) {
-				var cs = rx[i];
-				this._path += (i == 0 ? '' : ' ') + cs[0] + ',' + cs[1] + ' ' +
-					cs[2] + ' ' + (cs[3] ? '1' : '0') + ',' +
-					(cs[4] ? '1' : '0') + ' ' + cs[5] + ',' + cs[6];
-			}
-		}
-		else {
-			this._path += rx + ',' + ry + ' ' + xRotate + ' ' +
-				(large ? '1' : '0') + ',' + (clockwise ? '1' : '0') + ' ' + x + ',' + y;
-		}
-		return this;
-	},
-
-	/* Close the current path.
-	   @return  (SVGPath) this path */
-	close: function() {
-		this._path += 'z';
-		return this;
-	},
-
-	/* Return the string rendering of the specified path.
-	   @return  (string) stringified path */
-	path: function() {
-		return this._path;
-	}
-});
-
-SVGPath.prototype.moveTo = SVGPath.prototype.move;
-SVGPath.prototype.lineTo = SVGPath.prototype.line;
-SVGPath.prototype.horizTo = SVGPath.prototype.horiz;
-SVGPath.prototype.vertTo = SVGPath.prototype.vert;
-SVGPath.prototype.curveCTo = SVGPath.prototype.curveC;
-SVGPath.prototype.smoothCTo = SVGPath.prototype.smoothC;
-SVGPath.prototype.curveQTo = SVGPath.prototype.curveQ;
-SVGPath.prototype.smoothQTo = SVGPath.prototype.smoothQ;
-SVGPath.prototype.arcTo = SVGPath.prototype.arc;
-
-/* Helper to generate an SVG text object.
-   Obtain an instance from the SVGWrapper object.
-   String calls together to generate the text and use its value:
-   var text = root.createText();
-   root.text(null, x, y, text.string('This is ').
-     span('red', {fill: 'red'}).string('!'), {fill: 'blue'}); */
-function SVGText() {
-	this._parts = []; // The components of the text object
-}
-
-$.extend(SVGText.prototype, {
-	/* Prepare to create a new text object.
-	   @return  (SVGText) this text */
-	reset: function() {
-		this._parts = [];
-		return this;
-	},
-
-	/* Add a straight string value.
-	   @param  value  (string) the actual text
-	   @return  (SVGText) this text object */
-	string: function(value) {
-		this._parts[this._parts.length] = ['text', value];
-		return this;
-	},
-
-	/* Add a separate text span that has its own settings.
-	   @param  value     (string) the actual text
-	   @param  settings  (object) the settings for this text
-	   @return  (SVGText) this text object */
-	span: function(value, settings) {
-		this._parts[this._parts.length] = ['tspan', value, settings];
-		return this;
-	},
-
-	/* Add a reference to a previously defined text string.
-	   @param  id        (string) the ID of the actual text
-	   @param  settings  (object) the settings for this text
-	   @return  (SVGText) this text object */
-	ref: function(id, settings) {
-		this._parts[this._parts.length] = ['tref', id, settings];
-		return this;
-	},
-
-	/* Add text drawn along a path.
-	   @param  id        (string) the ID of the path
-	   @param  value     (string) the actual text
-	   @param  settings  (object) the settings for this text
-	   @return  (SVGText) this text object */
-	path: function(id, value, settings) {
-		this._parts[this._parts.length] = ['textpath', value, 
-			$.extend({href: id}, settings || {})];
-		return this;
-	}
-});
-
-/* Attach the SVG functionality to a jQuery selection.
-   @param  command  (string) the command to run (optional, default 'attach')
-   @param  options  (object) the new settings to use for these SVG instances
-   @return jQuery (object) for chaining further calls */
-$.fn.svg = function(options) {
-	var otherArgs = Array.prototype.slice.call(arguments, 1);
-	if (typeof options == 'string' && options == 'get') {
-		return $.svg['_' + options + 'SVG'].apply($.svg, [this[0]].concat(otherArgs));
-	}
-	return this.each(function() {
-		if (typeof options == 'string') {
-			$.svg['_' + options + 'SVG'].apply($.svg, [this].concat(otherArgs));
-		}
-		else {
-			$.svg._attachSVG(this, options || {});
-		} 
-	});
-};
-
-/* Determine whether an object is an array. */
-function isArray(a) {
-	return (a && a.constructor == Array);
-}
-
-// Singleton primary SVG interface
-$.svg = new SVGManager();
-
-})(jQuery);
-
-define("jquery-svg", function(){});
-
-/*globals define */
-/*jslint plusplus:true, white:true, vars:true, regexp:true, nomen:true */
-/*jshint jquery:true, browser:true, funcscope:true, laxbreak:true, laxcomma:true */
-
-// Module core/regpict
-// Handles register pictures in the document. This encompasses two primary operations. One is
-// extracting register information from a variety of table styles. The other is inventing an
-// svg diagram that represents the fields in the table.
+define('tmpl!core/templates/webidl/module.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlModule\'>{{extAttr obj indent true }}{{idn indent}}module <span class=\'idlModuleID\'>{{obj.id}}</span> {\n{{#each obj.children}}{{asWebIDL proc this indent}}{{/each}}\n{{idn indent}}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/typedef.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlTypedef\' id=\'idl-def-{{obj.refId}}\'>typedef {{extAttr obj 0 false\n}}<span class=\'idlTypedefType\'>{{datatype obj.datatype\n}}</span>{{arr}}{{nullable}} <span class=\'idlTypedefID\'>{{obj.id}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/implements.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlImplements\'>{{extAttr obj indent true}}{{idn indent}}<a>{{obj.id}}</a> implements <a>{{obj.datatype}}</a>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dict-member.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMember\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlMemberType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMemberName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id}}</a></span>{{#if obj.defaultValue\n}} = <span class=\'idlMemberValue\'>{{obj.defaultValue}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/dictionary.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlDictionary\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}{{partial}}dictionary <span class=\'idlDictionaryID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/enum-item.html', ['handlebars'], function (hb) { return Handlebars.compile('{{idn indent}}"<a href="#idl-def-{{parentID}}.{{obj.refId}}" class="idlEnumItem">{{obj.id}}</a>"');});
+
+
+define('tmpl!core/templates/webidl/enum.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlEnum\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}enum <span class=\'idlEnumID\'>{{obj.id}}</span> {\n{{{children}}}\n{{idn indent}}}};');});
+
+
+define('tmpl!core/templates/webidl/const.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlConst\'>{{extAttr obj indent true\n}}{{idn indent}}const <span class=\'idlConstType\'><a>{{obj.datatype}}</a>{{nullable}}</span> {{pads pad\n}}<span class=\'idlConstName\'><a href=\'#{{curLnk}}{{obj.refId}}\'>{{obj.id\n}}</a></span> = <span class=\'idlConstValue\'>{{obj.value}}</span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/param.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlParam\'>{{extAttr obj 0 false\n}}{{optional}}<span class=\'idlParamType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}{{variadic\n}}</span> <span class=\'idlParamName\'>{{obj.id}}</span>{{#if obj.defaultValue\n}} = <span class=\'idlDefaultValue\'>{{obj.defaultValue}}</span>{{/if}}</span>');});
+
+
+define('tmpl!core/templates/webidl/callback.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCallback\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}callback <span class=\'idlCallbackID\'>{{obj.id\n}}</span> = <span class=\'idlCallbackType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> ({{{children}}});</span>\n');});
+
+
+define('tmpl!core/templates/webidl/method.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlMethod\'>{{extAttr obj indent true\n}}{{idn indent}}{{static}}<span class=\'idlMethType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads pad\n}}<span class=\'idlMethName\'><a href=\'#{{id}}\'>{{obj.id}}</a></span> ({{{children}}});</span>\n');});
+
+
+define('tmpl!core/templates/webidl/constructor.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlCtor\'>{{extAttr obj indent true\n}}{{idn indent}} <span class=\'idlCtorKeyword\'>{{keyword}}</span><span class=\'idlCtorName\'><a href=\'#{{id}}\'>{{name}}</a></span>{{param obj children}}</span>');});
+
+
+define('tmpl!core/templates/webidl/attribute.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlAttribute\'>{{extAttr obj indent true\n}}{{idn indent}}{{declaration}} attribute <span class=\'idlAttrType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlAttrName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/serializer.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSerializer\'>{{extAttr obj indent true\n}}{{idn indent}}serializer{{#if values}} = <span class=\'idlSerializerValues\'>{{values}}</span>{{/if}};</span>\n');});
+
+
+define('tmpl!core/templates/webidl/comment.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlSectionComment\'>{{extAttr obj indent true\n}}{{idn indent}}// {{comment}}</span>\n');});
+
+
+define('tmpl!core/templates/webidl/field.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlField\'>{{extAttr obj indent true\n}}{{idn indent}}<span class=\'idlFieldType\'>{{datatype obj.datatype}}{{arr}}{{nullable}}</span> {{pads\npad}}<span class=\'idlFieldName\'><a href=\'#{{href}}\'>{{obj.id}}</a></span>;</span>\n');});
+
+
+define('tmpl!core/templates/webidl/exception.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlException\' id=\'idl-def-{{obj.refId}}\'>{{extAttr obj indent true\n}}{{idn indent}}exception <span class=\'idlExceptionID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+
+define('tmpl!core/templates/webidl/interface.html', ['handlebars'], function (hb) { return Handlebars.compile('<span class=\'idlInterface\' id=\'{{id}}\'>{{extAttr obj indent true ctor\n}}{{idn indent}}{{partial}}{{callback}}interface <span class=\'idlInterfaceID\'>{{obj.id}}</span>{{superclasses obj}} {\n{{{children}}}{{idn indent}}}};</span>');});
+
+/*global Handlebars, simpleNode */
+
+// Module core/webidl-oldschool
+//  Transforms specific markup into the complex old school rendering for API information.
+
+// TODO:
+//  - It could be useful to report parsed IDL items as events
+//  - don't use generated content in the CSS!
+
+var sn;
 define(
-    'core/regpict',["text!core/css/regpict.css",
-     "jquery",
-     "core/utils",
-     "jquery-svg"],
-    function(css) {
-        
+    'core/webidl-oldschool',[
+        "handlebars"
+    ,   "tmpl!core/css/webidl-oldschool.css"
+    ,   "tmpl!core/templates/webidl/module.html"
+    ,   "tmpl!core/templates/webidl/typedef.html"
+    ,   "tmpl!core/templates/webidl/implements.html"
+    ,   "tmpl!core/templates/webidl/dict-member.html"
+    ,   "tmpl!core/templates/webidl/dictionary.html"
+    ,   "tmpl!core/templates/webidl/enum-item.html"
+    ,   "tmpl!core/templates/webidl/enum.html"
+    ,   "tmpl!core/templates/webidl/const.html"
+    ,   "tmpl!core/templates/webidl/param.html"
+    ,   "tmpl!core/templates/webidl/callback.html"
+    ,   "tmpl!core/templates/webidl/method.html"
+    ,   "tmpl!core/templates/webidl/constructor.html"
+    ,   "tmpl!core/templates/webidl/attribute.html"
+    ,   "tmpl!core/templates/webidl/serializer.html"
+    ,   "tmpl!core/templates/webidl/comment.html"
+    ,   "tmpl!core/templates/webidl/field.html"
+    ,   "tmpl!core/templates/webidl/exception.html"
+    ,   "tmpl!core/templates/webidl/interface.html"
+    ],
+    function (hb, css, idlModuleTmpl, idlTypedefTmpl, idlImplementsTmpl, idlDictMemberTmpl, idlDictionaryTmpl,
+                   idlEnumItemTmpl, idlEnumTmpl, idlConstTmpl, idlParamTmpl, idlCallbackTmpl, idlMethodTmpl,
+              idlConstructorTmpl, idlAttributeTmpl, idlSerializerTmpl, idlCommentTmpl, idlFieldTmpl, idlExceptionTmpl, idlInterfaceTmpl) {
+        var WebIDLProcessor = function (cfg) {
+                this.parent = { type: "module", id: "outermost", children: [] };
+                if (!cfg) cfg = {};
+                for (var k in cfg) if (cfg.hasOwnProperty(k)) this[k] = cfg[k];
 
-        function pget(obj, prop, def) {
-            if ((obj !== null) && obj.hasOwnProperty(prop)) {
-                return obj[prop];
+                Handlebars.registerHelper("extAttr", function (obj, indent, nl, ctor) {
+                    var ret = "";
+                    if (obj.extendedAttributes) {
+                        ret += idn(indent) + "[<span class='extAttr'>" + obj.extendedAttributes + "</span>" +
+                               (typeof ctor === 'string' && ctor.length ? ",\n" + ctor : "") + "]" + (nl ? "\n" : " ");
+                    }
+                    else if (typeof ctor === 'string' && ctor.length) {
+                        ret += idn(indent) + "[" + ctor + "]" + (nl ? "\n" : " ");
+                    }
+                    return new Handlebars.SafeString(ret);
+                });
+                Handlebars.registerHelper("param", function (obj, children) {
+                    var param = "";
+                    if (children) param += " (" + children + ")";
+                    return new Handlebars.SafeString(param);
+                });
+                Handlebars.registerHelper("idn", function (indent) {
+                    return new Handlebars.SafeString(idn(indent));
+                });
+                Handlebars.registerHelper("asWebIDL", function (proc, obj, indent) {
+                    return new Handlebars.SafeString(proc.writeAsWebIDL(obj, indent));
+                });
+                Handlebars.registerHelper("datatype", function (text) {
+                    return new Handlebars.SafeString(datatype(text));
+                });
+                Handlebars.registerHelper("pads", function (num) {
+                    return new Handlebars.SafeString(pads(num));
+                });
+                Handlebars.registerHelper("superclasses", function (obj) {
+                    if (!obj.superclasses || !obj.superclasses.length) return "";
+                    var str = " : " +
+                              obj.superclasses.map(function (it) {
+                                                    return "<span class='idlSuperclass'><a>" + it + "</a></span>";
+                                                  }).join(", ")
+                    ;
+                    return new Handlebars.SafeString(str);
+                });
             }
-            return def;
-        }
+        ,   idn = function (lvl) {
+                var str = "";
+                for (var i = 0; i < lvl; i++) str += "    ";
+                return str;
+            }
+        ,   norm = function (str) {
+                return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
+            }
+        ,   arrsq = function (obj) {
+                var str = "";
+                for (var i = 0, n = obj.arrayCount; i < n; i++) str += "[]";
+                return str;
+            }
+        ,   datatype = function (text) {
+                if ($.isArray(text)) {
+                    var arr = [];
+                    for (var i = 0, n = text.length; i < n; i++) arr.push(datatype(text[i]));
+                    return "(" + arr.join(" or ") + ")";
+                }
+                else {
+                    var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(text);
+                    if (matched)
+                        return matched[1] + "&lt;<a>" + datatype(matched[2]) + "</a>&gt;";
 
-        function draw_regpict(divsvg, svg, reg) {
-            var width = Number(pget(reg, "width", 32));
-            var defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
-            var defaultAttr = String(pget(reg, "defaultAttr", "other"));
-            var cellWidth = Number(pget(reg, "cellWidth", 16));
-            var cellHeight = Number(pget(reg, "cellHeight", 32));
-            var cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-            var cellValueTop = Number(pget(reg, "cellValueTop", 16)); // top of text for regFieldValueInternal
-            var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
-            var cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
-            var bracketHeight = Number(pget(reg, "bracketHeight", 4));
-            var cellTop = Number(pget(reg, "cellTop", 40));
-            var bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
-            var figName = String(pget(reg, "figName", "???"));
-            var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
-            var figLeft = Number(pget(reg, "figLeft", 32));
-            var visibleLSB = Number(pget(reg, "visibleLSB", 0));
-            var visibleMSB = Number(pget(reg, "visibleMSB", width));
-            var fields = pget(reg, "fields", { }); // default to empty register
-
-            if (visibleMSB < 0) {
-                visibleMSB = 0;
+                    return "<a>" + text + "</a>";
+                }
             }
-            if (visibleMSB > width) {
-                visibleMSB = width;
+        ,   pads = function (num) {
+                // XXX
+                //  this might be more simply done as
+                //  return Array(num + 1).join(" ")
+                var str = "";
+                for (var i = 0; i < num; i++) str += " ";
+                return str;
             }
-            if (visibleLSB < 0) {
-                visibleLSB = 0;
+        ;
+        WebIDLProcessor.prototype = {
+            setID:  function (obj, match) {
+                obj.id = match;
+                obj.refId = obj.id.replace(/[^a-zA-Z_\-]/g, "");
+                obj.unescapedId = (obj.id[0] == "_" ? obj.id.slice(1) : obj.id);
             }
-            if (visibleLSB > width) {
-                visibleLSB = width;
+        ,   nullable:   function (obj, type) {
+                obj.nullable = false;
+                if (/\?$/.test(type)) {
+                    type = type.replace(/\?$/, "");
+                    obj.nullable = true;
+                }
+                return type;
             }
-            //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
-            //console.log("draw_regpict: fields=" + fields.toString());
-
-            // sanitize field array to avoid subsequent problems
-            for (var index in fields) {
-                if (fields.hasOwnProperty(index)) {
-                    var item = fields[index];
-                    if (item.hasOwnProperty("msb") && !item.hasOwnProperty("lsb")) {
-                        item.lsb = item.msb;
+        ,   array:   function (obj, type) {
+                obj.array = false;
+                if (/\[\]$/.test(type)) {
+                    obj.arrayCount = 0;
+                    type = type.replace(/(?:\[\])/g, function () {
+                        obj.arrayCount++;
+                        return "";
+                    });
+                    obj.array = true;
+                }
+                return type;
+            }
+        ,   params: function (prm, $dd, obj) {
+                var p = {};
+                prm = this.parseExtendedAttributes(prm, p);
+                // either up to end of string, or up to ,
+                // var re = /^\s*(?:in\s+)?([^,]+)\s+\b([^,\s]+)\s*(?:,)?\s*/;
+                var re = /^\s*(?:in\s+)?([^,=]+)\s+\b([^,]+)\s*(?:,)?\s*/;
+                var match = re.exec(prm);
+                if (match) {
+                    prm = prm.replace(re, "");
+                    var type = match[1]
+                    ,   name = match[2]
+                    ,   components = name.split(/\s*=\s*/)
+                    ,   deflt = null
+                    ;
+                    if (components.length === 1) name = name.replace(/\s+/g, "");
+                    else {
+                        name = components[0];
+                        deflt = components[1];
                     }
-                    if (item.hasOwnProperty("lsb") && !item.hasOwnProperty("msb")) {
-                        item.msb = item.lsb;
+                    this.parseDatatype(p, type);
+                    p.defaultValue = deflt;
+                    this.setID(p, name);
+                    if ($dd) p.description = $dd.contents();
+                    obj.params.push(p);
+                }
+                else {
+                    this.msg.pub("error", "Expected parameter list, got: " + prm);
+                    return false;
+                }
+                return prm;
+            }
+        ,   optional:   function (p) {
+                if (p.isUnionType) {
+                    p.optional = false;
+                    return false;
+                }
+                else {
+                    var pkw = p.datatype.split(/\s+/)
+                    ,   idx = pkw.indexOf("optional")
+                    ,   isOptional = false;
+                    if (idx > -1) {
+                        isOptional = true;
+                        pkw.splice(idx, 1);
+                        p.datatype = pkw.join(" ");
                     }
-                    if (!item.hasOwnProperty("isUnused")) {
-                        item.isUnused = false;
-                    }
-                    if (!item.hasOwnProperty("attr")) {
-                        item.attr = defaultAttr;
-                    }
-                    if (!item.hasOwnProperty("name")) {
-                        item.name = index;
-                    }
-                    if (!item.hasOwnProperty("value")) {
-                        item.value = "";
-                    }
-                    //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " isUnused=" + item.isUnused + " name='" + item.name + "'");
-
+                    p.optional = isOptional;
+                    return isOptional;
                 }
             }
 
-            var bitarray = [];  // Array indexed by bit # in register range 0:width
-            // field[bitarray[N]] contains bit N
-            // bitarray[N] == -1 for unused bits
-            // bitarray[N] == 1000 for first bit outside register width
 
-            var i, j;
-            bitarray[width] = 1000; //???
-            for (i = 0; i < width; i++) {
-                bitarray[i] = null;
-            }
+        ,   definition:    function ($idl) {
+                var def = { children: [] }
+                ,   str = $idl.attr("title")
+                ,   id = $idl.attr("id");
+                if (!str) this.msg.pub("error", "No IDL definition in element.");
+                str = this.parseExtendedAttributes(str, def);
+                if (str.indexOf("partial") === 0) { // Could be interface or dictionary
+                    var defType = str.slice(8);
+                    if  (defType.indexOf("interface") === 0)        this.processInterface(def, str, $idl, { partial : true });
+                    else if (defType.indexOf("dictionary") === 0)   this.dictionary(def, defType, $idl, { partial : true });
+                    else    this.msg.pub("error", "Expected definition, got: " + str);
+                }
+                else if      (str.indexOf("interface") === 0 ||
+                         /^callback\s+interface\b/.test(str))   this.processInterface(def, str, $idl);
+                else if (str.indexOf("exception") === 0)        this.exception(def, str, $idl);
+                else if (str.indexOf("dictionary") === 0)       this.dictionary(def, str, $idl);
+                else if (str.indexOf("callback") === 0)         this.callback(def, str, $idl);
+                else if (str.indexOf("enum") === 0)             this.processEnum(def, str, $idl);
+                else if (str.indexOf("typedef") === 0)          this.typedef(def, str, $idl);
+                else if (/\bimplements\b/.test(str))            this.processImplements(def, str, $idl);
+                else    this.msg.pub("error", "Expected definition, got: " + str);
+                this.parent.children.push(def);
+                this.processMembers(def, $idl);
+                if (id) def.htmlID = id;
+                return def;
+            },
 
-            for (index in fields) {
-                if (fields.hasOwnProperty(index)) {
-                    for (i = fields[index].lsb; i <= fields[index].msb; i++) {
-                        bitarray[i] = index;
+            processInterface:  function (obj, str, $idl, opt) {
+                opt = opt || {};
+                obj.type = "interface";
+                obj.partial = opt.partial || false;
+
+                var match = /^\s*(?:(partial|callback)\s+)?interface\s+([A-Za-z][A-Za-z0-9]*)(?:\s+:\s*([^{]+)\s*)?/.exec(str);
+                if (match) {
+                    obj.callback = !!match[1] && match[1] === "callback";
+                    this.setID(obj, match[2]);
+                    if ($idl.attr('data-merge')) obj.merge = $idl.attr('data-merge').split(' ');
+                    if (match[3]) obj.superclasses = match[3].split(/\s*,\s*/);
+                }
+                else this.msg.pub("error", "Expected interface, got: " + str);
+                return obj;
+            },
+
+            dictionary:  function (obj, str, $idl, opt) {
+                opt = opt || {};
+                obj.partial = opt.partial || false;
+                return this.excDic("dictionary", obj, str, $idl);
+            },
+
+            exception:  function (obj, str, $idl) {
+                return this.excDic("exception", obj, str, $idl);
+            },
+
+            excDic:  function (type, obj, str) {
+                obj.type = type;
+                var re = new RegExp("^\\s*" + type + "\\s+([A-Za-z][A-Za-z0-9]*)(?:\\s+:\\s*([^{]+)\\s*)?\\s*")
+                ,   match = re.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    if (match[2]) obj.superclasses = match[2].split(/\s*,\s*/);
+                }
+                else this.msg.pub("error", "Expected " + type + ", got: " + str);
+                return obj;
+            },
+
+            callback:  function (obj, str) {
+                obj.type = "callback";
+                var match = /^\s*callback\s+([A-Za-z][A-Za-z0-9]*)\s*=\s*\b(.*?)\s*$/.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    var type = match[2];
+                    this.parseDatatype(obj, type);
+                }
+                else this.msg.pub("error", "Expected callback, got: " + str);
+                return obj;
+            },
+
+            processEnum:  function (obj, str) {
+                obj.type = "enum";
+                var match = /^\s*enum\s+([A-Za-z][A-Za-z0-9]*)\s*$/.exec(str);
+                if (match) this.setID(obj, match[1]);
+                else this.msg.pub("error", "Expected enum, got: " + str);
+                return obj;
+            },
+
+            typedef:    function (obj, str, $idl) {
+                obj.type = "typedef";
+                str = str.replace(/^\s*typedef\s+/, "");
+                str = this.parseExtendedAttributes(str, obj);
+                var match = /^(.+)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    obj.description = $idl.contents();
+                }
+                else this.msg.pub("error", "Expected typedef, got: " + str);
+                return obj;
+            },
+
+            processImplements: function (obj, str, $idl) {
+                obj.type = "implements";
+                var match = /^\s*(.+?)\s+implements\s+(.+)\s*$/.exec(str);
+                if (match) {
+                    this.setID(obj, match[1]);
+                    obj.datatype = match[2];
+                    obj.description = $idl.contents();
+                }
+                else this.msg.pub("error", "Expected implements, got: " + str);
+                return obj;
+            },
+
+            processMembers:    function (obj, $el) {
+                var exParent = this.parent
+                ,   self = this;
+                this.parent = obj;
+                $el.find("> dt").each(function () {
+                    var $dt = $(this)
+                    ,   $dd = $dt.next()
+                    ,   t = obj.type
+                    ,   mem
+                    ;
+                    if      (t === "exception")     mem = self.exceptionMember($dt, $dd);
+                    else if (t === "dictionary")    mem = self.dictionaryMember($dt, $dd);
+                    else if (t === "callback")      mem = self.callbackMember($dt, $dd);
+                    else if (t === "enum")          mem = self.processEnumMember($dt, $dd);
+                    else                            mem = self.interfaceMember($dt, $dd);
+                    obj.children.push(mem);
+                });
+                this.parent = exParent;
+            },
+
+            parseConst:    function (obj, str) {
+                // CONST
+                var match = /^\s*const\s+\b([^=]+\??)\s+([^=\s]+)\s*=\s*(.*)$/.exec(str);
+                if (match) {
+                    obj.type = "constant";
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    obj.value = match[3];
+                    return true;
+                }
+                return false;
+            },
+
+            exceptionMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // CONST
+                if (this.parseConst(obj, str)) return obj;
+
+                // FIELD
+                var match = /^\s*(.*?)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "field";
+                    var type = match[1];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected exception member, got: " + str);
+            },
+
+            dictionaryMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                var match = /^\s*([^=]+\??)\s+([^=\s]+)(?:\s*=\s*(.*))?$/.exec(str);
+                if (match) {
+                    obj.type = "member";
+                    var type = match[1];
+                    obj.defaultValue = match[3];
+                    this.setID(obj, match[2]);
+                    this.parseDatatype(obj, type);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected dictionary member, got: " + str);
+            },
+
+            callbackMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                var match = /^\s*(.*?)\s+([A-Za-z][A-Za-z0-9]*)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "member";
+                    var type = match[1];
+                    this.setID(obj, match[2]);
+                    obj.defaultValue = match[3];
+                    this.parseDatatype(obj, type);
+                    this.optional(obj);
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected callback member, got: " + str);
+            },
+
+            processEnumMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text());
+                obj.description = $dd.contents();
+                str = this.parseExtendedAttributes(str, obj);
+
+                // MEMBER
+                obj.type = "member";
+                this.setID(obj, str || "EMPTY");
+                obj.refId = sn.sanitiseID(obj.id); // override with different ID type
+                return obj;
+            },
+
+            interfaceMember:    function ($dt, $dd) {
+                var obj = { children: [] }
+                ,   str = norm($dt.text())
+                ,   $extPrm = $dd.find("dl.parameters").first()
+                ,   $sgrs = $dd.find(".getraises, .setraises")
+                ,   $excepts = $dd.find("dl.exception").first()
+                ;
+                obj.description = $dd.contents().not("dl.parameters");
+                str = this.parseExtendedAttributes(str, obj);
+                var match;
+
+                // ATTRIBUTE
+                match = /^\s*(?:(readonly|inherit|stringifier)\s+)?attribute\s+(.*?)\s+(\S+)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "attribute";
+                    obj.declaration = match[1] ? match[1] : "";
+                    obj.declaration += (new Array(12-obj.declaration.length)).join(" "); // fill string with spaces
+                    var type = match[2];
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[3]);
+                    obj.raises = [];
+                    $sgrs.each(function () {
+                        var $el = $(this)
+                        ,   exc = {
+                                id:     $el.attr("title")
+                            ,   onSet:  $el.hasClass("setraises")
+                            ,   onGet:  $el.hasClass("getraises")
+                        };
+                        if ($el.is("dl")) {
+                            exc.type = "codelist";
+                            exc.description = [];
+                            $el.find("dt").each(function () {
+                                var $dt = $(this)
+                                ,   $dd = $dt.next("dd");
+                                exc.description.push({ id: $dt.text(), description: $dd.contents().clone() });
+                            });
+                        }
+                        else if ($el.is("div")) {
+                            exc.type = "simple";
+                            exc.description = $el.contents().clone();
+                        }
+                        else {
+                            this.msg.pub("error", "Do not know what to do with exceptions being raised defined outside of a div or dl.");
+                        }
+                        $el.remove();
+                        obj.raises.push(exc);
+                    });
+
+                    return obj;
+                }
+
+                // CONST
+                if (this.parseConst(obj, str)) return obj;
+
+                // CONSTRUCTOR
+                match = /^\s*Constructor(?:\s*\(\s*(.*)\s*\))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "constructor";
+                    var prm = match[1] ? match[1] : [];
+                    this.setID(obj, this.parent.id);
+                    obj.named = false;
+                    obj.datatype = "";
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // NAMED CONSTRUCTOR
+                match = /^\s*NamedConstructor\s*(?:=\s*)?\b([^(]+)(?:\s*\(\s*(.*)\s*\))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "constructor";
+                    var prm = match[2] ? match[2] : [];
+                    this.setID(obj, match[1]);
+                    obj.named = true;
+                    obj.datatype = "";
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // METHOD
+                match = /^\s*(.*?)\s+\b(\S+?)\s*\(\s*(.*)\s*\)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "method";
+                    var type = match[1]
+                    ,   prm = match[3];
+                    // XXX we need to do better for parsing modifiers
+                    type = this.parseStatic(obj, type);
+                    this.parseDatatype(obj, type);
+                    this.setID(obj, match[2]);
+
+                    return this.methodMember(obj, $excepts, $extPrm, prm);
+                }
+
+                // SERIALIZER
+                match = /^\s*serializer(\s*=\s*((\{\s*(\S+(\s*,\s*\S+)*)?\s*\})|(\[(\s*\S+(\s*,\s*\S+)*)?\s*\])|(\S+)))?\s*$/.exec(str);
+                if (match) {
+                    obj.type = "serializer";
+                    obj.values = [];
+                    this.setID(obj, "serializer");
+                    var serializermap = match[3],
+                    serializerlist = match[6],
+                    serializerattribute = match[9], rawvalues;
+                    if (serializermap) {
+                        obj.serializertype = "map";
+                        rawvalues = match[4];
                     }
-                }
-            }
-
-            var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
-            for (i = 0; i <= width; ++i) {
-                if (lsb >= 0 && bitarray[i] !== null) {
-                    // first "used" bit after stretch of unused bits, invent an "unused" field
-                    index = "_unused_" + (i - 1); // _unused_msb
-                    if (lsb !== (i - 1)) {
-                        index = index + "_" + lsb;  // _unused_msb_lsb
+                    else if (serializerlist) {
+                        obj.serializertype = "list";
+                        rawvalues = match[7];
                     }
-                    fields[index] = {
-                        "msb":      (i - 1),
-                        "lsb":      lsb,
-                        "name":     ((i - lsb) * 2 - 1) >=
-                                    defaultUnused.length ? defaultUnused : defaultUnused[0].toUpperCase(), // use full name if if fits, else use 1st char
-                        "attr":     defaultUnused.toLowerCase(),   // attribute is name
-                        "isUnused": true,
-                        "value":    ""
-                    };
-                    for (j = lsb; j < i; j++) {
-                        bitarray[j] = index;
+                    else if (serializerattribute) {
+                        obj.serializertype = "attribute";
+                        obj.values.push(serializerattribute);
                     }
-                    lsb = -1;
-                }
-                if (lsb < 0 && bitarray[i] === null) {
-                    // starting a string of unused bits
-                    lsb = i;
-                }
-            }
-
-            // x position of left edge of bit i
-            function leftOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i - 0.5 - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB - 1 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width -  visibleLSB - i - 1 - (width - visibleMSB));
-                }
-            }
-
-            // x position of right edge of bit i
-            function rightOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i + 0.5 - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB + 1 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width - visibleLSB - i + 1 - (width - visibleMSB));
-                }
-            }
-
-            // x position of middle of bit i
-            function middleOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB - 0.5 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width - visibleLSB - i - 0.5 - (width - visibleMSB));
-                }
-            }
-
-            var g, p, f, text;
-            var nextBitLine = cellTop + cellHeight + 20; //76;
-            var bitLineCount = 0;
-            var max_text_width = 0;
-
-            for (var b = 0; b < width; b++) {
-                for (i in fields) {
-                    if (fields.hasOwnProperty(i)) {
-                        f = fields[i];
-                        var gAddClass = ["regFieldInternal", "regAttr_" + f.attr, "regLink"];
-                        if (b === f.lsb) {
-                            g = svg.group();
-                            //var bitnum_width;
-                            if (f.lsb === f.msb) {
-                                text = svg.text(g, middleOf(f.lsb), cellTop - 4,
-                                                svg.createText().string(f.lsb), {
-                                        "class_": "regBitNumMiddle"
-                                    });
-                                /*console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4));
-                                bitnum_width = text.clientWidth;
-                                if (bitnum_width === 0) {
-                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
+                    else {
+                        obj.serializertype = "prose";
+                    }
+                    if (rawvalues) {
+                        // split at comma and remove white space
+                        var values = rawvalues.split(/\s*,\s*/);
+                        obj.getter = false;
+                        obj.inherit = false;
+                        obj.all = false;
+                        if (values[0] == "getter") {
+                            obj.getter = true;
+                        }
+                        else {
+                            if (obj.serializertype == "map") {
+                                if (values[0] == "inherit") {
+                                    obj.inherit = true;
+                                    values.shift();
                                 }
-                                if ((bitnum_width + 2) > cellWidth) {
-                                    svg.change(text,
-                                               {
-                                                   x: middleOf(f.lsb),
-                                                   y: cellTop,
-                                                   transform: "rotate(270, " +
-                                                              middleOf(f.lsb) + ", " +
-                                                              (cellTop - 4) + ")",
-                                                   "class_": "regBitNumStart"
-                                               });
-                                    console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
-                                }*/
-                            } else {
-                                if (f.lsb < visibleLSB) {
-                                    gAddClass.push("regFieldOverflowLSB");
-                                    text = svg.text(g, rightOf(f.lsb) + 2, cellTop - 4,
-                                                    svg.createText().string("... " + f.lsb), {
-                                            "class_": "regBitNumEnd"
-                                        });
-//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
-                                } else {
-                                    text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
-                                                    svg.createText().string(f.lsb), {
-                                            "class_": "regBitNumEnd"
-                                        });
-//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
-                                }
-                                /*bitnum_width = text.clientWidth;
-                                if (bitnum_width === 0) {
-                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                                    bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
-                                }
-                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
-                                     svg.change(text,
-                                               {
-                                                   x: middleOf(f.lsb),
-                                                   y: cellTop,
-                                                   transform: "rotate(270, " +
-                                                              rightOf(f.lsb) + ", " +
-                                                              (cellTop - 4) + ")",
-                                                   "class_": "regBitNumStart"
-                                               });
-                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
-                                }*/
-                                if (f.msb > visibleMSB) {
-                                    gAddClass.push("regFieldOverflowMSB");
-                                    text = svg.text(g, leftOf(f.msb) - 2, cellTop - 4,
-                                                    svg.createText().string(f.msb + " ..."), {
-                                            "class_": "regBitNumStart"
-                                        });
-//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
-                                } else {
-                                    text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
-                                             text = svg.createText().string(f.msb), {
-                                            "class_": "regBitNumStart"
-                                        });
-//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
-                                }
-                                /*bitnum_width = text.clientWidth;
-                                if (bitnum_width === 0) {
-                                    // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                                    bitnum_width = String(f.msb).length * 4; // Assume 4px per character on average
-                                }
-                                if ((bitnum_width + 2) > ((leftOf(f.msb) - rightOf(f.lsb)) / 2)) {
-                                    svg.change(text,
-                                               {
-                                                   x: middleOf(f.msb),
-                                                   y: cellTop,
-                                                   transform: "rotate(270, " +
-                                                              leftOf(f.msb) + ", " +
-                                                              (cellTop - 4) + ")",
-                                                   "class_": "regBitNumStart"
-                                               });
-                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
-                                }*/
-                            }
-                            if (f.lsb >= visibleLSB) {
-                                svg.line(g,
-                                    rightOf(f.lsb), cellTop,
-                                    rightOf(f.lsb), cellTop - (text.clientHeight * 0.75),
-                                    { "class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
-                            }
-                            if (f.msb <= visibleMSB) {
-                                svg.line(g,
-                                    leftOf(f.msb), cellTop,
-                                    leftOf(f.msb), cellTop - (text.clientHeight * 0.75),
-                                    { "class_": "regBitNumLine" });
-                            }
-                            if (f.hasOwnProperty("addClass") && typeof f.addClass === "string") {
-                                gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
-                            }
-                            if (f.isUnused) {
-                                gAddClass.push("regFieldUnused");
-                            }
-                            svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
-                                     0, 0, {
-                                    "class_": "regFieldBox"
-                                });
-                            for (j = f.lsb + 1; j <= f.msb; j++) {
-                                if ((j >= visibleLSB) && (j <= visibleMSB)) {
-                                    svg.line(g,
-                                        rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                        rightOf(j), cellTop + cellHeight,
-                                        { "class_": "regFieldBox" });
+                                if (values[0] == "attribute" && obj.serializertype == "map" ) {
+                                    obj.all = true;
+                                    values = [];
                                 }
                             }
-                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop - bitWidthPos,
-                                            svg.createText().string((f.msb === f.lsb)
-                                                                        ? "1 bit"
-                                                                        : (f.msb - f.lsb + 1) + " bits"),
-                                            { "class_": "regBitWidth" });
-                            text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop,
-                                            svg.createText().string(f.name),
-                                            { "class_": "regFieldName" });
-                            if ((!f.isUnused) && (f.lsb <= visibleMSB) && (f.msb >= visibleLSB)) {
-                                var $temp_dom = $("<span></span>").prependTo(divsvg);
-                                var unique_id = $temp_dom.makeID("regpict", (f.id ? f.id : (figName + "-" + f.name)));
-                                $temp_dom.remove();
-                                svg.change(g, { id: unique_id });
-                            }
-                            if (f.value !== "") {
-                                if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
-                                    for (i = 0; i < f.value.length; ++i) {
-                                        svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
-                                                 cellTop + cellBitValueTop,
-                                                 svg.createText().string(f.value[i]),
-                                                 {
-                                                     "class_": ("regFieldValue regFieldBitValue" +
-                                                                " regFieldBitValue-" + i.toString() +
-                                                                ((i === (f.value.length - 1)) ?
-                                                                    " regFieldBitValue-msb" : ""))
-                                                 });
-                                    }
-                                } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
-                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                                             cellTop + (f.msb === f.lsb ? cellBitValueTop : cellValueTop),
-                                             svg.createText().string(f.value),
-                                             { "class_": "regFieldValue" });
-                                } else {
-                                    svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellValueTop,
-                                             svg.createText().string("INVALID VALUE"),
-                                             { "class_": "svg_error" });
-                                }
-                            }
-                            var text_width = text.clientWidth;
-                            if (text_width === 0) {
-                                // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-                                text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
-                            }
-                            if (text_width > max_text_width) {
-                                max_text_width = text_width;
-                            }
-                            var text_height = text.clientHeight;
-                            if (text_height === 0) {
-                                // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
-                                text_height = 18;             // Assume 18px: 1 row of text, 15px high
-                            }
-                            /*console.log("field " + f.name +
-                             " msb=" + f.msb +
-                             " lsb=" + f.lsb +
-                             " attr=" + f.attr +
-                             " isUnused=" + f.isUnused +
-                             (("id" in f) ? f.id : ""));
-                             console.log(" text.clientWidth=" + text.clientWidth +
-                             " text_width=" + text_width +
-                             " text.clientHeight=" + text.clientHeight +
-                             " text_height=" + text_height +
-                             " rightOf(msb)=" + rightOf(f.lsb) +
-                             " leftOf(lsb)=" + leftOf(f.msb) +
-                             " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
-                            /* if field has a specified value,
-                             the field name is too wide for the box,
-                             or the field name is too tall for the box */
-                            if ((f.lsb > visibleMSB) || (f.msb < visibleLSB)) {
-                                gAddClass[0] = "regFieldHidden";
-                            } else {
-                                if ((f.value !== "") ||
-                                    ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
-                                    ((text_height + 2) > (cellHeight - cellInternalHeight))) {
-                                    svg.change(text,
-                                        {
-                                            x: rightOf(-0.5),
-                                            y: nextBitLine,
-                                            "class_": "regFieldName"
-                                        });
-                                    p = svg.createPath();
-                                    p.move(leftOf(f.msb), cellTop + cellHeight);
-                                    p.line(((rightOf(f.lsb) - leftOf(f.msb)) / 2), bracketHeight, true);
-                                    p.line(rightOf(f.lsb), cellTop + cellHeight);
-                                    svg.path(g, p,
-                                        {
-                                            "class_": "regBitBracket",
-                                            fill: "none"
-                                        });
-                                    p = svg.createPath();
-                                    p.move(middleOf(f.lsb + ((f.msb - f.lsb) / 2)), cellTop + cellHeight + bracketHeight);
-                                    p.vert(nextBitLine - text_height / 4);
-                                    p.horiz(rightOf(-0.4));
-                                    svg.path(g, p,
-                                        {
-                                            "class_": "regBitLine",
-                                            fill: "none"
-                                        });
-                                    gAddClass[0] = "regFieldExternal";
-                                    gAddClass.push("regFieldExternal" + (bitLineCount < 2 ? "0" : "1"));
-                                    nextBitLine += text_height + 2;
-                                    bitLineCount = (bitLineCount + 1) % 4;
-                                }
-                            }
-                            if ((f.msb > visibleLSB) && (f.lsb < visibleLSB)) {
-                                svg.text(g, rightOf(0) + 2, cellTop + cellNameTop,
-                                    svg.createText().string("..."),
-                                    { "class_": "regFieldExtendsRight" });
-                            }
-                            if ((f.msb > visibleMSB) && (f.lsb < visibleMSB)) {
-                                svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop,
-                                    svg.createText().string("..."),
-                                    { "class_": "regFieldExtendsLeft" });
-                            }
-                            svg.change(g, { "class_": gAddClass.join(" ") });
+                            obj.values = values;
                         }
                     }
+                    return obj;
                 }
+
+                // COMMENT
+                match = /^\s*\/\/\s*(.*)\s*$/.exec(str);
+                if (match) {
+                    obj.type = "comment";
+                    obj.id = match[1];
+                    return obj;
+                }
+
+                // NOTHING MATCHED
+                this.msg.pub("error", "Expected interface member, got: " + str);
+            },
+
+            methodMember:   function (obj, $excepts, $extPrm, prm) {
+                obj.params = [];
+                obj.raises = [];
+
+                $excepts.each(function () {
+                    var $el = $(this)
+                    ,   exc = { id: $el.attr("title") };
+                    if ($el.is("dl")) {
+                        exc.type = "codelist";
+                        exc.description = [];
+                        $el.find("dt").each(function () {
+                            var $dt = $(this)
+                            ,   $dd = $dt.next("dd");
+                            exc.description.push({ id: $dt.text(), description: $dd.contents().clone() });
+                        });
+                    }
+                    else if ($el.is("div")) {
+                        exc.type = "simple";
+                        exc.description = $el.contents().clone();
+                    }
+                    else {
+                        this.msg.pub("error", "Do not know what to do with exceptions being raised defined outside of a div or dl.");
+                    }
+                    $el.remove();
+                    obj.raises.push(exc);
+                });
+
+
+                if ($extPrm.length) {
+                    $extPrm.remove();
+                    var self = this;
+                    $extPrm.find("> dt").each(function () {
+                        return self.params($(this).text(), $(this).next(), obj);
+                    });
+                }
+                else {
+                    while (prm.length) {
+                        prm = this.params(prm, null, obj);
+                        if (prm === false) break;
+                    }
+                }
+
+                // apply optional
+                var seenOptional = false;
+                for (var i = 0; i < obj.params.length; i++) {
+                    if (seenOptional) {
+                        obj.params[i].optional = true;
+                        obj.params[i].datatype = obj.params[i].datatype.replace(/\boptional\s+/, "");
+                    }
+                    else {
+                        seenOptional = this.optional(obj.params[i]);
+                    }
+                }
+                return obj;
+            },
+
+            parseDatatype:  function (obj, type) {
+                type = this.nullable(obj, type);
+                type = this.array(obj, type);
+                obj.variadic = false;
+                if (/\.\.\./.test(type)) {
+                    type = type.replace(/\.\.\./, "");
+                    obj.variadic = true;
+                }
+                if (type.indexOf("(") === 0) {
+                    type = type.replace("(", "").replace(")", "");
+                    obj.datatype = type.split(/\s+or\s+/);
+                    obj.isUnionType = true;
+                }
+                else {
+                    obj.datatype = type;
+                }
+            },
+
+            parseStatic:  function (obj, type) {
+                if (/^static\s+/.test(type)) {
+                    type = type.replace(/^static\s+/, "");
+                    obj.isStatic = true;
+                }
+                else {
+                    obj.isStatic = false;
+                }
+                return type;
+            },
+
+            parseExtendedAttributes:    function (str, obj) {
+                if (!str) return;
+                return str.replace(/^\s*\[([^\]]+)\]\s*/, function (x, m1) { obj.extendedAttributes = m1; return ""; });
+            },
+
+            makeMarkup:    function (id) {
+                var $df = $("<div></div>");
+                var attr = { "class": "idl" };
+                if (id) attr.id = id;
+                var $pre = $("<pre></pre>").attr(attr);
+                $pre.html(this.writeAsWebIDL(this.parent, -1));
+                $df.append($pre);
+                if (!this.conf.noLegacyStyle) $df.append(this.writeAsHTML(this.parent));
+                this.mergeWebIDL(this.parent.children[0]);
+                return $df.children();
+            },
+
+            parseParameterized: function (str) {
+                var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(str);
+                if (!matched)
+                    return null;
+                return { type: matched[1], parameter: matched[2] };
+            },
+
+            writeAsHTML:    function (obj) {
+                if (obj.type == "module") {
+                    if (obj.id == "outermost") {
+                        if (obj.children.length > 1) this.msg.pub("error", "We currently only support one structural level per IDL fragment");
+                        return this.writeAsHTML(obj.children[0]);
+                    }
+                    else {
+                        this.msg.pub("warn", "No HTML can be generated for module definitions.");
+                        return $("<span></span>");
+                    }
+                }
+                else if (obj.type == "typedef") {
+                    var cnt;
+                    if (obj.description && obj.description.text()) cnt = [obj.description];
+                    else {
+                        // yuck -- should use a single model...
+                        var $tdt = sn.element("span", { "class": "idlTypedefType" }, null);
+                        $tdt.html(datatype(obj.datatype));
+                        cnt = [ sn.text("Throughout this specification, the identifier "),
+                                sn.element("span", { "class": "idlTypedefID" }, null, obj.unescapedId),
+                                sn.text(" is used to refer to the "),
+                                sn.text(obj.array ? (obj.arrayCount > 1 ? obj.arrayCount + "-" : "") + "array of " : ""),
+                                $tdt,
+                                sn.text(obj.nullable ? " (nullable)" : ""),
+                                sn.text(" type.")];
+                    }
+                    return sn.element("div", { "class": "idlTypedefDesc" }, null, cnt);
+                }
+                else if (obj.type == "implements") {
+                    var cnt;
+                    if (obj.description && obj.description.text()) cnt = [obj.description];
+                    else {
+                        cnt = [ sn.text("All instances of the "),
+                                sn.element("code", {}, null, [sn.element("a", {}, null, obj.unescapedId)]),
+                                sn.text(" type are defined to also implement the "),
+                                sn.element("a", {}, null, obj.datatype),
+                                sn.text(" interface.")];
+                        cnt = [sn.element("p", {}, null, cnt)];
+                    }
+                    return sn.element("div", { "class": "idlImplementsDesc" }, null, cnt);
+                }
+
+                else if (obj.type == "exception") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var types = ["field", "constant"];
+                    var filterFunc = function (it) { return it.type === type; }
+                    ,   sortFunc = function (a, b) {
+                            if (a.unescapedId < b.unescapedId) return -1;
+                            if (a.unescapedId > b.unescapedId) return 1;
+                            return 0;
+                    }
+                    ;
+                    for (var i = 0; i < types.length; i++) {
+                        var type = types[i];
+                        var things = obj.children.filter(filterFunc);
+                        if (things.length === 0) continue;
+                        if (!this.noIDLSorting) {
+                            things.sort(sortFunc);
+                        }
+
+                        var sec = sn.element("section", {}, df);
+                        var secTitle = type;
+                        secTitle = secTitle.substr(0, 1).toUpperCase() + secTitle.substr(1) + "s";
+                        if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, secTitle);
+                        var dl = sn.element("dl", { "class": type + "s" }, sec);
+                        for (var j = 0; j < things.length; j++) {
+                            var it = things[j];
+                            var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                            sn.element("code", {}, dt, it.unescapedId);
+                            var desc = sn.element("dd", {}, dl, [it.description]);
+                            if (type == "field") {
+                                sn.text(" of type ", dt);
+                                if (it.array) {
+                                    for (var k = 0, n = it.arrayCount; k < n; k++) sn.text("array of ", dt);
+                                }
+                                var span = sn.element("span", { "class": "idlFieldType" }, dt);
+                                var parameterized = this.parseParameterized(it.datatype);
+                                if (parameterized) {
+                                    sn.text(parameterized.type + "<", span);
+                                    sn.element("a", {}, span, parameterized.parameter);
+                                    sn.text(">", span);
+                                }
+                                else {
+                                    sn.element("a", {}, span, it.datatype);
+                                }
+                                if (it.nullable) sn.text(", nullable", dt);
+                            }
+                            else if (type == "constant") {
+                                sn.text(" of type ", dt);
+                                sn.element("span", { "class": "idlConstType" }, dt, [sn.element("a", {}, null, it.datatype)]);
+                                if (it.nullable) sn.text(", nullable", dt);
+                            }
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "dictionary") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var things = obj.children;
+                    var cnt;
+                    if (things.length === 0) return df;
+                    if (!this.noIDLSorting) {
+                        things.sort(function (a, b) {
+                            if (a.id < b.id) return -1;
+                            if (a.id > b.id) return 1;
+                              return 0;
+                        });
+                    }
+
+                    var sec = sn.element("section", {}, df);
+                    cnt = [sn.text("Dictionary "),
+                           sn.element("a", { "class": "idlType" }, null, obj.unescapedId),
+                           sn.text(" Members")];
+                    if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, cnt);
+                    var dl = sn.element("dl", { "class": "dictionary-members" }, sec);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                        sn.element("code", {}, dt, it.unescapedId);
+                        var desc = sn.element("dd", {}, dl, [it.description]);
+                        sn.text(" of type ", dt);
+                        if (it.array) {
+                            for (var i = 0, n = it.arrayCount; i < n; i++) sn.text("array of ", dt);
+                        }
+                        var span = sn.element("span", { "class": "idlMemberType" }, dt);
+                        var parameterized = this.parseParameterized(it.datatype);
+                        if (parameterized) {
+                            sn.text(parameterized.type + "<", span);
+                            sn.element("a", {}, span, parameterized.parameter);
+                            sn.text(">", span);
+                        }
+                        else {
+                            sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                        }
+                        if (it.nullable) sn.text(", nullable", dt);
+                        if (it.defaultValue) {
+                            sn.text(", defaulting to ", dt);
+                            sn.element("code", {}, dt, [sn.text(it.defaultValue)]);
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "callback") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var things = obj.children;
+                    var cnt;
+                    if (things.length === 0) return df;
+
+                    var sec = sn.element("section", {}, df);
+                    cnt = [sn.text("Callback "),
+                           sn.element("a", { "class": "idlType" }, null, obj.unescapedId),
+                           sn.text(" Parameters")];
+                    if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, cnt);
+                    var dl = sn.element("dl", { "class": "callback-members" }, sec);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var dt = sn.element("dt", { id: curLnk + it.refId }, dl);
+                        sn.element("code", {}, dt, it.unescapedId);
+                        var desc = sn.element("dd", {}, dl, [it.description]);
+                        sn.text(" of type ", dt);
+                        if (it.array) {
+                            for (var i = 0, n = it.arrayCount; i < n; i++) sn.text("array of ", dt);
+                        }
+                        var span = sn.element("span", { "class": "idlMemberType" }, dt);
+                        var parameterized = this.parseParameterized(it.datatype);
+                        if (parameterized) {
+                            sn.text(parameterized.type + "<", span);
+                            sn.element("a", {}, span, parameterized.parameter);
+                            sn.text(">", span);
+                        }
+                        else {
+                            sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                        }
+                        if (it.nullable) sn.text(", nullable", dt);
+                        if (it.defaultValue) {
+                            sn.text(", defaulting to ", dt);
+                            sn.element("code", {}, dt, [sn.text(it.defaultValue)]);
+                        }
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "enum") {
+                    var df = sn.documentFragment();
+                    var things = obj.children;
+                    if (things.length === 0) return df;
+
+                    var sec = sn.element("table", { "class": "simple" }, df);
+                    sn.element("tr", {}, sec, [sn.element("th", { colspan: 2 }, null, [sn.text("Enumeration description")])]);
+                    for (var j = 0; j < things.length; j++) {
+                        var it = things[j];
+                        var tr = sn.element("tr", {}, sec)
+                        ,   td1 = sn.element("td", {}, tr)
+                        ;
+                        sn.element("code", { "id": "idl-def-" + obj.refId + "." + it.refId }, td1, it.unescapedId);
+                        sn.element("td", {}, tr, [it.description]);
+                    }
+                    return df;
+                }
+
+                else if (obj.type == "interface") {
+                    var df = sn.documentFragment();
+                    var curLnk = "widl-" + obj.refId + "-";
+                    var types = ["constructor", "attribute", "method", "constant", "serializer"];
+                    var filterFunc = function (it) { return it.type == type; }
+                    ,   sortFunc = function (a, b) {
+                            if (a.unescapedId < b.unescapedId) return -1;
+                            if (a.unescapedId > b.unescapedId) return 1;
+                            return 0;
+                        }
+                    ;
+                    for (var i = 0; i < types.length; i++) {
+                        var type = types[i];
+                        var things = obj.children.filter(filterFunc);
+                        if (things.length === 0) continue;
+                        if (!this.noIDLSorting) things.sort(sortFunc);
+
+                        var sec = sn.element("section", {}, df);
+                        var secTitle = type;
+                        secTitle = secTitle.substr(0, 1).toUpperCase() + secTitle.substr(1) + (type != "serializer" ? "s" : "");
+                        if (!this.conf.noIDLSectionTitle) sn.element("h2", {}, sec, secTitle);
+                        if (type != "serializer") {
+                            var dl = sn.element("dl", { "class": type + "s" }, sec);
+                            for (var j = 0; j < things.length; j++) {
+                                var it = things[j];
+                                var id = (type == "method") ? this.makeMethodID(curLnk, it) :
+                                    (type == "constructor") ? this.makeMethodID("widl-ctor-", it)
+                                    : sn.idThatDoesNotExist(curLnk + it.refId);
+                                var dt = sn.element("dt", { id: id }, dl);
+                                sn.element("code", {}, dt, it.unescapedId);
+                                if (it.isStatic) dt.append(this.doc.createTextNode(", static"));
+                                var desc = sn.element("dd", {}, dl, [it.description]);
+                                if (type == "method" || type == "constructor") {
+                                    if (it.params.length) {
+                                        var table = sn.element("table", { "class": "parameters" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Parameter", "Type", "Nullable", "Optional", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.params.length; k++) {
+                                            var prm = it.params[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "prmName" }, tr, prm.id);
+                                            var tyTD = sn.element("td", { "class": "prmType" }, tr);
+                                            var code = sn.element("code", {}, tyTD);
+                                            var codeHTML = datatype(prm.datatype);
+                                            if (prm.array) codeHTML += arrsq(prm);
+                                            if (prm.defaultValue) {
+                                                codeHTML += " = " + prm.defaultValue;
+                                            }
+                                            code.html(codeHTML);
+                                            if (prm.nullable) sn.element("td", { "class": "prmNullTrue" }, tr, $("<span role='img' aria-label='True'>\u2714</span>"));
+                                            else              sn.element("td", { "class": "prmNullFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            if (prm.optional) sn.element("td", { "class": "prmOptTrue" }, tr,  $("<span role='img' aria-label='True'>\u2714</span>"));
+                                            else              sn.element("td", { "class": "prmOptFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            var cnt = prm.description ? [prm.description] : "";
+                                            sn.element("td", { "class": "prmDesc" }, tr, cnt);
+                                        }
+                                    }
+                                    else {
+                                        sn.element("div", {}, desc, [sn.element("em", {}, null, "No parameters.")]);
+                                    }
+                                    if (this.conf.idlOldStyleExceptions && it.raises.length) {
+                                        var table = sn.element("table", { "class": "exceptions" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Exception", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.raises.length; k++) {
+                                            var exc = it.raises[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "excName" }, tr, [sn.element("a", {}, null, exc.id)]);
+                                            var dtd = sn.element("td", { "class": "excDesc" }, tr);
+                                            if (exc.type == "simple") {
+                                                dtd.append(exc.description);
+                                            }
+                                            else {
+                                                var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
+                                                for (var m = 0; m < exc.description.length; m++) {
+                                                    var cd = exc.description[m];
+                                                    var tr = sn.element("tr", {}, ctab);
+                                                    sn.element("td", { "class": "excCodeName" }, tr, [sn.element("code", {}, null, cd.id)]);
+                                                    sn.element("td", { "class": "excCodeDesc" }, tr, [cd.description]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // else {
+                                    //     sn.element("div", {}, desc, [sn.element("em", {}, null, "No exceptions.")]);
+                                    // }
+
+                                    if (type !== "constructor") {
+                                        var reDiv = sn.element("div", {}, desc);
+                                        sn.element("em", {}, reDiv, "Return type: ");
+                                        var code = sn.element("code", {}, reDiv);
+                                        var codeHTML = datatype(it.datatype);
+                                        if (it.array) codeHTML += arrsq(it);
+                                        if (it.nullable) sn.text(", nullable", reDiv);
+                                        code.html(codeHTML);
+                                    }
+                                }
+                                else if (type == "attribute") {
+                                    sn.text(" of type ", dt);
+                                    if (it.array) {
+                                        for (var m = 0, n = it.arrayCount; m < n; m++) sn.text("array of ", dt);
+                                    }
+                                    var span = sn.element("span", { "class": "idlAttrType" }, dt);
+                                    var parameterized = this.parseParameterized(it.datatype);
+                                    if (parameterized) {
+                                        sn.text(parameterized.type + "<", span);
+                                        sn.element("a", {}, span, parameterized.parameter);
+                                        sn.text(">", span);
+                                    }
+                                    else {
+                                        sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
+                                    }
+                                    if (it.declaration) sn.text(", " + it.declaration, dt);
+                                    if (it.nullable) sn.text(", nullable", dt);
+
+                                    if (this.conf.idlOldStyleExceptions && it.raises.length) {
+                                        var table = sn.element("table", { "class": "exceptions" }, desc);
+                                        var tr = sn.element("tr", {}, table);
+                                        ["Exception", "On Get", "On Set", "Description"].forEach(function (tit) { sn.element("th", {}, tr, tit); });
+                                        for (var k = 0; k < it.raises.length; k++) {
+                                            var exc = it.raises[k];
+                                            var tr = sn.element("tr", {}, table);
+                                            sn.element("td", { "class": "excName" }, tr, [sn.element("a", {}, null, exc.id)]);
+                                            ["onGet", "onSet"].forEach(function (gs) {
+                                                if (exc[gs]) sn.element("td", { "class": "excGetSetTrue" }, tr, $("<span role='img' aria-label='True'>\u2714</span>"));
+                                                else         sn.element("td", { "class": "excGetSetFalse" }, tr, $("<span role='img' aria-label='False'>\u2718</span>"));
+                                            });
+                                            var dtd = sn.element("td", { "class": "excDesc" }, tr);
+                                            if (exc.type == "simple") {
+                                                dtd.append(exc.description);
+                                            }
+                                            else {
+                                                var ctab = sn.element("table", { "class": "exceptionCodes" }, dtd );
+                                                for (var m = 0; m < exc.description.length; m++) {
+                                                    var cd = exc.description[m];
+                                                    var tr = sn.element("tr", {}, ctab);
+                                                    sn.element("td", { "class": "excCodeName" }, tr, [sn.element("code", {}, null, cd.id)]);
+                                                    sn.element("td", { "class": "excCodeDesc" }, tr, [cd.description]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // else {
+                                    //     sn.element("div", {}, desc, [sn.element("em", {}, null, "No exceptions.")]);
+                                    // }
+                                }
+                                else if (type == "constant") {
+                                    sn.text(" of type ", dt);
+                                    sn.element("span", { "class": "idlConstType" }, dt, [sn.element("a", {}, null, it.datatype)]);
+                                    if (it.nullable) sn.text(", nullable", dt);
+                                }
+                            }
+                        }
+                        // Serializer
+                        else {
+                            var div = sn.element("div", {}, sec);
+                            var it = things[0];
+                            if (it.serializertype != "prose") {
+                                var generatedDescription = "Instances of this interface are serialized as ";
+                                if (it.serializertype == "map") {
+                                    var mapDescription = "a map ";
+                                    if (it.getter) {
+                                        mapDescription += "with entries corresponding to the named properties";
+                                    }
+                                    else {
+                                        var and = "";
+                                        if (it.inherit) {
+                                            mapDescription += "with entries from the closest inherited interface ";
+                                            and = "and ";
+                                        }
+                                        if (it.all) {
+                                            mapDescription += and + "with entries for each of the serializable attributes";
+                                        }
+                                        else if (it.values && it.values.length) {
+                                            mapDescription += and + "with entries for the following attributes: " + it.values.join(", ");
+                                        }
+                                        else {
+                                            mapDescription = "an empty map";
+                                        }
+                                    }
+                                    generatedDescription += mapDescription;
+                                }
+                                else if (it.serializertype == "list") {
+                                    var listDescription = "a list ";
+                                    if (it.getter) {
+                                        listDescription += "with values corresponding to the indexed properties";
+                                    }
+                                    else {
+                                        if (it.values && it.values.length) {
+                                            listDescription += "with the values of the following attributes: " + it.values.join(", ");
+                                        }
+                                        else {
+                                            listDescription = "an empty list";
+                                        }
+                                    }
+                                    generatedDescription += listDescription;
+                                }
+                                else if (it.serializertype == "attribute") {
+                                    generatedDescription += "the value of the attribute " + it.values[0];
+                                }
+                                generatedDescription += ".";
+                                sn.element("p", {}, div, generatedDescription);
+                            }
+                            sn.element("p", {}, div, [it.description]);
+                        }
+                    }
+                    return df;
+                }
+            },
+
+            makeMethodID:    function (cur, obj) {
+                var id = cur + obj.refId + "-" + obj.datatype + "-"
+                ,   params = [];
+                for (var i = 0, n = obj.params.length; i < n; i++) {
+                    var prm = obj.params[i];
+                    params.push(prm.datatype + (prm.array ? "Array" : "") + "-" + prm.id);
+                }
+                id += params.join("-");
+                return sn.sanitiseID(id);
+            },
+
+            mergeWebIDL:    function (obj) {
+                if (typeof obj.merge === "undefined" || obj.merge.length === 0) return;
+                // queue for later execution
+                setTimeout(function () {
+                    for (var i = 0; i < obj.merge.length; i++) {
+                        var idlInterface = document.querySelector("#idl-def-" + obj.refId)
+                        ,   idlInterfaceToMerge = document.querySelector("#idl-def-" + obj.merge[i]);
+                        idlInterface.insertBefore(document.createElement("br"), idlInterface.firstChild);
+                        idlInterface.insertBefore(document.createElement("br"), idlInterface.firstChild);
+                        idlInterfaceToMerge.parentNode.parentNode.removeChild(idlInterfaceToMerge.parentNode);
+                        idlInterface.insertBefore(idlInterfaceToMerge, idlInterface.firstChild);
+                    }
+                }, 0);
+            },
+
+            writeAsWebIDL:    function (obj, indent) {
+                indent++;
+                var opt = { indent: indent, obj: obj, proc: this };
+                if (obj.type === "module") {
+                    if (obj.id == "outermost") {
+                        var $div = $("<div></div>");
+                        for (var i = 0; i < obj.children.length; i++) $div.append(this.writeAsWebIDL(obj.children[i], indent - 1));
+                        return $div.children();
+                    }
+                    else return $(idlModuleTmpl(opt));
+                }
+
+                else if (obj.type === "typedef") {
+                    opt.nullable = obj.nullable ? "?" : "";
+                    opt.arr = arrsq(obj);
+                    return $(idlTypedefTmpl(opt));
+                }
+
+                else if (obj.type === "implements") {
+                    return $(idlImplementsTmpl(opt));
+                }
+
+                else if (obj.type === "interface") {
+                    // stop gap fix for duplicate IDs while we're transitioning the code
+                    var div = this.doc.createElement("div")
+                    ,   id = $(div).makeID("idl-def", obj.refId, true)
+                    ,   maxAttr = 0, maxMeth = 0, maxConst = 0, hasRO = false;
+                    obj.children.forEach(function (it) {
+                        var len = 0;
+                        if (it.isUnionType)   len = it.datatype.join(" or ").length + 2;
+                        else if (it.datatype) len = it.datatype.length;
+                        if (it.isStatic) len += 7;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        if (it.type == "attribute") maxAttr = (len > maxAttr) ? len : maxAttr;
+                        else if (it.type == "method") maxMeth = (len > maxMeth) ? len : maxMeth;
+                        else if (it.type == "constant") maxConst = (len > maxConst) ? len : maxConst;
+                        if (it.type == "attribute" && it.declaration) hasRO = true;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   ctor = []
+                    ,   children = obj.children
+                                      .map(function (ch) {
+                                          if (ch.type == "attribute") return self.writeAttribute(ch, maxAttr, indent + 1, curLnk, hasRO);
+                                          else if (ch.type == "method") return self.writeMethod(ch, maxMeth, indent + 1, curLnk);
+                                          else if (ch.type == "constant") return self.writeConst(ch, maxConst, indent + 1, curLnk);
+                                          else if (ch.type == "serializer") return self.writeSerializer(ch, indent + 1, curLnk);
+                                          else if (ch.type == "constructor") ctor.push(self.writeConstructor(ch, indent, "widl-ctor-"));
+                                          else if (ch.type == "comment") return self.writeComment(ch, indent + 1);
+                                      })
+                                      .join("")
+                    ;
+                    return idlInterfaceTmpl({
+                        obj:        obj
+                    ,   indent:     indent
+                    ,   id:         id
+                    ,   ctor:       ctor.join(",\n")
+                    ,   partial:    obj.partial ? "partial " : ""
+                    ,   callback:   obj.callback ? "callback " : ""
+                    ,   children:   children
+                    });
+                }
+
+                else if (obj.type === "exception") {
+                    var maxAttr = 0, maxConst = 0;
+                    obj.children.forEach(function (it) {
+                        var len = it.datatype.length;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        if (it.type === "field")   maxAttr = (len > maxAttr) ? len : maxAttr;
+                        else if (it.type === "constant") maxConst = (len > maxConst) ? len : maxConst;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   children = obj.children
+                                      .map(function (ch) {
+                                          if (ch.type === "field") return self.writeField(ch, maxAttr, indent + 1, curLnk);
+                                          else if (ch.type === "constant") return self.writeConst(ch, maxConst, indent + 1, curLnk);
+                                      })
+                                      .join("")
+                    ;
+                    return idlExceptionTmpl({ obj: obj, indent: indent, children: children });
+                }
+
+                else if (obj.type === "dictionary") {
+                    var max = 0;
+                    obj.children.forEach(function (it) {
+                        var len = 0;
+                        if (it.isUnionType)   len = it.datatype.join(" or ").length + 2;
+                        else if (it.datatype) len = it.datatype.length;
+                        if (it.nullable) len = len + 1;
+                        if (it.array) len = len + (2 * it.arrayCount);
+                        max = (len > max) ? len : max;
+                    });
+                    var curLnk = "widl-" + obj.refId + "-"
+                    ,   self = this
+                    ,   children = obj.children
+                                      .map(function (it) {
+                                          return self.writeMember(it, max, indent + 1, curLnk);
+                                      })
+                                      .join("")
+                    ;
+                    return idlDictionaryTmpl({ obj: obj, indent: indent, children: children, partial: obj.partial ? "partial " : "" });
+                }
+
+                else if (obj.type === "callback") {
+                    var params = obj.children
+                                    .map(function (it) {
+                                        return idlParamTmpl({
+                                            obj:        it
+                                        ,   optional:   it.optional ? "optional " : ""
+                                        ,   arr:        arrsq(it)
+                                        ,   nullable:   it.nullable ? "?" : ""
+                                        ,   variadic:   it.variadic ? "..." : ""
+                                        });
+                                    })
+                                    .join(", ");
+                    return idlCallbackTmpl({
+                        obj:        obj
+                    ,   indent:     indent
+                    ,   arr:        arrsq(obj)
+                    ,   nullable:   obj.nullable ? "?" : ""
+                    ,   children:   params
+                    });
+                }
+
+                else if (obj.type === "enum") {
+                    var children = obj.children
+                                      .map(function (it) { return idlEnumItemTmpl({ obj: it, parentID: obj.refId, indent: indent + 1 }); })
+                                      .join(",\n");
+                    return idlEnumTmpl({obj: obj, indent: indent, children: children });
+                }
+            },
+
+            writeField:    function (attr, max, indent, curLnk) {
+                var pad = max - attr.datatype.length;
+                if (attr.nullable) pad = pad - 1;
+                if (attr.array) pad = pad - (2 * attr.arrayCount);
+                return idlFieldTmpl({
+                    obj:        attr
+                ,   indent:     indent
+                ,   arr:        arrsq(attr)
+                ,   nullable:   attr.nullable ? "?" : ""
+                ,   pad:        pad
+                ,   href:       curLnk + attr.refId
+                });
+            },
+
+            writeAttribute:    function (attr, max, indent, curLnk) {
+                var len = 0;
+                if (attr.isUnionType)   len = attr.datatype.join(" or ").length + 2;
+                else if (attr.datatype) len = attr.datatype.length;
+                var pad = max - len;
+                if (attr.nullable) pad = pad - 1;
+                if (attr.array) pad = pad - (2 * attr.arrayCount);
+                return idlAttributeTmpl({
+                    obj:            attr
+                ,   indent:         indent
+                ,   declaration:    attr.declaration
+                ,   pad:            pad
+                ,   arr:            arrsq(attr)
+                ,   nullable:       attr.nullable ? "?" : ""
+                ,   href:           curLnk + attr.refId
+                });
+            },
+
+            writeMethod:    function (meth, max, indent, curLnk) {
+                var params = meth.params
+                                .map(function (it) {
+                                    return idlParamTmpl({
+                                        obj:        it
+                                    ,   optional:   it.optional ? "optional " : ""
+                                    ,   arr:        arrsq(it)
+                                    ,   nullable:   it.nullable ? "?" : ""
+                                    ,   variadic:   it.variadic ? "..." : ""
+                                    });
+                                })
+                                .join(", ");
+                var len = 0;
+                if (meth.isUnionType) len = meth.datatype.join(" or ").length + 2;
+                else                  len = meth.datatype.length;
+                if (meth.isStatic) len += 7;
+                var pad = max - len;
+                if (meth.nullable) pad = pad - 1;
+                if (meth.array) pad = pad - (2 * meth.arrayCount);
+                return idlMethodTmpl({
+                    obj:        meth
+                ,   indent:     indent
+                ,   arr:        arrsq(meth)
+                ,   nullable:   meth.nullable ? "?" : ""
+                ,   "static":   meth.isStatic ? "static " : ""
+                ,   pad:        pad
+                ,   id:         this.makeMethodID(curLnk, meth)
+                ,   children:   params
+                });
+            },
+
+            writeConstructor:   function (ctor, indent, curLnk) {
+                var params = ctor.params
+                                .map(function (it) {
+                                    return idlParamTmpl({
+                                        obj:        it
+                                    ,   optional:   it.optional ? "optional " : ""
+                                    ,   arr:        arrsq(it)
+                                    ,   nullable:   it.nullable ? "?" : ""
+                                    ,   variadic:   it.variadic ? "..." : ""
+                                    });
+                                })
+                                .join(", ");
+                return idlConstructorTmpl({
+                    obj:        ctor
+                ,   indent:     indent
+                ,   id:         this.makeMethodID(curLnk, ctor)
+                ,   name:       ctor.named ? ctor.id : "Constructor"
+                ,   keyword:    ctor.named ? "NamedConstructor=" : ""
+                ,   children:   params
+                });
+            },
+
+            writeConst:    function (cons, max, indent) {
+                var pad = max - cons.datatype.length;
+                if (cons.nullable) pad--;
+                return idlConstTmpl({ obj: cons, indent: indent, pad: pad, nullable: cons.nullable ? "?" : ""});
+            },
+
+            writeComment:   function (comment, indent) {
+                return idlCommentTmpl({ obj: comment, indent: indent, comment: comment.id});
+            },
+
+
+            writeSerializer: function (serializer, indent) {
+                var values = "";
+                if (serializer.serializertype == "map") {
+                    var mapValues = [];
+                    if (serializer.getter) mapValues = ["getter"];
+                    else {
+                        if (serializer.inherit) mapValues.push("inherit");
+                        if (serializer.all) mapValues.push("attribute");
+                        else                mapValues = mapValues.concat(serializer.values);
+                    }
+                    values = "{" + mapValues.join(", ") + "}";
+                }
+                else if (serializer.serializertype == "list") {
+                    var listValues = (serializer.getter ? ["getter"] : serializer.values);
+                    values = "[" + listValues.join(", ") + "]";
+                }
+                else if (serializer.serializertype == "attribute") {
+                    values = serializer.values[0];
+                }
+                return idlSerializerTmpl({
+                    obj:        serializer
+                ,   indent:     indent
+                ,   values:     values
+                });
+            },
+
+            writeMember:    function (memb, max, indent, curLnk) {
+                var opt = { obj: memb, indent: indent, curLnk: curLnk,
+                            nullable: (memb.nullable ? "?" : ""), arr: arrsq(memb) };
+                if (memb.isUnionType)   opt.pad = max - (memb.datatype.join(" or ").length + 2);
+                else if (memb.datatype) opt.pad = max - memb.datatype.length;
+                if (memb.nullable) opt.pad = opt.pad - 1;
+                if (memb.array) opt.pad = opt.pad - (2 * memb.arrayCount);
+                return idlDictMemberTmpl(opt);
             }
-            var scale = 1.0;
-            max_text_width = max_text_width + rightOf(-1);
-            if ((maxFigWidth > 0) && (max_text_width > maxFigWidth)) {
-                scale = maxFigWidth / max_text_width;
-            }
-            svg.configure({
-                              height:      (scale * nextBitLine) + "px",
-                              width:       (scale * max_text_width) + "px",
-                              viewBox:     "0 0 " + max_text_width + " " + nextBitLine,
-                              "xmlns:xlink": "http://www.w3.org/1999/xlink"
-                          });
-        }
+        };
+
 
         return {
-            run: function(conf, doc, cb, msg) {
-                msg.pub("start", "core/regpict");
-                if (!(conf.noReSpecCSS)) {
-                    $(doc).find("head link").first().before($("<style></style>").text(css));
-                }
-                var figNum = 1;
-                $("figure.register", doc).each(
-                    function() {
-                        var parsed, $tbody, pattern, bitpattern;
-                        var $fig = $(this);
-                        var json = { };
-                        if ($fig.attr("id")) {
-                            json.figName = $fig.attr("id").replace(/^fig-/, "");
-                        } else if ($fig.attr("title")) {
-                            json.figName = $fig.attr("title");
-                        } else if ($("figcaption", this)) {
-                            json.figName = $("figcaption", this).text();
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/webidl");
+                if (!conf.noIDLSorting) conf.noIDLSorting = false;
+                if (!conf.noIDLSectionTitle) conf.noIDLSectionTitle = false;
+                sn = new simpleNode(document);
+                var $idl = $(".idl", doc).not("pre")
+                ,   finish = function () {
+                        msg.pub("end", "core/webidl");
+                        cb();
+                    };
+                if (!$idl.length) return finish();
+                if (!(conf.noReSpecCSS))
+                    $(doc).find("head link").first().before($("<style/>").text(css));
+
+                var infNames = [];
+                $idl.each(function () {
+                    var w = new WebIDLProcessor({ noIDLSorting: conf.noIDLSorting, msg: msg, doc: doc, conf: conf })
+                    ,   inf = w.definition($(this))
+                    ,   $df = w.makeMarkup(inf.htmlID);
+                    $(this).replaceWith($df);
+                    if ($.inArray(inf.type, "interface exception dictionary typedef callback enum".split(" ")) !== -1) infNames.push(inf.id);
+                });
+                doc.normalize();
+                $("a:not([href])").each(function () {
+                    var $ant = $(this);
+                    if ($ant.hasClass("externalDFN")) return;
+                    var name = $ant.text();
+                    if ($.inArray(name, infNames) !== -1) {
+                        $ant.attr("href", "#idl-def-" + name)
+                            .addClass("idlType")
+                            .html("<code>" + name + "</code>");
+                    }
+                });
+                finish();
+            }
+        };
+    }
+);
+
+window.simpleNode = function (doc) {
+    this.doc = doc ? doc : document;
+};
+window.simpleNode.prototype = {
+
+    // --- NODE CREATION ---
+    element:    function (name, attr, parent, content) {
+        var $el = $(this.doc.createElement(name));
+        $el.attr(attr || {});
+        if (parent) $(parent).append($el);
+        if (content) {
+            if (content instanceof jQuery) $el.append(content);
+            else if (content instanceof Array) for (var i = 0; i < content.length; i++) $el.append(content[i]);
+            else this.text(content, $el);
+        }
+        return $el;
+    },
+
+    text:    function (txt, parent) {
+        var tn = this.doc.createTextNode(txt);
+        if (parent) $(parent).append(tn);
+        return tn;
+    },
+
+    documentFragment:    function () {
+        return this.doc.createDocumentFragment();
+    },
+
+    // --- ID MANAGEMENT ---
+    sanitiseID:    function (id) {
+        id = id.split(/[^\-.0-9a-zA-Z_]/).join("-");
+        id = id.replace(/^-+/g, "");
+        id = id.replace(/-+$/, "");
+        if (id.length > 0 && /^[^a-z]/.test(id)) id = "x" + id;
+        if (id.length === 0) id = "generatedID";
+        return id;
+    },
+
+    idThatDoesNotExist:    function (id) {
+        var inc = 1;
+        if (this.doc.getElementById(id)) {
+            while (this.doc.getElementById(id + "-" + inc)) inc++;
+            id = id + "-" + inc;
+        }
+        return id;
+    }
+};
+
+
+// Module core/link-to-dfn
+// Gives definitions in conf.definitionMap IDs and links <a> tags to the matching definitions.
+define(
+    'core/link-to-dfn',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/link-to-dfn");
+                doc.normalize();
+                var titles = {};
+                Object.keys(conf.definitionMap).forEach(function(title) {
+                    titles[title] = {};
+                    conf.definitionMap[title].forEach(function(dfn) {
+                        if (dfn.attr('data-idl') === undefined) {
+                                // Non-IDL definitions aren't "for" an interface.
+                            dfn.removeAttr('data-dfn-for');
+                        }
+                        var dfn_for = dfn.attr('data-dfn-for') || "";
+                        if (dfn_for in titles[title]) {
+                            msg.pub("error", "Duplicate definition of '" + (dfn_for ? dfn_for + "/" : "") + title + "'");
+                        }
+                        titles[title][dfn_for] = dfn;
+                        if (dfn.attr('data-idl')) {
+                            dfn.makeID("dom", (dfn_for ? dfn_for + "-" : "") + title);
                         } else {
-                            json.figName = "unnamed-" + figNum;
-                            figNum++;
-                        }
-                        json.figName = json.figName
-                            .replace(/^\s+/, "")
-                            .replace(/\s+$/, "")
-                            .replace(/[^\-.0-9a-z_]+/ig, "-")
-                            .replace(/^-+/, "")
-                            .replace(/-+$/, "")
-                            .replace(/\.$/, ".x")
-                            .replace(/^([^a-z])/i, "x$1")
-                            .replace(/^$/, "generatedID");
-                        if (!$fig.attr("id")) {
-                            $fig.attr("id", "fig-" + json.figName);
-                        }
-                        msg.pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
-
-                        var temp = $fig.attr("data-json");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            $.extend(true, json, $.parseJSON(temp));
-                        }
-
-                        temp = $fig.attr("data-width");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            json.width = temp;
-                        }
-
-                        temp = $fig.attr("data-unused");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            json.defaultUnused = temp;
-                        }
-
-                        temp = $fig.attr("data-href");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            json.href = temp;
-                        }
-
-                        temp = $fig.attr("data-table");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            json.table = temp;
-                        }
-
-                        temp = $fig.attr("data-register");
-                        if (temp !== null && temp !== undefined && temp !== "") {
-                            json.register = temp;
-                        }
-
-                        $("pre.json,div.json,span.json", $fig).each(function() {
-                            $.extend(true, json, $.parseJSON(this.textContent));
-                            $(this).hide();
-                        });
-
-                        if ($fig.hasClass("pcisig_reg") && json.hasOwnProperty("table")) {
-                            parsed = { fields: { } };
-                            $tbody = $(json.table + " tbody", doc).first();
-                            //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
-                            $tbody.children().each(function() {
-                                var $td = $(this).children();
-                                if ($td.length >= 3) {
-                                    var bits = $td[0].textContent;
-                                    var desc = $td[1];
-                                    var attr = $td[2].textContent.toLowerCase();
-                                    var lsb, msb, match;
-                                    lsb = msb = -1;
-                                    match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
-                                    if (match) {
-                                        msb = lsb = Number(match[1]);
-                                        if ((typeof(match[3]) === "string") && (match[3] !== "")) {
-                                            lsb = Number(match[3]);
-                                        }
-                                        if (lsb > msb) {
-                                            msb = lsb;
-                                            lsb = Number(match[1]);
-                                        }
-                                    }
-                                    var fieldName;
-                                    var $dfn = $("code:first, dfn:first", desc);
-                                    if ($dfn.length === 0) {
-                                        fieldName = /^\s*(\w+)/.exec(desc.textContent)[1];
-                                    } else {
-                                        fieldName = $dfn.first().text().trim();
-                                    }
-                                    var validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
-                                    if (!validAttr.test(attr)) {
-                                        attr = "other";
-                                    }
-                                    var unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused)$/i;
-                                    var isUnused = !!unusedAttr.test(attr);
-//                                    console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
-                                    parsed.fields[fieldName] = {
-                                        msb:      msb,
-                                        lsb:      lsb,
-                                        attr:     attr,
-                                        isUnused: isUnused
-                                    };
-                                }
-                            });
-                            //console.log("parsed=" + JSON.stringify(parsed, null, 2));
-                            $.extend(true, json, parsed);
-//                            console.log("json=" + JSON.stringify(json, null, 2));
-                        }
-
-                        if ($fig.hasClass("nv_refman") && json.hasOwnProperty("href") &&
-                            json.hasOwnProperty("register")) {
-                            parsed = { fields: { } };
-                            pattern = new RegExp("^#\\s*define\\s+(" + json.register +
-                                                 ")(\\w*)\\s+(\\S*)\\s*/\\*\\s*(\\S\\S\\S\\S\\S)\\s*\\*/\\s*$");
-                            bitpattern = /(\d+):(\d+)/;
-                            if (!!conf.ajaxIsLocal) {
-                                $.ajaxSetup({ isLocal: true});
-                            }
-                            conf.ajaxIsLocal = false;
-                            $.ajax({
-                                       dataType: "text",
-                                       url:      json.href,
-                                       async:    false,
-                                       success:  function(data) {
-                                           if (data) {
-                                               var lines = data.split(/\n/);
-                                               for (var i = 0; i < lines.length; i++) {
-                                                   var match = pattern.exec(lines[i]);
-                                                   if (match) {
-                                                       if (!json.hasOwnProperty("width")) {
-                                                           if ((match[2] === "") &&
-                                                               (match[4].substr(4, 1) === "R")) {
-                                                               var w = match[4].substr(3, 1);
-                                                               if (w === "2") {
-                                                                   parsed.width = 16;
-                                                               } else if (w === "4") {
-                                                                   parsed.width = 32;
-                                                               } else if (w === "8") {
-                                                                   parsed.width = 64;
-                                                               } else {
-                                                                   parsed.width = 32;
-                                                               }
-                                                           }
-                                                       }
-                                                       if ((match[2] !== "") &&
-                                                           (match[4].substr(4, 1) === "F")) {
-                                                           var bits = bitpattern.exec(match[3]);
-                                                           if (bits) {
-                                                               parsed.fields[match[1] + match[2]] = {
-                                                                   msb:  Number(bits[1]),
-                                                                   lsb:  Number(bits[2]),
-                                                                   attr: match[4].substr(0, 2)
-                                                                             .replace(/[^-r][^-w]/i, "other")
-                                                                             .replace(/rw/i, "rw")
-                                                                             .replace(/r-/i, "ro")
-                                                                             .replace(/-w/i, "wo")};
-                                                           } else {
-                                                               msg.pub("error",
-                                                                       "Unknown field width " + match[0]);
-                                                           }
-                                                       }
-                                                   }
-                                               }
-                                               //console.log("parsed=" + JSON.stringify(parsed, null, 2));
-                                               $.extend(true, json, parsed);
-                                               //console.log("json=" + JSON.stringify(json, null, 2));
-                                           }
-                                       },
-                                       error:    function(xhr, status, error) {
-                                           msg.pub("error",
-                                                   "regpict/nv_refman: Error including file data-href=" +
-                                                   json.href +
-                                                   " data-register=" + json.register + " : " +
-                                                   status + " (" + error + ")");
-                                       }
-                                   });
-                        }
-
-                        // invent a div to hold the svg, if necessary
-                        var $divsvg = $("div.svg", this).last();
-                        if ($divsvg.length === 0) {
-                            var $cap = $("figcaption", this);
-                            if ($cap.length > 0) {
-                                //console.log("inserting div.svg before <figcaption>");
-                                $cap.before('<div class="svg"></div>');
-                            } else {
-                                //console.log("inserting div.svg at end of <figure>");
-                                $(this).append('<div class="svg"></div>');
-                            }
-                            $divsvg = $("div.svg", this).last();
-                        }
-
-                        function merge_json(result, me) {
-                            var $me = $(me);
-                            var parents = $me.attr("data-parents");
-                            if (parents !== null && parents !== undefined && parents !== "") {
-                                // console.log("parents = \"" + parents + "\"");
-                                parents = parents.split(/\s+/);
-                                var i;
-                                for (i = 0; i < parents.length; i++) {
-                                    var $temp = $("#" + parents[i]);
-                                    // console.log("merging: #" + parents[i]);
-                                    if ($temp.length > 0) {
-                                        // console.log("merge_json: adding \"" + $temp[0].textContent + "\"");
-                                        merge_json(result, $temp[0]);
-                                        //$.extend(true, result, $.parseJSON($temp[0].textContent));
-                                        // console.log("result=" + JSON.stringify(result, null, 2));
-                                        $temp.hide();
-                                    }
-                                }
-                            }
-                            // console.log("merge_json: adding \"" + me.textContent + "\"");
-                            $.extend(true, result, $.parseJSON(me.textContent));
-                            // console.log("result=" + JSON.stringify(result, null, 2));
-                            $(me).hide();
-                        }
-
-                        var $render = $("pre.render,div.render,span.render", $fig);
-                        if ($render.length > 0) {
-                            $render.each(function(index) {
-                                var temp_json = { };
-                                $.extend(true, temp_json, json);
-                                // console.log("temp_json=" + JSON.stringify(temp_json, null, 2));
-                                merge_json(temp_json, this);
-                                $(this).hide();
-                                $divsvg.last().makeID("svg", "render-" + index);
-                                $divsvg.last().svg(function(svg) {
-                                    draw_regpict(this, svg, temp_json);
-                                });
-                                if (index < ($render.length - 1)) {
-                                    $divsvg.after('<div class="svg"></div>');
-                                    $divsvg = $("div.svg", $fig).last();
-                                }
-                            });
-                        } else if (json !== null) {
-                            $divsvg.last().svg(function(svg) {
-                                draw_regpict(this, svg, json);
-                            });
-                        } else {
-                            msg.pub("warn",
-                                    "core/regpict: no register definition " + $fig.get(0).outerHTML);
+                            dfn.makeID("dfn", title);
                         }
                     });
-                msg.pub("end", "core/regpict");
+                });
+                $("a:not([href])").each(function () {
+                    var $ant = $(this);
+                    if ($ant.hasClass("externalDFN")) return;
+                    var title = $ant.dfnTitle();
+                    var link_for = ($ant.attr("for") || $ant.closest("[link-for]").attr("link-for") || "").toLowerCase();
+                    if (titles[title] && titles[title][link_for]) {
+                        $ant.attr("href", "#" + titles[title][link_for].prop("id")).addClass("internalDFN");
+                    }
+                    else {
+                        // ignore WebIDL
+                        if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
+                            msg.pub("warn", "Found linkless <a> element with text '" + (link_for ? link_for + "/" : "") + title + "' but no matching <dfn>.");
+                        }
+                        $ant.replaceWith($ant.contents());
+                    }
+                });
+                msg.pub("end", "core/link-to-dfn");
                 cb();
             }
         };
-    });
-/* jshint browser: true */
-/* jshint jquery: true */
-/* global define */
-// Module core/dfn
-// Finds all <dfn> elements and populates conf.definitionMap to identify them.
-define(
-    'core/dfn',[],
-    function() {
-        
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
-                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
-        return {
-            run: function(conf, doc, cb, msg) {
-                msg.pub("start", "core/dfn");
-                doc.normalize();
-                if (!conf.definitionMap) {
-                    conf.definitionMap = {};
-                }
-                if (!conf.definitionHTML) {
-                    conf.definitionHTML = {};
-                }
-
-                //console.log("\n\n\n\n");
-
-                $("[dfn-for]").each(function() {
-                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
-                    this.removeAttribute("dfn-for");
-                });
-
-                $("table[id] dfn.field", doc).each(function() {
-                    var $dfn = $(this);
-                    var $parent_table = $dfn.parents("table[id]")[0];
-                    var base_id = "field-" + $parent_table.id.replace(/^tbl-/, "") + "-";
-                    var title = $dfn.dfnTitle();
-                    $dfn.attr("data-dfn-for", $parent_table.id);
-                    //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
-                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
-
-                    if (conf.definitionMap[base_id + title[0]]) {
-                        msg.pub("error", "Duplicate definition '" + base_id + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> Definition '" + base_id + title[0] + "' is defined more than once </span>");
-                    }
-                    var id = $dfn.makeID(null, base_id + title[0]);
-                    //console.log("<dfn class=\"field\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
-                    conf.definitionMap[id] = id;
-                    conf.definitionHTML[id] = $dfn.html();
-                    for (i = 0; i < title.length; i++) {
-                        //console.log("<dfn" + i + " class=\"field\" title=\"" + base_id + title[i] + "\">" + $dfn.html() + "</dfn>");
-                        conf.definitionMap[base_id + title[i]] = conf.definitionMap[id];
-                        conf.definitionHTML[base_id + title[i]] = conf.definitionHTML[id];
-                    }
-
-                });
-
-                //console.log("\n\n\n\n");
-
-                $("dfn", doc).each(function() {
-                    var $dfn = $(this);
-                    if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
-                        return;
-                    }
-                    if ($dfn.attr("for")) {
-                        $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
-                        $dfn.removeAttr("for");
-                    } else {
-                        $dfn.attr("data-dfn-for", ($dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
-                    }
-                    var tag = dfnClass[0];  // default "dfn"
-                    for (var i = 1; i < dfnClass.length; i++) {
-                        if ($dfn.hasClass(dfnClass[i])) {
-                            tag = dfnClass[i];
-                        }
-                    }
-                    var title = $dfn.dfnTitle();
-                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
-                    if (conf.definitionMap[tag + "-" + title[0]]) {
-                        msg.pub("error", "Duplicate definition '" + tag + "-" + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> Definition '" + tag + "-" + title[0] + "' is defined more than once </span>");
-                    }
-                    var id = $dfn.makeID(tag, title[0]);
-                    //console.log("<dfn class=\"" + tag + "\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
-                    conf.definitionMap[id] = id;
-                    conf.definitionHTML[id] = $dfn.html();
-                    for (i = 0; i < title.length; i++) {
-                        //console.log("<dfn" + i + " class=\"" + tag + "\" title=\"" + tag + "-" + title[i] + "\">" + $dfn.html() + "</dfn>");
-                        conf.definitionMap[tag + "-" + title[i]] = conf.definitionMap[id];
-                        conf.definitionHTML[tag + "-" + title[i]] = conf.definitionHTML[id];
-                    }
-                });
-
-                //console.log("\n\n\n\n");
-
-                $("div.hasSVG g[id]", doc).each(function() {
-                    var $text = $("text.regFieldName", this).first();
-                    if ($text) {
-                        var title = $text.dfnTitle();
-                        var id = $(this).attr("id");
-                        //console.log("<dfn class=\"regpict\" id=\"" + id + "\">" + $(this).text() + "</dfn>");
-                        conf.definitionMap[id] = id;
-                        conf.definitionHTML[id] = $text.text();
-                        var found = null;
-                        for (i = 0; i < title.length; i++) {
-                            //console.log("<dfn" + i + " class=\"regpict\" title=\"regpict-" + title[i] + "\">" + $(this).text() + "</dfn>");
-                            conf.definitionMap["regpict-" + title[i]] = id;
-                            conf.definitionHTML["regpict-" + title[i]] = conf.definitionHTML[id];
-                            if (conf.definitionMap["field-" + title[i]]) {
-                                found = conf.definitionMap["field-" + title[i]];
-                            }
-                        }
-                        id = id.replace(/^regpict-/, "field-");
-                        if (conf.definitionMap[id]) {
-                            found = conf.definitionMap[id];
-                        }
-                        if (found) {
-                            var $rect = $("rect.regFieldBox", this).first();
-                            //console.log("Map[field-" + title + "]=" + conf.definitionMap["field-" + title]);
-                            //console.log(" $rect.length= " + $rect.length);
-                            //console.log(" $rect[0] is " + $rect[0]);
-                            //console.log(" wrapping field-" + title);
-                            var a = doc.createElementNS("http://www.w3.org/2000/svg", "a");
-                            a.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
-//                            a.setAttribute("class", "regLink");
-//                            a.setAttribute("target", "_parent");
-                            $rect.wrap(a);
-//                            $rect[0].setAttribute("class", $rect[0].getAttribute("class") + " regLink");
-//                            $rect[0].setAttributeNS("http://www.w3.org/2000/svg", "class",
-//                                                    $rect[0].getAttributeNS("http://www.w3.org/2000/svg", "class") + " regLink");
-                            var b = doc.createElementNS("http://www.w3.org/2000/svg", "a");
-                            b.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
-//                            b.setAttribute("class", "regLink");
-//                            b.setAttribute("target", "_parent");
-//                            b.setAttributeNS("http://www.w3.org/1999/xhtml", "class", "field internalDFN");
-//                            b.setAttributeNS("http://www.w3.org/2000/svg", "class", "field internalDFN");
-                            $text.wrap(b);
-//                            $text[0].setAttribute("class", $text[0].getAttribute("class") + " regLink");
-                        }
-                    }
-                });
-
-                //console.log("\n\n\n\n");
-
-                $("dfn.field", doc).each(function() {
-                    var id = this.id.replace(/^field-/,"#regpict-");
-                    if (id !== this.id) {
-                        //console.log("field-->regpict: looking for " + this.id + " --> " + id);
-                        var $regpict = $(id, doc);
-                        if ($regpict.length > 0) {
-                            $(this).wrapInner("<a href=\"" + id + "\"></a>");
-                            //console.log("field-->regpict: <dfn class=\"" + this["class"] +
-                            //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
-                            //console.log("");
-                        }
-                    }
-                });
-
-                //console.log("\n\n\n\n");
-
-                $("a:not([href]):not([tabindex])", doc)
-                    .filter(
-                    function() {
-                        return (this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href") === null);
-                    })
-                    .each(
-                    function() {
-                        //console.log("a:not([href]): " + this.tagName + "  " + this.namespaceURI + "  " + this.outerHTML);
-                        var $ant = $(this);
-                        if ($ant.hasClass("externalDFN")) {
-                            return;
-                        }
-                        /*var hrefNode = this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
-                         if (hrefNode) {
-                         console.log("  getAttributeNS() localName=" + hrefNode.localName +
-                         " nodeName=" + hrefNode.nodeName +
-                         " nodeType=" + hrefNode.nodeType +
-                         " namespaceURI=" + hrefNode.namespaceURI);
-                         return;
-                         }*/
-                        var title = $ant.dfnTitle()[0];
-                        var tag = null;
-                        var temp = $ant.attr("class");
-                        var i;
-                        if (temp) {
-                            //console.log("class=" + temp);
-                            temp = temp.split(/\s+/);
-                            for (i = 0; i < temp.length; i++) {
-                                //console.log("checking " + temp[i] + "-" + title);
-                                if (conf.definitionMap[temp[i] + "-" + title]) {
-                                    tag = temp[i];
-                                    //console.log("found " + temp[i] + "-" + title);
-                                }
-                            }
-                        }
-                        if (tag === null) {
-                            for (i = 0; i < dfnClass.length; i++) {
-                                if (conf.definitionMap[dfnClass[i] + "-" + title]) {
-                                    if (tag === null) {
-                                        tag = dfnClass[i];
-                                    } else {
-                                        tag = tag + "-" + dfnClass[i];
-                                    }
-                                }
-                            }
-                        }
-                        if (tag !== null) {
-                            //console.log("tag= " + tag);
-                            if (tag === "regpict-field" || tag === "field-regpict") {
-                                tag = "field";
-                            }
-                            //console.log("tag= " + tag);
-                            var warn = null;
-                            if (tag.match(/-/)) {
-                                warn = "Ambiguous reference to '(" + tag + ")-" + title + "'";
-                                tag = tag.split("-")[0];
-                                warn = warn + ", resolved as '" + tag + "'";
-                                msg.pub("warn", warn);
-                            }
-                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title])
-                                .addClass("internalDFN")
-                                .addClass(tag);
-                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
-                                $ant.html(conf.definitionHTML[tag + "-" + title]);
-                            }
-                            if (warn !== null) {
-                                $ant.append("<span class=\"respec-error\"> " + warn + " </span>");
-                            }
-                            //console.log("result: " + $ant[0].outerHTML);
-                        }
-                        else {
-                            // ignore WebIDL
-                            if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                                msg.pub("warn",
-                                        "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
-                            }
-                            $ant.replaceWith($ant.contents());
-                        }
-                    }
-                )
-                ;
-                if (conf.addDefinitionMap) {
-                    msg.pub("start", "core/dfn/addDefinitionMap");
-                    var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
-                    var keys = Object.keys(conf.definitionMap).sort();
-                    for (var i = 0; i < keys.length; i++) {
-                        var d = keys[i];
-                        var item = d.split(/-/);
-                        var kind = item.shift();
-                        var id = conf.definitionMap[d];
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"" + "#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
-                    }
-                    msg.pub("end", "core/dfn/addDefinitionMap");
-                }
-                msg.pub("end", "core/dfn");
-                cb();
-            }
-        }
-            ;
     }
-)
-;
+);
 
 
 // Module core/fix-headers
@@ -20969,48 +22132,69 @@ define(
     }
 );
 
-/*globals define*/
-/*jshint browser:true, jquery:true, laxcomma:true */
 
-// Module core/structure
-//  Handles producing the ToC and numbering sections across the document.
-
-// CONFIGURATION:
-//  - noTOC: if set to true, no TOC is generated and sections are not numbered
-//  - tocIntroductory: if set to true, the introductory material is listed in the TOC
-//  - lang: can change the generated text (supported: en, fr)
-//  - maxTocLevel: only generate a TOC so many levels deep
+// Module core/rdfa
+// Support for RDFa is spread to multiple places in the code, including templates, as needed by
+// the HTML being generated in various places. This is for parts that don't fit anywhere in
+// particular
 
 define(
-    'core/xref-map',["core/utils"],
-    function (utils) {
-        
+    'core/rdfa',[],
+    function () {
         return {
-            run: function (conf, doc, cb, msg) {
-                msg.pub("start", "core/xref-map");
-                if (!!conf.addXrefMap) {
-                    var $refs = $("a.tocxref", doc);
-                    if ($refs.length > 0) {
-                        var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure and Table ID Map</h2></section>").appendTo($("body"));
-                        var $tbody = $("<table><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
-
-                        $refs.each(function() {
-                            var number = ($(".secno, .figno, .tblno", this).text()
-                                          .replace(/ /g,"&nbsp;").replace(/-/g,"&#8209;"));
-                            var id = $(this).attr("href");
-                            var name = $(".sectitle, .figtitle, .tbltitle", this).text();
-                            $("<tr><td>" + number + "</td>" +
-                              "<td>" + name + "</td>" +
-                              "<td><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);
-                        });
-                    }
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/rdfa");
+                if (conf.doRDFa) {
+                    $("section").each(function () {
+                        var $sec = $(this)
+                        ,   resource = ""
+                        ,   $fc = $sec.children("h1,h2,h3,h4,h5,h6").first()
+                        ,   ref = $sec.attr("id")
+                        ,   fcref = null
+                        ;
+                        if (ref) {
+                            resource = "#" + ref;
+                        }
+                        else if ($fc.length) {
+                            ref = $fc.attr("id");
+                            if (ref) {
+                                resource = "#" + ref;
+                                fcref = ref;
+                            }
+                        }
+                        var property = "bibo:hasPart";
+                        // Headings on everything but boilerplate
+                        if (!resource.match(/#(abstract|sotd|toc)$/)) {
+                            $sec.attr({
+                                "typeof":   "bibo:Chapter"
+                            ,   resource:   resource
+                            ,   property:   property
+                            });
+                        }
+                        // create a heading triple too, as per the role spec
+                        // since we should not be putting an @role on 
+                        // h* elements with a value of heading, but we 
+                        // still want the semantic markup
+                        if ($fc.length) {
+                            if (!fcref) {
+                                // if there is no ID on the heading itself.  Add one
+                                fcref = $fc.makeID("h", ref) ;
+                            }
+                            // set the subject to the ID of the heading
+                            $fc.attr({ resource: "#" + fcref }) ;
+                            // nest the contents in a span so we can set the predicate
+                            // and object
+                            $fc.wrapInner( "<span property='xhv:role' resource='xhv:heading'></span>" );
+                        }
+                    });
                 }
-                msg.pub("end", "core/structure");
+                msg.pub("end", "core/rdfa");
                 cb();
             }
         };
     }
 );
+
 // Module w3c/aria
 // Adds wai-aria landmarks and roles to entire document.
 // Introduced by Shane McCarron (shane@aptest.com) from the W3C PFWG
@@ -21053,6 +22237,25 @@ define(
                     }
                 });
                 msg.pub("end", "w3c/aria");
+                cb();
+            }
+        };
+    }
+);
+
+
+// Module core/shiv
+// Injects the HTML5 shiv conditional comment
+
+define(
+    'core/shiv',[],
+    function () {
+        return {
+            run:    function (conf, doc, cb, msg) {
+                msg.pub("start", "core/shiv");
+                var cmt = doc.createComment("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]");
+                $("head").append(cmt);
+                msg.pub("end", "core/shiv");
                 cb();
             }
         };
@@ -21111,8 +22314,7 @@ define(
     }
 );
 
-/*global define, respecVersion, require */
-/*jshint laxcomma:true, browser:true */
+/*global respecVersion */
 
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
@@ -21124,12 +22326,12 @@ var requireConfig = {
 };
 if ("respecVersion" in window && respecVersion) {
     requireConfig.paths = {
-        "ui":   "https://sglaser.github.io/respec/js/ui"
+        "ui":   "https://w3c.github.io/respec/js/ui"
     };
 }
 require.config(requireConfig);
 
-define('profile-nvidia-common',[
+define('profile-w3c-common',[
             "domReady"
         ,   "core/base-runner"
         ,   "core/ui"
@@ -21137,38 +22339,37 @@ define('profile-nvidia-common',[
         ,   "core/default-root-attr"
         ,   "core/markdown"
         ,   "core/style"
-        ,   "nvidia/style"
-        ,   "nvidia/headers"
-        ,   "core/footnotes"
+        ,   "w3c/style"
+        ,   "w3c/headers"
         ,   "w3c/abstract"
-        ,   "nvidia/conformance"
+        ,   "w3c/conformance"
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
+        ,   "core/dfn"
+        ,   "w3c/rfc2119"
         ,   "core/examples"
         ,   "core/issues-notes"
         ,   "core/requirements"
         ,   "core/highlight"
         ,   "core/best-practices"
         ,   "core/figures"
-        ,   "core/tables"
         ,   "core/biblio"
-        ,   "core/rdfa"
-//        ,   "core/webidl-oldschool"
-        ,   "core/regpict"
-        ,   "core/dfn"
+        ,   "core/webidl-contiguous"
+        ,   "core/webidl-oldschool"
+        ,   "core/link-to-dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
-        ,   "core/xref-map"
+        ,   "core/rdfa"
         ,   "w3c/aria"
+        ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
         ],
         function (domReady, runner, ui) {
-            
             var args = Array.prototype.slice.call(arguments);
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");
@@ -21180,4 +22381,4 @@ define('profile-nvidia-common',[
 );
 
 
-require(['profile-nvidia-common']);
+require(['profile-w3c-common']);
