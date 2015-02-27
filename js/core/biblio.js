@@ -1,4 +1,3 @@
-
 // Module core/biblio
 // Handles bibliographic references
 // Configuration:
@@ -9,14 +8,14 @@ define(
     function () {
         var getRefKeys = function (conf) {
             var informs = conf.informativeReferences
-            ,   norms = conf.normativeReferences
-            ,   del = []
-            ,   getKeys = function (obj) {
+                , norms = conf.normativeReferences
+                , del = []
+                , getKeys = function (obj) {
                     var res = [];
                     for (var k in obj) res.push(k);
                     return res;
                 }
-            ;
+                ;
             for (var k in informs) if (norms[k]) del.push(k);
             for (var i = 0; i < del.length; i++) delete informs[del[i]];
             return {
@@ -25,18 +24,18 @@ define(
             };
         };
         var REF_STATUSES = {
-            "NOTE":     "W3C Note"
-        ,   "WG-NOTE":  "W3C Working Group Note"
-        ,   "ED":       "W3C Editor's Draft"
-        ,   "FPWD":     "W3C First Public Working Draft"
-        ,   "WD":       "W3C Working Draft"
-        ,   "LCWD":     "W3C Last Call Working Draft"
-        ,   "CR":       "W3C Candidate Recommendation"
-        ,   "PR":       "W3C Proposed Recommendation"
-        ,   "PER":      "W3C Proposed Edited Recommendation"
-        ,   "REC":      "W3C Recommendation"
+            "NOTE": "W3C Note"
+            , "WG-NOTE": "W3C Working Group Note"
+            , "ED": "W3C Editor's Draft"
+            , "FPWD": "W3C First Public Working Draft"
+            , "WD": "W3C Working Draft"
+            , "LCWD": "W3C Last Call Working Draft"
+            , "CR": "W3C Candidate Recommendation"
+            , "PR": "W3C Proposed Recommendation"
+            , "PER": "W3C Proposed Edited Recommendation"
+            , "REC": "W3C Recommendation"
         };
-        var stringifyRef = function(ref) {
+        var stringifyRef = function (ref) {
             if (typeof ref === "string") return ref;
             var output = "";
             if (ref.authors && ref.authors.length) {
@@ -54,11 +53,11 @@ define(
         var bibref = function (conf, msg) {
             // this is in fact the bibref processing portion
             var badrefs = {}
-            ,   refs = getRefKeys(conf)
-            ,   informs = refs.informativeReferences
-            ,   norms = refs.normativeReferences
-            ,   aliases = {}
-            ;
+                , refs = getRefKeys(conf)
+                , informs = refs.informativeReferences
+                , norms = refs.normativeReferences
+                , aliases = {}
+                ;
 
             if (!informs.length && !norms.length && !conf.refNote) return;
             var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
@@ -67,14 +66,14 @@ define(
             var types = ["Normative", "Informative"];
             for (var i = 0; i < types.length; i++) {
                 var type = types[i]
-                ,   refs = (type == "Normative") ? norms : informs;
+                    , refs = (type == "Normative") ? norms : informs;
                 if (!refs.length) continue;
                 var $sec = $("<section><h3></h3></section>")
-                                .appendTo($refsec)
-                                .find("h3")
-                                    .text(type + " references")
-                                .end()
-                                ;
+                        .appendTo($refsec)
+                        .find("h3")
+                        .text(type + " references")
+                        .end()
+                    ;
                 $sec.makeID(null, type + " references");
                 refs.sort();
                 var $dl = $("<dl class='bibliography'></dl>").appendTo($sec);
@@ -82,14 +81,14 @@ define(
                 for (var j = 0; j < refs.length; j++) {
                     var ref = refs[j];
                     $("<dt></dt>")
-                        .attr({ id:"bib-" + ref })
+                        .attr({id: "bib-" + ref})
                         .text("[" + ref + "]")
                         .appendTo($dl)
-                        ;
+                    ;
                     var $dd = $("<dd></dd>").appendTo($dl);
                     var refcontent = conf.biblio[ref]
-                    ,   circular = {}
-                    ,   key = ref;
+                        , circular = {}
+                        , key = ref;
                     circular[ref] = true;
                     while (refcontent && refcontent.aliasOf) {
                         if (circular[refcontent.aliasOf]) {
@@ -127,18 +126,18 @@ define(
                 if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
             }
         };
-        
+
         return {
             stringifyRef: stringifyRef,
-            run:    function (conf, doc, cb, msg) {
+            run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/biblio");
                 var refs = getRefKeys(conf)
-                ,   localAliases = []
-                ,   finish = function () {
+                    , localAliases = []
+                    , finish = function () {
                         msg.pub("end", "core/biblio");
                         cb();
                     }
-                ;
+                    ;
                 if (conf.localBiblio) {
                     for (var k in conf.localBiblio) {
                         if (typeof conf.localBiblio[k].aliasOf !== "undefined") {
@@ -147,29 +146,36 @@ define(
                     }
                 }
                 refs = refs.normativeReferences
-                                .concat(refs.informativeReferences)
-                                .concat(localAliases);
+                    .concat(refs.informativeReferences)
+                    .concat(localAliases);
                 if (refs.length) {
-                    var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
-                    $.ajax({
-                        dataType:   "json"
-                    ,   url:        url
-                    ,   success:    function (data) {
-                            conf.biblio = data || {};
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                    if (conf.onlyLocalBiblio) {
+                        conf.biblio = {};
+                        bibref(conf, msg);
+                        finish();
+                    } else {
+                        var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                        $.ajax({
+                            dataType: "json"
+                            , url: url
+                            , success: function (data) {
+                                conf.biblio = data || {};
+                                // override biblio data
+                                if (conf.localBiblio) {
+                                    for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                                }
+                                bibref(conf, msg);
+                                finish();
                             }
-                            bibref(conf, msg);
-                            finish();
-                        }
-                    ,   error:      function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                            finish();
-                        }
-                    });
+                            , error: function (xhr, status, error) {
+                                msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                                finish();
+                            }
+                        });
+                    }
                 }
-                else finish();
+                else
+                    finish();
             }
         };
     }

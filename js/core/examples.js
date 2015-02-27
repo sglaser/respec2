@@ -21,7 +21,7 @@ define(
             }
             return $tit;
         };
-        
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/examples");
