@@ -1,8 +1,8 @@
-/* ReSpec 3.2.36 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.42 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/w3c/respec */
 /* See also NVIDIA source: https://github.com/sglaser/respec */
-respecVersion = '3.2.36';
+respecVersion = '3.2.42';
 respecVersionNVIDIA = '0.0.1';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
@@ -15738,6 +15738,9 @@ define(
 
 define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES --- */\ndiv.example-title {\n    min-width: 7.5em;\n    color: #b9ab2d;\n}\ndiv.example-title span {\n    text-transform: uppercase;   \n}\naside.example, div.example, div.illegal-example {\n    padding: 0.5em;\n    margin: 1em 0;\n    position: relative;\n    clear: both;\n}\ndiv.illegal-example { color: red }\ndiv.illegal-example p { color: black }\naside.example, div.example {\n    padding: .5em;\n    border-left-width: .5em;\n    border-left-style: solid;\n    border-color: #e0cb52;\n    background: #fcfaee;    \n}\n\naside.example div.example {\n    border-left-width: .1em;\n    border-color: #999;\n    background: #fff;\n}\naside.example div.example div.example-title {\n    color: #999;\n}\n';});
 
+
+define('text!core/css/examples-webspecs.css',[],function () { return '/* --- EXAMPLES CONFLICTING WITH WEBSPECS --- */\naside.example:before, div.example:before, div.illegal-example:before, pre.example:before {\n    content:    "" !important;\n    display:    none;\n}\ndiv.example-title {\n    color: #ef0000;\n}\n';});
+
 /* globals define */
 /* jshint browser: true, jquery: true, laxcomma: true */
 
@@ -15749,10 +15752,8 @@ define('text!core/css/examples.css',[],function () { return '/* --- EXAMPLES ---
 // be used by a containing shell to extract all examples.
 
 define(
-    'core/examples',["text!core/css/examples.css"],
-    function (css) {
-        
-
+    'core/examples',["text!core/css/examples.css", "text!core/css/examples-webspecs.css"],
+    function (css, cssKraken) {
         var makeTitle = function ($el, num, report) {
             var txt = (num > 0) ? " " + num : ""
             ,   $tit = $("<div class='example-title'><span>Example" + txt + "</span></div>");
@@ -15763,7 +15764,7 @@ define(
             }
             return $tit;
         };
-        
+
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/examples");
@@ -15772,8 +15773,8 @@ define(
                 ,   $tit
                 ;
                 if ($exes.length) {
-                    if (!(conf.noReSpecCSS))
-                        $(doc).find("head link").first().before($("<style/>").text(css));
+                    if (conf.specStatus === "webspec") css += cssKraken;
+                    $(doc).find("head link").first().before($("<style/>").text(css));
                     $exes.each(function (i, ex) {
                         var $ex = $(ex)
                         ,   report = { number: num, illegal: $ex.hasClass("illegal-example") }
@@ -18062,7 +18063,6 @@ define(
     }
 );
 
-
 // Module core/biblio
 // Handles bibliographic references
 // Configuration:
@@ -18073,14 +18073,14 @@ define(
     function () {
         var getRefKeys = function (conf) {
             var informs = conf.informativeReferences
-            ,   norms = conf.normativeReferences
-            ,   del = []
-            ,   getKeys = function (obj) {
+                , norms = conf.normativeReferences
+                , del = []
+                , getKeys = function (obj) {
                     var res = [];
                     for (var k in obj) res.push(k);
                     return res;
                 }
-            ;
+                ;
             for (var k in informs) if (norms[k]) del.push(k);
             for (var i = 0; i < del.length; i++) delete informs[del[i]];
             return {
@@ -18089,18 +18089,18 @@ define(
             };
         };
         var REF_STATUSES = {
-            "NOTE":     "W3C Note"
-        ,   "WG-NOTE":  "W3C Working Group Note"
-        ,   "ED":       "W3C Editor's Draft"
-        ,   "FPWD":     "W3C First Public Working Draft"
-        ,   "WD":       "W3C Working Draft"
-        ,   "LCWD":     "W3C Last Call Working Draft"
-        ,   "CR":       "W3C Candidate Recommendation"
-        ,   "PR":       "W3C Proposed Recommendation"
-        ,   "PER":      "W3C Proposed Edited Recommendation"
-        ,   "REC":      "W3C Recommendation"
+            "NOTE": "W3C Note"
+            , "WG-NOTE": "W3C Working Group Note"
+            , "ED": "W3C Editor's Draft"
+            , "FPWD": "W3C First Public Working Draft"
+            , "WD": "W3C Working Draft"
+            , "LCWD": "W3C Last Call Working Draft"
+            , "CR": "W3C Candidate Recommendation"
+            , "PR": "W3C Proposed Recommendation"
+            , "PER": "W3C Proposed Edited Recommendation"
+            , "REC": "W3C Recommendation"
         };
-        var stringifyRef = function(ref) {
+        var stringifyRef = function (ref) {
             if (typeof ref === "string") return ref;
             var output = "";
             if (ref.authors && ref.authors.length) {
@@ -18118,11 +18118,11 @@ define(
         var bibref = function (conf, msg) {
             // this is in fact the bibref processing portion
             var badrefs = {}
-            ,   refs = getRefKeys(conf)
-            ,   informs = refs.informativeReferences
-            ,   norms = refs.normativeReferences
-            ,   aliases = {}
-            ;
+                , refs = getRefKeys(conf)
+                , informs = refs.informativeReferences
+                , norms = refs.normativeReferences
+                , aliases = {}
+                ;
 
             if (!informs.length && !norms.length && !conf.refNote) return;
             var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
@@ -18131,14 +18131,14 @@ define(
             var types = ["Normative", "Informative"];
             for (var i = 0; i < types.length; i++) {
                 var type = types[i]
-                ,   refs = (type == "Normative") ? norms : informs;
+                    , refs = (type == "Normative") ? norms : informs;
                 if (!refs.length) continue;
                 var $sec = $("<section><h3></h3></section>")
-                                .appendTo($refsec)
-                                .find("h3")
-                                    .text(type + " references")
-                                .end()
-                                ;
+                        .appendTo($refsec)
+                        .find("h3")
+                        .text(type + " references")
+                        .end()
+                    ;
                 $sec.makeID(null, type + " references");
                 refs.sort();
                 var $dl = $("<dl class='bibliography'></dl>").appendTo($sec);
@@ -18146,14 +18146,14 @@ define(
                 for (var j = 0; j < refs.length; j++) {
                     var ref = refs[j];
                     $("<dt></dt>")
-                        .attr({ id:"bib-" + ref })
+                        .attr({id: "bib-" + ref})
                         .text("[" + ref + "]")
                         .appendTo($dl)
-                        ;
+                    ;
                     var $dd = $("<dd></dd>").appendTo($dl);
                     var refcontent = conf.biblio[ref]
-                    ,   circular = {}
-                    ,   key = ref;
+                        , circular = {}
+                        , key = ref;
                     circular[ref] = true;
                     while (refcontent && refcontent.aliasOf) {
                         if (circular[refcontent.aliasOf]) {
@@ -18191,18 +18191,18 @@ define(
                 if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
             }
         };
-        
+
         return {
             stringifyRef: stringifyRef,
-            run:    function (conf, doc, cb, msg) {
+            run: function (conf, doc, cb, msg) {
                 msg.pub("start", "core/biblio");
                 var refs = getRefKeys(conf)
-                ,   localAliases = []
-                ,   finish = function () {
+                    , localAliases = []
+                    , finish = function () {
                         msg.pub("end", "core/biblio");
                         cb();
                     }
-                ;
+                    ;
                 if (conf.localBiblio) {
                     for (var k in conf.localBiblio) {
                         if (typeof conf.localBiblio[k].aliasOf !== "undefined") {
@@ -18211,29 +18211,36 @@ define(
                     }
                 }
                 refs = refs.normativeReferences
-                                .concat(refs.informativeReferences)
-                                .concat(localAliases);
+                    .concat(refs.informativeReferences)
+                    .concat(localAliases);
                 if (refs.length) {
-                    var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
-                    $.ajax({
-                        dataType:   "json"
-                    ,   url:        url
-                    ,   success:    function (data) {
-                            conf.biblio = data || {};
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                    if (conf.onlyLocalBiblio) {
+                        conf.biblio = {};
+                        bibref(conf, msg);
+                        finish();
+                    } else {
+                        var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                        $.ajax({
+                            dataType: "json"
+                            , url: url
+                            , success: function (data) {
+                                conf.biblio = data || {};
+                                // override biblio data
+                                if (conf.localBiblio) {
+                                    for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                                }
+                                bibref(conf, msg);
+                                finish();
                             }
-                            bibref(conf, msg);
-                            finish();
-                        }
-                    ,   error:      function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                            finish();
-                        }
-                    });
+                            , error: function (xhr, status, error) {
+                                msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                                finish();
+                            }
+                        });
+                    }
                 }
-                else finish();
+                else
+                    finish();
             }
         };
     }
@@ -21021,7 +21028,22 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/aria");
-                // ensure head section is labelled
+                // ensure all headers after sections have
+                // headings and aria-level
+                var $secs = $("section", doc)
+                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
+                $secs.each(function(i, item) {
+                    var $item = $(item)
+                    ,   resourceID = $item.parent('section[id]').attr('id')
+                    ,   level = $item.parents("section").length ;
+
+                    $item.attr('aria-level', level);
+                    $item.attr('role', 'heading') ;
+                    if (!$item.attr("id")) {
+                        $item.attr('id', $item.prop('tagName').toLowerCase() + '_' + resourceID) ;
+                    }
+                });
+                // ensure head section is labeled
                 $('body', doc).attr('role', 'document') ;
                 $('body', doc).attr('id', 'respecDocument') ;
                 $('div.head', doc).attr('role', 'contentinfo') ;
