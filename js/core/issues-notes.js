@@ -19,7 +19,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/issues-notes");
-                var $ins = $(".issue, .note, .impnote");
+                var $ins = $(".issue, .note, .impnote, .warning");
                 if ($ins.length) {
                     if (!(conf.noReSpecCSS))
                         $(doc).find("head link").first().before($("<style/>").text(css));
@@ -29,12 +29,13 @@ define(
                         var $inno = $(inno)
                         ,   isIssue = $inno.hasClass("issue")
                         ,   isImpNote = $inno.hasClass("impnote")
+                        ,   isWarning = $inno.hasClass("warning")
                         ,   isFeatureAtRisk = $inno.hasClass("atrisk")
                         ,   isInline = $inno.css("display") != "block"
                         ,   dataNum = $inno.attr("data-number")
                         ,   report = { inline: isInline, content: $inno.html() }
                         ;
-                        report.type = isIssue ? "issue" : (isImpNote ? "impnote" : "note");
+                        report.type = isIssue ? "issue" : isWarning ? "warning" : isImpNote ? "impnote" : "note";
 
                         if (isIssue && !isInline && !hasDataNum) {
                             issueNum++;
@@ -50,6 +51,7 @@ define(
                             ,   $tit = $("<div class='" + report.type + "-title'><span></span></div>")
                             ,   text = (isIssue
                                         ? (isFeatureAtRisk ? "Feature at Risk" : "Issue")
+                                        : isWarning ? "Warning"
                                         : (isImpNote ? "Implementation Note" : "Note"))
                             ;
                             if (isIssue) {

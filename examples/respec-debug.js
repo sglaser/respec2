@@ -1,8 +1,8 @@
-/* ReSpec 3.2.30 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.36 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/w3c/respec */
 /* See also NVIDIA source: https://github.com/sglaser/respec */
-respecVersion = '3.2.30';
+respecVersion = '3.2.36';
 respecVersionNVIDIA = '0.0.1';
 
 /** vim: et:ts=4:sw=4:sts=4
@@ -11426,7 +11426,13 @@ return jQuery;
         pub:    function (topic) {
             var args = Array.prototype.slice.call(arguments);
             args.shift();
-            if (embedded && window.postMessage) parent.postMessage({ topic: topic, args: args}, "*");
+            if (embedded && window.postMessage) {
+                // Make sure all args are structured-cloneable.
+                args = args.map(function(arg) {
+                    return (arg.stack || arg) + '';
+                });
+                parent.postMessage({ topic: topic, args: args}, "*");
+            }
             $.each(handlers[topic] || [], function () {
                 this.apply(GLOBAL, args);
             });
@@ -11490,7 +11496,7 @@ define(
                     }
                 });
                 respecEvents.pub("start", "core/base-runner");
-                
+
                 // the first in the plugs is going to be us
                 plugs.shift();
 
@@ -15424,13 +15430,12 @@ define(
                     if ($abs.find("p").length === 0) $abs.contents().wrapAll($("<p></p>"));
                     $abs.prepend("<h2>Abstract</h2>");
                     $abs.addClass("introductory");
-                    if (conf.doRDFa !== false) {
-                        var rel = "dcterms:abstract"
+                    if (conf.doRDFa) {
+                        var rel = "dc:abstract"
                         ,   ref = $abs.attr("property");
                         if (ref) rel = ref + " " + rel;
                         $abs.attr({
                             "property": rel
-                        ,   "datatype": ""
                         });
                     }
                 }
@@ -15634,9 +15639,9 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/inlines");
                 doc.normalize();
-                if (!conf.normativeReferences) { conf.normativeReferences = {} };
-                if (!conf.informativeReferences) { conf.informativeReferences = {} };
-                if (!conf.respecRFC2119) { conf.respecRFC2119 = {} };
+                if (!conf.normativeReferences) conf.normativeReferences = {};
+                if (!conf.informativeReferences) conf.informativeReferences = {};
+                if (!conf.respecRFC2119) conf.respecRFC2119 = {};
 
                 // PRE-PROCESSING
                 var abbrMap = {};
@@ -15676,12 +15681,7 @@ define(
                                 matched = matched.split(/\s+/).join(" ");
                                 df.appendChild($("<em/>").attr({ "class": "rfc2119", title: matched }).text(matched)[0]);
                                 // remember which ones were used
-                                if (conf.respecRFC2119[matched]) {
-                                    conf.respecRFC2119[matched]++;
-                                } 
-                                else {
-                                    conf.respecRFC2119[matched] = 1;
-                                }
+                                conf.respecRFC2119[matched] = true;
                             }
                             // BIBREF
                             else if (/^\[\[/.test(matched)) {
@@ -15819,7 +15819,7 @@ define(
     }
 );
 
-define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title,\r\ndiv.note-title,\r\ndiv.impnote-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title     { color: #e05252; }\r\ndiv.note-title      { color: #2b2; }\r\ndiv.impnote-title   { color: #0060A9; }\r\ndiv.issue-title span,\r\ndiv.note-title span,\r\ndiv.impnote-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue, div.impnote {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child,\r\n.issue > p:first-child,\r\n.impnote > p:first-child {\r\n    margin-top: 0;\r\n}\r\n.issue, .note, .impnote {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note, div.impnote {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note,\r\nspan.issue,\r\nspan.impnote {\r\n    padding: .1em .5em .15em;\r\n}\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background:   #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background:   #e9fbe9;\r\n}\r\n.impnote {\r\n    border-color: #0060A9; \r\n    background:   #E5F4FF;\r\n}\r\n\r\n\r\n';});
+define('text!core/css/issues-notes.css',[],function () { return '/* --- ISSUES/NOTES --- */\r\ndiv.issue-title,\r\ndiv.note-title,\r\ndiv.warning-title,\r\ndiv.impnote-title {\r\n    padding-right:  1em;\r\n    min-width: 7.5em;\r\n    color: #b9ab2d;\r\n}\r\ndiv.issue-title     { color: #e05252; }\r\ndiv.note-title      { color: #2b2; }\r\ndiv.impnote-title   { color: #0060A9; }\r\ndiv.warning-title   { color: #f22; }\r\ndiv.issue-title span,\r\ndiv.note-title span,\r\ndiv.warning-title span,\r\ndiv.impnote-title span {\r\n    text-transform: uppercase;\r\n}\r\ndiv.note, div.issue, div.warning, div.impnote {\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n}\r\n.note > p:first-child,\r\n.issue > p:first-child,\r\n.warning > p:first-child,\r\n.impnote > p:first-child {\r\n    margin-top: 0;\r\n}\r\n.issue, .note, .warning, .impnote {\r\n    padding: .5em;\r\n    border-left-width: .5em;\r\n    border-left-style: solid;\r\n}\r\ndiv.issue, div.note, div.warning, div.impnote {\r\n    padding: 1em 1.2em 0.5em;\r\n    margin: 1em 0;\r\n    position: relative;\r\n    clear: both;\r\n}\r\nspan.note,\r\nspan.issue,\r\nspan.warning,\r\nspan.impnote {\r\n    padding: .1em .5em .15em;\r\n}\r\n\r\n.issue {\r\n    border-color: #e05252;\r\n    background:   #fbe9e9;\r\n}\r\n.note {\r\n    border-color: #52e052;\r\n    background:   #e9fbe9;\r\n}\r\n.impnote {\r\n    border-color: #0060A9; \r\n    background:   #E5F4FF;\r\n}\r\n\r\n.warning {\r\n    border-color: #f11;\r\n    border-right-width: .2em;\r\n    border-top-width: .2em;\r\n    border-bottom-width: .2em;\r\n    border-style: solid;\r\n    background: #fbe9e9;\r\n}\r\n\r\n.warning-title:before{\r\n    content: "⚠"; /*U+26A0 WARNING SIGN*/\r\n    font-size: 3em;\r\n    float: left;\r\n    height: 100%;\r\n    padding-right: .3em;\r\n    vertical-align: top;\r\n    margin-top: -0.5em;\r\n}\r\n';});
 
 /*globals define */
 /*jshint jquery: true, laxcomma: true*/
@@ -15842,7 +15842,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/issues-notes");
-                var $ins = $(".issue, .note, .impnote");
+                var $ins = $(".issue, .note, .impnote, .warning");
                 if ($ins.length) {
                     if (!(conf.noReSpecCSS))
                         $(doc).find("head link").first().before($("<style/>").text(css));
@@ -15852,12 +15852,13 @@ define(
                         var $inno = $(inno)
                         ,   isIssue = $inno.hasClass("issue")
                         ,   isImpNote = $inno.hasClass("impnote")
+                        ,   isWarning = $inno.hasClass("warning")
                         ,   isFeatureAtRisk = $inno.hasClass("atrisk")
                         ,   isInline = $inno.css("display") != "block"
                         ,   dataNum = $inno.attr("data-number")
                         ,   report = { inline: isInline, content: $inno.html() }
                         ;
-                        report.type = isIssue ? "issue" : (isImpNote ? "impnote" : "note");
+                        report.type = isIssue ? "issue" : isWarning ? "warning" : isImpNote ? "impnote" : "note";
 
                         if (isIssue && !isInline && !hasDataNum) {
                             issueNum++;
@@ -15873,6 +15874,7 @@ define(
                             ,   $tit = $("<div class='" + report.type + "-title'><span></span></div>")
                             ,   text = (isIssue
                                         ? (isFeatureAtRisk ? "Feature at Risk" : "Issue")
+                                        : isWarning ? "Warning"
                                         : (isImpNote ? "Implementation Note" : "Note"))
                             ;
                             if (isIssue) {
@@ -18051,8 +18053,7 @@ define(
     }
 );
 
-/*globals define */
-/*jshint jquery: true, laxcomma: true */
+
 // Module core/biblio
 // Handles bibliographic references
 // Configuration:
@@ -18061,29 +18062,18 @@ define(
 define(
     'core/biblio',[],
     function () {
-        
         var getRefKeys = function (conf) {
             var informs = conf.informativeReferences
             ,   norms = conf.normativeReferences
             ,   del = []
             ,   getKeys = function (obj) {
                     var res = [];
-                    for (var k in obj) {
-                        if (obj.hasOwnProperty(k)) {
-                            res.push(k);
-                        }
-                    }
+                    for (var k in obj) res.push(k);
                     return res;
                 }
             ;
-            for (var k in informs) {
-                if (informs.hasOwnProperty(k) && norms[k]) {
-                    del.push(k);
-                }
-            }
-            for (var i = 0; i < del.length; i++) {
-                delete informs[del[i]];
-            }
+            for (var k in informs) if (norms[k]) del.push(k);
+            for (var i = 0; i < del.length; i++) delete informs[del[i]];
             return {
                 informativeReferences: getKeys(informs),
                 normativeReferences: getKeys(norms)
@@ -18102,57 +18092,38 @@ define(
         ,   "REC":      "W3C Recommendation"
         };
         var stringifyRef = function(ref) {
-            if (typeof ref === "string") {
-                return ref;
-            }
+            if (typeof ref === "string") return ref;
             var output = "";
             if (ref.authors && ref.authors.length) {
                 output += ref.authors.join("; ");
-                if (ref.etAl) {
-                    output += " et al";
-                }
+                if (ref.etAl) output += " et al";
                 output += ". ";
             }
-            if (ref.href) {
-                output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
-            } else {
-                output += '<cite>' + ref.title + '</cite>. ';
-            }
-            if (ref.date) {
-                output += ref.date + ". ";
-            }
-            if (ref.status) {
-                output += (REF_STATUSES[ref.status] || ref.status) + ". ";
-            }
-            if (ref.href) {
-                output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
-            }
+            if (ref.href) output += '<a href="' + ref.href + '"><cite>' + ref.title + "</cite></a>. ";
+            else output += '<cite>' + ref.title + '</cite>. ';
+            if (ref.date) output += ref.date + ". ";
+            if (ref.status) output += (REF_STATUSES[ref.status] || ref.status) + ". ";
+            if (ref.href) output += 'URL: <a href="' + ref.href + '">' + ref.href + "</a>";
             return output;
         };
         var bibref = function (conf, msg) {
             // this is in fact the bibref processing portion
             var badrefs = {}
-            ,   temp = getRefKeys(conf)
-            ,   informs = temp.informativeReferences
-            ,   norms = temp.normativeReferences
+            ,   refs = getRefKeys(conf)
+            ,   informs = refs.informativeReferences
+            ,   norms = refs.normativeReferences
             ,   aliases = {}
             ;
 
-            if (!informs.length && !norms.length && !conf.refNote) {
-                return;
-            }
+            if (!informs.length && !norms.length && !conf.refNote) return;
             var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
-            if (conf.refNote) {
-                $("<p></p>").html(conf.refNote).appendTo($refsec);
-            }
+            if (conf.refNote) $("<p></p>").html(conf.refNote).appendTo($refsec);
 
             var types = ["Normative", "Informative"];
             for (var i = 0; i < types.length; i++) {
                 var type = types[i]
-                ,   refs = (type === "Normative") ? norms : informs;
-                if (!refs.length) {
-                    continue;
-                }
+                ,   refs = (type == "Normative") ? norms : informs;
+                if (!refs.length) continue;
                 var $sec = $("<section><h3></h3></section>")
                                 .appendTo($refsec)
                                 .find("h3")
@@ -18162,9 +18133,7 @@ define(
                 $sec.makeID(null, type + " references");
                 refs.sort();
                 var $dl = $("<dl class='bibliography'></dl>").appendTo($sec);
-                if (conf.doRDFa !== false) {
-                    $dl.attr("about", "");
-                }
+                if (conf.doRDFa) $dl.attr("resource", "");
                 for (var j = 0; j < refs.length; j++) {
                     var ref = refs[j];
                     $("<dt></dt>")
@@ -18173,13 +18142,6 @@ define(
                         .appendTo($dl)
                         ;
                     var $dd = $("<dd></dd>").appendTo($dl);
-                    if (this.doRDFa !== false) {
-                        if (type === "Normative") {
-                            $dd.attr("rel", "dcterms:requires");
-                        } else {
-                            $dd.attr("rel", "dcterms:references");
-                        }
-                    }
                     var refcontent = conf.biblio[ref]
                     ,   circular = {}
                     ,   key = ref;
@@ -18196,30 +18158,28 @@ define(
                         }
                     }
                     aliases[key] = aliases[key] || [];
-                    if (aliases[key].indexOf(ref) < 0) {
-                        aliases[key].push(ref);
-                    }
+                    if (aliases[key].indexOf(ref) < 0) aliases[key].push(ref);
                     if (refcontent) {
                         $dd.html(stringifyRef(refcontent) + "\n");
+                        if (conf.doRDFa) {
+                            $a = $dd.children("a");
+                            $a.attr("property", type === "Normative" ? "dc:requires" : "dc:references");
+                        }
                     }
                     else {
-                        if (!badrefs[ref]) {
-                            badrefs[ref] = 0;
-                        }
+                        if (!badrefs[ref]) badrefs[ref] = 0;
                         badrefs[ref]++;
                         $dd.html("<em style='color: #f00'>Reference not found.</em>\n");
                     }
                 }
             }
             for (var k in aliases) {
-                if (aliases.hasOwnProperty(k) && (aliases[k].length > 1)) {
+                if (aliases[k].length > 1) {
                     msg.pub("warn", "[" + k + "] is referenced in " + aliases[k].length + " ways (" + aliases[k].join(", ") + "). This causes duplicate entries in the reference section.");
                 }
             }
             for (var item in badrefs) {
-                if (badrefs.hasOwnProperty(item)) {
-                    msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
-                }
+                if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
             }
         };
         
@@ -18236,7 +18196,7 @@ define(
                 ;
                 if (conf.localBiblio) {
                     for (var k in conf.localBiblio) {
-                        if (conf.localBiblio.hasOwnProperty(k) && (typeof conf.localBiblio[k].aliasOf !== "undefined")) {
+                        if (typeof conf.localBiblio[k].aliasOf !== "undefined") {
                             localAliases.push(conf.localBiblio[k].aliasOf);
                         }
                     }
@@ -18245,37 +18205,26 @@ define(
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
                 if (refs.length) {
-                    if (conf.onlyLocalBiblio) {
-                        conf.biblio = conf.localBiblio || {};
-                        bibref(conf, msg);
-                        finish();
-                    } else {
-                        var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
-                        $.ajax({
-                                   dataType: "json"
-                                   , url: url
-                                   , success: function(data) {
-                                conf.biblio = data || {};
-                                // override biblio data
-                                if (conf.localBiblio) {
-                                    for (var k in conf.localBiblio) {
-                                        if (conf.localBiblio.hasOwnProperty(k)) {
-                                            conf.biblio[k] = conf.localBiblio[k];
-                                        }
-                                    }
-                                }
-                                bibref(conf, msg);
-                                finish();
+                    var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
+                    $.ajax({
+                        dataType:   "json"
+                    ,   url:        url
+                    ,   success:    function (data) {
+                            conf.biblio = data || {};
+                            // override biblio data
+                            if (conf.localBiblio) {
+                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
                             }
-                            , error:        function(xhr, status, error) {
-                                msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                                finish();
-                            }
-                               });
-                    }
-                } else {
-                    finish();
+                            bibref(conf, msg);
+                            finish();
+                        }
+                    ,   error:      function (xhr, status, error) {
+                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                            finish();
+                        }
+                    });
                 }
+                else finish();
             }
         };
     }
@@ -18293,26 +18242,47 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/rdfa");
-                if (conf.doRDFa !== false) {
+                if (conf.doRDFa) {
                     $("section").each(function () {
                         var $sec = $(this)
-                        ,   about = ""
-                        ,   $fc = $sec.children("*").first()
+                        ,   resource = ""
+                        ,   $fc = $sec.children("h1,h2,h3,h4,h5,h6").first()
                         ,   ref = $sec.attr("id")
+                        ,   fcref = null
                         ;
                         if (ref) {
-                            about = "#" + ref;
+                            resource = "#" + ref;
                         }
                         else if ($fc.length) {
                             ref = $fc.attr("id");
-                            if (ref) about = "#" + ref;
+                            if (ref) {
+                                resource = "#" + ref;
+                                fcref = ref;
+                            }
                         }
-                        if (about !== "") {
+                        var property = "bibo:hasPart";
+                        // Headings on everything but boilerplate
+                        if (!resource.match(/#(abstract|sotd|toc)$/)) {
                             $sec.attr({
                                 "typeof":   "bibo:Chapter"
-                            ,   resource:   about
-                            ,   rel:        "bibo:Chapter"
+                            ,   resource:   resource
+                            ,   property:   property
                             });
+                        }
+                        // create a heading triple too, as per the role spec
+                        // since we should not be putting an @role on 
+                        // h* elements with a value of heading, but we 
+                        // still want the semantic markup
+                        if ($fc.length) {
+                            if (!fcref) {
+                                // if there is no ID on the heading itself.  Add one
+                                fcref = $fc.makeID("h", ref) ;
+                            }
+                            // set the subject to the ID of the heading
+                            $fc.attr({ resource: "#" + fcref }) ;
+                            // nest the contents in a span so we can set the predicate
+                            // and object
+                            $fc.wrapInner( "<span property='xhv:role' resource='xhv:heading'></span>" );
                         }
                     });
                 }
@@ -20418,7 +20388,7 @@ define(
 /* jshint jquery: true */
 /* global define */
 // Module core/dfn
-// Handles the processing and linking of <dfn> and <a> elements.
+// Finds all <dfn> elements and populates conf.definitionMap to identify them.
 define(
     'core/dfn',[],
     function() {
@@ -20438,10 +20408,17 @@ define(
 
                 //console.log("\n\n\n\n");
 
+                $("[dfn-for]").each(function() {
+                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
+                    this.removeAttribute("dfn-for");
+                });
+
                 $("table[id] dfn.field", doc).each(function() {
                     var $dfn = $(this);
-                    var base_id = "field-" + $dfn.parents("table[id]")[0].id.replace(/^tbl-/, "") + "-";
+                    var $parent_table = $dfn.parents("table[id]")[0];
+                    var base_id = "field-" + $parent_table.id.replace(/^tbl-/, "") + "-";
                     var title = $dfn.dfnTitle();
+                    $dfn.attr("data-dfn-for", $parent_table.id);
                     //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
                     //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
 
@@ -20467,6 +20444,12 @@ define(
                     var $dfn = $(this);
                     if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
                         return;
+                    }
+                    if ($dfn.attr("for")) {
+                        $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
+                        $dfn.removeAttr("for");
+                    } else {
+                        $dfn.attr("data-dfn-for", ($dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
                     }
                     var tag = dfnClass[0];  // default "dfn"
                     for (var i = 1; i < dfnClass.length; i++) {
@@ -20889,19 +20872,19 @@ define(
                 msg.pub("start", "w3c/permalinks");
                 if (conf.includePermalinks) {
                     var symbol = conf.permalinkSymbol || '§';
-                    var style = "<style>" + css(conf) + "</style>" ;
+                    var style = "<style>" + css(conf) + "</style>";
 
-                    $(doc).find("head link").first().before(style) ;
+                    $(doc).find("head link").first().before(style);
                     var $secs = $(doc).find("h2, h3, h4, h5, h6");
                     $secs.each(function(i, item) {
-                        var $item = $(item) ;
+                        var $item = $(item);
                         if (!$item.hasClass("nolink")) {
                             var resourceID = $item.attr('id');
 
                             var $par = $item.parent();
                             if ($par.is("section") || $par.is("div")) {
                                 if (!$par.hasClass("introductory") && !$par.hasClass("nolink")) {
-                                    resourceID = $par.attr('id') ;
+                                    resourceID = $par.attr('id');
                                 } else {
                                     resourceID = null;
                                 }
@@ -20911,18 +20894,34 @@ define(
                             if (resourceID !== null) {
                                 // we have an id.  add a permalink
                                 // right after the h* element
-                                var type = conf.doRDFa ? "typeof='bookmark' " : "";
-                                var urlprop = conf.doRDFa ? "property='url' " : "";
-                                var titprop = conf.doRDFa ? "property='title' " : "";
-                                var content = "<span " + type + "class='permalink'>";
-                                if (!conf.permalinkEdge) {
-                                    content += "&nbsp;";
+                                var theNode = $("<span></span>");
+                                theNode.attr('class', 'permalink');
+                                if (conf.doRDFa) theNode.attr('typeof', 'bookmark');
+                                var ctext = $item.text();
+                                var el = $("<a></a>");
+                                el.attr({
+                                    href:         '#' + resourceID,
+                                    'aria-label': 'Permalink for ' + ctext,
+                                    title:        'Permalink for ' + ctext });
+                                if (conf.doRDFa) el.attr('property', 'url');
+                                var sym = $("<span></span>");
+                                if (conf.doRDFa) {
+                                    sym.attr({
+                                        property: 'title',
+                                        content:  ctext });
                                 }
-                                content += "<a href='#"+resourceID+"' " + urlprop + "aria-label='Permalink for "
-                                        +resourceID+"' title='Permalink for "+resourceID+"'>" 
-                                        + "<span " + titprop + "content='"+$item.text()+"'>"
-                                        + symbol + "</span></a></span>";
-                                $item.append(content);
+                                sym.append(symbol);
+                                el.append(sym);
+                                theNode.append(el);
+
+                                // if this is not being put at
+                                // page edge, then separate it
+                                // from the heading with a
+                                // non-breaking space
+                                if (!conf.permalinkEdge) {
+                                   $item.append("&nbsp;");
+                                }
+                                $item.append(theNode);
                             }
                         }
                     });
@@ -21011,19 +21010,6 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/aria");
-                // ensure all headers after sections have
-                // headings and aria-level
-                var $secs = $("section", doc)
-                                .find("h1:first, h2:first, h3:first, h4:first, h5:first, h6:first");
-                $secs.each(function(i, item) {
-                    var $item = $(item)
-                    ,   resourceID = $item.parent('section[id]').attr('id');
-
-                    $item.attr('role', 'heading') ;
-                    if (!$item.attr("id")) {
-                        $item.attr('id', $item.prop('tagName').toLowerCase() + '_' + resourceID) ;
-                    }
-                });
                 // ensure head section is labelled
                 $('body', doc).attr('role', 'document') ;
                 $('body', doc).attr('id', 'respecDocument') ;
@@ -21039,20 +21025,20 @@ define(
                     }
                 }
                 // mark issues and notes with heading
-                var noteNum = 0, issueNum = 0;
+                var noteCount = 0 ; var issueCount = 0 ;
                 $(".note-title, .issue-title", doc).each(function (i, item) {
                     var $item = $(item)
                     ,   isIssue = $item.hasClass("issue-title")
-                    ,   level = $item.parents("section").length ;
+                    ,   level = $item.parents("section").length+2 ;
 
-                    $item.attr('aria-level', level);
+                    $item.attr('aria-level', level) ;
                     $item.attr('role', 'heading') ;
                     if (isIssue) {
-                        issueNum++;
-                        $item.attr('id', 'h_issue_'+issueNum);
+                        issueCount++;
+                        $item.makeID('h', "issue" + issueCount) ;
                     } else {
-                        noteNum++;
-                        $item.attr('id', 'h_note_'+noteNum);
+                        noteCount++;
+                        $item.makeID('h', "note" + noteCount) ;
                     }
                 });
                 msg.pub("end", "w3c/aria");

@@ -1,6 +1,7 @@
 /* --- ISSUES/NOTES --- */
 div.issue-title,
 div.note-title,
+div.warning-title,
 div.impnote-title {
     padding-right:  1em;
     min-width: 7.5em;
@@ -9,26 +10,29 @@ div.impnote-title {
 div.issue-title     { color: #e05252; }
 div.note-title      { color: #2b2; }
 div.impnote-title   { color: #0060A9; }
+div.warning-title   { color: #f22; }
 div.issue-title span,
 div.note-title span,
+div.warning-title span,
 div.impnote-title span {
     text-transform: uppercase;
 }
-div.note, div.issue, div.impnote {
+div.note, div.issue, div.warning, div.impnote {
     margin-top: 1em;
     margin-bottom: 1em;
 }
 .note > p:first-child,
 .issue > p:first-child,
+.warning > p:first-child,
 .impnote > p:first-child {
     margin-top: 0;
 }
-.issue, .note, .impnote {
+.issue, .note, .warning, .impnote {
     padding: .5em;
     border-left-width: .5em;
     border-left-style: solid;
 }
-div.issue, div.note, div.impnote {
+div.issue, div.note, div.warning, div.impnote {
     padding: 1em 1.2em 0.5em;
     margin: 1em 0;
     position: relative;
@@ -36,6 +40,7 @@ div.issue, div.note, div.impnote {
 }
 span.note,
 span.issue,
+span.warning,
 span.impnote {
     padding: .1em .5em .15em;
 }
@@ -53,4 +58,21 @@ span.impnote {
     background:   #E5F4FF;
 }
 
+.warning {
+    border-color: #f11;
+    border-right-width: .2em;
+    border-top-width: .2em;
+    border-bottom-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
 
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}

@@ -2,7 +2,7 @@
 /* jshint jquery: true */
 /* global define */
 // Module core/dfn
-// Handles the processing and linking of <dfn> and <a> elements.
+// Finds all <dfn> elements and populates conf.definitionMap to identify them.
 define(
     [],
     function() {
@@ -22,10 +22,17 @@ define(
 
                 //console.log("\n\n\n\n");
 
+                $("[dfn-for]").each(function() {
+                    this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
+                    this.removeAttribute("dfn-for");
+                });
+
                 $("table[id] dfn.field", doc).each(function() {
                     var $dfn = $(this);
-                    var base_id = "field-" + $dfn.parents("table[id]")[0].id.replace(/^tbl-/, "") + "-";
+                    var $parent_table = $dfn.parents("table[id]")[0];
+                    var base_id = "field-" + $parent_table.id.replace(/^tbl-/, "") + "-";
                     var title = $dfn.dfnTitle();
+                    $dfn.attr("data-dfn-for", $parent_table.id);
                     //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
                     //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
 
@@ -51,6 +58,12 @@ define(
                     var $dfn = $(this);
                     if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
                         return;
+                    }
+                    if ($dfn.attr("for")) {
+                        $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
+                        $dfn.removeAttr("for");
+                    } else {
+                        $dfn.attr("data-dfn-for", ($dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
                     }
                     var tag = dfnClass[0];  // default "dfn"
                     for (var i = 1; i < dfnClass.length; i++) {

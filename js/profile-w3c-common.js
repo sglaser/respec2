@@ -1,5 +1,4 @@
-/*global respecVersion, define, require */
-/*jshint laxcomma:true, browser:true */
+/*global respecVersion */
 
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
@@ -31,6 +30,7 @@ define([
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
+        ,   "core/dfn"
         ,   "w3c/rfc2119"
         ,   "core/examples"
         ,   "core/issues-notes"
@@ -38,17 +38,16 @@ define([
         ,   "core/highlight"
         ,   "core/best-practices"
         ,   "core/figures"
-        ,   "core/tables"
         ,   "core/biblio"
-        ,   "core/rdfa"
+        ,   "core/webidl-contiguous"
         ,   "core/webidl-oldschool"
-        ,   "core/regpict"
-        ,   "core/dfn"
+        ,   "core/link-to-dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
+        ,   "core/rdfa"
         ,   "w3c/aria"
         ,   "core/shiv"
         ,   "core/remove-respec"

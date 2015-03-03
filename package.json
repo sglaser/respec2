@@ -1,6 +1,6 @@
 {
     "name": "respec",
-    "version": "3.2.30",
+    "version": "3.2.36",
     "versionPCISIG": "0.0.1",
     "versionNVIDIA": "0.0.1",
     "description": "Specification Edition Support Tool.",
@@ -12,6 +12,9 @@
     },
     "scripts": {
         "test": "node ./tests/headless.js"
+    },
+    "bin":  {
+        "respec2html":  "./tools/respec2html.js"
     },
     "repository": {
         "type": "git",
