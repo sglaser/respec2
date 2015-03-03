@@ -106,7 +106,7 @@ define(
                     if (refcontent) {
                         $dd.html(stringifyRef(refcontent) + "\n");
                         if (conf.doRDFa) {
-                            $a = $dd.children("a");
+                            var $a = $dd.children("a");
                             $a.attr("property", type === "Normative" ? "dc:requires" : "dc:references");
                         }
                     }
