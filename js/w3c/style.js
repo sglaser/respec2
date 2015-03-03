@@ -31,10 +31,16 @@ define(
                     // with a PNG of the same base name. CONNEG must die.
                     css += "www.w3.org/community/src/css/spec/" + statStyle.toLowerCase() + ".css";
                 }
-                else if (/\.css$/.test(statStyle)) {
-                    css = statStyle;
+                else if (statStyle === "webspec") {
+                    css = "https://specs.webplatform.org/assets/css/kraken.css";
+                    $('<link rel="icon" href="https://specs.webplatform.org/assets/img/icon.png">', doc)
+                        .appendTo($("head"));
+                    $(doc.createElement("script"))
+                        .attr({ async: "async", src: "https://specs.webplatform.org/assets/js/kraken.js"})
+                        .appendTo($("head"))
+                        ;
                 }
-                else if (statStyle !== "NONE") {
+                else {
                     css += "www.w3.org/StyleSheets/TR/W3C-" + statStyle;
                 }
                 if (conf.cssOverride) {
