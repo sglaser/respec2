@@ -214,8 +214,7 @@
                     ret.idlType = type() || error("Error parsing generic type " + value);
                     all_ws();
                     if (!consume(OTHER, ">")) error("Unterminated generic type " + value);
-                    all_ws();
-                    if (consume(OTHER, "?")) ret.nullable = true;
+                    type_suffix(ret);
                     return ret;
                 }
                 else {
@@ -337,6 +336,7 @@
                   ret.rhs = rhs
                 }
                 else if (consume(OTHER, "(")) {
+                    // [Exposed=(Window,Worker)]
                     rhs = [];
                     var id = consume(ID);
                     if (id) {
@@ -344,7 +344,10 @@
                     }
                     identifiers(rhs);
                     consume(OTHER, ")") || error("Unexpected token in extended attribute argument list or type pair");
-                    ret.rhs = rhs;
+                    ret.rhs = {
+                        type: "identifier-list",
+                        value: rhs
+                    };
                 }
                 if (!ret.rhs) return error("No right hand side to extended attribute assignment");
             }
@@ -758,15 +761,19 @@
                 }
                 var ea = extended_attrs(store ? mems : null);
                 all_ws(store ? mems : null, "pea");
+                var required = consume(ID, "required");
                 var typ = type() || error("No type for dictionary member");
                 all_ws();
                 var name = consume(ID) || error("No name for dictionary member");
+                var dflt = default_();
+                if (required && dflt) error("Required member must not have a default");
                 ret.members.push({
                     type:       "field"
                 ,   name:       name.value
+                ,   required:   !!required
                 ,   idlType:    typ
                 ,   extAttrs:   ea
-                ,   "default":  default_()
+                ,   "default":  dflt
                 });
                 all_ws();
                 consume(OTHER, ";") || error("Unterminated dictionary member");
@@ -937,5 +944,5 @@
     };
 
     if (inNode) module.exports = obj;
-    else        window.WebIDL2 = obj;
+    else        self.WebIDL2 = obj;
 }());

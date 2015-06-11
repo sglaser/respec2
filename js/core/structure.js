@@ -29,8 +29,9 @@ define(
                 for (var i = 0; i < $secs.length; i++) {
                     var $sec = $($secs[i], doc)
                     ,   isIntro = $sec.hasClass("introductory")
+                    ,   noToc = $sec.hasClass("notoc")
                     ;
-                    if (!$sec.children().length) continue;
+                    if (!$sec.children().length || noToc) continue;
                     var h = $sec.children()[0]
                     ,   ln = h.localName.toLowerCase();
                     if (ln !== "h2" && ln !== "h3" && ln !== "h4" && ln !== "h5" && ln !== "h6") continue;
@@ -114,7 +115,7 @@ define(
                 if (!conf.noTOC) {
                     var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
                     if (!$ul) return;
-                    var $sec = $("<section class='introductory' id='toc'/>").append("<h2>" + i18n[conf.lang || "en"].toc + "</h2>")
+                    var $sec = $("<section class='introductory' id='toc'/>").append("<h2>" + conf.l10n.toc + "</h2>")
                                                        .append($ul);
                     var $ref = $("#toc", doc), replace = false;
                     if ($ref.length) replace = true;

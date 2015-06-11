@@ -75,7 +75,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
-                if (!conf.figFmt) conf.figFmt = "Fig. %(%#%) %t"; //"%1Figure %(%c-%#%): %t";
+                if (!conf.figFmt) conf.figFmt = conf.l10n.fig + "%(%#%) %t"; //"%1Figure %(%c-%#%): %t";
 
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
@@ -84,9 +84,9 @@ define(
                                 $figure.find("[title]").attr("title") ||
                                 $figure.attr("alt") ||
                                 $figure.find("[alt]").attr("alt") ||
-                                "";
-                    var $caption = $("<figcaption/>").text(title);
-                    
+                                ""
+                    ,   $caption = $("<figcaption/>").text(title);
+
                     // change old syntax to something HTML5 compatible
                     if ($figure.is("div")) {
                         msg.pub("warn", "You are using the deprecated div.figure syntax; please switch to <figure>.");
@@ -136,6 +136,7 @@ define(
                 $("a[href^='#fig']", doc).each(function () {
                     var $a = $(this)
                     ,   id = $a.attr("href");
+                    if (!id) return;
                     id = id.substring(1);
                     if (figMap[id]) {
                         $a.addClass("fig-ref");
@@ -146,7 +147,7 @@ define(
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });
-                
+
                 // Create a Table of Figures if a section with id 'tof' exists.
                 var $tof = $("#tof", doc);
                 if (tof.length && $tof.length) {

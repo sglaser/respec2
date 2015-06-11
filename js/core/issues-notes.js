@@ -14,15 +14,17 @@
 // manually numbered, a link to the issue is created using issueBase and the issue number
 
 define(
-    ["text!core/css/issues-notes.css"],
-    function (css) {
+    ["text!core/css/issues-notes.css", "github"],
+    function (css, github) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "core/issues-notes");
-                var $ins = $(".issue, .note, .impnote, .warning");
-                if ($ins.length) {
-                    if (!(conf.noReSpecCSS))
-                        $(doc).find("head link").first().before($("<style/>").text(css));
+                function onEnd () {
+                    msg.pub("end", "core/issues-notes");
+                    cb();
+                }
+                
+                function handleIssues ($ins) {
+                    $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
                     ,   issueNum = 0;
                     $ins.each(function (i, inno) {
@@ -30,12 +32,13 @@ define(
                         ,   isIssue = $inno.hasClass("issue")
                         ,   isImpNote = $inno.hasClass("impnote")
                         ,   isWarning = $inno.hasClass("warning")
+                        ,   isEdNote = $inno.hasClass("ednote")
                         ,   isFeatureAtRisk = $inno.hasClass("atrisk")
                         ,   isInline = $inno.css("display") != "block"
                         ,   dataNum = $inno.attr("data-number")
                         ,   report = { inline: isInline, content: $inno.html() }
                         ;
-                        report.type = isIssue ? "issue" : isWarning ? "warning" : isImpNote ? "impnote" : "note";
+                        report.type = isIssue ? "issue" : isWarning ? "warning" : isEdNote ? "ednote" : isImpNote ? "impnote" : "note";
 
                         if (isIssue && !isInline && !hasDataNum) {
                             issueNum++;
@@ -53,6 +56,7 @@ define(
                                         ? (isFeatureAtRisk ? "Feature at Risk" : "Issue")
                                         : isWarning ? "Warning"
                                         : (isImpNote ? "Implementation Note" : "Note"))
+			    , ghIssue
                             ;
                             if (isIssue) {
                                 if (hasDataNum) {
@@ -65,27 +69,57 @@ define(
                                         else if (isFeatureAtRisk && conf.atRiskBase) {
                                             $tit.find("span").wrap($("<a href='" + conf.atRiskBase + dataNum + "'/>"));
                                         }
+                                        ghIssue = ghIssues[dataNum];
                                     }
                                 }
                                 else {
                                     text += " " + issueNum;
                                 }
                             }
-                            $tit.find("span").text(text + ":");
-                            report.title = $inno.attr("title");
+                            $tit.find("span").text(text);
+                            report.title = $inno.attr("title") || (ghIssue && ghIssue.title) || null;
                             if (report.title) {
-                                $tit.append(doc.createTextNode(" " + report.title));
+                                $tit.append(doc.createTextNode(": " + report.title));
                                 $inno.removeAttr("title");
                             }
                             $div.append($tit);
-                            $div.append($inno.clone().removeClass(report.type).removeAttr('data-number'));
                             $inno.replaceWith($div);
+                            var body = $inno.removeClass(report.type).removeAttr("data-number");
+                            if (ghIssue && !body.text().trim()) {
+                                body = ghIssue.body_html;
+                            }
+                            $div.append(body);
                         }
                         msg.pub(report.type, report);
                     });
                 }
-                msg.pub("end", "core/issues-notes");
-                cb();
+                msg.pub("start", "core/issues-notes");
+                var $ins = $(".issue, .note, .warning, .ednote, .impnote")
+                ,   ghIssues = {};
+                if ($ins.length) {
+                    if (conf.githubAPI) {
+                        github.fetch(conf.githubAPI).then(function (json) {
+                            return github.fetchIndex(json.issues_url, {
+                                // Get back HTML content instead of markdown
+                                // See: https://developer.github.com/v3/media/
+                                headers: {
+                                    Accept: "application/vnd.github.v3.html+json"
+                                }
+                            });
+                        }).then(function (issues) {
+                            issues.forEach(function (issue) {
+                                ghIssues[issue.number] = issue;
+                            });
+                            handleIssues($ins);
+                            onEnd();
+                        });
+                    } else {
+                        handleIssues($ins);
+                        onEnd();
+                    }
+                } else {
+                    onEnd();
+                }
             }
         };
     }

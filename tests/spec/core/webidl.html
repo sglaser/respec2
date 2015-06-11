@@ -324,8 +324,10 @@
         <dd>8</dd>
         <dt>byte cheese = NaN</dt>
         <dd>9</dd>
-        <dt>DOMString blah = "blah blah"</dt>
+        <dt>required sequence&lt;DOMString> names</dt>
         <dd>10</dd>
+        <dt>DOMString blah = "blah blah"</dt>
+        <dd>11</dd>
       </dl>
     </section>
     <section>
@@ -411,6 +413,28 @@
         Less basic implements.
       </p>
       <div id='impl-less-basic' class='idl' title='[Something]Window implements Breakable'></div>
+    </section>
+    <section>
+      <h2>maplike</h2>
+      <dl id="if-maplike" class="idl" title="interface SuperStar">
+        <dt>void foo()</dt>
+        <dd>foo description</dd>
+        <dt>maplike&lt;DOMString,SuperStar&gt;</dt>
+        <dd>This is a maplike interface whose value is a SuperStar instance and key is its ID.</dd>
+        <dt>attribute DOMString bar</dt>
+        <dd>bar description</dd>
+      </dl>
+    </section>
+    <section>
+      <h2>readonly maplike</h2>
+      <dl id="if-readonly-maplike" class="idl" title="interface SuperStar">
+        <dt>void foo()</dt>
+        <dd>foo description</dd>
+        <dt>readonly maplike&lt;DOMString,SuperStar&gt;</dt>
+        <dd>This is a readonly maplike interface whose value is a SuperStar instance and key is its ID.</dd>
+        <dt>attribute DOMString bar</dt>
+        <dd>bar description</dd>
+      </dl>
     </section>
   </body>
 </html>

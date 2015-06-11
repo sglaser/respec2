@@ -5,7 +5,7 @@
 // Process all manners of inline information. These are done together despite it being
 // seemingly a better idea to orthogonalise them. The issue is that processing text nodes
 // is harder to orthogonalise, and in some browsers can also be particularly slow.
-// Things that are recognised are <abbr> which when used once are applied
+// Things that are recognised are <abbr>/<acronym> which when used once are applied
 // throughout the document, [[REFERENCES]]/[[!REFERENCES]], and RFC2119 keywords.
 // CONFIGURATION:
 //  These options do not configure the behaviour of this module per se, rather this module
@@ -29,13 +29,12 @@ define(
                 if (!conf.respecRFC2119) conf.respecRFC2119 = {};
 
                 // PRE-PROCESSING
-                var abbrMap = {};
-//                var acroMap = {};
+                var abbrMap = {}, acroMap = {};
                 $("abbr[title]", doc).each(function () { abbrMap[$(this).text()] = $(this).attr("title"); });
-//                $("acronym[title]", doc).each(function () { acroMap[$(this).text()] = $(this).attr("title"); });
+                $("acronym[title]", doc).each(function () { acroMap[$(this).text()] = $(this).attr("title"); });
                 var aKeys = [];
                 for (var k in abbrMap) aKeys.push(k);
-//                for (var k in acroMap) aKeys.push(k);
+                for (var k in acroMap) aKeys.push(k);
                 aKeys.sort(function (a, b) {
                     if (b.length < a.length) return -1;
                     if (a.length < b.length) return 1;
@@ -46,9 +45,8 @@ define(
                 // PROCESSING
                 var txts = $("body", doc).allTextNodes(["pre"]);
                 var rx = new RegExp("(\\bMUST(?:\\s+NOT)?\\b|\\bSHOULD(?:\\s+NOT)?\\b|\\bSHALL(?:\\s+NOT)?\\b|" +
-                                    "\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b|" +
-                                    "\\bMAY\\b|" +
-                                    "(?:\\[\\[(?:!|\\\\)?[A-Za-z0-9-]+\\]\\])" + ( abbrRx ? "|" + abbrRx : "") + ")");
+                                    "\\bMAY\\b|\\b(?:NOT\\s+)?REQUIRED\\b|\\b(?:STRONGLY\\s+)?(?:NOT\\s+)?RECOMMENDED\\b|\\b(?:INDEPENDENTLY\\s+)?OPTIONAL\\b|\\b(?:NOT\\s+)?PERMITTED\\b|" +
+                                    "(?:\\[\\[(?:!|\\\\)?[A-Za-z0-9\\.-]+\\]\\])" + ( abbrRx ? "|" + abbrRx : "") + ")");
                 for (var i = 0; i < txts.length; i++) {
                     var txt = txts[i];
                     var subtxt = txt.data.split(rx);
@@ -95,11 +93,11 @@ define(
                                 if ($(txt).parents("abbr").length) df.appendChild(doc.createTextNode(matched));
                                 else df.appendChild($("<abbr/>").attr({ title: abbrMap[matched] }).text(matched)[0]);
                             }
-//                            // ACRO
-//                            else if (acroMap[matched]) {
-//                                if ($(txt).parents("acronym").length) df.appendChild(doc.createTextNode(matched));
-//                                else df.appendChild($("<acronym/>").attr({ title: acroMap[matched] }).text(matched)[0]);
-//                            }
+                            // ACRO
+                            else if (acroMap[matched]) {
+                                if ($(txt).parents("acronym").length) df.appendChild(doc.createTextNode(matched));
+                                else df.appendChild($("<acronym/>").attr({ title: acroMap[matched] }).text(matched)[0]);
+                            }
                             // FAIL -- not sure that this can really happen
                             else {
                                 msg.pub("error", "Found token '" + matched + "' but it does not correspond to anything");

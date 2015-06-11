@@ -88,6 +88,12 @@
         [Something, Constructor()] interface SuperStar {};
       </pre>
       <p>
+        Interface with extended attribute and RHS identifier list.
+      </p>
+      <pre id='if-identifier-list' class='idl'>
+        [Global=Window, Exposed=(Window,Worker)] interface SuperStar {};
+      </pre>
+      <p>
         Interface with inheritance.
       </p>
       <pre id='if-inheritance' class='idl'>
@@ -172,6 +178,7 @@
           const double twice = 4.222222222;
           // 13
           const unrestricted double rambaldi = 47.0;
+
           // 14
           const boolean? why = false;
           // 15
@@ -182,7 +189,7 @@
           const short mininf = -Infinity;
           // 18
           const short cheese = NaN;
-          // 18
+          // 19
           [Something] const short extAttr = NaN;
         };
       </pre>
@@ -212,8 +219,8 @@
           // 3.5
           attribute Date[] dates;
           // 4.0
-          attribute Promise&lt;DOMString&gt; operation;
-        <!--  // 4.5
+          attribute Promise&lt;DOMString&gt; operation;<!--
+          // 4.5
           attribute Promise&lt;Superstar&gt;[] wouldBeStars;
 
           // 3
@@ -251,18 +258,7 @@
           // 3.5
           SuperStar? ull();
           // 4
-          // Parameters:
-          // one: 4.1
-          // ext: 4.1
-          // maybe: 4.2
-          // shorts: 4.3
-          // hypercubes: 4.3
-          // defaulted: 4.3
-          // defaulted2: 4.3
-          // variable: 4.last
           SuperStar[][][][] paramed(SuperStar[][]?[] one, [ExtAttrs] ByteString? ext, optional short maybe, short[] shorts, short[][][][] hypercubes, optional short defaulted = 3.5, optional DOMString defaulted2 = "one", short... variable);
-
-        <!--
           // 5
           getter float ();
           // 6
@@ -271,9 +267,8 @@
           setter void ();
           // 8
           setter void named ();
-        ... and other special operations
-         -->
-        };
+<!--        ... and other special operations
+     -->};
       </pre>
       <p id="meth-basic-doc" dfn-for="MethBasic">
         <dfn>ull</dfn> is a method.
@@ -296,6 +291,9 @@
         interface SuperStar {
           // This is a comment
           // over two lines.
+          /* This one
+             has
+             three. */
         };
       </pre>
     </section>
@@ -326,16 +324,23 @@
           [Something]float ext;
           // 4
           unsigned long long longLong;
+
           // 5
           boolean test = true;
-          // 7
+          // 6
           byte little = 2;
-          // 8
+          // 7
           byte big = Infinity;
-          // 9
+          // 8
           byte cheese = NaN;
-          // 10
+          // 9
           DOMString blah = "blah blah";
+        };
+      </pre>
+      <pre id='dict-required-fields' class='idl'>
+        dictionary SuperStar {
+          required DOMString value;
+          DOMString optValue;
         };
       </pre>
       <pre id='dict-doc' class='idl'>
@@ -370,6 +375,7 @@
           [Something]const SuperStar value = 42;
           // 2
           SuperStar? message;
+
           // 3
           sequence&lt;SuperStar> floats;
           // 4
@@ -390,9 +396,10 @@
           // 1
           "one",
           // 2
-          "two",
+          "two"
           // 3
-          "three",
+        , "three",
+
           // 4
           "white space"
         };
@@ -451,6 +458,34 @@
       <pre id='impl-less-basic' class='idl'>
         [Something]Window implements Breakable;
       </pre>
+    </section>
+    <section id="documentation">
+      <h2>Documentation</h2>
+      <pre id='doc-iface' class='idl'>
+        interface Documented {
+          attribute DOMString docString;
+          attribute DOMString notDefined;
+          attribute DOMString definedElsewhere;
+        };
+      </pre>
+      <p class='note' dfn-for="Documented">
+        <dfn>docString</dfn> is defined in a note.
+      </p>
+      <p link-for="Documented">
+        Testing <code>[link-for]</code>:
+        <dfn>Some generic term</dfn> isn't IDL.
+        <a>Some generic term</a> also isn't part of <a>Documented</a>.
+        <a>docString</a> is.
+        <a>notDefined</a> is too, but isn't defined elsewhere.
+      </p>
+      <p>
+        <dfn>Documented.definedElsewhere</dfn> is defined by writing its fully-qualified name.
+        <a>Documented.docString</a> is linked by writing its fully-qualified name.
+      </p>
+      <p id="without-link-for">
+        We had a bug where <a>Documented</a> got a [dfn-for] attribute,
+        which broke links to it without [link-for].
+      </p>
     </section>
   </body>
 </html>
