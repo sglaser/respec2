@@ -14,10 +14,9 @@ define(
     ["core/utils"],
     function (utils) {
         "use strict";
-        ,   secMap = {}
+        var secMap = {}
         ,   appendixMode = false
         ,   lastNonAppendix = 0
-        ,   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         ,   makeTOCAtLevel = function ($parent, doc, current, level, conf) {
                 var $secs = $parent.children(conf.tocIntroductory ? "section" : "section:not(.introductory)");
 

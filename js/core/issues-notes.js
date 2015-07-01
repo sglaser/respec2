@@ -26,7 +26,7 @@ define(
                 function handleIssues ($ins, ghIssues, issueBase) {
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
-                    ,   issueNum = 0;
+                    ,   issueNum = 0
                     ,   $issueSummary = $("<div><h2>Issue Summary</h2><ul></ul></div>")
                     ,   $issueList = $issueSummary.find("ul");
                     $ins.each(function (i, inno) {
