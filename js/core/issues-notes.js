@@ -23,10 +23,12 @@ define(
                     cb();
                 }
                 
-                function handleIssues ($ins) {
+                function handleIssues ($ins, ghIssues, issueBase) {
                     $(doc).find("head link").first().before($("<style/>").text(css));
                     var hasDataNum = $(".issue[data-number]").length > 0
                     ,   issueNum = 0;
+                    ,   $issueSummary = $("<div><h2>Issue Summary</h2><ul></ul></div>")
+                    ,   $issueList = $issueSummary.find("ul");
                     $ins.each(function (i, inno) {
                         var $inno = $(inno)
                         ,   isIssue = $inno.hasClass("issue")
@@ -56,8 +58,9 @@ define(
                                         ? (isFeatureAtRisk ? "Feature at Risk" : "Issue")
                                         : isWarning ? "Warning"
                                         : (isImpNote ? "Implementation Note" : "Note"))
-			    , ghIssue
+                            ,   ghIssue
                             ;
+                            report.title = $inno.attr("title");
                             if (isIssue) {
                                 if (hasDataNum) {
                                     if (dataNum) {
@@ -70,14 +73,31 @@ define(
                                             $tit.find("span").wrap($("<a href='" + conf.atRiskBase + dataNum + "'/>"));
                                         }
                                         ghIssue = ghIssues[dataNum];
+                                        if (ghIssue && !report.title) {
+                                            report.title = ghIssue.title;
+                                        }
                                     }
                                 }
                                 else {
                                     text += " " + issueNum;
                                 }
+                                if (report.number !== undefined) {
+                                    // Add entry to #issue-summary.
+                                    var id = "issue-" + report.number
+                                    ,   $li = $("<li><a></a></li>")
+                                    ,   $a = $li.find("a");
+                                
+                                    $div.attr("id", id);
+                                    $a.attr("href", "#" + id).text("Issue " + report.number);
+
+                                    if (report.title) {
+                                        $li.append(doc.createTextNode(": " + report.title));
+                                    }
+                                    $issueList.append($li);
+                                }
                             }
                             $tit.find("span").text(text);
-                            report.title = $inno.attr("title") || (ghIssue && ghIssue.title) || null;
+                            
                             if (report.title) {
                                 $tit.append(doc.createTextNode(": " + report.title));
                                 $inno.removeAttr("title");
@@ -92,13 +112,23 @@ define(
                         }
                         msg.pub(report.type, report);
                     });
+                    
+                    if ($(".issue").length) {
+                        if ($("#issue-summary")) $("#issue-summary").append($issueSummary.contents());
+                    }
+                    else if ($("#issue-summary").length) {
+                        msg.pub("warn", "Using issue summary (#issue-summary) but no issues found.");
+                        $("#issue-summary").remove();
+                    }
                 }
                 msg.pub("start", "core/issues-notes");
                 var $ins = $(".issue, .note, .warning, .ednote, .impnote")
-                ,   ghIssues = {};
+                ,   ghIssues = {}
+                ,   issueBase = conf.issueBase;
                 if ($ins.length) {
                     if (conf.githubAPI) {
                         github.fetch(conf.githubAPI).then(function (json) {
+                            issueBase = issueBase || json.html_url + "/issues/";
                             return github.fetchIndex(json.issues_url, {
                                 // Get back HTML content instead of markdown
                                 // See: https://developer.github.com/v3/media/
@@ -110,11 +140,11 @@ define(
                             issues.forEach(function (issue) {
                                 ghIssues[issue.number] = issue;
                             });
-                            handleIssues($ins);
+                            handleIssues($ins, ghIssues, issueBase);
                             onEnd();
                         });
                     } else {
-                        handleIssues($ins);
+                        handleIssues($ins, ghIssues, issueBase);
                         onEnd();
                     }
                 } else {

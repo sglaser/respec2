@@ -14,13 +14,10 @@ define(
     ["core/utils"],
     function (utils) {
         "use strict";
-        var i18n = {
-                    en: { toc: "Table of Contents" },
-                    fr: { toc: "Sommaire" }
-                }
         ,   secMap = {}
         ,   appendixMode = false
         ,   lastNonAppendix = 0
+        ,   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         ,   makeTOCAtLevel = function ($parent, doc, current, level, conf) {
                 var $secs = $parent.children(conf.tocIntroductory ? "section" : "section:not(.introductory)");
 
@@ -40,7 +37,7 @@ define(
                     ;
                     $kidsHolder.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
                     $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
-                    var id = $sec.makeID("sect", title);
+                    var id = h.id ? h.id : $sec.makeID(null, title);
 
                     if (!isIntro) current[current.length - 1]++;
                     var secnos = current.slice();
@@ -50,7 +47,7 @@ define(
                     }
                     if (appendixMode) secnos[0] = utils.appendixMap(current[0] - lastNonAppendix);
                     var secno = secnos.join(".")
-                    ,   isTopLevel = secnos.length === 1;
+                    ,   isTopLevel = secnos.length == 1;
                     if (isTopLevel) {
                         // if this is a top level item, insert
                         // an OddPage comment so html2ps will correctly
@@ -108,7 +105,7 @@ define(
                     var depth = $(this).parents("section").length + 1;
                     if (depth > 6) depth = 6;
                     var h = "h" + depth;
-                    if (this.localName.toLowerCase() !== h) $(this).renameElement(h);
+                    if (this.localName.toLowerCase() != h) $(this).renameElement(h);
                 });
 
                 // makeTOC
@@ -135,7 +132,7 @@ define(
                     if ($a.html() !== "") return;
                     var id = $a.attr("href").slice(1);
                     if (secMap[id]) {
-                        $a.addClass('sec-ref');
+                        $a.addClass("sec-ref");
                         $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
                     } else {
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
