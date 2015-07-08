@@ -23,6 +23,8 @@ define(
 
         function draw_regpict(divsvg, svg, reg) {
             var width = Number(pget(reg, "width", 32));
+            var reverse = Boolean(pget(reg, "reverse", false));
+            var debug = Boolean(pget(reg, "debug", false));
             var defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
             var defaultAttr = String(pget(reg, "defaultAttr", "other"));
             var cellWidth = Number(pget(reg, "cellWidth", 16));
@@ -40,6 +42,7 @@ define(
             var visibleLSB = Number(pget(reg, "visibleLSB", 0));
             var visibleMSB = Number(pget(reg, "visibleMSB", width));
             var fields = pget(reg, "fields", { }); // default to empty register
+            var temp;
 
             if (visibleMSB < 0) {
                 visibleMSB = 0;
@@ -66,6 +69,11 @@ define(
                     if (item.hasOwnProperty("lsb") && !item.hasOwnProperty("msb")) {
                         item.msb = item.lsb;
                     }
+                    if (item.msb < item.lsb) {
+                        temp = item.lsb;
+                        item.lsb = item.msb;
+                        item.msb = temp;
+                    }
                     if (!item.hasOwnProperty("isUnused")) {
                         item.isUnused = false;
                     }
@@ -85,7 +93,7 @@ define(
 
             var bitarray = [];  // Array indexed by bit # in register range 0:width
             // field[bitarray[N]] contains bit N
-            // bitarray[N] == -1 for unused bits
+            // bitarray[N] == null for unused bits
             // bitarray[N] == 1000 for first bit outside register width
 
             var i, j;
@@ -103,7 +111,7 @@ define(
             }
 
             var lsb = -1;   // if >= 0, contains bit# of lsb of a string of unused bits 
-            for (i = 0; i <= width; ++i) {
+            for (i = 0; i <= width; ++i) {  // note: includes bitarray[width]
                 if (lsb >= 0 && bitarray[i] !== null) {
                     // first "used" bit after stretch of unused bits, invent an "unused" field
                     index = "_unused_" + (i - 1); // _unused_msb
@@ -132,41 +140,86 @@ define(
 
             // x position of left edge of bit i
             function leftOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i - 0.5 - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB - 1 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width -  visibleLSB - i - 1 - (width - visibleMSB));
+                var ret;
+                var adj_bit = i;
+                if (i >= 0) {
+                    if (i > visibleMSB) { adj_bit = visibleMSB; }
+                    if (i < visibleLSB) { adj_bit = visibleLSB; }
+                    if (reverse) {
+                        adj_bit = adj_bit - visibleLSB;
+                    } else {
+                        adj_bit = visibleMSB - adj_bit;
+                    }
+                } else { // negative bit #, always to the right
+                    adj_bit = visibleMSB - visibleLSB - i - 0.5;
                 }
+                ret = figLeft + cellWidth * (adj_bit - 0.5);
+                if (debug) {
+                    console.log(i + " leftOf   reverse=" + reverse +
+                        " figLeft=" + figLeft +
+                        " cellWidth=" + cellWidth +
+                        " visibleLSB=" + visibleLSB +
+                        " visibleMSB=" + visibleMSB +
+                        " adj_bit=" + adj_bit +
+                        "\t--> ret=" + ret);
+                }
+                return ret;
             }
 
             // x position of right edge of bit i
             function rightOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i + 0.5 - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB + 1 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width - visibleLSB - i + 1 - (width - visibleMSB));
+                var ret = -1000;
+                var adj_bit = i;
+                if (i >= 0) {
+                    if (i > visibleMSB) { adj_bit = visibleMSB; }
+                    if (i < visibleLSB) { adj_bit = visibleLSB; }
+                    if (reverse) {
+                        adj_bit = adj_bit - visibleLSB;
+                    } else {
+                        adj_bit = visibleMSB - adj_bit;
+                    }
+                } else { // negative bit #, always to the right
+                    adj_bit = visibleMSB - visibleLSB - i - 0.5;
                 }
+                ret = figLeft + cellWidth * (adj_bit + 0.5);
+                if (debug) {
+                    console.log(i + " rightOf  reverse=" + reverse +
+                        " figLeft=" + figLeft +
+                        " cellWidth=" + cellWidth +
+                        " visibleLSB=" + visibleLSB +
+                        " visibleMSB=" + visibleMSB +
+                        " adj_bit=" + adj_bit +
+                        "\t--> ret=" + ret);
+                }
+                return ret;
             }
 
             // x position of middle of bit i
             function middleOf(i) {
-                if (i > visibleMSB) {
-                    return figLeft + 0;
-                } else if (i >= visibleLSB) {
-                    return figLeft + cellWidth * (width - i - (width - visibleMSB));
-                } else if (i > 0) {
-                    return figLeft + cellWidth * (width - visibleLSB - 0.5 - (width - visibleMSB));
-                } else {
-                    return figLeft + cellWidth * (width - visibleLSB - i - 0.5 - (width - visibleMSB));
+                var ret = -1000;
+                var adj_bit = i;
+                if (i >= 0) {
+                    if (i > visibleMSB) { adj_bit = visibleMSB; }
+                    if (i < visibleLSB) { adj_bit = visibleLSB; }
+                    if (reverse) {
+                        adj_bit = adj_bit - visibleLSB;
+                    } else {
+                        adj_bit = visibleMSB - adj_bit;
+                    }
+                } else { // negative bit #, always to the right
+                    adj_bit = visibleMSB - visibleLSB - i - 0.5;
                 }
+                ret = figLeft + cellWidth * (adj_bit);
+                if (debug) {
+                    console.log(i + " middleOf reverse=" + reverse +
+                        " figLeft=" + figLeft +
+                        " cellWidth=" + cellWidth +
+                        " visibleLSB=" + visibleLSB +
+                        " visibleMSB=" + visibleMSB +
+                        " adj_bit=" + adj_bit +
+                        "\t--> ret=" + ret);
+                }
+                return ret;
             }
 
             var g, p, f, text;
@@ -174,7 +227,9 @@ define(
             var bitLineCount = 0;
             var max_text_width = 0;
 
-            for (var b = 0; b < width; b++) {
+            var b2;
+            for (var b2 = 0; b2 < width; b2++) {
+                b = (reverse ? width - b2 - 1 : b2);
                 for (i in fields) {
                     if (fields.hasOwnProperty(i)) {
                         f = fields[i];
@@ -187,8 +242,10 @@ define(
                                                 svg.createText().string(f.lsb), {
                                         "class_": "regBitNumMiddle"
                                     });
-                                /*console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4));
-                                bitnum_width = text.clientWidth;
+                                if (debug) {
+                                    console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4));
+                                }
+                                /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
                                     // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
                                     bitnum_width = String(f.lsb).length * 4; // Assume 4px per character on average
@@ -206,19 +263,26 @@ define(
                                     console.log("bitnum-middle " + f.lsb + " at x=" + middleOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
                                 }*/
                             } else {
+                                var pos;
+                                var cls;
+                                var str;
+                                if (reverse) {
+                                    pos = leftOf(f.lsb) + 2;
+                                    cls = "regBitNumStart";
+                                } else {
+                                    pos = rightOf(f.lsb) - 2;
+                                    cls = "regBitNumEnd";
+                                }
                                 if (f.lsb < visibleLSB) {
                                     gAddClass.push("regFieldOverflowLSB");
-                                    text = svg.text(g, rightOf(f.lsb) + 2, cellTop - 4,
-                                                    svg.createText().string("... " + f.lsb), {
-                                            "class_": "regBitNumEnd"
-                                        });
-//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+                                    str = (reverse ? (f.lsb + " ...") : ("... " + f.lsb));
                                 } else {
-                                    text = svg.text(g, rightOf(f.lsb) - 2, cellTop - 4,
-                                                    svg.createText().string(f.lsb), {
-                                            "class_": "regBitNumEnd"
-                                        });
-//                                    console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                    str = f.lsb;
+                                }
+                                text = svg.text(g, pos, cellTop - 4,
+                                                svg.createText().string(str), { "class_": cls });
+                                if (debug) {
+                                    console.log("bitnum-lsb " + f.lsb + " at x=" + pos + " y=" + (cellTop - 4) + " reverse=" + reverse);
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
@@ -237,19 +301,23 @@ define(
                                                });
                                     console.log("bitnum-right " + f.lsb + " at x=" + rightOf(f.lsb) + " y=" + (cellTop - 4) + " rotate=270");
                                 }*/
+                                if (reverse) {
+                                    pos = rightOf(f.msb) - 2;
+                                    cls = "regBitNumEnd";
+                                } else {
+                                    pos = leftOf(f.msb) + 2;
+                                    cls = "regBitNumStart";
+                                }
                                 if (f.msb > visibleMSB) {
                                     gAddClass.push("regFieldOverflowMSB");
-                                    text = svg.text(g, leftOf(f.msb) - 2, cellTop - 4,
-                                                    svg.createText().string(f.msb + " ..."), {
-                                            "class_": "regBitNumStart"
-                                        });
-//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) - 2 + " y=" + (cellTop - 4));
+                                    str = (reverse ? ("... " + f.msb) : (f.msb + " ..."));
                                 } else {
-                                    text = svg.text(g, leftOf(f.msb) + 2, cellTop - 4,
-                                             text = svg.createText().string(f.msb), {
-                                            "class_": "regBitNumStart"
-                                        });
-//                                    console.log("bitnum-left " + f.lsb + " at x=" + leftOf(f.lsb) + 2 + " y=" + (cellTop - 4));
+                                    str = f.msb;
+                                }
+                                text = svg.text(g, pos, cellTop - 4,
+                                                svg.createText().string(str), { "class_": cls });
+                                if (debug) {
+                                    console.log("bitnum-msb " + f.msb + " at x=" + pos + " y=" + (cellTop - 4) + " reverse=" + reverse);
                                 }
                                 /*bitnum_width = text.clientWidth;
                                 if (bitnum_width === 0) {
@@ -270,16 +338,18 @@ define(
                                 }*/
                             }
                             if (f.lsb >= visibleLSB) {
+                                var pos = (reverse ? leftOf(f.lsb) : rightOf(f.lsb));
                                 svg.line(g,
-                                    rightOf(f.lsb), cellTop,
-                                    rightOf(f.lsb), cellTop - (text.clientHeight * 0.75),
-                                    { "class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
+                                    pos, cellTop,
+                                    pos, cellTop - (text.clientHeight * 0.75),
+                                    {"class_": (f.lsb === visibleLSB) ? "regBitNumLine" : "regBitNumLine_Hide"});
                             }
                             if (f.msb <= visibleMSB) {
+                                var pos = (reverse ? rightOf(f.msb) : leftOf(f.msb));
                                 svg.line(g,
-                                    leftOf(f.msb), cellTop,
-                                    leftOf(f.msb), cellTop - (text.clientHeight * 0.75),
-                                    { "class_": "regBitNumLine" });
+                                    pos, cellTop,
+                                    pos, cellTop - (text.clientHeight * 0.75),
+                                    {"class_": "regBitNumLine"});
                             }
                             if (f.hasOwnProperty("addClass") && typeof f.addClass === "string") {
                                 gAddClass = gAddClass.concat(f.addClass.split(/\s+/));
@@ -287,15 +357,22 @@ define(
                             if (f.isUnused) {
                                 gAddClass.push("regFieldUnused");
                             }
-                            svg.rect(g, leftOf(f.msb), cellTop, rightOf(f.lsb) - leftOf(f.msb), cellHeight,
-                                     0, 0, {
-                                    "class_": "regFieldBox"
-                                });
+                            var wid;
+                            if (reverse) {
+                                pos = leftOf(f.lsb);
+                                wid = rightOf(f.msb) - pos;
+                            } else {
+                                pos = leftOf(f.msb);
+                                wid = rightOf(f.lsb) - pos;
+                            }
+                            svg.rect(g, pos, cellTop, wid, cellHeight, 0, 0,
+                                     { "class_": "regFieldBox" });
                             for (j = f.lsb + 1; j <= f.msb; j++) {
                                 if ((j >= visibleLSB) && (j <= visibleMSB)) {
+                                    var pos = (reverse ? leftOf(j) : rightOf(j));
                                     svg.line(g,
-                                        rightOf(j), cellTop + cellHeight - cellInternalHeight,
-                                        rightOf(j), cellTop + cellHeight,
+                                        pos, cellTop + cellHeight - cellInternalHeight,
+                                        pos, cellTop + cellHeight,
                                         { "class_": "regFieldBox" });
                                 }
                             }
@@ -350,19 +427,23 @@ define(
                                 // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
                                 text_height = 18;             // Assume 18px: 1 row of text, 15px high
                             }
-                            /*console.log("field " + f.name +
-                             " msb=" + f.msb +
-                             " lsb=" + f.lsb +
-                             " attr=" + f.attr +
-                             " isUnused=" + f.isUnused +
-                             (("id" in f) ? f.id : ""));
-                             console.log(" text.clientWidth=" + text.clientWidth +
-                             " text_width=" + text_width +
-                             " text.clientHeight=" + text.clientHeight +
-                             " text_height=" + text_height +
-                             " rightOf(msb)=" + rightOf(f.lsb) +
-                             " leftOf(lsb)=" + leftOf(f.msb) +
-                             " boxWidth=" + (rightOf(f.lsb) - leftOf(f.msb)));*/
+                            var boxLeft = leftOf(reverse ? f.lsb : f.msb);
+                            var boxRight = rightOf(reverse ? f.msb : f.lsb);
+                            if (debug) {
+                                console.log("field " + f.name +
+                                    " msb=" + f.msb +
+                                    " lsb=" + f.lsb +
+                                    " attr=" + f.attr +
+                                    " isUnused=" + f.isUnused +
+                                    (("id" in f) ? f.id : ""));
+                                console.log(" text.clientWidth=" + text.clientWidth +
+                                    " text_width=" + text_width +
+                                    " text.clientHeight=" + text.clientHeight +
+                                    " text_height=" + text_height +
+                                    " boxLeft=" + boxLeft +
+                                    " boxRight=" + boxRight +
+                                    " boxWidth=" + (boxRight - boxLeft));
+                            }
                             /* if field has a specified value,
                              the field name is too wide for the box,
                              or the field name is too tall for the box */
@@ -370,7 +451,7 @@ define(
                                 gAddClass[0] = "regFieldHidden";
                             } else {
                                 if ((f.value !== "") ||
-                                    ((text_width + 2) > (rightOf(f.lsb) - leftOf(f.msb))) ||
+                                    ((text_width + 2) > (boxRight - boxLeft)) ||
                                     ((text_height + 2) > (cellHeight - cellInternalHeight))) {
                                     svg.change(text,
                                         {
@@ -379,9 +460,9 @@ define(
                                             "class_": "regFieldName"
                                         });
                                     p = svg.createPath();
-                                    p.move(leftOf(f.msb), cellTop + cellHeight);
-                                    p.line(((rightOf(f.lsb) - leftOf(f.msb)) / 2), bracketHeight, true);
-                                    p.line(rightOf(f.lsb), cellTop + cellHeight);
+                                    p.move(boxLeft, cellTop + cellHeight);
+                                    p.line(((boxRight - boxLeft) / 2), bracketHeight, true);
+                                    p.line(boxRight, cellTop + cellHeight);
                                     svg.path(g, p,
                                         {
                                             "class_": "regBitBracket",
@@ -403,14 +484,26 @@ define(
                                 }
                             }
                             if ((f.msb > visibleLSB) && (f.lsb < visibleLSB)) {
-                                svg.text(g, rightOf(0) + 2, cellTop + cellNameTop,
-                                    svg.createText().string("..."),
-                                    { "class_": "regFieldExtendsRight" });
+                                if (reverse) {
+                                    svg.text(g, leftOf(0) - 2, cellTop + cellNameTop,
+                                        svg.createText().string("..."),
+                                        { "class_": "regFieldExtendsLeft" });
+                                } else {
+                                    svg.text(g, rightOf(0) + 2, cellTop + cellNameTop,
+                                        svg.createText().string("..."),
+                                        {"class_": "regFieldExtendsRight"});
+                                }
                             }
                             if ((f.msb > visibleMSB) && (f.lsb < visibleMSB)) {
-                                svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop,
-                                    svg.createText().string("..."),
-                                    { "class_": "regFieldExtendsLeft" });
+                                if (reverse) {
+                                    svg.text(g, rightOf(f.msb) + 2, cellTop + cellNameTop,
+                                        svg.createText().string("..."),
+                                        { "class_": "regFieldExtendsRight" });
+                                } else {
+                                    svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop,
+                                        svg.createText().string("..."),
+                                        { "class_": "regFieldExtendsLeft" });
+                                }
                             }
                             svg.change(g, { "class_": gAddClass.join(" ") });
                         }

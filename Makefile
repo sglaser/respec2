@@ -1,4 +1,4 @@
-all: w3c pcisig nvidia
+all: pcisig nvidia w3c
 
 w3c:
 	node tools/test-build.js
