@@ -1,4 +1,4 @@
-all: w3c pcisig nvidia
+all: pcisig nvidia w3c
 
 w3c:
 	node tools/test-build.js
@@ -6,9 +6,9 @@ w3c:
 	node tools/build-w3c-common.js
 
 pcisig:
+	node tools-pcisig/build-pcisig-common.js
 	node tools-pcisig/test-build.js
 	node tools-pcisig/example-build.js
-	node tools-pcisig/build-pcisig-common.js
 
 nv nvidia:
 	node tools-nvidia/test-build.js
