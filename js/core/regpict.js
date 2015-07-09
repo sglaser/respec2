@@ -30,7 +30,7 @@ define(
             var cellWidth = Number(pget(reg, "cellWidth", 16));
             var cellHeight = Number(pget(reg, "cellHeight", 32));
             var cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-            var cellValueTop = Number(pget(reg, "cellValueTop", 16)); // top of text for regFieldValueInternal
+            var cellValueTop = Number(pget(reg, "cellValueTop", 20)); // top of text for regFieldValueInternal
             var cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
             var cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
             var bracketHeight = Number(pget(reg, "bracketHeight", 4));
