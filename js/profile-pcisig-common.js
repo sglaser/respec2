@@ -22,6 +22,7 @@ define([
         ,   "core/ui"
         ,   "core/override-configuration"
         ,   "core/default-root-attr"
+        ,   "w3c/l10n"
         ,   "core/markdown"
         ,   "core/style"
         ,   "pcisig/style"
@@ -60,6 +61,7 @@ define([
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");
                 ui.addCommand("About ReSpec", "ui/about-respec", "Ctrl+Shift+Alt+A");
+                ui.addCommand("Definition List", "ui/dfn-list", "Ctrl+Shift+Alt+D");
                 ui.addCommand("Search Specref DB", "ui/search-specref", "Ctrl+Shift+Alt+space");
                 runner.runAll(args);
             });
