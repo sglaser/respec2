@@ -22821,7 +22821,34 @@ define(
                         $a.addClass("sec-ref");
                         $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
                     } else {
-                        msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
+                        var id2 = id.replace("sect-", "h-");
+                        // console.log("changing <a href=\"" + id + "\" to \"" + id2 + "\"");
+                        if (secMap[id2]) {
+                            $a.addClass("sec-ref");
+                            $a.html(secMap[id2]);
+                            $a.attr("href", "#" + id2);
+                        } else {
+                            msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
+                        }
+                    }
+                });
+                $("a[href^='#h-']:not(.tocxref)", doc).each(function () {
+                    var $a = $(this);
+                    if ($a.html() !== "") return;
+                    var id = $a.attr("href").slice(1);
+                    if (secMap[id]) {
+                        $a.addClass("sec-ref");
+                        $a.html(secMap[id]);    //($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
+                    } else {
+                        var id2 = id.replace("h-", "sect-");
+                        // console.log("changing <a href=\"" + id + "\" to \"" + id2 + "\"");
+                        if (secMap[id2]) {
+                            $a.addClass("sec-ref");
+                            $a.html(secMap[id2]);
+                            $a.attr("href", "#" + id2);
+                        } else {
+                            msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
+                        }
                     }
                 });
 
