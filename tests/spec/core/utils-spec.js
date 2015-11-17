@@ -98,12 +98,12 @@ describe("Core - Utils", function () {
             expect(utils.isoDate("2013-06-25")).toMatch(/2013-06-2[45]T/) ;
             var d = new Date();
             d.setFullYear(2013);
-            d.setMonth(5);
             d.setDate(25);
+            d.setMonth(8);
             d.setHours(0);
             d.setMinutes(0);
             d.setSeconds(0);
-            expect(utils.isoDate(d)).toMatch(/2013-06-2[45]T/);
+            expect(utils.isoDate(d)).toMatch(/2013-09-2[45]T/);
         });
     });
 
@@ -134,15 +134,76 @@ describe("Core - Utils", function () {
         });
     });
 
-    // $.dfnTitle()
+    // $.getDfnTitles()
+    it("should not prepend empty dfns to data-lt", function () {
+        runs(function () {
+            var $dfn = $("<dfn data-lt='DFN|DFN2|DFN3'></dfn>").appendTo($("body"));
+            var titles = $dfn.getDfnTitles( { isDefinition: true } );
+            expect(titles[0]).toEqual("dfn");
+            expect(titles[1]).toEqual("dfn2");
+            expect(titles[2]).toEqual("dfn3");
+            $dfn.remove();
+        });
+    });
+
+    // $.getDfnTitles()
+    it("should not use the text content when data-lt-noDefault is present", function () {
+        runs(function () {
+            var $dfn = $("<dfn data-lt-noDefault data-lt='DFN|DFN2|DFN3'>FAIL</dfn>").appendTo($("body"));
+            var titles = $dfn.getDfnTitles( { isDefinition: true } );
+            expect(titles[0]).toEqual("dfn");
+            expect(titles[1]).toEqual("dfn2");
+            expect(titles[2]).toEqual("dfn3");
+            expect(titles[3]).toEqual(undefined);
+            $dfn.remove();
+        });
+    });
+
+    // $.getDfnTitles()
+    it("should find the data-lts", function () {
+        runs(function () {
+            var $dfn = $("<dfn data-lt='DFN|DFN2|DFN3'><abbr title='ABBR'>TEXT</abbr></dfn>").appendTo($("body"));
+            var titles = $dfn.getDfnTitles( { isDefinition: true } );
+            expect(titles[0]).toEqual("text");
+            expect(titles[1]).toEqual("dfn");
+            expect(titles[2]).toEqual("dfn2");
+            expect(titles[3]).toEqual("dfn3");
+            $dfn.removeAttr("data-lt");
+            expect($dfn.getDfnTitles()[0]).toEqual("abbr");
+            $dfn.find("abbr").removeAttr("title");
+            expect($dfn.getDfnTitles()[0]).toEqual("text");
+            $dfn.remove();
+        });
+    });
+
+    // $.getDfnTitles()
     it("should find the definition title", function () {
         runs(function () {
-            var $dfn = $("<dfn title='DFN'><abbr title='ABBR'>TEXT</abbr></dfn>").appendTo($("body"));
-            expect($dfn.dfnTitle()).toEqual("dfn");
-            $dfn.removeAttr("title");
-            expect($dfn.dfnTitle()).toEqual("abbr");
+            var $dfn = $("<dfn lt='DFN|DFN2|DFN3'><abbr title='ABBR'>TEXT</abbr></dfn>").appendTo($("body"));
+            var titles = $dfn.getDfnTitles( { isDefinition: true } );
+            expect(titles[0]).toEqual("text");
+            expect(titles[1]).toEqual("dfn");
+            expect(titles[2]).toEqual("dfn2");
+            expect(titles[3]).toEqual("dfn3");
+            $dfn.removeAttr("data-lt");
+            expect($dfn.getDfnTitles()[0]).toEqual("abbr");
             $dfn.find("abbr").removeAttr("title");
-            expect($dfn.dfnTitle()).toEqual("text");
+            expect($dfn.getDfnTitles()[0]).toEqual("text");
+            $dfn.remove();
+        });
+    });
+
+    // $.getDfnTitles()
+    it("should return list of terms when called a second time", function () {
+        runs(function () {
+            var $dfn = $("<dfn lt='DFN|DFN2|DFN3'>TEXT</dfn>").appendTo($("body"));
+            var titles = $dfn.getDfnTitles( { isDefinition: true } );
+            expect(titles[0]).toEqual("text");
+            expect(titles[1]).toEqual("dfn");
+            expect(titles[2]).toEqual("dfn2");
+            expect(titles[3]).toEqual("dfn3");
+            expect($dfn.attr("data-lt")).toEqual("text|dfn|dfn2|dfn3");
+            expect($dfn.getDfnTitles()[1]).toEqual("dfn");
             $dfn.remove();
         });
     });

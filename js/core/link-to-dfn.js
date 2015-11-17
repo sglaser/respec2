@@ -51,6 +51,10 @@ define(
                         if (titles[target.title] && titles[target.title][target.for_]) {
                             var dfn = titles[target.title][target.for_];
                             $ant.attr("href", "#" + dfn.prop("id")).addClass("internalDFN");
+                            // add a bikeshed style indication of the type of link
+                            if (! $ant.attr("data-link-type") ) {
+                                $ant.attr("data-link-type", "dfn") ;
+                            }
                             // If a definition is <code>, links to it should
                             // also be <code>.
                             //
@@ -75,6 +79,23 @@ define(
                         $ant.replaceWith($ant.contents());
                     }
                 });
+                // done linking, so clean up
+                function attrToDataAttr(name){
+                    return function(elem){
+                        var value = elem.getAttribute(name);
+                        elem.removeAttribute(name);
+                        elem.setAttribute("data-" + name, value);
+                    }
+                }
+
+                var forList = doc.querySelectorAll("*[for]");
+                Array.prototype.forEach.call(forList, attrToDataAttr("for"));
+
+                var dfnForList = doc.querySelectorAll("*[dfn-for]");
+                Array.prototype.forEach.call(dfnForList, attrToDataAttr("dfn-for"));
+
+                var linkForList = doc.querySelectorAll("*[link-for]");
+                Array.prototype.forEach.call(linkForList, attrToDataAttr("link-for"));
                 msg.pub("end", "core/link-to-dfn");
                 cb();
             }

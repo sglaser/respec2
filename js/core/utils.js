@@ -48,6 +48,80 @@ define(
 //            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
             return title;
         };
+        //
+        // if args.isDefinition is true, then the element is a definition, not a
+        // reference to a definition.  Any @title or @lt will be replaced with
+        // @data-lt to be consistent with Bikeshed / Shepherd.
+        //
+        // This method now *prefers* the data-lt attribute for the list of
+        // titles.  That lattribute is added by this method to dfn elements, so
+        // subsequent calls to this method will return the data-lt based list.
+        //
+        // This method will publish a warning if a title is used on a definition
+        // instead of an @lt (as per specprod mailing list discussion).
+        $.fn.getDfnTitles = function ( args ) {
+            var titles = [];
+            var theAttr = "";
+            var titleString = "";
+            var normalizedText = "";
+            //data-lt-noDefault avoid using the text content of a definition
+            //in the definition list.
+            if (this.attr("data-lt-noDefault") === undefined){
+                normalizedText = utils.norm(this.text()).toLowerCase();
+            }
+            // allow @lt to be consistent with bikeshed
+            if (this.attr("data-lt") || this.attr("lt")) {
+                theAttr = this.attr("data-lt") ? "data-lt" : "lt";
+                // prefer @data-lt for the list of title aliases
+                titleString = this.attr(theAttr).toLowerCase();
+                if (normalizedText !== "") {
+                    //Regex: starts with the "normalizedText|"
+                    var startsWith = new RegExp("^" + normalizedText + "\\|");
+                    // Use the definition itself as first item, so to avoid
+                    // having to declare the definition twice.
+                    if (!startsWith.test(titleString)) {
+                        titleString = normalizedText + "|" + titleString;
+                    }
+                }
+            }
+            else if (this.attr("title")) {
+                // allow @title for backward compatibility
+                titleString = this.attr("title");
+                theAttr = "title";
+                respecEvents.pub("warn", "Using deprecated attribute @title for '" + this.text() + "': see http://w3.org/respec/guide.html#definitions-and-linking");
+            }
+            else if (this.contents().length == 1
+                     && this.children("abbr, acronym").length == 1
+                     && this.find(":first-child").attr("title")) {
+                titleString = this.find(":first-child").attr("title");
+            }
+            else {
+                titleString = this.text();
+            }
+            // now we have a string of one or more titles
+            titleString = utils.norm(titleString).toLowerCase();
+            if (args && args.isDefinition === true) {
+                // if it came from an attribute, replace that with data-lt as per contract with Shepherd
+                if (theAttr) {
+                    this.attr("data-lt", titleString);
+                    this.removeAttr(theAttr) ;
+                }
+                // if there is no pre-defined type, assume it is a 'dfn'
+                if (!this.attr("dfn-type")) {
+                    this.attr("data-dfn-type", "dfn");
+                }
+                else {
+                    this.attr("data-dfn-type", this.attr("dfn-type"));
+                    this.removeAttr("dfn-type");
+                }
+            }
+            titleString.split('|').forEach( function( item ) {
+                    if (item != "") {
+                        titles.push(item);
+                    }
+                });
+            return titles;
+        };
 
         // For any element (usually <a>), returns an array of targets that
         // element might refer to, of the form
@@ -62,15 +136,18 @@ define(
         $.fn.linkTargets = function () {
             var elem = this;
             var link_for = (elem.attr("for") || elem.closest("[link-for]").attr("link-for") || "").toLowerCase();
-            var title = elem.dfnTitle();
-            var result = [{for_: link_for, title: title}];
-            var split = title.split('.');
-            if (split.length === 2) {
-                // If there are multiple '.'s, this won't match an
-                // Interface/member pair anyway.
-                result.push({for_: split[0], title: split[1]});
-            }
-            result.push({for_:"", title: title});
+            var titles = elem.getDfnTitles();
+            var result = [];
+            $.each(titles, function() {
+                    result.push({for_: link_for, title: this});
+                    var split = this.split('.');
+                    if (split.length === 2) {
+                        // If there are multiple '.'s, this won't match an
+                        // Interface/member pair anyway.
+                        result.push({for_: split[0], title: split[1]});
+                    }
+                    result.push({for_: "", title: this});
+                });
             return result;
         };
 
@@ -140,8 +217,8 @@ define(
             getTextNodes(this[0]);
             return textNodes;
         };
-        
-        
+
+
         var utils = {
             // --- SET UP
             run:    function (conf, doc, cb, msg) {
@@ -200,7 +277,7 @@ define(
                 return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
             },
 
-            
+
             // --- DATE HELPERS -------------------------------------------------------------------------------
             // Takes a Date object and an optional separator and returns the year,month,day representation with
             // the custom separator (defaulting to none) and proper 0-padding
@@ -218,7 +295,7 @@ define(
                 str = String(str);
                 return (str.length === 1) ? "0" + str : str;
             },
-            
+
             // takes a YYYY-MM-DD date and returns a Date object for it
             parseSimpleDate:    function (str) {
                 return new Date(str.substr(0, 4), (str.substr(5, 2) - 1), str.substr(8, 2));
@@ -237,6 +314,7 @@ define(
             humanMonths: ["January", "February", "March", "April", "May", "June", "July",
                           "August", "September", "October", "November", "December"],
         
+
             // given either a Date object or a date in YYYY-MM-DD format, return a human-formatted
             // date suitable for use in a W3C specification
             humanDate:  function (date) {
@@ -256,6 +334,8 @@ define(
             },
             
             
+
+
             // --- STYLE HELPERS ------------------------------------------------------------------------------
             // take a document and either a link or an array of links to CSS and appends a <link/> element
             // to the head pointing to each

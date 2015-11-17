@@ -91,6 +91,9 @@
 //          pushed to the WHATWG
 //      - "w3c-software", a permissive and attributions license (but GPL-compatible). This is only
 //          available with webspecs and is the recommended value. It is the default for webspecs.
+//      - "w3c-software-doc", the W3C Software and Document License
+//            http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+
 
 define(
     [
@@ -120,6 +123,7 @@ define(
                 rm = " property='foaf:mbox'";
                 rwu = " property='foaf:workplaceHomepage'";
                 rpu = " property='foaf:homepage'";
+                propSeeAlso = " property='rdfs:seeAlso'";
             }
             var ret = "";
             for (var i = 0, n = items.length; i < n; i++) {
@@ -155,6 +159,34 @@ define(
                     ret += ", <span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>";
                 }
                 if (p.note) ret += " (" + p.note + ")";
+                if (p.extras) {
+                    var resultHTML = p.extras
+                      // Remove empty names
+                      .filter(function (extra) {
+                        return extra.name && extra.name.trim();
+                      })
+                      // Convert to HTML
+                      .map(function (extra) {
+                        var span = document.createElement('span');
+                        var textContainer = span;
+                        if (extra.class) {
+                          span.className = extra.class;
+                        }
+                        if (extra.href) {
+                          var a = document.createElement('a');
+                          span.appendChild(a);
+                          a.href = extra.href;
+                          textContainer = a;
+                          if (this.doRDFa) {
+                            a.setAttribute('property', 'rdfs:seeAlso');
+                          }
+                        }
+                        textContainer.innerHTML = extra.name;
+                        return span.outerHTML;
+                      }.bind(this))
+                      .join(', ');
+                    ret += ", " + resultHTML;
+                }
                 if (this.doRDFa) {
                   ret += "</span>\n";
                   if (name === "Editor") ret += "<span property='rdf:rest' resource='" + bn + "'></span>\n";
@@ -247,30 +279,35 @@ define(
         ,   cgbg:           ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
         ,   precededByAn:   ["ED", "IG-NOTE"]
         ,   licenses: {
-                cc0:    {
-                    name:   "Creative Commons 0 Public Domain Dedication"
-                ,   short:  "CC0"
-                ,   url:    "http://creativecommons.org/publicdomain/zero/1.0/"
-                }
-            ,   "w3c-software": {
-                    name:   "W3C Software Notice and License"
-                ,   short:  "W3C"
-                ,   url:    "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231"
-                }
-            ,   "cc-by": {
-                    name:   "Creative Commons Attribution 4.0 International Public License"
-                ,   short:  "CC-BY"
-                ,   url:    "http://creativecommons.org/licenses/by/4.0/legalcode"
+                cc0: {
+                  name: "Creative Commons 0 Public Domain Dedication",
+                  short: "CC0",
+                  url: "http://creativecommons.org/publicdomain/zero/1.0/",
+                },
+                "w3c-software": {
+                  name: "W3C Software Notice and License",
+                  short: "W3C Software",
+                  url: "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231",
+                },
+                "w3c-software-doc": {
+                  name: "W3C Software and Document Notice and License",
+                  short: "W3C Software and Document",
+                  url: "http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
+                },
+                "cc-by": {
+                  name: "Creative Commons Attribution 4.0 International Public License",
+                  short: "CC-BY",
+                  url: "http://creativecommons.org/licenses/by/4.0/legalcode",
                 }
             }
         ,   run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/headers");
-
                 // Default include RDFa document metadata
                 if (conf.doRDFa === undefined) conf.doRDFa = true;
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = (conf.specStatus === "webspec") ? "w3c-software" : "w3c";
                 conf.isCCBY = conf.license === "cc-by";
+                conf.isW3CSoftAndDocLicense = conf.license === "w3c-software-doc";
                 if (conf.specStatus === "webspec" && !$.inArray(conf.license, ["cc0", "w3c-software"]))
                     msg.pub("error", "You cannot use that license with WebSpecs.");
                 if (conf.specStatus !== "webspec" && !$.inArray(conf.license, ["cc-by", "w3c"]))
@@ -296,6 +333,9 @@ define(
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
                 conf.isRecTrack = conf.noRecTrack ? false : $.inArray(conf.specStatus, this.recTrackStatus) >= 0;
+                conf.isMemberSubmission = conf.specStatus === "Member-SUBM";
+                conf.isTeamSubmission = conf.specStatus === "Team-SUBM";
+                conf.isSubmission = conf.isMemberSubmission || conf.isTeamSubmission;
                 conf.anOrA = $.inArray(conf.specStatus, this.precededByAn) >= 0 ? "an" : "a";
                 conf.isTagFinding = conf.specStatus === "finding" || conf.specStatus === "draft-finding";
                 if (!conf.edDraftURI) {
@@ -338,18 +378,22 @@ define(
                     }
                 }
                 else {
-                    if (!/NOTE$/.test(conf.specStatus) && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
+                    if (!/NOTE$/.test(conf.specStatus) && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack && !conf.isSubmission)
                         msg.pub("error", "Document on track but no previous version.");
                     if (!conf.prevVersion) conf.prevVersion = "";
                 }
                 if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
                 if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
-                var peopCheck = function (i, it) {
+                var peopCheck = function (it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
-                $.each(conf.editors, peopCheck);
-                $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors.length > 1;
+                if (conf.editors) {
+                    conf.editors.forEach(peopCheck);
+                }
+                if (conf.authors) {
+                    conf.authors.forEach(peopCheck);
+                }
+                conf.multipleEditors = conf.editors && conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
                 $.each(conf.alternateFormats || [], function (i, it) {
                     if (!it.uri || !it.label) msg.pub("error", "All alternate formats must have a uri and a label.");
@@ -384,8 +428,7 @@ define(
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }
                 conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
-                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
-                                           !conf.isNoTrack);
+                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.isNoTrack && !conf.isSubmission);
                 if (/NOTE$/.test(conf.specStatus) && !conf.prevVersion) conf.showPreviousVersion = false;
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
                 conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
@@ -405,8 +448,12 @@ define(
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate);
                 conf.shortISODate = conf.publishISODate.replace(/T.*/, "");
-                conf.processVersion = conf.processVersion || "2014";
-                conf.isNewProcess = conf.processVersion == "2014";
+                conf.processVersion = conf.processVersion || "2015";
+                if (conf.processVersion == "2014") {
+                    msg.pub("warn", "Process " + conf.processVersion + " has been superceded by Process 2015.");
+                    conf.processVersion = "2015";
+                }
+                conf.isNewProcess = conf.processVersion == "2015";
                 // configuration done - yay!
 
                 // annotate html element with RFDa
@@ -446,17 +493,19 @@ define(
                 if ($.isArray(conf.wg)) {
                     conf.multipleWGs = conf.wg.length > 1;
                     conf.wgHTML = utils.joinAnd(conf.wg, function (wg, idx) {
-                        return "<a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
+                        return "the <a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
                     });
                     var pats = [];
                     for (var i = 0, n = conf.wg.length; i < n; i++) {
-                        pats.push("<a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>" + conf.wg[i] + "</a>");
+                        pats.push("a <a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>"
+                                  + "public list of any patent disclosures  (" + conf.wg[i]
+                                  + ")</a>");
                     }
-                    conf.wgPatentHTML = pats.join(", ");
+                    conf.wgPatentHTML = utils.joinAnd(pats);
                 }
                 else {
                     conf.multipleWGs = false;
-                    conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
+                    conf.wgHTML = "the <a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
                 }
                 if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
                 if (conf.specStatus === "PR" && !conf.lcEnd) msg.pub("error", "Status is PR but no lcEnd is specified (needed to indicate end of previous LC)");

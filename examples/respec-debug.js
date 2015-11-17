@@ -1,7 +1,7 @@
-/* ReSpec 3.2.59 - Robin Berjon, http://berjon.com/ (@robinberjon) */
+/* ReSpec 3.2.81 - Robin Berjon, http://berjon.com/ (@robinberjon) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/darobin/respec. */
-respecVersion = '3.2.59';
+respecVersion = '3.2.81';
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -11458,10 +11458,10 @@ define("Promise.min", function(){});
 // these need to be improved, or complemented with proper UI indications
 if (window.console) {
     respecEvents.sub("warn", function (details) {
-        console.log("WARN: " + details);
+        console.warn("WARN: ", details);
     });
     respecEvents.sub("error", function (details) {
-        console.log("ERROR: " + details);
+        console.error("ERROR: ", details);
     });
     respecEvents.sub("start", function (details) {
         if (respecConfig && respecConfig.trace) console.log(">>> began: " + details);
@@ -12008,6 +12008,57 @@ define(
     }
 );
 
+// Module core/include-config
+// Inject's the document's configuration into the head as JSON.
+
+define(
+  'core/include-config',[],
+  function () {
+    
+    return {
+      run: function (conf, doc, cb, msg) {
+        msg.pub('start', 'core/include-config');
+        var initialUserConfig;
+        try {
+          if (Object.assign) {
+            initialUserConfig = Object.assign({}, conf);
+          } else {
+            initialUserConfig = JSON.parse(JSON.stringify(conf));
+          }
+        } catch (err) {
+          initialUserConfig = {};
+        }
+        msg.sub('end-all', function () {
+          var script = doc.createElement('script');
+          script.id = 'initialUserConfig';
+          var confFilter = function (key, val) {
+            // DefinitionMap contains array of DOM elements that aren't serializable
+            // we replace them by their id
+            if (key === 'definitionMap') {
+              var ret = {};
+              Object
+                .keys(val)
+                .forEach(function (k) {
+                  ret[k] = val[k].map(function (d) {
+                    return d[0].id;
+                  });
+                });
+              return ret;
+            }
+            return val;
+          };
+          script.innerHTML = JSON.stringify(initialUserConfig, confFilter, 2);
+          script.type = 'application/json';
+          doc.head.appendChild(script);
+          conf.initialUserConfig = initialUserConfig;
+        });
+        msg.pub('end', 'core/include-config');
+        cb();
+      }
+    };
+  }
+);
+
 
 // Module core/override-configuration
 // A helper module that makes it possible to override settings specified in respecConfig
@@ -12036,9 +12087,13 @@ define(
                         else if (v === "null") v = null;
                         else if (/\[\]$/.test(k)) {
                             k = k.replace(/\[\]/, "");
-                            v = $.parseJSON(v);
+                            v = JSON.parse(v);
                         }
-                        conf[k] = v;
+                        try {
+                            conf[k] = JSON.parse(v);
+                        } catch (err) {
+                            conf[k] = v;
+                        }
                     }
                 }
                 msg.pub("end", "core/override-configuration");
@@ -13321,6 +13376,80 @@ define(
 //            console.log("   length= " + title.length + "  \"" + title.join("|||") + "\"");
             return title;
         };
+        //
+        // if args.isDefinition is true, then the element is a definition, not a
+        // reference to a definition.  Any @title or @lt will be replaced with
+        // @data-lt to be consistent with Bikeshed / Shepherd.
+        //
+        // This method now *prefers* the data-lt attribute for the list of
+        // titles.  That lattribute is added by this method to dfn elements, so
+        // subsequent calls to this method will return the data-lt based list.
+        //
+        // This method will publish a warning if a title is used on a definition
+        // instead of an @lt (as per specprod mailing list discussion).
+        $.fn.getDfnTitles = function ( args ) {
+            var titles = [];
+            var theAttr = "";
+            var titleString = "";
+            var normalizedText = "";
+            //data-lt-noDefault avoid using the text content of a definition
+            //in the definition list.
+            if (this.attr("data-lt-noDefault") === undefined){
+                normalizedText = utils.norm(this.text()).toLowerCase();
+            }
+            // allow @lt to be consistent with bikeshed
+            if (this.attr("data-lt") || this.attr("lt")) {
+                theAttr = this.attr("data-lt") ? "data-lt" : "lt";
+                // prefer @data-lt for the list of title aliases
+                titleString = this.attr(theAttr).toLowerCase();
+                if (normalizedText !== "") {
+                    //Regex: starts with the "normalizedText|"
+                    var startsWith = new RegExp("^" + normalizedText + "\\|");
+                    // Use the definition itself as first item, so to avoid
+                    // having to declare the definition twice.
+                    if (!startsWith.test(titleString)) {
+                        titleString = normalizedText + "|" + titleString;
+                    }
+                }
+            }
+            else if (this.attr("title")) {
+                // allow @title for backward compatibility
+                titleString = this.attr("title");
+                theAttr = "title";
+                respecEvents.pub("warn", "Using deprecated attribute @title for '" + this.text() + "': see http://w3.org/respec/guide.html#definitions-and-linking");
+            }
+            else if (this.contents().length == 1
+                     && this.children("abbr, acronym").length == 1
+                     && this.find(":first-child").attr("title")) {
+                titleString = this.find(":first-child").attr("title");
+            }
+            else {
+                titleString = this.text();
+            }
+            // now we have a string of one or more titles
+            titleString = utils.norm(titleString).toLowerCase();
+            if (args && args.isDefinition === true) {
+                // if it came from an attribute, replace that with data-lt as per contract with Shepherd
+                if (theAttr) {
+                    this.attr("data-lt", titleString);
+                    this.removeAttr(theAttr) ;
+                }
+                // if there is no pre-defined type, assume it is a 'dfn'
+                if (!this.attr("dfn-type")) {
+                    this.attr("data-dfn-type", "dfn");
+                }
+                else {
+                    this.attr("data-dfn-type", this.attr("dfn-type"));
+                    this.removeAttr("dfn-type");
+                }
+            }
+            titleString.split('|').forEach( function( item ) {
+                    if (item != "") {
+                        titles.push(item);
+                    }
+                });
+            return titles;
+        };
 
         // For any element (usually <a>), returns an array of targets that
         // element might refer to, of the form
@@ -13335,15 +13464,18 @@ define(
         $.fn.linkTargets = function () {
             var elem = this;
             var link_for = (elem.attr("for") || elem.closest("[link-for]").attr("link-for") || "").toLowerCase();
-            var title = elem.dfnTitle();
-            var result = [{for_: link_for, title: title}];
-            var split = title.split('.');
-            if (split.length === 2) {
-                // If there are multiple '.'s, this won't match an
-                // Interface/member pair anyway.
-                result.push({for_: split[0], title: split[1]});
-            }
-            result.push({for_:"", title: title});
+            var titles = elem.getDfnTitles();
+            var result = [];
+            $.each(titles, function() {
+                    result.push({for_: link_for, title: this});
+                    var split = this.split('.');
+                    if (split.length === 2) {
+                        // If there are multiple '.'s, this won't match an
+                        // Interface/member pair anyway.
+                        result.push({for_: split[0], title: split[1]});
+                    }
+                    result.push({for_: "", title: this});
+                });
             return result;
         };
 
@@ -13413,8 +13545,8 @@ define(
             getTextNodes(this[0]);
             return textNodes;
         };
-        
-        
+
+
         var utils = {
             // --- SET UP
             run:    function (conf, doc, cb, msg) {
@@ -13473,7 +13605,7 @@ define(
                 return str.replace(/^\s+/, "").replace(/\s+$/, "").split(/\s+/).join(" ");
             },
 
-            
+
             // --- DATE HELPERS -------------------------------------------------------------------------------
             // Takes a Date object and an optional separator and returns the year,month,day representation with
             // the custom separator (defaulting to none) and proper 0-padding
@@ -13491,7 +13623,7 @@ define(
                 str = String(str);
                 return (str.length === 1) ? "0" + str : str;
             },
-            
+
             // takes a YYYY-MM-DD date and returns a Date object for it
             parseSimpleDate:    function (str) {
                 return new Date(str.substr(0, 4), (str.substr(5, 2) - 1), str.substr(8, 2));
@@ -13510,6 +13642,7 @@ define(
             humanMonths: ["January", "February", "March", "April", "May", "June", "July",
                           "August", "September", "October", "November", "December"],
         
+
             // given either a Date object or a date in YYYY-MM-DD format, return a human-formatted
             // date suitable for use in a W3C specification
             humanDate:  function (date) {
@@ -13529,6 +13662,8 @@ define(
             },
             
             
+
+
             // --- STYLE HELPERS ------------------------------------------------------------------------------
             // take a document and either a link or an array of links to CSS and appends a <link/> element
             // to the head pointing to each
@@ -15223,10 +15358,10 @@ define('tmpl',["handlebars", "text"], function (hb, text) {
 });
 
 
-define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n      {{#if logos}}\n        {{showLogos logos}}\n      {{else}}\n        {{#if prependW3C}}\n            <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'></a>\n        {{/if}}\n      {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time {{#if doRDFa}}property="dcterms:issued"{{/if}}class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>{{l10n.this_version}}</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>{{l10n.latest_published_version}}</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>{{l10n.latest_editors_draft}}</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>{{l10n.bug_tracker}}</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>{{#if multipleEditors}}{{l10n.editors}}{{else}}{{l10n.editor}}{{/if}}</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>{{#if multipleAuthors}}{{l10n.authors}}{{else}}{{l10n.author}}{{/if}}</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and \n          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          <a href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr>\n</div>\n');});
+define('tmpl!w3c/templates/headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n      {{#if logos}}\n        {{showLogos logos}}\n      {{else}}\n        {{#if prependW3C}}\n            <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'></a>\n            {{#if isMemberSubmission}}\n            <a href="http://www.w3.org/Submission/"> <img height="48" width="211" alt="W3C Member Submission" src="http://www.w3.org/Icons/member_subm" /></a>\n            {{/if}}\n            {{#if isTeamSubmission}}\n            <a href="http://www.w3.org/TeamSubmission/"><img height="48" width="211" alt="W3C Team Submission" src="http://www.w3.org/Icons/team_subm"/></a>\n            {{/if}}\n        {{/if}}\n      {{/if}}\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dcterms:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2>{{#if prependW3C}}W3C {{/if}}{{textStatus}} <time {{#if doRDFa}}property="dcterms:issued"{{/if}}class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#unless isNoTrack}}\n      <dt>{{l10n.this_version}}</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n      <dt>{{l10n.latest_published_version}}</dt>\n      <dd>{{#if latestVersion}}<a href=\'{{latestVersion}}\'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>\n    {{/unless}}\n    {{#if edDraftURI}}\n      <dt>{{l10n.latest_editors_draft}}</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>{{l10n.bug_tracker}}</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if isED}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/if}}\n    {{#if showPreviousVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#if prevRecURI}}\n      {{#if isRec}}\n          <dt>Previous Recommendation:</dt>\n          <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{else}}\n          <dt>Latest Recommendation:</dt>\n          <dd><a href=\'{{prevRecURI}}\'>{{prevRecURI}}</a></dd>\n      {{/if}}\n    {{/if}}\n    <dt>{{#if multipleEditors}}{{l10n.editors}}{{else}}{{l10n.editor}}{{/if}}</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>{{#if multipleAuthors}}{{l10n.authors}}{{else}}{{l10n.author}}{{/if}}</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if errata}}\n    <p>\n      Please check the <a href="{{errata}}"><strong>errata</strong></a> for any errors or issues\n      reported since publication.\n    </p>\n  {{/if}}\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats:\n      {{else}}\n        This document is also available in this non-normative format:\n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  {{#if isRec}}\n    <p>\n      The English version of this specification is the only normative version. Non-normative\n      <a href="http://www.w3.org/Consortium/Translation/">translations</a> may also be available.\n    </p>\n  {{/if}}\n  {{#if isUnofficial}}\n    {{#if additionalCopyrightHolders}}\n      <p class=\'copyright\'>{{{additionalCopyrightHolders}}}</p>\n    {{else}}\n      {{#if overrideCopyright}}\n        {{{overrideCopyright}}}\n      {{else}}\n        <p class=\'copyright\'>\n          This document is licensed under a\n          <a class=\'subfoot\' href=\'http://creativecommons.org/licenses/by/3.0/\' rel=\'license\'>Creative Commons\n          Attribution 3.0 License</a>.\n        </p>\n      {{/if}}\n    {{/if}}\n  {{else}}\n    {{#if overrideCopyright}}\n      {{{overrideCopyright}}}\n    {{else}}\n      <p class=\'copyright\'>\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy;\n        {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n        {{#if additionalCopyrightHolders}} {{{additionalCopyrightHolders}}} &amp;{{/if}}\n        <a href=\'http://www.w3.org/\'><abbr title=\'World Wide Web Consortium\'>W3C</abbr></a><sup>&reg;</sup>\n        (<a href=\'http://www.csail.mit.edu/\'><abbr title=\'Massachusetts Institute of Technology\'>MIT</abbr></a>,\n        <a href=\'http://www.ercim.eu/\'><abbr title=\'European Research Consortium for Informatics and Mathematics\'>ERCIM</abbr></a>,\n        <a href=\'http://www.keio.ac.jp/\'>Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). \n        {{#if isCCBY}}\n          Some Rights Reserved: this document is dual-licensed,\n          <a rel="license" href="https://creativecommons.org/licenses/by/3.0/">CC-BY</a> and\n          <a rel="license" href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document License</a>.\n        {{/if}}\n        W3C <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer\'>liability</a>,\n        <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks\'>trademark</a> and\n        {{#if isCCBY}}\n          <a rel="license" href=\'http://www.w3.org/Consortium/Legal/2013/copyright-documents-dual.html\'>document use</a>\n        {{else}}\n          {{#if isW3CSoftAndDocLicense}}\n            <a rel="license" href=\'http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document\'>permissive document license</a>\n          {{else}}\n            <a rel="license" href=\'http://www.w3.org/Consortium/Legal/copyright-documents\'>document use</a>\n          {{/if}}\n        {{/if}}\n        rules apply.\n      </p>\n    {{/if}}\n  {{/if}}\n  <hr>\n</div>\n');});
 
 
-define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>{{l10n.sotd}}</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>{{{l10n.status_at_publication}}}</em>\n        </p>\n        {{#unless sotdAfterWGinfo}}\n        {{{sotdCustomParagraph}}}\n        {{/unless}}\n        <p>\n          This document was published by the {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n          {{#if notYetRec}}\n            This document is intended to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isPR}}\n            If you wish to make comments regarding this document, please send them to \n            <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefixEnc}}{{/if}}\'>{{wgPublicList}}@w3.org</a> \n            (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n            <a\n              href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n              with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n          {{/unless}}\n          {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n          {{#if isCR}}\n            W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n            stable and to encourage implementation by the developer community. This Candidate\n            Recommendation is expected to advance to Proposed Recommendation no earlier than\n            {{humanCREnd}}.\n          {{/if}}\n          {{#if isPER}}\n              W3C Advisory Committee Members are invited to\n              send formal review comments on this Proposed\n              Edited Recommendation to the W3C Team until\n              {{humanPEREnd}}. \n              Members of the Advisory Committee will find the\n              appropriate review form for this document by\n              consulting their list of current\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n          {{/if}}\n          {{#if isPR}}\n              The W3C Membership and other interested parties are invited to review the document and\n              send comments to\n              <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a> \n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n              through {{humanPREnd}}. Advisory Committee Representatives should consult their\n              <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>. \n              Note that substantive technical comments were expected during the Last Call review\n              period that ended {{humanLCEnd}}.\n          {{else}}\n            {{#unless isPER}}\n            All comments are welcome.\n            {{/unless}}\n          {{/if}}\n        </p>\n        {{#if implementationReportURI}}\n          <p>\n            Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n            report</a>.\n          </p>\n        {{/if}}\n        {{#if sotdAfterWGinfo}}\n        {{{sotdCustomParagraph}}\n        {{/if}}\n        {{#if notRec}}\n          <p>\n            Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n            Membership. This is a draft document and may be updated, replaced or obsoleted by other\n            documents at any time. It is inappropriate to cite this document as other than work in\n            progress.\n          </p>\n        {{/if}}\n        {{#if isRec}}\n          <p>\n            This document has been reviewed by W3C Members, by software developers, and by other W3C\n            groups and interested parties, and is endorsed by the Director as a W3C Recommendation.\n            It is a stable document and may be used as reference material or cited from another\n            document. W3C\'s role in making the Recommendation is to draw attention to the\n            specification and to promote its widespread deployment. This enhances the functionality\n            and interoperability of the Web.\n          </p>\n        {{/if}}\n        {{#if isLC}}\n          <p>\n            This is a Last Call Working Draft and thus the Working Group has determined that this\n            document has satisfied the relevant technical requirements and is sufficiently stable to\n            advance through the Technical Recommendation process.\n          </p>\n        {{/if}}\n        <p>\n          {{#unless isIGNote}}\n            This document was produced by a group operating under the \n            <a{{#if doRDFa}} id="sotd_patent" property=\'w3p:patentRules\'{{/if}}\n            href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n            Policy</a>.\n          {{/unless}}\n          {{#if recNotExpected}}\n            The group does not expect this document to become a W3C Recommendation.\n          {{/if}}\n          {{#unless isIGNote}}\n            {{#if multipleWGs}}\n              W3C maintains a public list of any patent disclosures ({{{wgPatentHTML}}})\n            {{else}}\n              W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n              disclosures</a> \n            {{/if}}\n            made in connection with the deliverables of the group; that page also includes\n            instructions for disclosing a patent. An individual who has actual knowledge of a patent\n            which the individual believes contains\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n            Claim(s)</a> must disclose the information in accordance with\n            <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n            6 of the W3C Patent Policy</a>.\n          {{/unless}}\n          {{#if isIGNote}}\n            The disclosure obligations of the Participants of this group are described in the \n            <a href=\'{{charterDisclosureURI}}\'>charter</a>. \n          {{/if}}\n        </p>\n        {{#if isNewProcess}}\n          <p>This document is governed by the <a id="w3c_process_revision"\n            href="http://www.w3.org/2014/Process-20140801/">1 August 2014 W3C Process Document</a>.\n          </p>\n        {{else}}\n          <p>\n            This document is governed by the  <a id="w3c_process_revision"\n            href="http://www.w3.org/2005/10/Process-20051014/">14 October 2005 W3C Process Document</a>.\n          </p>\n        {{/if}}\n        {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
+define('tmpl!w3c/templates/sotd.html', ['handlebars'], function (hb) { return Handlebars.compile('<section id=\'sotd\' class=\'introductory\'><h2>{{l10n.sotd}}</h2>\n  {{#if isUnofficial}}\n    <p>\n      This document is merely a public working draft of a potential specification. It has\n      no official standing of any kind and does not represent the support or consensus of any\n      standards organisation.\n    </p>\n    {{{sotdCustomParagraph}}}\n  {{else}}\n    {{#if isTagFinding}}\n      {{{sotdCustomParagraph}}}\n    {{else}}\n      {{#if isNoTrack}}\n        <p>\n          This document is merely a W3C-internal {{#if isMO}}member-confidential{{/if}} document. It\n          has no official standing of any kind and does not represent consensus of the W3C\n          Membership.\n        </p>\n        {{{sotdCustomParagraph}}}\n      {{else}}\n        <p>\n          <em>{{{l10n.status_at_publication}}}</em>\n        </p>\n        {{#if isSubmission}}\n          {{{sotdCustomParagraph}}}\n          {{#if isMemberSubmission}}\n            <p>By publishing this document, W3C acknowledges that the <a href="http://www.w3.org/Submission/@@@submissiondoc@@@">Submitting Members</a> have made a formal Submission request to W3C for discussion. Publication of this document by W3C indicates no endorsement of its content by W3C, nor that W3C has, is, or will be allocating any resources to the issues addressed by it. This document is not the product of a chartered W3C group, but is published as potential input to the <a href="http://www.w3.org/Consortium/Process">W3C Process</a>. A <a href="http://www.w3.org/Submission/@@@teamcomment@@@">W3C Team Comment</a> has been published in conjunction with this Member Submission. Publication of acknowledged Member Submissions at the W3C site is one of the benefits of <a href="http://www.w3.org/Consortium/Prospectus/Joining">W3C Membership</a>. Please consult the requirements associated with Member Submissions of <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-submissions">section 3.3 of the W3C Patent Policy</a>. Please consult the complete <a href="http://www.w3.org/Submission">list of acknowledged W3C Member Submissions</a>.</p>\n          {{else}}\n            {{#if isTeamSubmission}}\n              <p>If you wish to make comments regarding this document, please send them to\n              <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefixEnc}}{{/if}}\'>{{wgPublicList}}@w3.org</a>\n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a\n                href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n                with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.</p>\n              <p>Please consult the complete <a href="http://www.w3.org/TeamSubmission/">list of Team Submissions</a>.</p>\n            {{/if}}\n          {{/if}}\n        {{else}}\n          {{#unless sotdAfterWGinfo}}\n          {{{sotdCustomParagraph}}}\n          {{/unless}}\n          <p>\n            This document was published by {{{wgHTML}}} as {{anOrA}} {{longStatus}}.\n            {{#if notYetRec}}\n              This document is intended to become a W3C Recommendation.\n            {{/if}}\n            {{#unless isPR}}\n              If you wish to make comments regarding this document, please send them to\n              <a href=\'mailto:{{wgPublicList}}@w3.org{{#if subjectPrefix}}?subject={{subjectPrefixEnc}}{{/if}}\'>{{wgPublicList}}@w3.org</a>\n              (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n              <a\n                href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>){{#if subjectPrefix}}\n                with <code>{{subjectPrefix}}</code> at the start of your email\'s subject{{/if}}.\n            {{/unless}}\n            {{#if isLC}}The Last Call period ends {{humanLCEnd}}.{{/if}}\n            {{#if isCR}}\n              W3C publishes a Candidate Recommendation to indicate that the document is believed to be\n              stable and to encourage implementation by the developer community. This Candidate\n              Recommendation is expected to advance to Proposed Recommendation no earlier than\n              {{humanCREnd}}.\n            {{/if}}\n            {{#if isPER}}\n                W3C Advisory Committee Members are invited to\n                send formal review comments on this Proposed\n                Edited Recommendation to the W3C Team until\n                {{humanPEREnd}}.\n                Members of the Advisory Committee will find the\n                appropriate review form for this document by\n                consulting their list of current\n                <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>.\n            {{/if}}\n            {{#if isPR}}\n                The W3C Membership and other interested parties are invited to review the document and\n                send comments to\n                <a rel=\'discussion\' href=\'mailto:{{wgPublicList}}@w3.org\'>{{wgPublicList}}@w3.org</a>\n                (<a href=\'mailto:{{wgPublicList}}-request@w3.org?subject=subscribe\'>subscribe</a>,\n                <a href=\'http://lists.w3.org/Archives/Public/{{wgPublicList}}/\'>archives</a>)\n                through {{humanPREnd}}. Advisory Committee Representatives should consult their\n                <a href=\'https://www.w3.org/2002/09/wbs/myQuestionnaires\'>WBS questionnaires</a>.\n                Note that substantive technical comments were expected during the Last Call review\n                period that ended {{humanLCEnd}}.\n            {{else}}\n              {{#unless isPER}}\n              All comments are welcome.\n              {{/unless}}\n            {{/if}}\n          </p>\n          {{#if implementationReportURI}}\n            <p>\n              Please see the Working Group\'s  <a href=\'{{implementationReportURI}}\'>implementation\n              report</a>.\n            </p>\n          {{/if}}\n          {{#if sotdAfterWGinfo}}\n          {{{sotdCustomParagraph}}\n          {{/if}}\n          {{#if notRec}}\n            <p>\n              Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the W3C\n              Membership. This is a draft document and may be updated, replaced or obsoleted by other\n              documents at any time. It is inappropriate to cite this document as other than work in\n              progress.\n            </p>\n          {{/if}}\n          {{#if isRec}}\n            <p>\n              This document has been reviewed by W3C Members, by software developers, and by other W3C\n              groups and interested parties, and is endorsed by the Director as a W3C Recommendation.\n              It is a stable document and may be used as reference material or cited from another\n              document. W3C\'s role in making the Recommendation is to draw attention to the\n              specification and to promote its widespread deployment. This enhances the functionality\n              and interoperability of the Web.\n            </p>\n          {{/if}}\n          {{#if isLC}}\n            <p>\n              This is a Last Call Working Draft and thus the Working Group has determined that this\n              document has satisfied the relevant technical requirements and is sufficiently stable to\n              advance through the Technical Recommendation process.\n            </p>\n          {{/if}}\n          <p>\n            {{#unless isIGNote}}\n              This document was produced by\n              {{#if multipleWGs}}\n              groups\n              {{else}}\n              a group\n              {{/if}} operating under the\n              <a{{#if doRDFa}} id="sotd_patent" property=\'w3p:patentRules\'{{/if}}\n              href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/\'>5 February 2004 W3C Patent\n              Policy</a>.\n            {{/unless}}\n            {{#if recNotExpected}}\n              The group does not expect this document to become a W3C Recommendation.\n            {{/if}}\n            {{#unless isIGNote}}\n              {{#if multipleWGs}}\n                W3C maintains {{{wgPatentHTML}}}\n              {{else}}\n                W3C maintains a <a href=\'{{wgPatentURI}}\' rel=\'disclosure\'>public list of any patent\n                disclosures</a>\n              {{/if}}\n              made in connection with the deliverables of\n              {{#if multipleWGs}}\n              each group; these pages also include\n              {{else}}\n              the group; that page also includes\n              {{/if}}\n              instructions for disclosing a patent. An individual who has actual knowledge of a patent\n              which the individual believes contains\n              <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential\'>Essential\n              Claim(s)</a> must disclose the information in accordance with\n              <a href=\'http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure\'>section\n              6 of the W3C Patent Policy</a>.\n            {{/unless}}\n            {{#if isIGNote}}\n              The disclosure obligations of the Participants of this group are described in the\n              <a href=\'{{charterDisclosureURI}}\'>charter</a>.\n            {{/if}}\n          </p>\n          {{#if isNewProcess}}\n            <p>This document is governed by the <a id="w3c_process_revision"\n              href="http://www.w3.org/2015/Process-20150901/">1 September 2015 W3C Process Document</a>.\n            </p>\n          {{else}}\n            <p>\n              This document is governed by the  <a id="w3c_process_revision"\n              href="http://www.w3.org/2005/10/Process-20051014/">14 October 2005 W3C Process Document</a>.\n            </p>\n          {{/if}}\n          {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}\n        {{/if}}\n      {{/if}}\n    {{/if}}\n  {{/if}}\n</section>\n');});
 
 
 define('tmpl!w3c/templates/cgbg-headers.html', ['handlebars'], function (hb) { return Handlebars.compile('<div class=\'head\'>\n  <p>\n    <a href=\'http://www.w3.org/\'><img width=\'72\' height=\'48\' src=\'https://www.w3.org/Icons/w3c_home\' alt=\'W3C\'></a>\n  </p>\n  <h1 class=\'title p-name\' id=\'title\'{{#if doRDFa}} property=\'dc:title\'{{/if}}>{{title}}</h1>\n  {{#if subtitle}}\n    <h2 {{#if doRDFa}}property=\'bibo:subtitle\' {{/if}}id=\'subtitle\'>{{subtitle}}</h2>\n  {{/if}}\n  <h2>{{longStatus}} <time {{#if doRDFa}}property="dc:issued"{{/if}}class=\'dt-published\' datetime=\'{{dashDate}}\'>{{publishHumanDate}}</time></h2>\n  <dl>\n    {{#if thisVersion}}\n      <dt>{{l10n.this_version}}</dt>\n      <dd><a class=\'u-url\' href=\'{{thisVersion}}\'>{{thisVersion}}</a></dd>\n    {{/if}}\n    {{#if latestVersion}}\n      <dt>{{l10n.latest_published_version}}</dt>\n      <dd><a href=\'{{latestVersion}}\'>{{latestVersion}}</a></dd>\n    {{/if}}\n    {{#if edDraftURI}}\n      <dt>{{l10n.latest_editors_draft}}</dt>\n      <dd><a href=\'{{edDraftURI}}\'>{{edDraftURI}}</a></dd>\n    {{/if}}\n    {{#if testSuiteURI}}\n      <dt>Test suite:</dt>\n      <dd><a href=\'{{testSuiteURI}}\'>{{testSuiteURI}}</a></dd>\n    {{/if}}\n    {{#if implementationReportURI}}\n      <dt>Implementation report:</dt>\n      <dd><a href=\'{{implementationReportURI}}\'>{{implementationReportURI}}</a></dd>\n    {{/if}}\n    {{#if bugTrackerHTML}}\n      <dt>{{l10n.bug_tracker}}</dt>\n      <dd>{{{bugTrackerHTML}}}</dd>\n    {{/if}}\n    {{#if prevVersion}}\n      <dt>Previous version:</dt>\n      <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href=\'{{prevVersion}}\'>{{prevVersion}}</a></dd>\n    {{/if}}\n    {{#unless isCGFinal}}\n      {{#if prevED}}\n        <dt>Previous editor\'s draft:</dt>\n        <dd><a href=\'{{prevED}}\'>{{prevED}}</a></dd>\n      {{/if}}\n    {{/unless}}\n    <dt>{{#if multipleEditors}}{{l10n.editors}}{{else}}{{l10n.editor}}{{/if}}</dt>\n    {{showPeople "Editor" editors}}\n    {{#if authors}}\n      <dt>{{#if multipleAuthors}}{{l10n.authors}}{{else}}{{l10n.author}}{{/if}}</dt>\n      {{showPeople "Author" authors}}\n    {{/if}}\n    {{#if otherLinks}}\n      {{#each otherLinks}}\n        {{#if key}}\n          <dt {{#if class}}class="{{class}}"{{/if}}>{{key}}:</dt>\n          {{#if data}}\n             {{#each data}}\n                {{#if value}}\n                  <dd {{#if class}}class="{{class}}"{{/if}}>\n                    {{#if href}}<a href="{{href}}">{{/if}}\n                      {{value}}\n                    {{#if href}}</a>{{/if}}\n                  </dd>\n                {{else}}\n                  {{#if href}}\n                    <dd><a href="{{href}}">{{href}}</a></dd>\n                  {{/if}}\n                {{/if}}\n             {{/each}}\n          {{else}}\n            {{#if value}}\n              <dd {{#if class}}class="{{class}}"{{/if}}>\n                {{#if href}}<a href="{{href}}">{{/if}}\n                  {{value}}\n                {{#if href}}</a>{{/if}}\n              </dd>\n            {{else}}\n              {{#if href}}\n                <dd {{#if class}}class="{{class}}"{{/if}}>\n                  <a href="{{href}}">{{href}}</a>\n                </dd>\n              {{/if}}\n            {{/if}}\n          {{/if}}\n        {{/if}}\n      {{/each}}\n    {{/if}}\n  </dl>\n  {{#if alternateFormats}}\n    <p>\n      {{#if multipleAlternates}}\n        This document is also available in these non-normative formats: \n      {{else}}\n        This document is also available in this non-normative format: \n      {{/if}}\n      {{{alternatesHTML}}}\n    </p>\n  {{/if}}\n  <p class=\'copyright\'>\n    <a href=\'http://www.w3.org/Consortium/Legal/ipr-notice#Copyright\'>Copyright</a> &copy; \n    {{#if copyrightStart}}{{copyrightStart}}-{{/if}}{{publishYear}}\n    the Contributors to the {{title}} Specification, published by the\n    <a href=\'{{wgURI}}\'>{{wg}}</a> under the\n    {{#if isCGFinal}}\n      <a href="https://www.w3.org/community/about/agreements/fsa/">W3C Community Final Specification Agreement (FSA)</a>. \n      A human-readable <a href="http://www.w3.org/community/about/agreements/fsa-deed/">summary</a> is available.\n    {{else}}\n      <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.\n      A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.\n    {{/if}}\n  </p>\n  <hr>\n</div>\n');});
@@ -15330,6 +15465,9 @@ define('tmpl!w3c/templates/webspecs-headers.html', ['handlebars'], function (hb)
 //          pushed to the WHATWG
 //      - "w3c-software", a permissive and attributions license (but GPL-compatible). This is only
 //          available with webspecs and is the recommended value. It is the default for webspecs.
+//      - "w3c-software-doc", the W3C Software and Document License
+//            http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+
 
 define(
     'w3c/headers',[
@@ -15359,6 +15497,7 @@ define(
                 rm = " property='foaf:mbox'";
                 rwu = " property='foaf:workplaceHomepage'";
                 rpu = " property='foaf:homepage'";
+                propSeeAlso = " property='rdfs:seeAlso'";
             }
             var ret = "";
             for (var i = 0, n = items.length; i < n; i++) {
@@ -15394,6 +15533,34 @@ define(
                     ret += ", <span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>";
                 }
                 if (p.note) ret += " (" + p.note + ")";
+                if (p.extras) {
+                    var resultHTML = p.extras
+                      // Remove empty names
+                      .filter(function (extra) {
+                        return extra.name && extra.name.trim();
+                      })
+                      // Convert to HTML
+                      .map(function (extra) {
+                        var span = document.createElement('span');
+                        var textContainer = span;
+                        if (extra.class) {
+                          span.className = extra.class;
+                        }
+                        if (extra.href) {
+                          var a = document.createElement('a');
+                          span.appendChild(a);
+                          a.href = extra.href;
+                          textContainer = a;
+                          if (this.doRDFa) {
+                            a.setAttribute('property', 'rdfs:seeAlso');
+                          }
+                        }
+                        textContainer.innerHTML = extra.name;
+                        return span.outerHTML;
+                      }.bind(this))
+                      .join(', ');
+                    ret += ", " + resultHTML;
+                }
                 if (this.doRDFa) {
                   ret += "</span>\n";
                   if (name === "Editor") ret += "<span property='rdf:rest' resource='" + bn + "'></span>\n";
@@ -15486,30 +15653,35 @@ define(
         ,   cgbg:           ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"]
         ,   precededByAn:   ["ED", "IG-NOTE"]
         ,   licenses: {
-                cc0:    {
-                    name:   "Creative Commons 0 Public Domain Dedication"
-                ,   short:  "CC0"
-                ,   url:    "http://creativecommons.org/publicdomain/zero/1.0/"
-                }
-            ,   "w3c-software": {
-                    name:   "W3C Software Notice and License"
-                ,   short:  "W3C"
-                ,   url:    "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231"
-                }
-            ,   "cc-by": {
-                    name:   "Creative Commons Attribution 4.0 International Public License"
-                ,   short:  "CC-BY"
-                ,   url:    "http://creativecommons.org/licenses/by/4.0/legalcode"
+                cc0: {
+                  name: "Creative Commons 0 Public Domain Dedication",
+                  short: "CC0",
+                  url: "http://creativecommons.org/publicdomain/zero/1.0/",
+                },
+                "w3c-software": {
+                  name: "W3C Software Notice and License",
+                  short: "W3C Software",
+                  url: "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231",
+                },
+                "w3c-software-doc": {
+                  name: "W3C Software and Document Notice and License",
+                  short: "W3C Software and Document",
+                  url: "http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
+                },
+                "cc-by": {
+                  name: "Creative Commons Attribution 4.0 International Public License",
+                  short: "CC-BY",
+                  url: "http://creativecommons.org/licenses/by/4.0/legalcode",
                 }
             }
         ,   run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "w3c/headers");
-
                 // Default include RDFa document metadata
                 if (conf.doRDFa === undefined) conf.doRDFa = true;
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = (conf.specStatus === "webspec") ? "w3c-software" : "w3c";
                 conf.isCCBY = conf.license === "cc-by";
+                conf.isW3CSoftAndDocLicense = conf.license === "w3c-software-doc";
                 if (conf.specStatus === "webspec" && !$.inArray(conf.license, ["cc0", "w3c-software"]))
                     msg.pub("error", "You cannot use that license with WebSpecs.");
                 if (conf.specStatus !== "webspec" && !$.inArray(conf.license, ["cc-by", "w3c"]))
@@ -15535,6 +15707,9 @@ define(
                 conf.publishHumanDate = utils.humanDate(conf.publishDate);
                 conf.isNoTrack = $.inArray(conf.specStatus, this.noTrackStatus) >= 0;
                 conf.isRecTrack = conf.noRecTrack ? false : $.inArray(conf.specStatus, this.recTrackStatus) >= 0;
+                conf.isMemberSubmission = conf.specStatus === "Member-SUBM";
+                conf.isTeamSubmission = conf.specStatus === "Team-SUBM";
+                conf.isSubmission = conf.isMemberSubmission || conf.isTeamSubmission;
                 conf.anOrA = $.inArray(conf.specStatus, this.precededByAn) >= 0 ? "an" : "a";
                 conf.isTagFinding = conf.specStatus === "finding" || conf.specStatus === "draft-finding";
                 if (!conf.edDraftURI) {
@@ -15577,18 +15752,22 @@ define(
                     }
                 }
                 else {
-                    if (!/NOTE$/.test(conf.specStatus) && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack)
+                    if (!/NOTE$/.test(conf.specStatus) && conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.noRecTrack && !conf.isNoTrack && !conf.isSubmission)
                         msg.pub("error", "Document on track but no previous version.");
                     if (!conf.prevVersion) conf.prevVersion = "";
                 }
                 if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://www.w3.org/TR/" + conf.prevRecShortname;
                 if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
-                var peopCheck = function (i, it) {
+                var peopCheck = function (it) {
                     if (!it.name) msg.pub("error", "All authors and editors must have a name.");
                 };
-                $.each(conf.editors, peopCheck);
-                $.each(conf.authors || [], peopCheck);
-                conf.multipleEditors = conf.editors.length > 1;
+                if (conf.editors) {
+                    conf.editors.forEach(peopCheck);
+                }
+                if (conf.authors) {
+                    conf.authors.forEach(peopCheck);
+                }
+                conf.multipleEditors = conf.editors && conf.editors.length > 1;
                 conf.multipleAuthors = conf.authors && conf.authors.length > 1;
                 $.each(conf.alternateFormats || [], function (i, it) {
                     if (!it.uri || !it.label) msg.pub("error", "All alternate formats must have a uri and a label.");
@@ -15623,8 +15802,7 @@ define(
                     conf.rdfStatus = this.status2rdf[conf.specStatus];
                 }
                 conf.showThisVersion =  (!conf.isNoTrack || conf.isTagFinding);
-                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" &&
-                                           !conf.isNoTrack);
+                conf.showPreviousVersion = (conf.specStatus !== "FPWD" && conf.specStatus !== "FPLC" && conf.specStatus !== "ED" && !conf.isNoTrack && !conf.isSubmission);
                 if (/NOTE$/.test(conf.specStatus) && !conf.prevVersion) conf.showPreviousVersion = false;
                 if (conf.isTagFinding) conf.showPreviousVersion = conf.previousPublishDate ? true : false;
                 conf.notYetRec = (conf.isRecTrack && conf.specStatus !== "REC");
@@ -15644,8 +15822,12 @@ define(
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate);
                 conf.shortISODate = conf.publishISODate.replace(/T.*/, "");
-                conf.processVersion = conf.processVersion || "2014";
-                conf.isNewProcess = conf.processVersion == "2014";
+                conf.processVersion = conf.processVersion || "2015";
+                if (conf.processVersion == "2014") {
+                    msg.pub("warn", "Process " + conf.processVersion + " has been superceded by Process 2015.");
+                    conf.processVersion = "2015";
+                }
+                conf.isNewProcess = conf.processVersion == "2015";
                 // configuration done - yay!
 
                 // annotate html element with RFDa
@@ -15685,17 +15867,19 @@ define(
                 if ($.isArray(conf.wg)) {
                     conf.multipleWGs = conf.wg.length > 1;
                     conf.wgHTML = utils.joinAnd(conf.wg, function (wg, idx) {
-                        return "<a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
+                        return "the <a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
                     });
                     var pats = [];
                     for (var i = 0, n = conf.wg.length; i < n; i++) {
-                        pats.push("<a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>" + conf.wg[i] + "</a>");
+                        pats.push("a <a href='" + conf.wgPatentURI[i] + "' rel='disclosure'>"
+                                  + "public list of any patent disclosures  (" + conf.wg[i]
+                                  + ")</a>");
                     }
-                    conf.wgPatentHTML = pats.join(", ");
+                    conf.wgPatentHTML = utils.joinAnd(pats);
                 }
                 else {
                     conf.multipleWGs = false;
-                    conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
+                    conf.wgHTML = "the <a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
                 }
                 if (conf.isLC && !conf.lcEnd) msg.pub("error", "Status is LC but no lcEnd is specified");
                 if (conf.specStatus === "PR" && !conf.lcEnd) msg.pub("error", "Status is PR but no lcEnd is specified (needed to indicate end of previous LC)");
@@ -19952,7 +20136,7 @@ define(
                 if (obj.dfn) {
                     var result = "<a for='" + Handlebars.Utils.escapeExpression(obj.linkFor || "") + "'";
                     if (obj.name) {
-                        result += " title='" + Handlebars.Utils.escapeExpression(obj.name) + "'";
+                        result += " data-lt='" + Handlebars.Utils.escapeExpression(obj.name) + "'";
                     }
                     result += ">" + content + "</a>";
                     return result;
@@ -20487,7 +20671,7 @@ define(
                                           var optional = arg.optional ? "optional-" : "";
                                           var variadic = arg.variadic ? "..." : "";
                                           return optional + idlType2Text(arg.idlType).toLowerCase() + variadic;
-                                      }).join(',') + ')');
+                                      }).join(',').replace(/\s/g, '_') + ')');
                         break;
                     case "iterator":
                         name = "iterator";
@@ -20550,10 +20734,10 @@ define(
                 dfnForArray = definitionMap[dottedName];
                 if (dfnForArray !== undefined && dfnForArray.length === 1) {
                     dfns = dfnForArray;
-                    // Found it: update the definition to specify its [for] and title.
+                    // Found it: update the definition to specify its [for] and data-lt.
                     delete definitionMap[dottedName];
                     dfns[0].attr('data-dfn-for', parent);
-                    dfns[0].attr('title', name);
+                    dfns[0].attr('data-lt', name);
                     if (definitionMap[name] === undefined) {
                         definitionMap[name] = [];
                     }
@@ -21579,7 +21763,7 @@ define(
                         else {
                             sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
                         }
-                        if (it.declaration) sn.text(", " + it.declaration, dt);
+                        if (it.declaration.trim()) sn.text(", " + it.declaration, dt);
                         if (it.nullable) sn.text(", nullable", dt);
                          if (this.conf.idlOldStyleExceptions && it.raises.length) {
                             var table = sn.element("table", { "class": "exceptions" }, desc);
@@ -21780,7 +21964,7 @@ define(
                         else {
                             sn.element("a", {}, span, it.isUnionType ? "(" + it.datatype.join(" or ") + ")" : it.datatype);
                         }
-                        if (it.declaration) sn.text(", " + it.declaration, dt);
+                        if (it.declaration.trim()) sn.text(", " + it.declaration, dt);
                         if (it.nullable) sn.text(", nullable", dt);
                         if (it.defaultValue) {
                             sn.text(", defaulting to ", dt);
@@ -22309,6 +22493,10 @@ define(
                         if (titles[target.title] && titles[target.title][target.for_]) {
                             var dfn = titles[target.title][target.for_];
                             $ant.attr("href", "#" + dfn.prop("id")).addClass("internalDFN");
+                            // add a bikeshed style indication of the type of link
+                            if (! $ant.attr("data-link-type") ) {
+                                $ant.attr("data-link-type", "dfn") ;
+                            }
                             // If a definition is <code>, links to it should
                             // also be <code>.
                             //
@@ -22333,6 +22521,23 @@ define(
                         $ant.replaceWith($ant.contents());
                     }
                 });
+                // done linking, so clean up
+                function attrToDataAttr(name){
+                    return function(elem){
+                        var value = elem.getAttribute(name);
+                        elem.removeAttribute(name);
+                        elem.setAttribute("data-" + name, value);
+                    }
+                }
+
+                var forList = doc.querySelectorAll("*[for]");
+                Array.prototype.forEach.call(forList, attrToDataAttr("for"));
+
+                var dfnForList = doc.querySelectorAll("*[dfn-for]");
+                Array.prototype.forEach.call(dfnForList, attrToDataAttr("dfn-for"));
+
+                var linkForList = doc.querySelectorAll("*[link-for]");
+                Array.prototype.forEach.call(linkForList, attrToDataAttr("link-for"));
                 msg.pub("end", "core/link-to-dfn");
                 cb();
             }
@@ -22859,12 +23064,8 @@ define(
                 $('div.head', doc).attr('id', 'respecHeader') ;
                 if (!conf.noTOC) {
                     // ensure toc is labelled
-                    var toc = $('section#toc', doc)
-                                  .find("ul:first");
+                    var toc = $('section#toc', doc).find("ul:first");
                     toc.attr('role', 'directory') ;
-                    if (!toc.attr("id")) {
-                        toc.attr('id', 'respecContents') ;
-                    }
                 }
                 // mark issues and notes with heading
                 var noteCount = 0 ; var issueCount = 0 ; var ednoteCount = 0;
@@ -22986,6 +23187,7 @@ define('profile-w3c-common',[
             "domReady"
         ,   "core/base-runner"
         ,   "core/ui"
+        ,   "core/include-config"
         ,   "core/override-configuration"
         ,   "core/default-root-attr"
         ,   "w3c/l10n"

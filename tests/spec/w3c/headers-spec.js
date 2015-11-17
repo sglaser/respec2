@@ -1,3 +1,6 @@
+/*globals expect, it, $, runs, waitsFor, describe*/
+(function(){ // prevent this loadWithConfig being trashed by other files
+"use strict";
 function loadWithConfig (conf, check) {
     var config = [];
     for (var k in conf) {
@@ -22,6 +25,10 @@ function loadWithConfig (conf, check) {
         loaded = false;
         window.removeEventListener("message", incr, false);
     });
+}
+
+function isPhantom () {
+    return window.callPhantom || window._phantom
 }
 
 // the matrix of features here is such that we're not testing everything
@@ -79,6 +86,87 @@ describe("W3C — Headers", function () {
         });
     });
 
+    it("should not add RDFa stuff to editors extras when doRDFa is false", function() {
+        var config = {
+            specStatus: "REC",
+            doRDFa: false,
+            editors: [{
+                name: "Mr foo",
+                extras: [{
+                    "name": "0000-0003-0782-2704",
+                    "href": "http://orcid.org/0000-0003-0782-2704",
+                    "class": "orcid"
+                }]
+            }]
+        };
+        loadWithConfig(config, function($ifr) {
+            var doc = $ifr[0].contentDocument;
+            var oricdHref = config.editors[0].extras[0].href;
+            var orcidAnchor = doc.querySelector("a[href='" + oricdHref + "']");
+            if (!isPhantom()) {
+                // Check that RDFa is applied
+                expect(orcidAnchor.getAttribute("property")).toEqual(null);
+                expect(orcidAnchor.parentNode.className).toEqual("orcid");
+            }
+        });
+    });
+
+    it("should take editors extras into account", function() {
+        var config = {
+            specStatus: "REC",
+            doRDFa: true,
+            editors: [{
+                name: "Mr foo",
+                extras: [{
+                        "name": "0000-0003-0782-2704",
+                        "href": "http://orcid.org/0000-0003-0782-2704",
+                        "class": "orcid"
+                    }, {
+                        "name": "@ivan_herman",
+                        "href": "http://twitter.com/ivan_herman",
+                        "class": "twitter"
+                    },
+                    //this should not exist in the doc, as it doesn't have a name
+                    {
+                        "href": "http://not-valid-missing-name",
+                        "class": "invalid"
+                    },
+                    //this should not exist in the doc, as the name is empty
+                    {
+                        "name": "\n\t  \n",
+                        "href": "http://empty-name",
+                        "class": "invalid"
+                    }
+                ]
+            }]
+        };
+        loadWithConfig(config, function($ifr) {
+            var doc = $ifr[0].contentDocument;
+            var oricdHref = config.editors[0].extras[0].href;
+            var twitterHref = config.editors[0].extras[1].href;
+            var orcidAnchor = doc.querySelector("a[href='" + oricdHref + "']");
+            var twitterAnchor = doc.querySelector("a[href='" + twitterHref + "']");
+            // general checks
+            var header = doc.querySelector("#respecHeader");
+            if (!isPhantom()) {
+                [orcidAnchor, twitterAnchor].forEach(function(elem) {
+                    // Check parent is correct.
+                    expect(elem.parentNode.localName).toEqual("span");
+                    // Check that RDFa is applied
+                    expect(elem.hasAttribute("property")).toEqual(true);
+                    // Check that it's in the header of the document
+                    expect(header.contains(elem)).toEqual(true);
+                });
+                // Check CSS is correctly applied
+                expect(orcidAnchor.parentNode.className).toEqual("orcid");
+                expect(twitterAnchor.parentNode.className).toEqual("twitter");
+            }
+            // check that extra items with no name are ignored
+            expect(document.querySelector("a[href='http://not-valid']")).toEqual(null);
+            expect(document.querySelector("a[href='http://empty-name']")).toEqual(null);
+        });
+    });
+
     // authors
     it("should take authors into account", function () {
         loadWithConfig({ specStatus: "REC", doRDFa: false, "authors[]": [{ name: "NAME1" }] }, function ($ifr) {
@@ -130,6 +218,17 @@ describe("W3C — Headers", function () {
         });
     });
 
+    // license "w3c-software-doc"
+    it("it should allow the inclusion of the W3C Software and Document Notice and License (w3c-software-doc)", function () {
+        loadWithConfig({ specStatus: "FPWD", license: "w3c-software-doc" }, function ($ifr) {
+            var document = $ifr[0].contentDocument;
+            var licenses = document.querySelectorAll("#respecHeader a[rel=license]");
+            expect(licenses.length).toEqual(1);
+            expect(licenses.item(0).tagName).toEqual("A");
+            expect(licenses.item(0).href).toEqual("http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document");
+        });
+    });
+
     // alternateFormats
     it("should take alternateFormats into account", function () {
         loadWithConfig({ specStatus: "FPWD", "alternateFormats[]": [{ uri: "URI", label: "LABEL" }] }, function ($ifr) {
@@ -154,14 +253,14 @@ describe("W3C — Headers", function () {
     // edDraftURI
     it("should take edDraftURI into account", function () {
         loadWithConfig({ specStatus: "WD", edDraftURI: "URI" }, function ($ifr) {
-            expect($("dt:contains('Latest editor\'s draft:')", $ifr[0].contentDocument).next("dd").text()).toEqual("URI");
+            expect($('dt:contains("Latest editor\'s draft:")', $ifr[0].contentDocument).next("dd").text()).toEqual("URI");
         });
     });
 
     // prevED
     it("should take prevED into account", function () {
         loadWithConfig({ specStatus: "ED", prevED: "URI" }, function ($ifr) {
-            expect($("dt:contains('Previous editor\'s draft:')", $ifr[0].contentDocument).next("dd").text()).toEqual("URI");
+            expect($('dt:contains("Previous editor\'s draft:")', $ifr[0].contentDocument).next("dd").text()).toEqual("URI");
         });
     });
 
@@ -230,7 +329,7 @@ describe("W3C — Headers", function () {
             expect($sotd.find("a:contains('WGNAME1')").last().attr("href")).toEqual("WGPATENT1");
             expect($sotd.find("a:contains('WGNAME2')").first().attr("href")).toEqual("WGURI2");
             expect($sotd.find("a:contains('WGNAME2')").last().attr("href")).toEqual("WGPATENT2");
-            expect($sotd.find("a:contains('disclosures')").length).toEqual(0);
+            expect($sotd.find("a:contains('disclosures')").length).toEqual(2);
         });
     });
 
@@ -302,5 +401,40 @@ describe("W3C — Headers", function () {
         });
     });
 
+    // Member-SUBM
+    it("should not expose a Previous version link for Member submissions", function () {
+        loadWithConfig({ specStatus: "Member-SUBM" }, function ($ifr) {
+            expect($("dt:contains('Previous version:')", $ifr[0].contentDocument).length).toEqual(0);
+        });
+    });
+    it("should display the Member Submission logo for Member submissions", function () {
+        loadWithConfig({ specStatus: "Member-SUBM" }, function ($ifr) {
+            expect($(".head img[src='http://www.w3.org/Icons/member_subm']", $ifr[0].contentDocument).length).toEqual(1);
+        });
+    });
+    it("should use the right SoTD boilerplate for Member submissions", function () {
+        loadWithConfig({ specStatus: "Member-SUBM" }, function ($ifr) {
+            var $sotd = $("#sotd", $ifr[0].contentDocument);
+            expect($sotd.find("p:contains('W3C acknowledges that the Submitting Members have made a formal Submission request')").length).toEqual(1);
+        });
+    });
 
+    // Team-SUBM
+    it("should not expose a Previous version link for Team submissions", function () {
+        loadWithConfig({ specStatus: "Team-SUBM" }, function ($ifr) {
+            expect($("dt:contains('Previous version:')", $ifr[0].contentDocument).length).toEqual(0);
+        });
+    });
+    it("should display the Team Submission logo for Team submissions", function () {
+        loadWithConfig({ specStatus: "Team-SUBM" }, function ($ifr) {
+            expect($(".head img[src='http://www.w3.org/Icons/team_subm']", $ifr[0].contentDocument).length).toEqual(1);
+        });
+    });
+    it("should use the right SoTD boilerplate for Team submissions", function () {
+        loadWithConfig({ specStatus: "Team-SUBM" }, function ($ifr) {
+            var $sotd = $("#sotd", $ifr[0].contentDocument);
+            expect($sotd.find("a[href='http://www.w3.org/TeamSubmission/']").length).toEqual(1);
+        });
+    });
 });
+}());
