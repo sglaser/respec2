@@ -12150,7 +12150,10 @@ define(
                 ,   sotd:                       "Status of This Document"
                 ,   status_at_publication:      "This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current W3C publications and the latest revision of this technical report can be found in the <a href='http://www.w3.org/TR/'>W3C technical reports index</a> at http://www.w3.org/TR/."
                 ,   toc:                        "Table of Contents"
+                ,   tof:                        "Table of Figures"
+                ,   tot:                        "Table of Tables"
                 ,   note:                       "Note"
+                ,   impnote:                    "Implementation Note"
                 ,   fig:                        "Fig. "
                 ,   bug_tracker:                "Bug tracker:"
                 ,   file_a_bug:                 "file a bug"
@@ -12170,7 +12173,10 @@ define(
                 ,   sotd:                       "현재 문서의 상태"
                 ,   status_at_publication:      "This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current W3C publications and the latest revision of this technical report can be found in the <a href='http://www.w3.org/TR/'>W3C technical reports index</a> at http://www.w3.org/TR/."
                 ,   toc:                        "Table of Contents"
+                ,   tof:                        "Table of Figures"
+                ,   tot:                        "Table of Tables"
                 ,   note:                       "Note"
+                ,   impnote:                    "Implementation Note"
                 ,   fig:                        "그림 "
                 ,   bug_tracker:                "Bug tracker:"
                 ,   file_a_bug:                 "file a bug"
@@ -12190,6 +12196,9 @@ define(
                 ,   sotd:                       "关于本文档"
                 ,   status_at_publication:      "本章节描述了本文档的发布状态。其它更新版本可能会覆盖本文档。W3C的文档列 表和最新版本可通过<a href='http://www.w3.org/TR/'>W3C技术报告</a>索引访问。"
                 ,   toc:                        "内容大纲"
+                ,   tof:                        "Table of Figures"
+                ,   tot:                        "Table of Tables"
+                ,   impnote:                    "Implementation Note"
                 ,   note:                       "注"
                 ,   fig:                        "圖"
                 ,   bug_tracker:                "错误跟踪："
@@ -16466,14 +16475,14 @@ define(
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
                     var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-                    var $tbody = $("<table><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    var $tbody = $("<table class='data'><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
                     var keys = Object.keys(conf.definitionMap).sort();
                     for (var i = 0; i < keys.length; i++) {
                         var d = keys[i];
                         var item = d.split(/-/);
                         var kind = item.shift();
                         var id = conf.definitionMap[d];
-                        $("<tr><td>" + kind + "</td><td>" + item.join("-") + "</td><td><a href=\"" + "#" + id + "\">" + id + "</a></td><td>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
+                        $("<tr><td class='long'>" + kind + "</td><td class='long'>" + item.join("-") + "</td><td class='long'><a href=\"" + "#" + id + "\">" + id + "</a></td><td class='long'>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
                     }
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
@@ -18812,9 +18821,9 @@ define(
                             $tof.addClass("appendix");
                         }
                     }
-                    $tof.append($("<h2>Table of Figures</h2>"));
-                    $tof.append($("<ul class='tof'/>"));
-                    var $ul = $tof.find("ul");
+                    $tof.append($("<h2>" + conf.l10n.tof + "</h2>"));
+                    $tof.append($("<ul class='tof'><li class='tofline'><ul class='tof'/></li></ul>"));
+                    var $ul = $tof.find("ul ul");
                     while (tof.length) $ul.append(tof.shift());
                 }
                 msg.pub("end", "core/figures");
@@ -22798,9 +22807,9 @@ define(
                 if (!conf.noTOC) {
                     var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
                     if (!$ul) return;
-                    var $sec = $("<section class='introductory' id='toc'/>").append("<h2>" + conf.l10n.toc + "</h2>")
+                    var $sec = $("<section class='introductory' id='sect-toc'/>").append("<h2>" + conf.l10n.toc + "</h2>")
                                                        .append($ul);
-                    var $ref = $("#toc", doc), replace = false;
+                    var $ref = $("section#sect-toc", doc), replace = false;
                     if ($ref.length) replace = true;
                     if (!$ref.length) $ref = $("#sotd", doc);
                     if (!$ref.length) $ref = $("#abstract", doc);
@@ -22808,6 +22817,7 @@ define(
                         $ref.replaceWith($sec);
                     }
                     else {
+                        var $navsect = $("<nav class='introductory' id='toc'/>").append($sec);
                         $ref.after($sec);
                     }
                 }
