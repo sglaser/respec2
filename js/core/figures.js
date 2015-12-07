@@ -163,9 +163,9 @@ define(
                             $tof.addClass("appendix");
                         }
                     }
-                    $tof.append($("<h2>Table of Figures</h2>"));
-                    $tof.append($("<ul class='tof'/>"));
-                    var $ul = $tof.find("ul");
+                    $tof.append($("<h2>" + conf.l10n.tof + "</h2>"));
+                    $tof.append($("<ul class='tof'><li class='tofline'><ul class='tof'/></li></ul>"));
+                    var $ul = $tof.find("ul ul");
                     while (tof.length) $ul.append(tof.shift());
                 }
                 msg.pub("end", "core/figures");

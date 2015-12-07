@@ -21,7 +21,7 @@ define(
                     var $refs = $("a.tocxref", doc);
                     if ($refs.length > 0) {
                         var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure and Table ID Map</h2></section>").appendTo($("body"));
-                        var $tbody = $("<table><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                        var $tbody = $("<table class='data'><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
 
                         $refs.each(function() {
                             var number = ($(".secno, .figno, .tblno", this).text()
@@ -29,8 +29,8 @@ define(
                             var id = $(this).attr("href");
                             var name = $(".sectitle, .figtitle, .tbltitle", this).text();
                             $("<tr><td>" + number + "</td>" +
-                              "<td>" + name + "</td>" +
-                              "<td><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);
+                              "<td class='long'>" + name + "</td>" +
+                              "<td class='long'><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);
                         });
                     }
                 }

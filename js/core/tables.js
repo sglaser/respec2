@@ -135,9 +135,9 @@ define(
                             $tot.addClass("appendix");
                         }
                     }
-                    $tot.append($("<h2>Table of Tables</h2>"));
-                    $tot.append($("<ul class='tot'/>"));
-                    var $ul = $tot.find("ul");
+                    $tot.append($("<h2>" + conf.l10n.tot + "</h2>"));
+                    $tot.append($("<ul class='tot'><li class='totline'><ul class='tot'/></li></ul>"));
+                    var $ul = $tot.find("ul ul");
                     while (tot.length) $ul.append(tot.shift());
                 }
                 msg.pub("end", "core/tables");

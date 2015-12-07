@@ -235,9 +235,8 @@ define(
             var bitLineCount = 0;
             var max_text_width = 0;
 
-            var b2;
             for (var b2 = 0; b2 < width; b2++) {
-                b = (left_to_right ? width - b2 - 1 : b2);
+                var b = (left_to_right ? width - b2 - 1 : b2);
                 for (i in fields) {
                     if (fields.hasOwnProperty(i)) {
                         f = fields[i];

@@ -111,9 +111,9 @@ define(
                 if (!conf.noTOC) {
                     var $ul = makeTOCAtLevel($("body", doc), doc, [0], 1, conf);
                     if (!$ul) return;
-                    var $sec = $("<section class='introductory' id='toc'/>").append("<h2>" + conf.l10n.toc + "</h2>")
+                    var $sec = $("<section class='introductory' id='sect-toc'/>").append("<h2>" + conf.l10n.toc + "</h2>")
                                                        .append($ul);
-                    var $ref = $("#toc", doc), replace = false;
+                    var $ref = $("section#sect-toc", doc), replace = false;
                     if ($ref.length) replace = true;
                     if (!$ref.length) $ref = $("#sotd", doc);
                     if (!$ref.length) $ref = $("#abstract", doc);
@@ -121,6 +121,7 @@ define(
                         $ref.replaceWith($sec);
                     }
                     else {
+                        var $navsect = $("<nav class='introductory' id='toc'/>").append($sec);
                         $ref.after($sec);
                     }
                 }

@@ -104,29 +104,28 @@
 	@media screen {
 		.head > p:first-child > a {
 			display: inline-block;
-			/*background: url("logos/w3c-white.svg") no-repeat center / contain content-box border-box;*/
-			/*padding: .4rem .7rem;*/
-			/*border-radius: .4rem;*/
-			/*margin-top: .4em;*/
-			/*background-color: hsl(208, 71%, 35%);*/
+			background: url("logos/w3c-white.svg") no-repeat center / contain content-box border-box;
+			padding: .4rem .7rem;
+			border-radius: .4rem;
+			margin-top: .4em;
+			background-color: hsl(208, 71%, 35%);
 		}
 
-		/*.head > p:first-child > a > img {
+		.head > p:first-child > a > img {
 			visibility: hidden;
-		}*/
+		}
 
-		/*.head > p:first-child > a:hover,
+		.head > p:first-child > a:hover,
 		.head > p:first-child > a:focus {
 			background-color: hsla(208, 71%, 35%,.8);
 		}
 
 		.head > p:first-child > a:active {
 			background-color: #c00;
-		}*/
+		}
 	}
 
 
-	dl.copyright,
 	p.copyright,
 	p.copyright small { font-size: small }
 
@@ -155,82 +154,43 @@
 		}
 	}
 
-@media screen and (min-width: 50em) and (max-width: 78em) {
-	#back-to-top {
-		display: none;
-	}
+	@media screen and (min-width: 78em) {
+		#back-to-top {
+			display: none;
+		}
 
-	nav#toc,
-	[role=navigation]#toc {
-		position: fixed;
-		top: 0; bottom: 0;
-		left: 0;
-		width: 13em;
-		overflow: auto;
-		padding: 0 0.8em;
-		padding-left: 42px;
-		padding-left: calc(0.8em + 26px);
-		background: inherit;
-		background-color: #f7f8f9;
-		z-index: 1;
-		box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
-		font-size: smaller;
-	}
+		nav#toc,
+		[role=navigation]#toc {
+			position: fixed;
+			top: 0; bottom: 0;
+			left: 0;
+			width: 23.5em;
+			overflow: auto;
+			padding: 0 1em;
+			padding-left: 42px;
+			padding-left: calc(1em + 26px);
+			background: inherit;
+			background-color: #f7f8f9;
+			z-index: 1;
+			box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
+		}
 
-	body {
-		padding-left: 14em;
-		padding-right: 1.0em;
-	}
+		body {
+			padding-left: 29em;
+			padding-right: 1.5em;
+		}
 
-	nav#toc h2,
-	[role=navigation]#toc h2 {
-		margin-top: .8rem;
-		font-variant: small-caps;
-		font-variant: all-small-caps;
-		font-variant: all-petite-caps;
-		text-transform: lowercase;
-		font-weight: bold;
-		color: hsla(203,20%,40%,.7);
+		nav#toc h2,
+		[role=navigation]#toc h2 {
+			margin-top: .8rem;
+			font-variant: small-caps;
+			font-variant: all-small-caps;
+			font-variant: all-petite-caps;
+			text-transform: lowercase;
+			font-weight: bold;
+			color: hsla(203,20%,40%,.7);
+		}
 	}
-}
-
-@media screen and (min-width: 78em) {
-	#back-to-top {
-		display: none;
-	}
-
-	nav#toc,
-	[role=navigation]#toc {
-		position: fixed;
-		top: 0; bottom: 0;
-		left: 0;
-		width: 23.5em;
-		overflow: auto;
-		padding: 0 1em;
-		padding-left: 42px;
-		padding-left: calc(1em + 26px);
-		background: inherit;
-		background-color: #f7f8f9;
-		z-index: 1;
-		box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
-	}
-
-	body {
-		padding-left: 29em;
-		padding-right: 1.5em;
-	}
-
-	nav#toc h2,
-	[role=navigation]#toc h2 {
-		margin-top: .8rem;
-		font-variant: small-caps;
-		font-variant: all-small-caps;
-		font-variant: all-petite-caps;
-		text-transform: lowercase;
-		font-weight: bold;
-		color: hsla(203,20%,40%,.7);
-	}
-}
 
 /******************************************************************************/
 /*                                Sectioning                                  */
@@ -819,8 +779,6 @@
 
 /** Table of Contents *********************************************************/
 
-	.tof, .tof ol, .tof ul, .tof li,
-	.tot, .tot ol, .tot ul, .tot li,
 	.toc, .toc ol, .toc ul, .toc li {
 		list-style: none; /* Numbers must be inlined into source */
 		/* because generated content isn't search/selectable and markers can't do multilevel yet */
@@ -834,17 +792,7 @@
 	.toc > li li       { margin: 0; font-weight: normal; }
 	.toc > li li li    { margin-left:  2em; font-style:  italic; }
 	.toc > li li li li { font-size:  0.9em; font-style:  normal; }
-	.tof > li          { margin: 1.2em 0; font-weight: bold;   }
-	.tof > li li       { margin: 0; font-weight: normal; }
-	.tof > li li li    { margin-left:  2em; font-style:  italic; }
-	.tof > li li li li { font-size:  0.9em; font-style:  normal; }
-	.tot > li          { margin: 1.2em 0; font-weight: bold;   }
-	.tot > li li       { margin: 0; font-weight: normal; }
-	.tot > li li li    { margin-left:  2em; font-style:  italic; }
-	.tot > li li li li { font-size:  0.9em; font-style:  normal; }
 
-	.tof a,
-	.tot a,
 	.toc a {
 		/* More spacing; use padding to make it part of the click target. */
 		padding-top: 0.1em;
@@ -854,42 +802,26 @@
 		border-bottom-style: solid;
 		border-bottom-width: 0.2em;
 	}
-	.tof a:not(:focus):not(:hover),
-	.tot a:not(:focus):not(:hover),
 	.toc a:not(:focus):not(:hover) {
 		/* Allow colors to cascade through from link styling */
 		border-bottom-color: transparent;
 	}
 
 	/* Section numbers in a column of their own */
-	:not(li) > .tof,
-	:not(li) > .tot,
 	:not(li) > .toc {
 		margin-left: 4em;
 	}
 
-	.tof .figno,
-	.tot .tblno,
 	.toc .secno {
 		float: left;
 		width: 4em;
 		margin-left: -4em;
 	}
 
-	.tof .figdecoration,
-	.tot .tbldecoration,
-	.toc .secdecoration {
-		display: none;
-	}
-
-	.tof > li li li .figno,
-	.tot > li li li .tblno,
 	.toc > li li li .secno {
 		margin-left: -6em;
 	}
 
-	.tof li,
-	.tot li,
 	.toc li {
 		clear: both;
 	}
