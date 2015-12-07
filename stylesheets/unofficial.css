@@ -327,10 +327,12 @@
 	}
 
 	/* Style for algorithms */
+	ul.algorithm ul,
 	ol.algorithm ol {
 	 border-left: 1px solid #90b8de;
 	 margin-left: 1em;
 	}
+	ul.algorithm ul.algorithm,
 	ol.algorithm ol.algorithm {
 	 border-left: none;
 	 margin-left: 0;
@@ -340,6 +342,7 @@
 	dl.switch > dd > ol.only {
 	 margin-left: 0;
 	}
+	dl.switch > dd > ul.algorithm,
 	dl.switch > dd > ol.algorithm {
 	 margin-left: -2em;
 	}
@@ -385,8 +388,10 @@
 
 /** Change Marking ************************************************************/
 
-	del { color: red;  text-decoration: line-through; }
-	ins { color: #080; text-decoration: underline;    }
+	del { color: red; font-weight: lighter; text-decoration: line-through; }
+	ins { color: #080; text-decoration: underline; }
+	figure > ins { background-color: #00B050; }
+	figure > del { background-color: #e05252; }
 
 /** Miscellaneous improvements to inline formatting ***************************/
 
@@ -500,6 +505,11 @@
 	}
 	p.caption, figcaption {
 		counter-increment: figure;
+	}
+
+	div.figure p, p.figure p, div.sidefigure p, figure p,
+	div.figure div, p.figure div, div.sidefigure div, figure div {
+		text-align: left;
 	}
 
 	/* DL list is indented 2em, but figure inside it is not */
@@ -972,8 +982,354 @@
 	}
 
 /******************************************************************************/
+/*                                    PrinceXML                               */
+/******************************************************************************/
+@media not print {
+	span.footnote-contents {
+		display:    none;
+		font-style: italic;
+		font-size:  smaller;
+		color:      #0060A9;
+	}
+
+	span.footnote > input {
+		vertical-align: super;
+		color:          #0060A9;
+	}
+
+	a.sec-ref span.sec-title,
+	a.sec-ref span.sec-decoration,
+	a.tocxref span.sec-decoration,
+	a.fig-ref span.figdecoration1,
+	a.fig-ref span.figtitle,
+	a.fig-ref span.formerFootnote,
+	a.tbl-ref span.tbldecoration1,
+	a.tbl-ref span.tbltitle,
+	a.tbl-ref span.formerFootnote {
+		display: none;
+	}
+}
+	@media print {
+		@page {
+			size:          US-Letter portrait;
+			margin:        20mm;
+			padding:       5mm 0;
+			/*border-top: thin solid black;*/
+			border-bottom: thin solid #0060A9;
+			@top-left {
+				font-size:      10pt;
+				vertical-align: bottom;
+				margin:         0;
+			}
+			@top-right {
+				font-size:      10pt;
+				vertical-align: bottom;
+				margin:         0;
+			}
+			@bottom-center {
+				content:          "Page " counter(page) " of " counter(pages);
+				vertical-align:   top;
+				height:           20px;
+				left:             auto;
+				width:            100%;
+				margin:           0;
+				padding:          4px;
+				font-family:      "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+				font-size:        9pt;
+				background-color: white;
+				color:            #0060A9;
+			}
+
+		}
+
+		#respec-banner {
+			position:                 static;
+			top:                      auto;
+			height:                   20px;
+			left:                     auto;
+			width:                    100%;
+			margin:                   0 0 0 0;
+			text-align:               center;
+			padding:                  4px 4px 4px 4px;
+			/* Safari, Chrome */
+			-webkit-transform:        rotate(0deg);
+			-webkit-transform-origin: right center;
+			/* Opera */
+			-o-transform:             rotate(0deg);
+			-o-transform-origin:      right center;
+			/* Mozilla */
+			-moz-transform:           rotate(0deg);
+			-moz-transform-origin:    right center;
+			/* IE */
+			-ms-transform:            rotate(0deg);
+			-ms-transform-origin:     right center;
+			/* W3C */
+			transform:                rotate(0deg);
+			transform-origin:         right center;
+			flow:                     static(header);
+			font-family:              "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+			font-size:                17px;
+			color:                    white;
+			background-color:         #0060A9;
+			/*#38197a; /* PCIe Logo Blue */
+		}
+
+		#respec-banner-status { string-set: respec-banner-status content(); }
+
+		#respec-banner-next-state { string-set: respec-banner-next-state content(); }
+
+		#respec-banner-maturity { string-set: respec-banner-maturity content(); }
+
+		#respec-banner-spec-name { string-set: respec-banner-spec-name content(); }
+
+		@page :left {
+			@top-left {
+				content: flow(header);
+			}
+			@bottom-center {
+				text-align: left;
+			}
+		}
+
+		@page :right {
+			@top-right {
+				content: flow(header);
+			}
+			@bottom-center {
+				text-align: right;
+			}
+		}
+
+		/* avoid h/f on first page */
+		@page :first {
+			border-top:    none;
+			border-bottom: none;
+			@bottom-center {
+				content: normal;
+			}
+		}
+
+		/* general statements which perhaps should be part of the UA style sheet? */
+		h1, h2, h3, h4, h5, h6, dt {
+			page-break-after: avoid;
+		}
+
+		ins {
+			text-decoration: underline;
+			color:           green;
+		}
+
+		del {
+			text-decoration: line-through;
+			color:           red;
+			font-weight:     lighter;
+		}
+
+		.section-level-1 {
+			page-break-before: right;
+		}
+
+		/* add page numbers to TOC which is already there */
+		ul.tot, ul.tot li,
+		ul.tof, ul.tof li,
+		ul.toc, ul.toc li {
+			font-weight: normal;
+			margin-left: 0;
+		}
+
+		ul.toc ul.toc {
+			font-weight: normal;
+			margin-left: 2em;
+		}
+
+		ul.tot a::after,
+		ul.tof a::after,
+		ul.toc a::after {
+			content: leader('.') target-counter(attr(href), page);
+		}
+
+		/* document specific code */
+		.principlelab, .constraintlab, .propertylab, .practicelab, .storylab {
+			padding: 0.3em 1em;
+			display: block;
+			margin:  0;
+		}
+
+		.boxedtext p {
+			margin-top: 0;
+		}
+
+		.boxedtext {
+			page-break-inside: avoid;
+		}
+
+		html, body {
+			font-size: 9pt;
+			/*padding: 0;*/
+			/*margin: 0;*/
+		}
+
+		td,
+		th {
+			font-family: sans-serif;
+			font-size:   9pt;
+		}
+
+		th {
+			font-size:   larger;
+			font-weight: normal;
+		}
+
+		img {
+			max-width: 100%;
+		}
+
+		span.footnote {
+			/*noinspection CssInvalidElement*/ float: footnote;
+		}
+
+		span.footnote > input { display: none; }
+
+		span.footnote-online { display: none; }
+
+	}
+
+
+/******************************************************************************/
 /*                                    Legacy                                  */
 /******************************************************************************/
 
 	/* This rule is inherited from past style sheets. No idea what it's for. */
 	.hide { display: none }
+
+/******************************************************************************/
+/*                                    PCISIG / Respec                         */
+/******************************************************************************/
+ table.pcisig_reg {
+	 margin: 1em auto;
+	 border-collapse: collapse;
+	 width: 100%;
+	 border: hidden;
+	 text-align: left;
+	 border-top: 1px solid silver;
+	 border-bottom: 2px solid silver;
+	 font-size: 95%;
+ }
+table.pcisig_reg caption {
+	width: 100%;
+}
+
+table.pcisig_reg td p,  table.pcisig_reg th p {
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+table.pcisig_reg td p:last-child,  table.pcisig_reg th p:last-child {
+	margin-bottom: 0;
+}
+
+table.pcisig_reg td p:first-child,  table.pcisig_reg th p:first-child {
+	margin-top: 0;
+}
+
+table.pcisig_reg td,  table.pcisig_reg th {
+	vertical-align: baseline;
+	padding: 0.5em;
+	border-width: 1px;
+	border-color: silver;
+	border-top-style: solid;
+}
+
+table.pcisig_reg thead td:empty {
+	padding: 0;
+	border: 0;
+}
+
+table.pcisig_reg  thead th[scope="row"] {
+	vertical-align: baseline;
+	text-align: left;
+	color: inherit;
+}
+
+table.pcisig_reg  thead,
+table.pcisig_reg  tbody {
+	color: inherit;
+	border-bottom: 2px solid;
+}
+
+table.pcisig_reg colgroup {
+	border-left: 2px solid;
+}
+
+table.pcisig_reg  tbody th:first-child  {
+	text-align: right;
+	color: inherit;
+	border-right: 2px solid;
+	border-top: 1px solid silver;
+	padding-right: 1em;
+}
+
+table.pcisig_reg  tbody th[rowspan],
+table.pcisig_reg  tbody td[rowspan] {
+	border-left: 1px solid silver;
+}
+
+table.pcisig_reg  tbody th[rowspan]:first-child,
+table.pcisig_reg  tbody td[rowspan]:first-child {
+	border-left: 0;
+	border-right: 1px solid silver;
+}
+
+table.pcisig_reg th,
+table.pcisig_reg td {
+	border: 1px solid silver;
+}
+
+table.pcisig_reg th:nth-child(2),
+table.pcisig_reg td:nth-child(2) {
+	width: 100%;
+	text-align: left;
+}
+
+
+table.pcisig_reg th:first-child,
+table.pcisig_reg td:first-child,
+table.pcisig_reg th:nth-child(3),
+table.pcisig_reg td:nth-child(3) {
+	text-align: center;
+}
+
+#respec-banner {
+	position:                 fixed;
+	top:                      -15px;
+	height:                   20px;
+	left:                     -695px;
+	width:                    700px;
+	margin:                   0 0 0 0;
+	text-align:               right;
+	z-index:                  2;
+	padding:                  4px 4px 4px 4px;
+	/* Safari, Chrome */
+	-webkit-transform:        rotate(270deg);
+	-webkit-transform-origin: right center;
+	/* Mozilla */
+	-moz-transform:           rotate(270deg);
+	-moz-transform-origin:    right center;
+	/* Opera */
+	-o-transform:             rotate(270deg);
+	-o-transform-origin:      right center;
+	/* IE */
+	-ms-transform:            rotate(270deg);
+	-ms-transform-origin:     right center;
+	/* W3C */
+	transform:                rotate(270deg);
+	transform-origin:         right center;
+}
+
+#respec-banner {
+	font-family:      sans-serif;
+	font-size:        17px;
+	color:            white;
+	background-color: #0060A9;
+	/*#38197a; /* PCIe Logo Blue */
+}
