@@ -957,6 +957,137 @@
 	table.index th:first-child a {
 		font-weight: bold;
 	}
+/******************************************************************************/
+/*                                    PCISIG / Respec                         */
+/******************************************************************************/
+table.pcisig_reg {
+	margin: 1em auto;
+	border-collapse: collapse;
+	width: 100%;
+	border: hidden;
+	text-align: left;
+	border-top: 1px solid silver;
+	border-bottom: 2px solid silver;
+	font-size: 95%;
+}
+table.pcisig_reg caption {
+	width: 100%;
+}
+
+table.pcisig_reg td p,  table.pcisig_reg th p {
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+table.pcisig_reg td p:last-child,  table.pcisig_reg th p:last-child {
+	margin-bottom: 0;
+}
+
+table.pcisig_reg td p:first-child,  table.pcisig_reg th p:first-child {
+	margin-top: 0;
+}
+
+table.pcisig_reg td,  table.pcisig_reg th {
+	vertical-align: baseline;
+	padding: 0.5em;
+	border-width: 1px;
+	border-color: silver;
+	border-top-style: solid;
+}
+
+table.pcisig_reg thead td:empty {
+	padding: 0;
+	border: 0;
+}
+
+table.pcisig_reg  thead th[scope="row"] {
+	vertical-align: baseline;
+	text-align: left;
+	color: inherit;
+}
+
+table.pcisig_reg  thead,
+table.pcisig_reg  tbody {
+	color: inherit;
+	border-bottom: 2px solid;
+}
+
+table.pcisig_reg colgroup {
+	border-left: 2px solid;
+}
+
+table.pcisig_reg  tbody th:first-child  {
+	text-align: right;
+	color: inherit;
+	border-right: 2px solid;
+	border-top: 1px solid silver;
+	padding-right: 1em;
+}
+
+table.pcisig_reg  tbody th[rowspan],
+table.pcisig_reg  tbody td[rowspan] {
+	border-left: 1px solid silver;
+}
+
+table.pcisig_reg  tbody th[rowspan]:first-child,
+table.pcisig_reg  tbody td[rowspan]:first-child {
+	border-left: 0;
+	border-right: 1px solid silver;
+}
+
+table.pcisig_reg th,
+table.pcisig_reg td {
+	border: 1px solid silver;
+}
+
+table.pcisig_reg th:nth-child(2),
+table.pcisig_reg td:nth-child(2) {
+	width: 100%;
+	text-align: left;
+}
+
+
+table.pcisig_reg th:first-child,
+table.pcisig_reg td:first-child,
+table.pcisig_reg th:nth-child(3),
+table.pcisig_reg td:nth-child(3) {
+	text-align: center;
+}
+
+#respec-banner {
+	position:                 fixed;
+	top:                      -15px;
+	height:                   20px;
+	left:                     -695px;
+	width:                    700px;
+	margin:                   0 0 0 0;
+	text-align:               right;
+	z-index:                  2;
+	padding:                  4px 4px 4px 4px;
+	/* Safari, Chrome */
+	-webkit-transform:        rotate(270deg);
+	-webkit-transform-origin: right center;
+	/* Mozilla */
+	-moz-transform:           rotate(270deg);
+	-moz-transform-origin:    right center;
+	/* Opera */
+	-o-transform:             rotate(270deg);
+	-o-transform-origin:      right center;
+	/* IE */
+	-ms-transform:            rotate(270deg);
+	-ms-transform-origin:     right center;
+	/* W3C */
+	transform:                rotate(270deg);
+	transform-origin:         right center;
+}
+
+#respec-banner {
+	font-family:      sans-serif;
+	font-size:        17px;
+	color:            white;
+	background-color: #0060A9;
+	/*#38197a; /* PCIe Logo Blue */
+}
 
 /******************************************************************************/
 /*                                    Print                                   */
@@ -1111,8 +1242,13 @@
 
 		/* general statements which perhaps should be part of the UA style sheet? */
 		h1, h2, h3, h4, h5, h6, dt {
+			font-family: sans-serif;
 			page-break-after: avoid;
 		}
+
+		caption, figcaption { font-family: sans-serif; }
+
+		.permalink { display: none; }
 
 		ins {
 			text-decoration: underline;
@@ -1125,6 +1261,7 @@
 			font-weight:     lighter;
 		}
 
+		#sect-toc, #tof, #tot,
 		.section-level-1 {
 			page-break-before: right;
 		}
@@ -1192,6 +1329,12 @@
 
 		span.footnote-online { display: none; }
 
+		span.respec-error {
+			color:       red;
+			font-size:   9pt;
+			font-weight: bold;
+			font-family: monospace;
+		}
 	}
 
 
@@ -1201,135 +1344,3 @@
 
 	/* This rule is inherited from past style sheets. No idea what it's for. */
 	.hide { display: none }
-
-/******************************************************************************/
-/*                                    PCISIG / Respec                         */
-/******************************************************************************/
- table.pcisig_reg {
-	 margin: 1em auto;
-	 border-collapse: collapse;
-	 width: 100%;
-	 border: hidden;
-	 text-align: left;
-	 border-top: 1px solid silver;
-	 border-bottom: 2px solid silver;
-	 font-size: 95%;
- }
-table.pcisig_reg caption {
-	width: 100%;
-}
-
-table.pcisig_reg td p,  table.pcisig_reg th p {
-	margin-bottom: 0.5em;
-	margin-top: 0.5em;
-}
-
-table.pcisig_reg td p:last-child,  table.pcisig_reg th p:last-child {
-	margin-bottom: 0;
-}
-
-table.pcisig_reg td p:first-child,  table.pcisig_reg th p:first-child {
-	margin-top: 0;
-}
-
-table.pcisig_reg td,  table.pcisig_reg th {
-	vertical-align: baseline;
-	padding: 0.5em;
-	border-width: 1px;
-	border-color: silver;
-	border-top-style: solid;
-}
-
-table.pcisig_reg thead td:empty {
-	padding: 0;
-	border: 0;
-}
-
-table.pcisig_reg  thead th[scope="row"] {
-	vertical-align: baseline;
-	text-align: left;
-	color: inherit;
-}
-
-table.pcisig_reg  thead,
-table.pcisig_reg  tbody {
-	color: inherit;
-	border-bottom: 2px solid;
-}
-
-table.pcisig_reg colgroup {
-	border-left: 2px solid;
-}
-
-table.pcisig_reg  tbody th:first-child  {
-	text-align: right;
-	color: inherit;
-	border-right: 2px solid;
-	border-top: 1px solid silver;
-	padding-right: 1em;
-}
-
-table.pcisig_reg  tbody th[rowspan],
-table.pcisig_reg  tbody td[rowspan] {
-	border-left: 1px solid silver;
-}
-
-table.pcisig_reg  tbody th[rowspan]:first-child,
-table.pcisig_reg  tbody td[rowspan]:first-child {
-	border-left: 0;
-	border-right: 1px solid silver;
-}
-
-table.pcisig_reg th,
-table.pcisig_reg td {
-	border: 1px solid silver;
-}
-
-table.pcisig_reg th:nth-child(2),
-table.pcisig_reg td:nth-child(2) {
-	width: 100%;
-	text-align: left;
-}
-
-
-table.pcisig_reg th:first-child,
-table.pcisig_reg td:first-child,
-table.pcisig_reg th:nth-child(3),
-table.pcisig_reg td:nth-child(3) {
-	text-align: center;
-}
-
-#respec-banner {
-	position:                 fixed;
-	top:                      -15px;
-	height:                   20px;
-	left:                     -695px;
-	width:                    700px;
-	margin:                   0 0 0 0;
-	text-align:               right;
-	z-index:                  2;
-	padding:                  4px 4px 4px 4px;
-	/* Safari, Chrome */
-	-webkit-transform:        rotate(270deg);
-	-webkit-transform-origin: right center;
-	/* Mozilla */
-	-moz-transform:           rotate(270deg);
-	-moz-transform-origin:    right center;
-	/* Opera */
-	-o-transform:             rotate(270deg);
-	-o-transform-origin:      right center;
-	/* IE */
-	-ms-transform:            rotate(270deg);
-	-ms-transform-origin:     right center;
-	/* W3C */
-	transform:                rotate(270deg);
-	transform-origin:         right center;
-}
-
-#respec-banner {
-	font-family:      sans-serif;
-	font-size:        17px;
-	color:            white;
-	background-color: #0060A9;
-	/*#38197a; /* PCIe Logo Blue */
-}
