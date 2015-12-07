@@ -18802,6 +18802,7 @@ define(
                             $a.append(figMap[id].clone());
                         }
                     } else {
+                        $a.append("<span class='respec-error'>" + "Figure #" + id + " not found</span>");
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });
@@ -22817,8 +22818,8 @@ define(
                         $ref.replaceWith($sec);
                     }
                     else {
-                        var $navsect = $("<nav class='introductory' id='toc'/>").append($sec);
-                        $ref.after($sec);
+                        var $navsec = $("<nav class='introductory' id='toc'/>").append($sec);
+                        $ref.after($navsec);
                     }
                 }
 
@@ -22838,6 +22839,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
+                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }
@@ -22857,6 +22859,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
+                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }

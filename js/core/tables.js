@@ -117,6 +117,7 @@ define(
                             $a.append(tblMap[id].clone());
                         }
                     } else {
+                        $a.append("<span class='respec-error'>" + "Table #" + id + " not found</span>");
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <table>.");
                     }
                 });

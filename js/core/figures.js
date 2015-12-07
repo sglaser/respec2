@@ -144,6 +144,7 @@ define(
                             $a.append(figMap[id].clone());
                         }
                     } else {
+                        $a.append("<span class='respec-error'>" + "Figure #" + id + " not found</span>");
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });
