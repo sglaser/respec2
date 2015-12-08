@@ -57,7 +57,7 @@ define(
                         decoration_num = decoration_num + 1;
                         break;
                     default:
-                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
+                        $cur.append("<span class=\"respec-error\"> {{ make_" + label + "_num Error (%" + s.substr(0,1) + ") }} </span>");
                         break;
                 }
                 $cur.append(doc.createTextNode(s.substr(1)));
@@ -144,7 +144,7 @@ define(
                             $a.append(figMap[id].clone());
                         }
                     } else {
-                        $a.append("<span class='respec-error'>" + "Figure #" + id + " not found</span>");
+                        $a.append("<span class='respec-error'>" + " {{ Figure #" + id + " not found.}} </span>");
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });

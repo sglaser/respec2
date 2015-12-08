@@ -142,7 +142,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
-                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
+                            $a.append("<span class=\"respec-error\">" + " {{ Section #" + id + " not found.}} </span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }
@@ -162,7 +162,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
-                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
+                            $a.append("<span class=\"respec-error\">" + " {{ Section #" + id + " not found.}} </span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }

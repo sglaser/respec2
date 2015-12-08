@@ -16274,7 +16274,7 @@ define(
 
                     if (conf.definitionMap[base_id + title[0]]) {
                         msg.pub("error", "Duplicate definition '" + base_id + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> Definition '" + base_id + title[0] + "' is defined more than once </span>");
+                        $dfn.append("<span class=\"respec-error\"> {{ Definition '" + base_id + title[0] + "' is defined more than once. }} </span>");
                     }
                     var id = $dfn.makeID(null, base_id + title[0]);
                     //console.log("<dfn class=\"field\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
@@ -16311,7 +16311,7 @@ define(
                     //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
                     if (conf.definitionMap[tag + "-" + title[0]]) {
                         msg.pub("error", "Duplicate definition '" + tag + "-" + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> Definition '" + tag + "-" + title[0] + "' is defined more than once </span>");
+                        $dfn.append("<span class=\"respec-error\"> {{ Definition '" + tag + "-" + title[0] + "' is defined more than once. }} </span>");
                     }
                     var id = $dfn.makeID(tag, title[0]);
                     //console.log("<dfn class=\"" + tag + "\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
@@ -16457,7 +16457,7 @@ define(
                                 $ant.html(conf.definitionHTML[tag + "-" + title]);
                             }
                             if (warn !== null) {
-                                $ant.append("<span class=\"respec-error\"> " + warn + " </span>");
+                                $ant.append("<span class=\"respec-error\"> {{ " + warn + " }} </span>");
                             }
                             //console.log("result: " + $ant[0].outerHTML);
                         }
@@ -18715,7 +18715,7 @@ define(
                         decoration_num = decoration_num + 1;
                         break;
                     default:
-                        $cur.append("<span class=\"respec-error\">make_" + label + "_num Error {%" + s.substr(0,1) + "}</span>");
+                        $cur.append("<span class=\"respec-error\"> {{ make_" + label + "_num Error (%" + s.substr(0,1) + ") }} </span>");
                         break;
                 }
                 $cur.append(doc.createTextNode(s.substr(1)));
@@ -18802,7 +18802,7 @@ define(
                             $a.append(figMap[id].clone());
                         }
                     } else {
-                        $a.append("<span class='respec-error'>" + "Figure #" + id + " not found</span>");
+                        $a.append("<span class='respec-error'>" + " {{ Figure #" + id + " not found.}} </span>");
                         msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <figure>.");
                     }
                 });
@@ -22839,7 +22839,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
-                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
+                            $a.append("<span class=\"respec-error\">" + " {{ Section #" + id + " not found.}} </span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }
@@ -22859,7 +22859,7 @@ define(
                             $a.html(secMap[id2]);
                             $a.attr("href", "#" + id2);
                         } else {
-                            $a.append("<span class='respec-error'>" + "Section #" + id + " not found</span>");
+                            $a.append("<span class=\"respec-error\">" + " {{ Section #" + id + " not found.}} </span>");
                             msg.pub("warn", "Found empty <a> element referencing '" + id + "' but no matching <section>.");
                         }
                     }
