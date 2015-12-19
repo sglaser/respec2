@@ -77,7 +77,7 @@ define(
 
                 // process all tables
                 var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
                     if ($sec.hasClass("appendix") && !appendixMode) {

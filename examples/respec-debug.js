@@ -16243,8 +16243,9 @@ define(
     'core/dfn',[],
     function() {
         
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
-                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "response",
+                        "reply", "message", "msg",  "command", "term", "field", "register",
+                        "regpict", "state", "value", "parameter", "argument"];
         return {
             run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
@@ -16381,10 +16382,13 @@ define(
                         //console.log("field-->regpict: looking for " + this.id + " --> " + id);
                         var $regpict = $(id, doc);
                         if ($regpict.length > 0) {
-                            $(this).wrapInner("<a href=\"" + id + "\"></a>");
-                            //console.log("field-->regpict: <dfn class=\"" + this["class"] +
-                            //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
-                            //console.log("");
+                            var $regfig = $regpict.parents("figure[id]");
+                            if ($regfig.length > 0) {
+                                $(this).wrapInner("<a href=\"#" + $regfig.attr("id") + "\"></a>");
+                                //console.log("field-->regpict: <dfn class=\"" + this["class"] +
+                                //                 "\" id=\"" + $regfig("id") + "\">" + $(this).html() + "</dfn>");
+                                //console.log("");
+                            }
                         }
                     }
                 });
@@ -18760,7 +18764,7 @@ define(
                 
                 // for each top level section, process all figures in that section
                 var figMap = {}, tof = [], num = [1, 1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot)");
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
                     if ($sec.hasClass("appendix") && !appendixMode) {

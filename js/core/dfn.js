@@ -7,8 +7,9 @@ define(
     [],
     function() {
         "use strict";
-        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "reply", "message", "msg",
-                        "command", "term", "field", "register", "regpict", "state", "value", "parameter", "argument"];
+        var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "response",
+                        "reply", "message", "msg",  "command", "term", "field", "register",
+                        "regpict", "state", "value", "parameter", "argument"];
         return {
             run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
@@ -145,10 +146,13 @@ define(
                         //console.log("field-->regpict: looking for " + this.id + " --> " + id);
                         var $regpict = $(id, doc);
                         if ($regpict.length > 0) {
-                            $(this).wrapInner("<a href=\"" + id + "\"></a>");
-                            //console.log("field-->regpict: <dfn class=\"" + this["class"] +
-                            //                 "\" id=\"" + this.id + "\">" + $(this).html() + "</dfn>");
-                            //console.log("");
+                            var $regfig = $regpict.parents("figure[id]");
+                            if ($regfig.length > 0) {
+                                $(this).wrapInner("<a href=\"#" + $regfig.attr("id") + "\"></a>");
+                                //console.log("field-->regpict: <dfn class=\"" + this["class"] +
+                                //                 "\" id=\"" + $regfig("id") + "\">" + $(this).html() + "</dfn>");
+                                //console.log("");
+                            }
                         }
                     }
                 });
