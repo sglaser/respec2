@@ -218,9 +218,9 @@ define(
                     }
                 }
 
-                if (!conf.figFmt) conf.figFmt = "%(" + conf.l10n.fig + "%1%c-%#%): %t";
-                if (!conf.tblFmt) conf.tblFmt = "%(" + conf.l10n.tbl + "%1%c-%#%): %t";
-                if (!conf.eqnFmt) conf.eqnFmt = "%(" + conf.l10n.eqn + "%1%c-%#%): %t";
+                if (!conf.figFmt) conf.figFmt = "%1" + conf.l10n.fig + "%(%c-%#%): %t";
+                if (!conf.tblFmt) conf.tblFmt = "%1" + conf.l10n.tbl + "%(%c-%#%): %t";
+                if (!conf.eqnFmt) conf.eqnFmt = "%1" + conf.l10n.eqn + "%(%c-%#%): %t";
 
                 // validate configuration and derive new configuration values
                 if (!conf.license) conf.license = "pcisig";
