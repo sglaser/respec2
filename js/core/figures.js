@@ -75,7 +75,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
-                if (!conf.figFmt) conf.figFmt = conf.l10n.fig + "%(%#%) %t"; //"%1Figure %(%c-%#%): %t";
+                if (!conf.figFmt) conf.figFmt = conf.l10n.fig + "%(%#%) %t";
 
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
@@ -102,7 +102,7 @@ define(
                 
                 // for each top level section, process all figures in that section
                 var figMap = {}, tof = [], num = [1, 1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot)");
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot):not(#toe):not(#sect-toe)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
                     if ($sec.hasClass("appendix") && !appendixMode) {
@@ -111,7 +111,7 @@ define(
                     }
                     var chapter = i + 1;
                     if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
-                    $("figure", $sec).each(function () {
+                    $("figure:not(.equation)", $sec).each(function () {
 						var $fig = $(this)
 						,   $cap = $fig.find("figcaption")
 						,   id = $fig.makeID("fig", $cap.text());
@@ -149,8 +149,9 @@ define(
                     }
                 });
 
-                // Create a Table of Figures if a section with id 'tof' exists.
+                // Create a Table of Figures if a section with id 'tof' or 'sect-tof' exists.
                 var $tof = $("#tof", doc);
+                if ($tof.length == 0) $tof = $("#sect-tof", doc);
                 if (tof.length && $tof.length) {
                     // if it has a parent section, don't touch it
                     // if it has a class of appendix or introductory, don't touch it

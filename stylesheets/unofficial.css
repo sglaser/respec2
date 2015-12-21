@@ -515,6 +515,10 @@
 	/* DL list is indented 2em, but figure inside it is not */
 	dd > div.figure, dd > figure { margin-left: -2em }
 
+	figure.equation figcaption {
+		text-align: right;
+	}
+
 /******************************************************************************/
 /*                             Colored Boxes                                  */
 /******************************************************************************/

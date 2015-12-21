@@ -12152,9 +12152,12 @@ define(
                 ,   toc:                        "Table of Contents"
                 ,   tof:                        "Table of Figures"
                 ,   tot:                        "Table of Tables"
+                ,   toe:                        "Table of Equations"
                 ,   note:                       "Note"
                 ,   impnote:                    "Implementation Note"
-                ,   fig:                        "Fig. "
+                ,   fig:                        "Figure "
+                ,   tbl:                        "Table "
+                ,   eqn:                        "Equation "
                 ,   bug_tracker:                "Bug tracker:"
                 ,   file_a_bug:                 "file a bug"
                 ,   open_bugs:                  "open bugs"
@@ -12175,9 +12178,12 @@ define(
                 ,   toc:                        "Table of Contents"
                 ,   tof:                        "Table of Figures"
                 ,   tot:                        "Table of Tables"
+                ,   toe:                        "Table of Equations"
                 ,   note:                       "Note"
                 ,   impnote:                    "Implementation Note"
                 ,   fig:                        "그림 "
+                ,   tbl:                        "Table "
+                ,   eqn:                        "Equation. "
                 ,   bug_tracker:                "Bug tracker:"
                 ,   file_a_bug:                 "file a bug"
                 ,   open_bugs:                  "open bugs"
@@ -12198,9 +12204,12 @@ define(
                 ,   toc:                        "内容大纲"
                 ,   tof:                        "Table of Figures"
                 ,   tot:                        "Table of Tables"
+                ,   toe:                        "Table of Equations"
                 ,   impnote:                    "Implementation Note"
                 ,   note:                       "注"
                 ,   fig:                        "圖"
+                ,   tbl:                        "Table "
+                ,   eqn:                        "Equation "
                 ,   bug_tracker:                "错误跟踪："
                 ,   file_a_bug:                 "反馈错误"
                 ,   open_bugs:                  "修正中的错误"
@@ -18737,7 +18746,7 @@ define(
         return {
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/figures");
-                if (!conf.figFmt) conf.figFmt = conf.l10n.fig + "%(%#%) %t"; //"%1Figure %(%c-%#%): %t";
+                if (!conf.figFmt) conf.figFmt = conf.l10n.fig + "%(%#%) %t";
 
                 // Move old syntax to new syntax
                 $(".figure", doc).each(function (i, figure) {
@@ -18764,7 +18773,7 @@ define(
                 
                 // for each top level section, process all figures in that section
                 var figMap = {}, tof = [], num = [1, 1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot)");
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot):not(#toe):not(#sect-toe)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
                     if ($sec.hasClass("appendix") && !appendixMode) {
@@ -18773,7 +18782,7 @@ define(
                     }
                     var chapter = i + 1;
                     if (appendixMode) chapter = utils.appendixMap(i - lastNonAppendix);
-                    $("figure", $sec).each(function () {
+                    $("figure:not(.equation)", $sec).each(function () {
 						var $fig = $(this)
 						,   $cap = $fig.find("figcaption")
 						,   id = $fig.makeID("fig", $cap.text());
@@ -18811,8 +18820,9 @@ define(
                     }
                 });
 
-                // Create a Table of Figures if a section with id 'tof' exists.
+                // Create a Table of Figures if a section with id 'tof' or 'sect-tof' exists.
                 var $tof = $("#tof", doc);
+                if ($tof.length == 0) $tof = $("#sect-tof", doc);
                 if (tof.length && $tof.length) {
                     // if it has a parent section, don't touch it
                     // if it has a class of appendix or introductory, don't touch it

@@ -20,14 +20,14 @@ define(
                 if (!!conf.addXrefMap) {
                     var $refs = $("a.tocxref", doc);
                     if ($refs.length > 0) {
-                        var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure and Table ID Map</h2></section>").appendTo($("body"));
+                        var $mapsec = $("<section id='xref-map' class='introductory appendix'><h2>Section, Figure, Table, and Equation ID Map</h2></section>").appendTo($("body"));
                         var $tbody = $("<table class='data'><thead><tr><th>Number</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
 
                         $refs.each(function() {
-                            var number = ($(".secno, .figno, .tblno", this).text()
+                            var number = ($(".secno, .figno, .tblno, .eqnno", this).text()
                                           .replace(/ /g,"&nbsp;").replace(/-/g,"&#8209;"));
                             var id = $(this).attr("href");
-                            var name = $(".sectitle, .figtitle, .tbltitle", this).text();
+                            var name = $(".sectitle, .figtitle, .tbltitle, .eqntitle", this).text();
                             $("<tr><td>" + number + "</td>" +
                               "<td class='long'>" + name + "</td>" +
                               "<td class='long'><a href=\"" + id + "\">" + id.substr(1) + "</a></td></tr>").appendTo($tbody);

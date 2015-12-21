@@ -40,6 +40,7 @@ define([
         ,   "core/best-practices"
         ,   "core/figures"
         ,   "core/tables"
+        ,   "core/equations"
         ,   "core/biblio"
         ,   "core/rdfa"
         //,   "core/webidl-oldschool"

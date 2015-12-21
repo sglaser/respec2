@@ -72,12 +72,11 @@ define(
         return {
             run:        function (conf, doc, cb, msg) {
                 msg.pub("start", "core/tables");
-                if (!conf.tblFmt) conf.tblFmt = "";//Table %(%1%c-%#%): %t";
-                //conf.tblFmt = "";
+                if (!conf.tblFmt) conf.tblFmt = conf.l10n.tbl + "%(%#%) %t";
 
                 // process all tables
                 var tblMap = {}, tot =[ ], num = [1,1], appendixMode = false, lastNonAppendix = -1000;
-                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot)");
+                var $secs = $("body", doc).children(conf.tocIntroductory ? "section" : "section:not(.introductory):not(#toc):not(#tof):not(#tot):not(#sect-toc):not(#sect-tof):not(#sect-tot):not(#toe):not(#sect-toe)");
 				for (var i = 0; i < $secs.length; i++) {
 					var $sec = $($secs[i], doc);
                     if ($sec.hasClass("appendix") && !appendixMode) {
@@ -122,8 +121,9 @@ define(
                     }
                 });
                 
-                // Create a Table of Tables if a section with id 'tot' exists.
+                // Create a Table of Tables if a section with id 'tot' or 'sect-tot' exists.
                 var $tot = $("#tot", doc);
+                if ($tot.length == 0) $tot = $("#sect-tot", doc);
                 if (tot.length && $tot.length) {
                     // if it has a parent section, don't touch it
                     // if it has a class of appendix or introductory, don't touch it
