@@ -37,7 +37,7 @@ define(
             var cellTop = Number(pget(reg, "cellTop", 40));
             var bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
             var figName = String(pget(reg, "figName", "???"));
-            var maxFigWidth = Number(pget(reg, "maxFigWidth", 720));   // 7.5 inches (assuming 96 px per inch)
+            var maxFigWidth = Number(pget(reg, "maxFigWidth", 648));   // 6.75 inches (assuming 96 px per inch)
             var figLeft = Number(pget(reg, "figLeft", 40));
             var visibleLSB = Number(pget(reg, "visibleLSB", 0));
             var visibleMSB = Number(pget(reg, "visibleMSB", width));
