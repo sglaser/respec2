@@ -802,6 +802,7 @@ define(
                             msg.pub("warn",
                                     "core/regpict: no register definition " + $fig.get(0).outerHTML);
                         }
+                        msg.pub("end", "core/regpict figure id='" + $fig.attr("id") + "'");
                     });
                 msg.pub("end", "core/regpict");
                 cb();
