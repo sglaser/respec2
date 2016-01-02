@@ -42,7 +42,7 @@ define(
 
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "w3c/data-include");
+                msg.pub("start", "core/data-include");
                 var $incs = $("[data-include]")
                 ,   len = $incs.length
                 ,   finish = function ($el) {
@@ -54,13 +54,13 @@ define(
                         $el.removeAttr("data-include-filter");
                         len--;
                         if (len <= 0) {
-                            msg.pub("end", "w3c/data-include");
+                            msg.pub("end", "core/data-include");
                             cb();
                         }
                     }
                 ;
                 if (!len) {
-                    msg.pub("end", "w3c/data-include");
+                    msg.pub("end", "core/data-include");
                     cb();
                 }
                 $incs.each(function () {

@@ -18,7 +18,7 @@ define(
     function (utils) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "w3c/data-transform");
+                msg.pub("start", "core/data-transform");
                 $("[data-transform]", doc).each(function (i, node) {
                     var $n = $(node);
                     var flist = $n.attr('data-transform');
@@ -32,7 +32,7 @@ define(
                     }
                     if (content) $n.html(content);
                 });
-                msg.pub("end", "w3c/data-transform");
+                msg.pub("end", "core/data-transform");
                 cb();
             }
         };
