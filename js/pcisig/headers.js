@@ -447,6 +447,8 @@ define(
                                      "please specify one using a <code><section></code> element with ID=sotd.");
                 }
 
+//                conf.onlyLocalBiblio = true;
+
                 msg.pub("end", "pcisig/headers");
                 cb();
             }

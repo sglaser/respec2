@@ -7,15 +7,12 @@ define(
     function ($) {
         return {
             show:   function (ui) {
-                var $halp = $("<div><p>ReSpec is a document production toolchain, with a notable focus on PCISIG specifications.</p></div>");
-                $("<p>You can find more information in the <a href='http://sglaser.github.io/respec-docs/'>documentation</a>.</p>").appendTo($halp);
-                $("<p>Found a bug in ReSpec? <a href='https://github.com/sglaser/respec/issues'>File it!</a>.</p>").appendTo($halp);
-                $("<p>This is a PCISIG fork of the W3C oriented tool." +
-                  " You can find more about the W3C version from the information in the" +
-                  " <a href='http://w3.org/respec/'>documentation</a>." +
-                  " Bugs in the W3C version may be reported in" +
-                  " <a href='https://github.com/w3c/respec/issues'>File it!</a>.</p>").appendTo($halp);
-
+                var $halp = $("<div><p>ReSpec is a document production toolchain, with a notable focus on W3C specifications.</p></div>");
+                $("<p>You can find more information in the <a href='http://w3.org/respec/'>documentation</a>.</p>").appendTo($halp);
+                $("<p>Found a bug in ReSpec? <a href='https://github.com/w3c/respec/issues'>File it!</a>.</p>").appendTo($halp);
+                $("<p>This is a PCISIG fork of the W3C oriented ReSpec tool.</p>").appendTo($halp);
+                $("<p>You can find more about the PCISIG fork in the <a href='http://sglaser.github.io/respec-docs/'>documentation</a>.</p>").appendTo($halp);
+                $("<p>Found a bug in the PCISIG fork? <a href='https://github.com/sglaser/respec/issues'>File it!</a>.</p>").appendTo($halp);
                 ui.freshModal("About ReSpec", $halp);
             }
         };

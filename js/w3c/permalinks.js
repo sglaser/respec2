@@ -21,7 +21,7 @@
 "use strict";
 
 define(
-    ["tmpl!w3c/templates/permalinks.handlebars", "core/utils"], // load this to be sure that the jQuery extensions are loaded
+    ["tmpl!w3c/templates/permalinks.css", "core/utils"], // load this to be sure that the jQuery extensions are loaded
     function (css, utils) {
         return {
             run:    function (conf, doc, cb, msg) {

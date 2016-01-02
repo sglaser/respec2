@@ -19,7 +19,6 @@ function gitToURL(url) {
     url = url.replace(/\.git$/, "");
     return url;
 }
-
 // options:
 //  optimize:   none || uglify || uglify2
 //  out:        /path/to/output
@@ -49,7 +48,6 @@ function build (options, cb) {
     };
     r.optimize(config, function () {
         // add header
-
         try {
             fs.writeFileSync(config.out
                         ,   "/* ReSpec " + version +

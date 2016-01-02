@@ -1,35 +1,21 @@
 /* --- ISSUES/NOTES --- */
-div.issue-title,
-div.note-title,
-div.ednote-title,
-div.warning-title,
-div.impnote-title {
+div.issue-title, div.note-title , div.ednote-title, div.warning-title, div.impnote-title {
     padding-right:  1em;
     min-width: 7.5em;
     color: #b9ab2d;
 }
-div.issue-title     { color: #e05252; }
+div.issue-title { color: #e05252; }
 div.note-title, div.ednote-title { color: #2b2; }
-div.impnote-title   { color: #0060A9; }
-div.warning-title   { color: #f22; }
-div.issue-title span,
-div.note-title span,
-div.ednote-title span,
-div.warning-title span,
-div.impnote-title span {
+div.impnote-title { color: #0060A9; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.ednote-title span, div.warning-title span, div.impnote-title span {
     text-transform: uppercase;
 }
 div.note, div.issue, div.ednote, div.warning, div.impnote {
     margin-top: 1em;
     margin-bottom: 1em;
 }
-.note > p:first-child,
-.ednote > p:first-child,
-.issue > p:first-child,
-.warning > p:first-child,
-.impnote > p:first-child {
-    margin-top: 0;
-}
+.note > p:first-child, .ednote > p:first-child, .issue > p:first-child, .warning > p:first-child, .impnote > p:first-child { margin-top: 0; }
 .issue, .note, .ednote, .warning, .impnote {
     padding: .5em;
     border-left-width: .5em;
@@ -41,25 +27,19 @@ div.issue, div.note, div.ednote, div.warning, div.impnote {
     position: relative;
     clear: both;
 }
-span.note,
-span.ednote,
-span.issue,
-span.warning,
-span.impnote {
-    padding: .1em .5em .15em;
-}
+span.note, span.ednote, span.issue, span.warning, span.impnote { padding: .1em .5em .15em; }
 
 .issue {
     border-color: #e05252;
-    background:   #fbe9e9;
+    background: #fbe9e9;
 }
 .note, .ednote {
     border-color: #52e052;
-    background:   #e9fbe9;
+    background: #e9fbe9;
 }
 .impnote {
-    border-color: #0060A9; 
-    background:   #E5F4FF;
+    border-color: #0060A9;
+    background: #E5F4FF;
 }
 
 .warning {

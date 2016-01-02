@@ -32,8 +32,7 @@ define(
                 ;
                 if ($highs.length) {
                     if (!conf.noHighlightCSS) {
-                        if (!(conf.noReSpecCSS))
-                            $(doc).find("head link").first().before($("<style/>").text(css));
+                        $(doc).find("head link").first().before($("<style/>").text(css));
                     }
                     $highs.addClass("prettyprint");
                     PR.prettyPrint(done);

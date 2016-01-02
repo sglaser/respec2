@@ -4,14 +4,15 @@
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
     shim:   {
-        "shortcut": {
+        shortcut: {
             exports:    "shortcut"
         }
     }
 };
 if ("respecVersion" in window && respecVersion) {
     requireConfig.paths = {
-        "ui":   "https://sglaser.github.io/respec/js/ui"
+//      "ui":   "https://sglaser.github.io/respec/js/ui"
+        "ui":   "file:///Users/sglaser/Repositories/PCISIG/respec-sglaser/js/ui"
     };
 }
 require.config(requireConfig);
@@ -20,6 +21,7 @@ define([
             "domReady"
         ,   "core/base-runner"
         ,   "core/ui"
+        ,   "core/include-config"
         ,   "core/override-configuration"
         ,   "core/default-root-attr"
         ,   "w3c/l10n"
@@ -33,6 +35,8 @@ define([
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
+        ,   "core/dfn"
+        ,   "w3c/rfc2119"
         ,   "core/examples"
         ,   "core/issues-notes"
         ,   "core/requirements"
@@ -42,17 +46,19 @@ define([
         ,   "core/tables"
         ,   "core/equations"
         ,   "core/biblio"
-        ,   "core/rdfa"
-        //,   "core/webidl-oldschool"
+        ,   "core/webidl-contiguous"
+        ,   "core/webidl-oldschool"
         ,   "core/regpict"
-        ,   "core/dfn"
+        ,   "core/contrib"
         ,   "core/fix-headers"
         ,   "core/structure"
         ,   "w3c/informative"
         ,   "w3c/permalinks"
         ,   "core/id-headers"
+        ,   "core/rdfa"
         ,   "core/xref-map"
         ,   "w3c/aria"
+        ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
         ],

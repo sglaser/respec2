@@ -99,7 +99,7 @@ define(
                     return "(" + arr.join(" or ") + ")";
                 }
                 else {
-                    var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(text);
+                    var matched = /^(sequence|Promise|CancelablePromise|EventStream|FrozenArray)<(.+)>$/.exec(text);
                     if (matched)
                         return matched[1] + "&lt;<a>" + datatype(matched[2]) + "</a>&gt;";
 
@@ -118,7 +118,7 @@ define(
         WebIDLProcessor.prototype = {
             setID:  function (obj, match) {
                 obj.id = match;
-                obj.refId = obj.id.replace(/[^a-zA-Z_\-]/g, "");
+                obj.refId = obj.id.replace(/[^a-zA-Z0-9_\-]/g, "").replace(/^[0-9\-]*/, "");
                 obj.unescapedId = (obj.id[0] == "_" ? obj.id.slice(1) : obj.id);
             }
         ,   nullable:   function (obj, type) {
@@ -431,14 +431,15 @@ define(
                 var match;
 
                 // ATTRIBUTE
-                match = /^\s*(?:(readonly|inherit|stringifier)\s+)?attribute\s+(.*?)\s+(\S+)\s*$/.exec(str);
+                match = /^\s*(?:(static)\s+)?(?:(readonly|inherit|stringifier)\s+)?attribute\s+(.*?)\s+(\S+)\s*$/.exec(str);
                 if (match) {
                     obj.type = "attribute";
                     obj.declaration = match[1] ? match[1] : "";
-                    obj.declaration += (new Array(12-obj.declaration.length)).join(" "); // fill string with spaces
-                    var type = match[2];
+                    obj.declaration += (obj.declaration ? " " : "") + (match[2] !== undefined ? match[2] : "");
+                    obj.declaration += (new Array(16-obj.declaration.length)).join(" "); // fill string with spaces
+                    var type = match[3];
                     this.parseDatatype(obj, type);
-                    this.setID(obj, match[3]);
+                    this.setID(obj, match[4]);
                     obj.raises = [];
                     $sgrs.each(function () {
                         var $el = $(this)
@@ -695,7 +696,7 @@ define(
             },
 
             parseParameterized: function (str) {
-                var matched = /^(sequence|Promise|CancelablePromise|EventStream)<(.+)>$/.exec(str);
+                var matched = /^(sequence|Promise|CancelablePromise|EventStream|FrozenArray)<(.+)>$/.exec(str);
                 if (!matched)
                     return null;
                 return { type: matched[1], parameter: matched[2] };
@@ -1492,8 +1493,7 @@ define(
                         cb();
                     };
                 if (!$idl.length) return finish();
-                if (!(conf.noReSpecCSS))
-                    $(doc).find("head link").first().before($("<style/>").text(css));
+                $(doc).find("head link").first().before($("<style/>").text(css));
 
                 var infNames = [];
                 $idl.each(function () {

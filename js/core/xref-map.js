@@ -34,7 +34,7 @@ define(
                         });
                     }
                 }
-                msg.pub("end", "core/structure");
+                msg.pub("end", "core/xref-map");
                 cb();
             }
         };

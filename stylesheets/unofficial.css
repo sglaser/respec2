@@ -834,6 +834,7 @@
 /** Table of Contents *********************************************************/
 
 	.tof, .tof ol, .tof ul, .tof li,
+	.toe, .toe ol, .toe ul, .toe li,
 	.tot, .tot ol, .tot ul, .tot li,
 	.toc, .toc ol, .toc ul, .toc li {
 		list-style: none; /* Numbers must be inlined into source */
@@ -852,12 +853,17 @@
 	.tof > li li       { margin: 0; font-weight: normal; }
 	.tof > li li li    { margin-left:  2em; font-style:  italic; }
 	.tof > li li li li { font-size:  0.9em; font-style:  normal; }
+	.toe > li          { margin: 1.2em 0; font-weight: bold;   }
+	.toe > li li       { margin: 0; font-weight: normal; }
+	.toe > li li li    { margin-left:  2em; font-style:  italic; }
+	.toe > li li li li { font-size:  0.9em; font-style:  normal; }
 	.tot > li          { margin: 1.2em 0; font-weight: bold;   }
 	.tot > li li       { margin: 0; font-weight: normal; }
 	.tot > li li li    { margin-left:  2em; font-style:  italic; }
 	.tot > li li li li { font-size:  0.9em; font-style:  normal; }
 
 	.tof a,
+	.toe a,
 	.tot a,
 	.toc a {
 		/* More spacing; use padding to make it part of the click target. */
@@ -869,6 +875,7 @@
 		border-bottom-width: 0.2em;
 	}
 	.tof a:not(:focus):not(:hover),
+	.toe a:not(:focus):not(:hover),
 	.tot a:not(:focus):not(:hover),
 	.toc a:not(:focus):not(:hover) {
 		/* Allow colors to cascade through from link styling */
@@ -877,12 +884,14 @@
 
 	/* Section numbers in a column of their own */
 	:not(li) > .tof,
+	:not(li) > .toe,
 	:not(li) > .tot,
 	:not(li) > .toc {
 		margin-left: 4em;
 	}
 
 	.tof .figno,
+	.toe .eqnno,
 	.tot .tblno,
 	.toc .secno {
 		float: left;
@@ -891,18 +900,21 @@
 	}
 
 	.tof .figdecoration,
+	.toe .eqndecoration,
 	.tot .tbldecoration,
 	.toc .secdecoration {
 		display: none;
 	}
 
 	.tof > li li li .figno,
+	.toe > li li li .eqnno,
 	.tot > li li li .tblno,
 	.toc > li li li .secno {
 		margin-left: -6em;
 	}
 
 	.tof li,
+	.toe li,
 	.tot li,
 	.toc li {
 		clear: both;
@@ -1138,6 +1150,9 @@ table.pcisig_reg td:nth-child(3) {
 	a.fig-ref span.figdecoration1,
 	a.fig-ref span.figtitle,
 	a.fig-ref span.formerFootnote,
+	a.eqn-ref span.eqndecoration1,
+	a.eqn-ref span.eqntitle,
+	a.eqn-ref span.formerFootnote,
 	a.tbl-ref span.tbldecoration1,
 	a.tbl-ref span.tbltitle,
 	a.tbl-ref span.formerFootnote {
@@ -1265,7 +1280,7 @@ table.pcisig_reg td:nth-child(3) {
 			font-weight:     lighter;
 		}
 
-		#sect-toc, #tof, #tot,
+		#sect-toc, #tof, #toe, #tot,
 		.section-level-1 {
 			page-break-before: right;
 		}
@@ -1273,6 +1288,7 @@ table.pcisig_reg td:nth-child(3) {
 		/* add page numbers to TOC which is already there */
 		ul.tot, ul.tot li,
 		ul.tof, ul.tof li,
+		ul.toe, ul.toe li,
 		ul.toc, ul.toc li {
 			font-weight: normal;
 			margin-left: 0;
@@ -1285,6 +1301,7 @@ table.pcisig_reg td:nth-child(3) {
 
 		ul.tot a::after,
 		ul.tof a::after,
+		ul.toe a::after,
 		ul.toc a::after {
 			content: leader('.') target-counter(attr(href), page);
 		}

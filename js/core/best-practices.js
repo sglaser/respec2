@@ -27,11 +27,8 @@ define(
                     $bp.prepend(doc.createTextNode("Best Practice " + num + ": "));
                 });
                 if ($bps.length) {
-                    if (!(conf.noReSpecCSS))
-                        $(doc).find("head link").first().before($("<style/>").text(css));
-                    if ($("#bp-summary")) {
-                        $("#bp-summary").append($content.contents());
-                    }
+                    $(doc).find("head link").first().before($("<style/>").text(css));
+                    if ($("#bp-summary")) $("#bp-summary").append($content.contents());
                 }
                 else if ($("#bp-summary").length) {
                     msg.pub("warn", "Using best practices summary (#bp-summary) but no best practices found.");

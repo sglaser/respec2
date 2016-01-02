@@ -160,6 +160,7 @@ define(
                 }
                 if (p.note) ret += " (" + p.note + ")";
                 if (p.extras) {
+                    var self = this;
                     var resultHTML = p.extras
                       // Remove empty names
                       .filter(function (extra) {
@@ -177,13 +178,13 @@ define(
                           span.appendChild(a);
                           a.href = extra.href;
                           textContainer = a;
-                          if (this.doRDFa) {
+                          if (self.doRDFa) {
                             a.setAttribute('property', 'rdfs:seeAlso');
                           }
                         }
                         textContainer.innerHTML = extra.name;
                         return span.outerHTML;
-                      }.bind(this))
+                      })
                       .join(', ');
                     ret += ", " + resultHTML;
                 }
@@ -436,7 +437,7 @@ define(
                 if (conf.isRec && !conf.errata)
                     msg.pub("error", "Recommendations must have an errata link.");
                 conf.notRec = (conf.specStatus !== "REC");
-                conf.isUnofficial = conf.specStatus === "unofficial" || /\.css$/.test(conf.specStatus) || conf.specStatus === "NONE";
+                conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependW3C = !conf.isUnofficial;
                 conf.isED = (conf.specStatus === "ED");
                 conf.isLC = (conf.specStatus === "LC" || conf.specStatus === "FPLC");
@@ -535,6 +536,13 @@ define(
                     msg.pub("error", "ReSpec does not support automated SotD generation for TAG findings, " +
                                      "please specify one using a <code><section></code> element with ID=sotd.");
                 }
+                // experimental style info
+                var hasViewportMeta = doc.head.querySelector("meta[name=viewport]") ? true : false;
+                if (conf.useExperimentalStyles && !hasViewportMeta) {
+                    $("html>head").prepend($('<meta name="viewport" content="width=device-width, initial-scale=1, width = content-width, initial-scale = 1.0, shrink-to-fit=no">'));
+                }
+
+
 
                 msg.pub("end", "w3c/headers");
                 cb();

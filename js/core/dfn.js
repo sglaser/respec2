@@ -1,17 +1,18 @@
 /* jshint browser: true */
 /* jshint jquery: true */
 /* global define */
+
 // Module core/dfn
 // Finds all <dfn> elements and populates conf.definitionMap to identify them.
 define(
     [],
-    function() {
+    function () {
         "use strict";
         var dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "response",
                         "reply", "message", "msg",  "command", "term", "field", "register",
                         "regpict", "state", "value", "parameter", "argument"];
         return {
-            run: function(conf, doc, cb, msg) {
+            run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
                 if (!conf.definitionMap) {
@@ -257,8 +258,6 @@ define(
                 msg.pub("end", "core/dfn");
                 cb();
             }
-        }
-            ;
+        };
     }
-)
-;
+);
