@@ -149,7 +149,9 @@ figure pre.json {
 
 @media screen {
     g.regLink:hover rect.regFieldBox,
-    g.regLink:focus rect.regFieldBox { fill: #ffa; stroke: blue; }
+    g.regLink:focus rect.regFieldBox {
+        fill: #ffa; stroke: blue;
+    }
     
     g.regLink:hover line.regBitNumLine,
     g.regLink:focus line.regBitNumLine,
@@ -160,20 +162,25 @@ figure pre.json {
     g.regLink:hover path.regBitLine,
     g.regLink:focus path.regBitLine,
     g.regLink.regFieldExternal:hover path.regBitBracket,
-    g.regLink.regFieldExternal:focus path.regBitBracket { stroke: blue; }
+    g.regLink.regFieldExternal:focus path.regBitBracket {
+        stroke: blue;
+    }
 
     g.regLink:hover text.regFieldName,
     g.regLink:focus text.regFieldName,
     g.regLink.regFieldExternal:hover text.regFieldValue,
-    g.regLink.regFieldExternal:focus text.regFieldValue { fill: blue; font-weight: bold; }
+    g.regLink.regFieldExternal:focus text.regFieldValue {
+        fill: blue; font-weight: bold;
+    }
 
     g.regLink:hover text.regBitNumMiddle,
     g.regLink:focus text.regBitNumMiddle,
     g.regLink:hover text.regBitNumStart,
     g.regLink:focus text.regBitNumStart,
     g.regLink:hover text.regBitNumEnd,
-    g.regLink:focus text.regBitNumEnd
-    { fill: blue; font-weight: bold; font-size: 9pt; }
+    g.regLink:focus text.regBitNumEnd {
+        fill: blue; font-weight: bold; font-size: 9pt;
+    }
 
     g.regLink:hover text.regBitWidth,
     g.regLink:focus text.regBitWidth {
