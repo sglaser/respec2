@@ -1,0 +1,3006 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%BoundingBox: 0 0 612 792
+%%DocumentFonts: Courier Times-Italic Times-Bold Times-Roman Helvetica-Oblique
+%%Title: domReady.ps
+%%Creator: c2ps $Header: /home/sglaser/hw/pvt/sglaser/Source/RCS/c2ps.cpp,v 3.5 2013-09-24 18:00:36-07 sglaser Exp $
+%%CreationDate: Friday January 1 21:51:40 2016
+%%Pages: (atend)
+%%EndComments
+/nf {findfont exch scalefont setfont} def
+/keyfn {10 /Times-Bold nf} def
+/ordfn {10 /Times-Roman nf} def
+/comfn {10 /Times-Italic nf} def
+/txtfn {10 /Courier nf } def
+/filfn {8 /Courier nf } def
+/linfn {8 /Helvetica-Oblique nf} def
+/botfn {12 /Helvetica-Oblique nf} def
+/topfn {12 /Helvetica-Oblique nf} def 
+/prcfn {12 /Helvetica-Oblique nf} def 
+/pagfn {24 /Helvetica-Oblique nf} def 
+/s /show load def
+/rs {dup stringwidth pop neg 0 rmoveto s} def
+/cs {dup stringwidth pop neg 2 div 0 rmoveto s} def
+/m /moveto load def
+/l {newpath moveto lineto stroke} def
+ordfn 
+%%EndProlog
+%%Page: 1 1
+filfn 60 692 m (/**)s
+52 692 m linfn (1)rs
+filfn 60 680 m ( * @license RequireJS domReady 2.0.1 Copyright \(c\) 2010-2012, The Dojo Foundation All Rights Reserved.)s
+60 668 m ( * Available via the MIT or new BSD license.)s
+60 656 m ( * see: http://github.com/requirejs/domReady for details)s
+60 644 m ( */)s
+52 644 m linfn (5)rs
+filfn 60 632 m (/*jslint */)s
+60 620 m (/*global require: false, define: false, requirejs: false,)s
+60 608 m (  window: false, clearInterval: false, document: false,)s
+60 596 m (  self: false, setInterval: false */)s
+52 584 m linfn (10)rs
+filfn 60 560 m (define\(function \(\) {)s
+60 548 m (    'use strict';)s
+60 524 m (    var isTop, testDiv, scrollIntervalId,)s
+52 524 m linfn (15)rs
+filfn 60 512 m (        isBrowser = typeof window !== "undefined" && window.document,)s
+60 500 m (        isPageLoaded = !isBrowser,)s
+60 488 m (        doc = isBrowser ? document : null,)s
+60 476 m (        readyCalls = [];)s
+52 464 m linfn (20)rs
+filfn 60 452 m (    function runCallbacks\(callbacks\) {)s
+60 440 m (        var i;)s
+60 428 m (        for \(i = 0; i < callbacks.length; i += 1\) {)s
+60 416 m (            callbacks[i]\(doc\);)s
+60 404 m (        })s
+52 404 m linfn (25)rs
+filfn 60 392 m (    })s
+60 368 m (    function callReady\(\) {)s
+60 356 m (        var callbacks = readyCalls;)s
+52 344 m linfn (30)rs
+filfn 60 332 m (        if \(isPageLoaded\) {)s
+60 320 m (            //Call the DOM ready callbacks)s
+60 308 m (            if \(callbacks.length\) {)s
+60 296 m (                readyCalls = [];)s
+60 284 m (                runCallbacks\(callbacks\);)s
+52 284 m linfn (35)rs
+filfn 60 272 m (            })s
+60 260 m (        })s
+60 248 m (    })s
+60 224 m (    /**)s
+52 224 m linfn (40)rs
+filfn 60 212 m (     * Sets the page as loaded.)s
+60 200 m (     */)s
+60 188 m (    function pageLoaded\(\) {)s
+60 176 m (        if \(!isPageLoaded\) {)s
+60 164 m (            isPageLoaded = true;)s
+52 164 m linfn (45)rs
+filfn 60 152 m (            if \(scrollIntervalId\) {)s
+60 140 m (                clearInterval\(scrollIntervalId\);)s
+60 128 m (            })s
+60 104 m (            callReady\(\);)s
+52 104 m linfn (50)rs
+filfn 60 92 m (        })s
+60 80 m (    })s
+topfn 60 732 m (Friday  1 January 2016 at 05:47:35 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/domReady.js)rs
+pagfn 576 732 m (1)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 2 2
+filfn 60 692 m (    if \(isBrowser\) {)s
+52 692 m linfn (54)rs
+filfn 60 680 m (        if \(document.addEventListener\) {)s
+52 680 m linfn (55)rs
+filfn 60 668 m (            //Standards. Hooray! Assumption here that if standards based,)s
+60 656 m (            //it knows about DOMContentLoaded.)s
+60 644 m (            document.addEventListener\("DOMContentLoaded", pageLoaded, false\);)s
+60 632 m (            window.addEventListener\("load", pageLoaded, false\);)s
+60 620 m (        } else if \(window.attachEvent\) {)s
+52 620 m linfn (60)rs
+filfn 60 608 m (            window.attachEvent\("onload", pageLoaded\);)s
+60 584 m (            testDiv = document.createElement\('div'\);)s
+60 572 m (            try {)s
+60 560 m (                isTop = window.frameElement === null;)s
+52 560 m linfn (65)rs
+filfn 60 548 m (            } catch \(e\) {})s
+60 524 m (            //DOMContentLoaded approximation that uses a doScroll, as found by)s
+60 512 m (            //Diego Perini: http://javascript.nwbox.com/IEContentLoaded/,)s
+60 500 m (            //but modified by other contributors, including jdalton)s
+52 500 m linfn (70)rs
+filfn 60 488 m (            if \(testDiv.doScroll && isTop && window.external\) {)s
+60 476 m (                scrollIntervalId = setInterval\(function \(\) {)s
+60 464 m (                    try {)s
+60 452 m (                        testDiv.doScroll\(\);)s
+60 440 m (                        pageLoaded\(\);)s
+52 440 m linfn (75)rs
+filfn 60 428 m (                    } catch \(e\) {})s
+60 416 m (                }, 30\);)s
+60 404 m (            })s
+60 392 m (        })s
+52 380 m linfn (80)rs
+filfn 60 368 m (        //Check if document already complete, and if so, just trigger page load)s
+60 356 m (        //listeners. Latest webkit browsers also use "interactive", and)s
+60 344 m (        //will fire the onDOMContentLoaded before "interactive" but not after)s
+60 332 m (        //entering "interactive" or "complete". More details:)s
+60 320 m (        //http://dev.w3.org/html5/spec/the-end.html#the-end)s
+52 320 m linfn (85)rs
+filfn 60 308 m (        //http://stackoverflow.com/questions/3665561/document-readystate-of-interactive-vs-ondomcontentl\\)s
+60 296 m (oaded)s
+60 284 m (        //Hmm, this is more complicated on further use, see "firing too early")s
+60 272 m (        //bug: https://github.com/requirejs/domReady/issues/1)s
+60 260 m (        //so removing the || document.readyState === "interactive" test.)s
+60 248 m (        //There is still a window.onload binding that should get fired if)s
+52 248 m linfn (90)rs
+filfn 60 236 m (        //DOMContentLoaded is missed.)s
+60 224 m (        if \(document.readyState === "complete"\) {)s
+60 212 m (            pageLoaded\(\);)s
+60 200 m (        })s
+60 188 m (    })s
+52 188 m linfn (95)rs
+filfn 60 164 m (    /** START OF PUBLIC API **/)s
+60 140 m (    /**)s
+60 128 m (     * Registers a callback for DOM ready. If DOM is already ready, the)s
+52 128 m linfn (100)rs
+filfn 60 116 m (     * callback is called immediately.)s
+60 104 m (     * @param {Function} callback)s
+60 92 m (     */)s
+60 80 m (    function domReady\(callback\) {)s
+topfn 60 732 m (Friday  1 January 2016 at 05:47:35 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/domReady.js)rs
+pagfn 576 732 m (2)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 3 3
+filfn 60 692 m (        if \(isPageLoaded\) {)s
+52 692 m linfn (105)rs
+filfn 60 680 m (            callback\(doc\);)s
+60 668 m (        } else {)s
+60 656 m (            readyCalls.push\(callback\);)s
+60 644 m (        })s
+60 632 m (        return domReady;)s
+52 632 m linfn (110)rs
+filfn 60 620 m (    })s
+60 596 m (    domReady.version = '2.0.1';)s
+60 572 m (    /**)s
+52 572 m linfn (115)rs
+filfn 60 560 m (     * Loader Plugin API method)s
+60 548 m (     */)s
+60 536 m (    domReady.load = function \(name, req, onLoad, config\) {)s
+60 524 m (        if \(config.isBuild\) {)s
+60 512 m (            onLoad\(null\);)s
+52 512 m linfn (120)rs
+filfn 60 500 m (        } else {)s
+60 488 m (            domReady\(onLoad\);)s
+60 476 m (        })s
+60 464 m (    };)s
+52 452 m linfn (125)rs
+filfn 60 440 m (    /** END OF PUBLIC API **/)s
+60 416 m (    return domReady;)s
+60 404 m (}\);)s
+topfn 60 732 m (Friday  1 January 2016 at 05:47:35 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/domReady.js)rs
+pagfn 576 732 m (3)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 4 4
+filfn 60 692 m (/** vim: et:ts=4:sw=4:sts=4)s
+52 692 m linfn (1)rs
+filfn 60 680 m ( * @license RequireJS 2.1.22 Copyright \(c\) 2010-2015, The Dojo Foundation All Rights Reserved.)s
+60 668 m ( * Available via the MIT or new BSD license.)s
+60 656 m ( * see: http://github.com/jrburke/requirejs for details)s
+60 644 m ( */)s
+52 644 m linfn (5)rs
+filfn 60 632 m (//Not using strict: uneven strict support in browsers, #392, and causes)s
+60 620 m (//problems with requirejs.exec\(\)/transpiler plugins that may not be strict.)s
+60 608 m (/*jslint regexp: true, nomen: true, sloppy: true */)s
+60 596 m (/*global window, navigator, document, importScripts, setTimeout, opera */)s
+52 584 m linfn (10)rs
+filfn 60 572 m (var requirejs, require, define;)s
+60 560 m (\(function \(global\) {)s
+60 548 m (    var req, s, head, baseElement, dataMain, src,)s
+60 536 m (        interactiveScript, currentlyAddingScript, mainScript, subPath,)s
+60 524 m (        version = '2.1.22',)s
+52 524 m linfn (15)rs
+filfn 60 512 m (        commentRegExp = /\(\\/\\*\([\\s\\S]*?\)\\*\\/|\([^:]|^\)\\/\\/\(.*\)$\)/mg,)s
+60 500 m (        cjsRequireRegExp = /[^.]\\s*require\\s*\\\(\\s*["']\([^'"\\s]+\)["']\\s*\\\)/g,)s
+60 488 m (        jsSuffixRegExp = /\\.js$/,)s
+60 476 m (        currDirRegExp = /^\\.\\//,)s
+60 464 m (        op = Object.prototype,)s
+52 464 m linfn (20)rs
+filfn 60 452 m (        ostring = op.toString,)s
+60 440 m (        hasOwn = op.hasOwnProperty,)s
+60 428 m (        ap = Array.prototype,)s
+60 416 m (        isBrowser = !!\(typeof window !== 'undefined' && typeof navigator !== 'undefined' && window.docum\\)s
+60 404 m (ent\),)s
+60 392 m (        isWebWorker = !isBrowser && typeof importScripts !== 'undefined',)s
+52 392 m linfn (25)rs
+filfn 60 380 m (        //PS3 indicates loaded and complete, but need to wait for complete)s
+60 368 m (        //specifically. Sequence is 'loading', 'loaded', execution,)s
+60 356 m (        // then 'complete'. The UA check is unfortunate, but not sure how)s
+60 344 m (        //to feature test w/o causing perf issues.)s
+60 332 m (        readyRegExp = isBrowser && navigator.platform === 'PLAYSTATION 3' ?)s
+52 332 m linfn (30)rs
+filfn 60 320 m (                      /^complete$/ : /^\(complete|loaded\)$/,)s
+60 308 m (        defContextName = '_',)s
+60 296 m (        //Oh the tragedy, detecting opera. See the usage of isOpera for reason.)s
+60 284 m (        isOpera = typeof opera !== 'undefined' && opera.toString\(\) === '[object Opera]',)s
+60 272 m (        contexts = {},)s
+52 272 m linfn (35)rs
+filfn 60 260 m (        cfg = {},)s
+60 248 m (        globalDefQueue = [],)s
+60 236 m (        useInteractive = false;)s
+60 212 m (    function isFunction\(it\) {)s
+52 212 m linfn (40)rs
+filfn 60 200 m (        return ostring.call\(it\) === '[object Function]';)s
+60 188 m (    })s
+60 164 m (    function isArray\(it\) {)s
+60 152 m (        return ostring.call\(it\) === '[object Array]';)s
+52 152 m linfn (45)rs
+filfn 60 140 m (    })s
+60 116 m (    /**)s
+60 104 m (     * Helper function for iterating over an array. If the func returns)s
+60 92 m (     * a true value, it will break out of the loop.)s
+52 92 m linfn (50)rs
+filfn 60 80 m (     */)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (1)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 5 5
+filfn 60 692 m (    function each\(ary, func\) {)s
+52 692 m linfn (52)rs
+filfn 60 680 m (        if \(ary\) {)s
+60 668 m (            var i;)s
+60 656 m (            for \(i = 0; i < ary.length; i += 1\) {)s
+52 656 m linfn (55)rs
+filfn 60 644 m (                if \(ary[i] && func\(ary[i], i, ary\)\) {)s
+60 632 m (                    break;)s
+60 620 m (                })s
+60 608 m (            })s
+60 596 m (        })s
+52 596 m linfn (60)rs
+filfn 60 584 m (    })s
+60 560 m (    /**)s
+60 548 m (     * Helper function for iterating over an array backwards. If the func)s
+60 536 m (     * returns a true value, it will break out of the loop.)s
+52 536 m linfn (65)rs
+filfn 60 524 m (     */)s
+60 512 m (    function eachReverse\(ary, func\) {)s
+60 500 m (        if \(ary\) {)s
+60 488 m (            var i;)s
+60 476 m (            for \(i = ary.length - 1; i > -1; i -= 1\) {)s
+52 476 m linfn (70)rs
+filfn 60 464 m (                if \(ary[i] && func\(ary[i], i, ary\)\) {)s
+60 452 m (                    break;)s
+60 440 m (                })s
+60 428 m (            })s
+60 416 m (        })s
+52 416 m linfn (75)rs
+filfn 60 404 m (    })s
+60 380 m (    function hasProp\(obj, prop\) {)s
+60 368 m (        return hasOwn.call\(obj, prop\);)s
+60 356 m (    })s
+52 356 m linfn (80)rs
+filfn 60 332 m (    function getOwn\(obj, prop\) {)s
+60 320 m (        return hasProp\(obj, prop\) && obj[prop];)s
+60 308 m (    })s
+52 296 m linfn (85)rs
+filfn 60 284 m (    /**)s
+60 272 m (     * Cycles over properties in an object and calls a function for each)s
+60 260 m (     * property value. If the function returns a truthy value, then the)s
+60 248 m (     * iteration is stopped.)s
+60 236 m (     */)s
+52 236 m linfn (90)rs
+filfn 60 224 m (    function eachProp\(obj, func\) {)s
+60 212 m (        var prop;)s
+60 200 m (        for \(prop in obj\) {)s
+60 188 m (            if \(hasProp\(obj, prop\)\) {)s
+60 176 m (                if \(func\(obj[prop], prop\)\) {)s
+52 176 m linfn (95)rs
+filfn 60 164 m (                    break;)s
+60 152 m (                })s
+60 140 m (            })s
+60 128 m (        })s
+60 116 m (    })s
+52 116 m linfn (100)rs
+filfn 60 92 m (    /**)s
+60 80 m (     * Simple function to mix in properties from source into target,)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (2)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 6 6
+filfn 60 692 m (     * but only if target does not already have a property of the same name.)s
+52 692 m linfn (104)rs
+filfn 60 680 m (     */)s
+52 680 m linfn (105)rs
+filfn 60 668 m (    function mixin\(target, source, force, deepStringMixin\) {)s
+60 656 m (        if \(source\) {)s
+60 644 m (            eachProp\(source, function \(value, prop\) {)s
+60 632 m (                if \(force || !hasProp\(target, prop\)\) {)s
+60 620 m (                    if \(deepStringMixin && typeof value === 'object' && value &&)s
+52 620 m linfn (110)rs
+filfn 60 608 m (                        !isArray\(value\) && !isFunction\(value\) &&)s
+60 596 m (                        !\(value instanceof RegExp\)\) {)s
+60 572 m (                        if \(!target[prop]\) {)s
+60 560 m (                            target[prop] = {};)s
+52 560 m linfn (115)rs
+filfn 60 548 m (                        })s
+60 536 m (                        mixin\(target[prop], value, force, deepStringMixin\);)s
+60 524 m (                    } else {)s
+60 512 m (                        target[prop] = value;)s
+60 500 m (                    })s
+52 500 m linfn (120)rs
+filfn 60 488 m (                })s
+60 476 m (            }\);)s
+60 464 m (        })s
+60 452 m (        return target;)s
+60 440 m (    })s
+52 440 m linfn (125)rs
+filfn 60 416 m (    //Similar to Function.prototype.bind, but the 'this' object is specified)s
+60 404 m (    //first, since it is easier to read/figure out what 'this' will be.)s
+60 392 m (    function bind\(obj, fn\) {)s
+60 380 m (        return function \(\) {)s
+52 380 m linfn (130)rs
+filfn 60 368 m (            return fn.apply\(obj, arguments\);)s
+60 356 m (        };)s
+60 344 m (    })s
+60 320 m (    function scripts\(\) {)s
+52 320 m linfn (135)rs
+filfn 60 308 m (        return document.getElementsByTagName\('script'\);)s
+60 296 m (    })s
+60 272 m (    function defaultOnError\(err\) {)s
+60 260 m (        throw err;)s
+52 260 m linfn (140)rs
+filfn 60 248 m (    })s
+60 224 m (    //Allow getting a global that is expressed in)s
+60 212 m (    //dot notation, like 'a.b.c'.)s
+60 200 m (    function getGlobal\(value\) {)s
+52 200 m linfn (145)rs
+filfn 60 188 m (        if \(!value\) {)s
+60 176 m (            return value;)s
+60 164 m (        })s
+60 152 m (        var g = global;)s
+60 140 m (        each\(value.split\('.'\), function \(part\) {)s
+52 140 m linfn (150)rs
+filfn 60 128 m (            g = g[part];)s
+60 116 m (        }\);)s
+60 104 m (        return g;)s
+60 92 m (    })s
+52 80 m linfn (155)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (3)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 7 7
+filfn 60 692 m (    /**)s
+52 692 m linfn (156)rs
+filfn 60 680 m (     * Constructs an error with a pointer to an URL with more information.)s
+60 668 m (     * @param {String} id the error ID that maps to an ID on a web page.)s
+60 656 m (     * @param {String} message human readable error.)s
+60 644 m (     * @param {Error} [err] the original error, if there is one.)s
+52 644 m linfn (160)rs
+filfn 60 632 m (     *)s
+60 620 m (     * @returns {Error})s
+60 608 m (     */)s
+60 596 m (    function makeError\(id, msg, err, requireModules\) {)s
+60 584 m (        var e = new Error\(msg + '\\nhttp://requirejs.org/docs/errors.html#' + id\);)s
+52 584 m linfn (165)rs
+filfn 60 572 m (        e.requireType = id;)s
+60 560 m (        e.requireModules = requireModules;)s
+60 548 m (        if \(err\) {)s
+60 536 m (            e.originalError = err;)s
+60 524 m (        })s
+52 524 m linfn (170)rs
+filfn 60 512 m (        return e;)s
+60 500 m (    })s
+60 476 m (    if \(typeof define !== 'undefined'\) {)s
+60 464 m (        //If a define is already in play via another AMD loader,)s
+52 464 m linfn (175)rs
+filfn 60 452 m (        //do not overwrite.)s
+60 440 m (        return;)s
+60 428 m (    })s
+60 404 m (    if \(typeof requirejs !== 'undefined'\) {)s
+52 404 m linfn (180)rs
+filfn 60 392 m (        if \(isFunction\(requirejs\)\) {)s
+60 380 m (            //Do not overwrite an existing requirejs instance.)s
+60 368 m (            return;)s
+60 356 m (        })s
+60 344 m (        cfg = requirejs;)s
+52 344 m linfn (185)rs
+filfn 60 332 m (        requirejs = undefined;)s
+60 320 m (    })s
+60 296 m (    //Allow for a require config object)s
+60 284 m (    if \(typeof require !== 'undefined' && !isFunction\(require\)\) {)s
+52 284 m linfn (190)rs
+filfn 60 272 m (        //assume it is a config object.)s
+60 260 m (        cfg = require;)s
+60 248 m (        require = undefined;)s
+60 236 m (    })s
+52 224 m linfn (195)rs
+filfn 60 212 m (    function newContext\(contextName\) {)s
+60 200 m (        var inCheckLoaded, Module, context, handlers,)s
+60 188 m (            checkLoadedTimeoutId,)s
+60 176 m (            config = {)s
+60 164 m (                //Defaults. Do not set a default for map)s
+52 164 m linfn (200)rs
+filfn 60 152 m (                //config to speed up normalize\(\), which)s
+60 140 m (                //will run faster if there is no default.)s
+60 128 m (                waitSeconds: 7,)s
+60 116 m (                baseUrl: './',)s
+60 104 m (                paths: {},)s
+52 104 m linfn (205)rs
+filfn 60 92 m (                bundles: {},)s
+60 80 m (                pkgs: {},)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (4)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 8 8
+filfn 60 692 m (                shim: {},)s
+52 692 m linfn (208)rs
+filfn 60 680 m (                config: {})s
+60 668 m (            },)s
+52 668 m linfn (210)rs
+filfn 60 656 m (            registry = {},)s
+60 644 m (            //registry of just enabled modules, to speed)s
+60 632 m (            //cycle breaking code when lots of modules)s
+60 620 m (            //are registered, but not activated.)s
+60 608 m (            enabledRegistry = {},)s
+52 608 m linfn (215)rs
+filfn 60 596 m (            undefEvents = {},)s
+60 584 m (            defQueue = [],)s
+60 572 m (            defined = {},)s
+60 560 m (            urlFetched = {},)s
+60 548 m (            bundlesMap = {},)s
+52 548 m linfn (220)rs
+filfn 60 536 m (            requireCounter = 1,)s
+60 524 m (            unnormalizedCounter = 1;)s
+60 500 m (        /**)s
+60 488 m (         * Trims the . and .. from an array of path segments.)s
+52 488 m linfn (225)rs
+filfn 60 476 m (         * It will keep a leading path segment if a .. will become)s
+60 464 m (         * the first path segment, to help with module name lookups,)s
+60 452 m (         * which act like paths, but can be remapped. But the end result,)s
+60 440 m (         * all paths that use this function should look normalized.)s
+60 428 m (         * NOTE: this method MODIFIES the input array.)s
+52 428 m linfn (230)rs
+filfn 60 416 m (         * @param {Array} ary the array of path segments.)s
+60 404 m (         */)s
+60 392 m (        function trimDots\(ary\) {)s
+60 380 m (            var i, part;)s
+60 368 m (            for \(i = 0; i < ary.length; i++\) {)s
+52 368 m linfn (235)rs
+filfn 60 356 m (                part = ary[i];)s
+60 344 m (                if \(part === '.'\) {)s
+60 332 m (                    ary.splice\(i, 1\);)s
+60 320 m (                    i -= 1;)s
+60 308 m (                } else if \(part === '..'\) {)s
+52 308 m linfn (240)rs
+filfn 60 296 m (                    // If at the start, or previous value is still ..,)s
+60 284 m (                    // keep them so that when converted to a path it may)s
+60 272 m (                    // still work when converted to a path, even though)s
+60 260 m (                    // as an ID it is less than ideal. In larger point)s
+60 248 m (                    // releases, may be better to just kick out an error.)s
+52 248 m linfn (245)rs
+filfn 60 236 m (                    if \(i === 0 || \(i === 1 && ary[2] === '..'\) || ary[i - 1] === '..'\) {)s
+60 224 m (                        continue;)s
+60 212 m (                    } else if \(i > 0\) {)s
+60 200 m (                        ary.splice\(i - 1, 2\);)s
+60 188 m (                        i -= 2;)s
+52 188 m linfn (250)rs
+filfn 60 176 m (                    })s
+60 164 m (                })s
+60 152 m (            })s
+60 140 m (        })s
+52 128 m linfn (255)rs
+filfn 60 116 m (        /**)s
+60 104 m (         * Given a relative module name, like ./something, normalize it to)s
+60 92 m (         * a real name that can be mapped to a path.)s
+60 80 m (         * @param {String} name the relative name)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (5)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 9 9
+filfn 60 692 m (         * @param {String} baseName a real name that the name arg is relative)s
+52 692 m linfn (260)rs
+filfn 60 680 m (         * to.)s
+60 668 m (         * @param {Boolean} applyMap apply the map config to the value. Should)s
+60 656 m (         * only be done if this normalization is for a dependency ID.)s
+60 644 m (         * @returns {String} normalized name)s
+60 632 m (         */)s
+52 632 m linfn (265)rs
+filfn 60 620 m (        function normalize\(name, baseName, applyMap\) {)s
+60 608 m (            var pkgMain, mapValue, nameParts, i, j, nameSegment, lastIndex,)s
+60 596 m (                foundMap, foundI, foundStarMap, starI, normalizedBaseParts,)s
+60 584 m (                baseParts = \(baseName && baseName.split\('/'\)\),)s
+60 572 m (                map = config.map,)s
+52 572 m linfn (270)rs
+filfn 60 560 m (                starMap = map && map['*'];)s
+60 536 m (            //Adjust any relative paths.)s
+60 524 m (            if \(name\) {)s
+60 512 m (                name = name.split\('/'\);)s
+52 512 m linfn (275)rs
+filfn 60 500 m (                lastIndex = name.length - 1;)s
+60 476 m (                // If wanting node ID compatibility, strip .js from end)s
+60 464 m (                // of IDs. Have to do this here, and not in nameToUrl)s
+60 452 m (                // because node allows either .js or non .js to map)s
+52 452 m linfn (280)rs
+filfn 60 440 m (                // to same file.)s
+60 428 m (                if \(config.nodeIdCompat && jsSuffixRegExp.test\(name[lastIndex]\)\) {)s
+60 416 m (                    name[lastIndex] = name[lastIndex].replace\(jsSuffixRegExp, ''\);)s
+60 404 m (                })s
+52 392 m linfn (285)rs
+filfn 60 380 m (                // Starts with a '.' so need the baseName)s
+60 368 m (                if \(name[0].charAt\(0\) === '.' && baseParts\) {)s
+60 356 m (                    //Convert baseName to array, and lop off the last part,)s
+60 344 m (                    //so that . matches that 'directory' and not name of the baseName's)s
+60 332 m (                    //module. For instance, baseName of 'one/two/three', maps to)s
+52 332 m linfn (290)rs
+filfn 60 320 m (                    //'one/two/three.js', but we want the directory, 'one/two' for)s
+60 308 m (                    //this normalization.)s
+60 296 m (                    normalizedBaseParts = baseParts.slice\(0, baseParts.length - 1\);)s
+60 284 m (                    name = normalizedBaseParts.concat\(name\);)s
+60 272 m (                })s
+52 272 m linfn (295)rs
+filfn 60 248 m (                trimDots\(name\);)s
+60 236 m (                name = name.join\('/'\);)s
+60 224 m (            })s
+52 212 m linfn (300)rs
+filfn 60 200 m (            //Apply map config if available.)s
+60 188 m (            if \(applyMap && map && \(baseParts || starMap\)\) {)s
+60 176 m (                nameParts = name.split\('/'\);)s
+60 152 m (                outerLoop: for \(i = nameParts.length; i > 0; i -= 1\) {)s
+52 152 m linfn (305)rs
+filfn 60 140 m (                    nameSegment = nameParts.slice\(0, i\).join\('/'\);)s
+60 116 m (                    if \(baseParts\) {)s
+60 104 m (                        //Find the longest baseName segment match in the config.)s
+60 92 m (                        //So, do joins on the biggest to smallest lengths of baseParts.)s
+52 92 m linfn (310)rs
+filfn 60 80 m (                        for \(j = baseParts.length; j > 0; j -= 1\) {)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (6)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 10 10
+filfn 60 692 m (                            mapValue = getOwn\(map, baseParts.slice\(0, j\).join\('/'\)\);)s
+52 692 m linfn (312)rs
+filfn 60 668 m (                            //baseName segment has config, find if it has one for)s
+60 656 m (                            //this name.)s
+52 656 m linfn (315)rs
+filfn 60 644 m (                            if \(mapValue\) {)s
+60 632 m (                                mapValue = getOwn\(mapValue, nameSegment\);)s
+60 620 m (                                if \(mapValue\) {)s
+60 608 m (                                    //Match, update name to the new value.)s
+60 596 m (                                    foundMap = mapValue;)s
+52 596 m linfn (320)rs
+filfn 60 584 m (                                    foundI = i;)s
+60 572 m (                                    break outerLoop;)s
+60 560 m (                                })s
+60 548 m (                            })s
+60 536 m (                        })s
+52 536 m linfn (325)rs
+filfn 60 524 m (                    })s
+60 500 m (                    //Check for a star map match, but just hold on to it,)s
+60 488 m (                    //if there is a shorter segment match later in a matching)s
+60 476 m (                    //config, then favor over this star map.)s
+52 476 m linfn (330)rs
+filfn 60 464 m (                    if \(!foundStarMap && starMap && getOwn\(starMap, nameSegment\)\) {)s
+60 452 m (                        foundStarMap = getOwn\(starMap, nameSegment\);)s
+60 440 m (                        starI = i;)s
+60 428 m (                    })s
+60 416 m (                })s
+52 416 m linfn (335)rs
+filfn 60 392 m (                if \(!foundMap && foundStarMap\) {)s
+60 380 m (                    foundMap = foundStarMap;)s
+60 368 m (                    foundI = starI;)s
+60 356 m (                })s
+52 356 m linfn (340)rs
+filfn 60 332 m (                if \(foundMap\) {)s
+60 320 m (                    nameParts.splice\(0, foundI, foundMap\);)s
+60 308 m (                    name = nameParts.join\('/'\);)s
+60 296 m (                })s
+52 296 m linfn (345)rs
+filfn 60 284 m (            })s
+60 260 m (            // If the name points to a package's name, use)s
+60 248 m (            // the package main instead.)s
+60 236 m (            pkgMain = getOwn\(config.pkgs, name\);)s
+52 236 m linfn (350)rs
+filfn 60 212 m (            return pkgMain ? pkgMain : name;)s
+60 200 m (        })s
+60 176 m (        function removeScript\(name\) {)s
+52 176 m linfn (355)rs
+filfn 60 164 m (            if \(isBrowser\) {)s
+60 152 m (                each\(scripts\(\), function \(scriptNode\) {)s
+60 140 m (                    if \(scriptNode.getAttribute\('data-requiremodule'\) === name &&)s
+60 128 m (                            scriptNode.getAttribute\('data-requirecontext'\) === context.contextName\) {)s
+60 116 m (                        scriptNode.parentNode.removeChild\(scriptNode\);)s
+52 116 m linfn (360)rs
+filfn 60 104 m (                        return true;)s
+60 92 m (                    })s
+60 80 m (                }\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (7)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 11 11
+filfn 60 692 m (            })s
+52 692 m linfn (364)rs
+filfn 60 680 m (        })s
+52 680 m linfn (365)rs
+filfn 60 656 m (        function hasPathFallback\(id\) {)s
+60 644 m (            var pathConfig = getOwn\(config.paths, id\);)s
+60 632 m (            if \(pathConfig && isArray\(pathConfig\) && pathConfig.length > 1\) {)s
+60 620 m (                //Pop off the first array value, since it failed, and)s
+52 620 m linfn (370)rs
+filfn 60 608 m (                //retry)s
+60 596 m (                pathConfig.shift\(\);)s
+60 584 m (                context.require.undef\(id\);)s
+60 560 m (                //Custom require that does not do map translation, since)s
+52 560 m linfn (375)rs
+filfn 60 548 m (                //ID is "absolute", already mapped/resolved.)s
+60 536 m (                context.makeRequire\(null, {)s
+60 524 m (                    skipMap: true)s
+60 512 m (                }\)\([id]\);)s
+52 500 m linfn (380)rs
+filfn 60 488 m (                return true;)s
+60 476 m (            })s
+60 464 m (        })s
+60 440 m (        //Turns a plugin!resource to [plugin, resource])s
+52 440 m linfn (385)rs
+filfn 60 428 m (        //with the plugin being undefined if the name)s
+60 416 m (        //did not have a plugin prefix.)s
+60 404 m (        function splitPrefix\(name\) {)s
+60 392 m (            var prefix,)s
+60 380 m (                index = name ? name.indexOf\('!'\) : -1;)s
+52 380 m linfn (390)rs
+filfn 60 368 m (            if \(index > -1\) {)s
+60 356 m (                prefix = name.substring\(0, index\);)s
+60 344 m (                name = name.substring\(index + 1, name.length\);)s
+60 332 m (            })s
+60 320 m (            return [prefix, name];)s
+52 320 m linfn (395)rs
+filfn 60 308 m (        })s
+60 284 m (        /**)s
+60 272 m (         * Creates a module mapping that includes plugin prefix, module)s
+60 260 m (         * name, and path. If parentModuleMap is provided it will)s
+52 260 m linfn (400)rs
+filfn 60 248 m (         * also normalize the name via require.normalize\(\))s
+60 236 m (         *)s
+60 224 m (         * @param {String} name the module name)s
+60 212 m (         * @param {String} [parentModuleMap] parent module map)s
+60 200 m (         * for the module name, used to resolve relative names.)s
+52 200 m linfn (405)rs
+filfn 60 188 m (         * @param {Boolean} isNormalized: is the ID already normalized.)s
+60 176 m (         * This is true if this call is done for a define\(\) module ID.)s
+60 164 m (         * @param {Boolean} applyMap: apply the map config to the ID.)s
+60 152 m (         * Should only be true if this map is for a dependency.)s
+60 140 m (         *)s
+52 140 m linfn (410)rs
+filfn 60 128 m (         * @returns {Object})s
+60 116 m (         */)s
+60 104 m (        function makeModuleMap\(name, parentModuleMap, isNormalized, applyMap\) {)s
+60 92 m (            var url, pluginModule, suffix, nameParts,)s
+60 80 m (                prefix = null,)s
+52 80 m linfn (415)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (8)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 12 12
+filfn 60 692 m (                parentName = parentModuleMap ? parentModuleMap.name : null,)s
+52 692 m linfn (416)rs
+filfn 60 680 m (                originalName = name,)s
+60 668 m (                isDefine = true,)s
+60 656 m (                normalizedName = '';)s
+52 644 m linfn (420)rs
+filfn 60 632 m (            //If no name, then it means it is a require call, generate an)s
+60 620 m (            //internal name.)s
+60 608 m (            if \(!name\) {)s
+60 596 m (                isDefine = false;)s
+60 584 m (                name = '_@r' + \(requireCounter += 1\);)s
+52 584 m linfn (425)rs
+filfn 60 572 m (            })s
+60 548 m (            nameParts = splitPrefix\(name\);)s
+60 536 m (            prefix = nameParts[0];)s
+60 524 m (            name = nameParts[1];)s
+52 524 m linfn (430)rs
+filfn 60 500 m (            if \(prefix\) {)s
+60 488 m (                prefix = normalize\(prefix, parentName, applyMap\);)s
+60 476 m (                pluginModule = getOwn\(defined, prefix\);)s
+60 464 m (            })s
+52 464 m linfn (435)rs
+filfn 60 440 m (            //Account for relative paths if there is a base name.)s
+60 428 m (            if \(name\) {)s
+60 416 m (                if \(prefix\) {)s
+60 404 m (                    if \(pluginModule && pluginModule.normalize\) {)s
+52 404 m linfn (440)rs
+filfn 60 392 m (                        //Plugin is loaded, use its normalize method.)s
+60 380 m (                        normalizedName = pluginModule.normalize\(name, function \(name\) {)s
+60 368 m (                            return normalize\(name, parentName, applyMap\);)s
+60 356 m (                        }\);)s
+60 344 m (                    } else {)s
+52 344 m linfn (445)rs
+filfn 60 332 m (                        // If nested plugin references, then do not try to)s
+60 320 m (                        // normalize, as it will not normalize correctly. This)s
+60 308 m (                        // places a restriction on resourceIds, and the longer)s
+60 296 m (                        // term solution is not to normalize until plugins are)s
+60 284 m (                        // loaded and all normalizations to allow for async)s
+52 284 m linfn (450)rs
+filfn 60 272 m (                        // loading of a loader plugin. But for now, fixes the)s
+60 260 m (                        // common uses. Details in #1131)s
+60 248 m (                        normalizedName = name.indexOf\('!'\) === -1 ?)s
+60 236 m (                                         normalize\(name, parentName, applyMap\) :)s
+60 224 m (                                         name;)s
+52 224 m linfn (455)rs
+filfn 60 212 m (                    })s
+60 200 m (                } else {)s
+60 188 m (                    //A regular module.)s
+60 176 m (                    normalizedName = normalize\(name, parentName, applyMap\);)s
+52 164 m linfn (460)rs
+filfn 60 152 m (                    //Normalized name may be a plugin ID due to map config)s
+60 140 m (                    //application in normalize. The map config values must)s
+60 128 m (                    //already be normalized, so do not need to redo that part.)s
+60 116 m (                    nameParts = splitPrefix\(normalizedName\);)s
+60 104 m (                    prefix = nameParts[0];)s
+52 104 m linfn (465)rs
+filfn 60 92 m (                    normalizedName = nameParts[1];)s
+60 80 m (                    isNormalized = true;)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (9)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 13 13
+filfn 60 692 m (                    url = context.nameToUrl\(normalizedName\);)s
+52 692 m linfn (469)rs
+filfn 60 680 m (                })s
+52 680 m linfn (470)rs
+filfn 60 668 m (            })s
+60 644 m (            //If the id is a plugin id that cannot be determined if it needs)s
+60 632 m (            //normalization, stamp it with a unique ID so two matching relative)s
+60 620 m (            //ids that may conflict can be separate.)s
+52 620 m linfn (475)rs
+filfn 60 608 m (            suffix = prefix && !pluginModule && !isNormalized ?)s
+60 596 m (                     '_unnormalized' + \(unnormalizedCounter += 1\) :)s
+60 584 m (                     '';)s
+60 560 m (            return {)s
+52 560 m linfn (480)rs
+filfn 60 548 m (                prefix: prefix,)s
+60 536 m (                name: normalizedName,)s
+60 524 m (                parentMap: parentModuleMap,)s
+60 512 m (                unnormalized: !!suffix,)s
+60 500 m (                url: url,)s
+52 500 m linfn (485)rs
+filfn 60 488 m (                originalName: originalName,)s
+60 476 m (                isDefine: isDefine,)s
+60 464 m (                id: \(prefix ?)s
+60 452 m (                        prefix + '!' + normalizedName :)s
+60 440 m (                        normalizedName\) + suffix)s
+52 440 m linfn (490)rs
+filfn 60 428 m (            };)s
+60 416 m (        })s
+60 392 m (        function getModule\(depMap\) {)s
+60 380 m (            var id = depMap.id,)s
+52 380 m linfn (495)rs
+filfn 60 368 m (                mod = getOwn\(registry, id\);)s
+60 344 m (            if \(!mod\) {)s
+60 332 m (                mod = registry[id] = new context.Module\(depMap\);)s
+60 320 m (            })s
+52 320 m linfn (500)rs
+filfn 60 296 m (            return mod;)s
+60 284 m (        })s
+60 260 m (        function on\(depMap, name, fn\) {)s
+52 260 m linfn (505)rs
+filfn 60 248 m (            var id = depMap.id,)s
+60 236 m (                mod = getOwn\(registry, id\);)s
+60 212 m (            if \(hasProp\(defined, id\) &&)s
+60 200 m (                    \(!mod || mod.defineEmitComplete\)\) {)s
+52 200 m linfn (510)rs
+filfn 60 188 m (                if \(name === 'defined'\) {)s
+60 176 m (                    fn\(defined[id]\);)s
+60 164 m (                })s
+60 152 m (            } else {)s
+60 140 m (                mod = getModule\(depMap\);)s
+52 140 m linfn (515)rs
+filfn 60 128 m (                if \(mod.error && name === 'error'\) {)s
+60 116 m (                    fn\(mod.error\);)s
+60 104 m (                } else {)s
+60 92 m (                    mod.on\(name, fn\);)s
+60 80 m (                })s
+52 80 m linfn (520)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (10)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 14 14
+filfn 60 692 m (            })s
+52 692 m linfn (521)rs
+filfn 60 680 m (        })s
+60 656 m (        function onError\(err, errback\) {)s
+60 644 m (            var ids = err.requireModules,)s
+52 644 m linfn (525)rs
+filfn 60 632 m (                notified = false;)s
+60 608 m (            if \(errback\) {)s
+60 596 m (                errback\(err\);)s
+60 584 m (            } else {)s
+52 584 m linfn (530)rs
+filfn 60 572 m (                each\(ids, function \(id\) {)s
+60 560 m (                    var mod = getOwn\(registry, id\);)s
+60 548 m (                    if \(mod\) {)s
+60 536 m (                        //Set error on module, so it skips timeout checks.)s
+60 524 m (                        mod.error = err;)s
+52 524 m linfn (535)rs
+filfn 60 512 m (                        if \(mod.events.error\) {)s
+60 500 m (                            notified = true;)s
+60 488 m (                            mod.emit\('error', err\);)s
+60 476 m (                        })s
+60 464 m (                    })s
+52 464 m linfn (540)rs
+filfn 60 452 m (                }\);)s
+60 428 m (                if \(!notified\) {)s
+60 416 m (                    req.onError\(err\);)s
+60 404 m (                })s
+52 404 m linfn (545)rs
+filfn 60 392 m (            })s
+60 380 m (        })s
+60 356 m (        /**)s
+60 344 m (         * Internal method to transfer globalQueue items to this context's)s
+52 344 m linfn (550)rs
+filfn 60 332 m (         * defQueue.)s
+60 320 m (         */)s
+60 308 m (        function takeGlobalQueue\(\) {)s
+60 296 m (            //Push all the globalDefQueue items into the context's defQueue)s
+60 284 m (            if \(globalDefQueue.length\) {)s
+52 284 m linfn (555)rs
+filfn 60 272 m (                each\(globalDefQueue, function\(queueItem\) {)s
+60 260 m (                    var id = queueItem[0];)s
+60 248 m (                    if \(typeof id === 'string'\) {)s
+60 236 m (                        context.defQueueMap[id] = true;)s
+60 224 m (                    })s
+52 224 m linfn (560)rs
+filfn 60 212 m (                    defQueue.push\(queueItem\);)s
+60 200 m (                }\);)s
+60 188 m (                globalDefQueue = [];)s
+60 176 m (            })s
+60 164 m (        })s
+52 164 m linfn (565)rs
+filfn 60 140 m (        handlers = {)s
+60 128 m (            'require': function \(mod\) {)s
+60 116 m (                if \(mod.require\) {)s
+60 104 m (                    return mod.require;)s
+52 104 m linfn (570)rs
+filfn 60 92 m (                } else {)s
+60 80 m (                    return \(mod.require = context.makeRequire\(mod.map\)\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (11)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 15 15
+filfn 60 692 m (                })s
+52 692 m linfn (573)rs
+filfn 60 680 m (            },)s
+60 668 m (            'exports': function \(mod\) {)s
+52 668 m linfn (575)rs
+filfn 60 656 m (                mod.usingExports = true;)s
+60 644 m (                if \(mod.map.isDefine\) {)s
+60 632 m (                    if \(mod.exports\) {)s
+60 620 m (                        return \(defined[mod.map.id] = mod.exports\);)s
+60 608 m (                    } else {)s
+52 608 m linfn (580)rs
+filfn 60 596 m (                        return \(mod.exports = defined[mod.map.id] = {}\);)s
+60 584 m (                    })s
+60 572 m (                })s
+60 560 m (            },)s
+60 548 m (            'module': function \(mod\) {)s
+52 548 m linfn (585)rs
+filfn 60 536 m (                if \(mod.module\) {)s
+60 524 m (                    return mod.module;)s
+60 512 m (                } else {)s
+60 500 m (                    return \(mod.module = {)s
+60 488 m (                        id: mod.map.id,)s
+52 488 m linfn (590)rs
+filfn 60 476 m (                        uri: mod.map.url,)s
+60 464 m (                        config: function \(\) {)s
+60 452 m (                            return getOwn\(config.config, mod.map.id\) || {};)s
+60 440 m (                        },)s
+60 428 m (                        exports: mod.exports || \(mod.exports = {}\))s
+52 428 m linfn (595)rs
+filfn 60 416 m (                    }\);)s
+60 404 m (                })s
+60 392 m (            })s
+60 380 m (        };)s
+52 368 m linfn (600)rs
+filfn 60 356 m (        function cleanRegistry\(id\) {)s
+60 344 m (            //Clean up machinery used for waiting modules.)s
+60 332 m (            delete registry[id];)s
+60 320 m (            delete enabledRegistry[id];)s
+60 308 m (        })s
+52 308 m linfn (605)rs
+filfn 60 284 m (        function breakCycle\(mod, traced, processed\) {)s
+60 272 m (            var id = mod.map.id;)s
+60 248 m (            if \(mod.error\) {)s
+52 248 m linfn (610)rs
+filfn 60 236 m (                mod.emit\('error', mod.error\);)s
+60 224 m (            } else {)s
+60 212 m (                traced[id] = true;)s
+60 200 m (                each\(mod.depMaps, function \(depMap, i\) {)s
+60 188 m (                    var depId = depMap.id,)s
+52 188 m linfn (615)rs
+filfn 60 176 m (                        dep = getOwn\(registry, depId\);)s
+60 152 m (                    //Only force things that have not completed)s
+60 140 m (                    //being defined, so still in the registry,)s
+60 128 m (                    //and only if it has not been matched up)s
+52 128 m linfn (620)rs
+filfn 60 116 m (                    //in the module already.)s
+60 104 m (                    if \(dep && !mod.depMatched[i] && !processed[depId]\) {)s
+60 92 m (                        if \(getOwn\(traced, depId\)\) {)s
+60 80 m (                            mod.defineDep\(i, defined[depId]\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (12)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 16 16
+filfn 60 692 m (                            mod.check\(\); //pass false?)s
+52 692 m linfn (625)rs
+filfn 60 680 m (                        } else {)s
+60 668 m (                            breakCycle\(dep, traced, processed\);)s
+60 656 m (                        })s
+60 644 m (                    })s
+60 632 m (                }\);)s
+52 632 m linfn (630)rs
+filfn 60 620 m (                processed[id] = true;)s
+60 608 m (            })s
+60 596 m (        })s
+60 572 m (        function checkLoaded\(\) {)s
+52 572 m linfn (635)rs
+filfn 60 560 m (            var err, usingPathFallback,)s
+60 548 m (                waitInterval = config.waitSeconds * 1000,)s
+60 536 m (                //It is possible to disable the wait interval by using waitSeconds of 0.)s
+60 524 m (                expired = waitInterval && \(context.startTime + waitInterval\) < new Date\(\).getTime\(\),)s
+60 512 m (                noLoads = [],)s
+52 512 m linfn (640)rs
+filfn 60 500 m (                reqCalls = [],)s
+60 488 m (                stillLoading = false,)s
+60 476 m (                needCycleCheck = true;)s
+60 452 m (            //Do not bother if this call was a result of a cycle break.)s
+52 452 m linfn (645)rs
+filfn 60 440 m (            if \(inCheckLoaded\) {)s
+60 428 m (                return;)s
+60 416 m (            })s
+60 392 m (            inCheckLoaded = true;)s
+52 392 m linfn (650)rs
+filfn 60 368 m (            //Figure out the state of all the modules.)s
+60 356 m (            eachProp\(enabledRegistry, function \(mod\) {)s
+60 344 m (                var map = mod.map,)s
+60 332 m (                    modId = map.id;)s
+52 332 m linfn (655)rs
+filfn 60 308 m (                //Skip things that are not enabled or in error state.)s
+60 296 m (                if \(!mod.enabled\) {)s
+60 284 m (                    return;)s
+60 272 m (                })s
+52 272 m linfn (660)rs
+filfn 60 248 m (                if \(!map.isDefine\) {)s
+60 236 m (                    reqCalls.push\(mod\);)s
+60 224 m (                })s
+52 212 m linfn (665)rs
+filfn 60 200 m (                if \(!mod.error\) {)s
+60 188 m (                    //If the module should be executed, and it has not)s
+60 176 m (                    //been inited and time is up, remember it.)s
+60 164 m (                    if \(!mod.inited && expired\) {)s
+60 152 m (                        if \(hasPathFallback\(modId\)\) {)s
+52 152 m linfn (670)rs
+filfn 60 140 m (                            usingPathFallback = true;)s
+60 128 m (                            stillLoading = true;)s
+60 116 m (                        } else {)s
+60 104 m (                            noLoads.push\(modId\);)s
+60 92 m (                            removeScript\(modId\);)s
+52 92 m linfn (675)rs
+filfn 60 80 m (                        })s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (13)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 17 17
+filfn 60 692 m (                    } else if \(!mod.inited && mod.fetched && map.isDefine\) {)s
+52 692 m linfn (677)rs
+filfn 60 680 m (                        stillLoading = true;)s
+60 668 m (                        if \(!map.prefix\) {)s
+60 656 m (                            //No reason to keep looking for unfinished)s
+52 656 m linfn (680)rs
+filfn 60 644 m (                            //loading. If the only stillLoading is a)s
+60 632 m (                            //plugin resource though, keep going,)s
+60 620 m (                            //because it may be that a plugin resource)s
+60 608 m (                            //is waiting on a non-plugin cycle.)s
+60 596 m (                            return \(needCycleCheck = false\);)s
+52 596 m linfn (685)rs
+filfn 60 584 m (                        })s
+60 572 m (                    })s
+60 560 m (                })s
+60 548 m (            }\);)s
+52 536 m linfn (690)rs
+filfn 60 524 m (            if \(expired && noLoads.length\) {)s
+60 512 m (                //If wait time expired, throw error of unloaded modules.)s
+60 500 m (                err = makeError\('timeout', 'Load timeout for modules: ' + noLoads, null, noLoads\);)s
+60 488 m (                err.contextName = context.contextName;)s
+60 476 m (                return onError\(err\);)s
+52 476 m linfn (695)rs
+filfn 60 464 m (            })s
+60 440 m (            //Not expired, check for a cycle.)s
+60 428 m (            if \(needCycleCheck\) {)s
+60 416 m (                each\(reqCalls, function \(mod\) {)s
+52 416 m linfn (700)rs
+filfn 60 404 m (                    breakCycle\(mod, {}, {}\);)s
+60 392 m (                }\);)s
+60 380 m (            })s
+60 356 m (            //If still waiting on loads, and the waiting load is something)s
+52 356 m linfn (705)rs
+filfn 60 344 m (            //other than a plugin resource, or there are still outstanding)s
+60 332 m (            //scripts, then just try back later.)s
+60 320 m (            if \(\(!expired || usingPathFallback\) && stillLoading\) {)s
+60 308 m (                //Something is still waiting to load. Wait for it, but only)s
+60 296 m (                //if a timeout is not already in effect.)s
+52 296 m linfn (710)rs
+filfn 60 284 m (                if \(\(isBrowser || isWebWorker\) && !checkLoadedTimeoutId\) {)s
+60 272 m (                    checkLoadedTimeoutId = setTimeout\(function \(\) {)s
+60 260 m (                        checkLoadedTimeoutId = 0;)s
+60 248 m (                        checkLoaded\(\);)s
+60 236 m (                    }, 50\);)s
+52 236 m linfn (715)rs
+filfn 60 224 m (                })s
+60 212 m (            })s
+60 188 m (            inCheckLoaded = false;)s
+60 176 m (        })s
+52 176 m linfn (720)rs
+filfn 60 152 m (        Module = function \(map\) {)s
+60 140 m (            this.events = getOwn\(undefEvents, map.id\) || {};)s
+60 128 m (            this.map = map;)s
+60 116 m (            this.shim = getOwn\(config.shim, map.id\);)s
+52 116 m linfn (725)rs
+filfn 60 104 m (            this.depExports = [];)s
+60 92 m (            this.depMaps = [];)s
+60 80 m (            this.depMatched = [];)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (14)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 18 18
+filfn 60 692 m (            this.pluginMaps = {};)s
+52 692 m linfn (729)rs
+filfn 60 680 m (            this.depCount = 0;)s
+52 680 m linfn (730)rs
+filfn 60 656 m (            /* this.exports this.factory)s
+60 644 m (               this.depMaps = [],)s
+60 632 m (               this.enabled, this.fetched)s
+60 620 m (            */)s
+52 620 m linfn (735)rs
+filfn 60 608 m (        };)s
+60 584 m (        Module.prototype = {)s
+60 572 m (            init: function \(depMaps, factory, errback, options\) {)s
+60 560 m (                options = options || {};)s
+52 560 m linfn (740)rs
+filfn 60 536 m (                //Do not do more inits if already done. Can happen if there)s
+60 524 m (                //are multiple define calls for the same module. That is not)s
+60 512 m (                //a normal, common case, but it is also not unexpected.)s
+60 500 m (                if \(this.inited\) {)s
+52 500 m linfn (745)rs
+filfn 60 488 m (                    return;)s
+60 476 m (                })s
+60 452 m (                this.factory = factory;)s
+52 440 m linfn (750)rs
+filfn 60 428 m (                if \(errback\) {)s
+60 416 m (                    //Register for errors on this module.)s
+60 404 m (                    this.on\('error', errback\);)s
+60 392 m (                } else if \(this.events.error\) {)s
+60 380 m (                    //If no errback already, but there are error listeners)s
+52 380 m linfn (755)rs
+filfn 60 368 m (                    //on this module, set up an errback to pass to the deps.)s
+60 356 m (                    errback = bind\(this, function \(err\) {)s
+60 344 m (                        this.emit\('error', err\);)s
+60 332 m (                    }\);)s
+60 320 m (                })s
+52 320 m linfn (760)rs
+filfn 60 296 m (                //Do a copy of the dependency array, so that)s
+60 284 m (                //source inputs are not modified. For example)s
+60 272 m (                //"shim" deps are passed in here directly, and)s
+60 260 m (                //doing a direct modification of the depMaps array)s
+52 260 m linfn (765)rs
+filfn 60 248 m (                //would affect that config.)s
+60 236 m (                this.depMaps = depMaps && depMaps.slice\(0\);)s
+60 212 m (                this.errback = errback;)s
+52 200 m linfn (770)rs
+filfn 60 188 m (                //Indicate this module has be initialized)s
+60 176 m (                this.inited = true;)s
+60 152 m (                this.ignore = options.ignore;)s
+52 140 m linfn (775)rs
+filfn 60 128 m (                //Could have option to init this module in enabled mode,)s
+60 116 m (                //or could have been previously marked as enabled. However,)s
+60 104 m (                //the dependencies are not known until init is called. So)s
+60 92 m (                //if enabled previously, now trigger dependencies as enabled.)s
+60 80 m (                if \(options.enabled || this.enabled\) {)s
+52 80 m linfn (780)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (15)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 19 19
+filfn 60 692 m (                    //Enable this module and dependencies.)s
+52 692 m linfn (781)rs
+filfn 60 680 m (                    //Will call this.check\(\))s
+60 668 m (                    this.enable\(\);)s
+60 656 m (                } else {)s
+60 644 m (                    this.check\(\);)s
+52 644 m linfn (785)rs
+filfn 60 632 m (                })s
+60 620 m (            },)s
+60 596 m (            defineDep: function \(i, depExports\) {)s
+60 584 m (                //Because of cycles, defined callback for a given)s
+52 584 m linfn (790)rs
+filfn 60 572 m (                //export can be called more than once.)s
+60 560 m (                if \(!this.depMatched[i]\) {)s
+60 548 m (                    this.depMatched[i] = true;)s
+60 536 m (                    this.depCount -= 1;)s
+60 524 m (                    this.depExports[i] = depExports;)s
+52 524 m linfn (795)rs
+filfn 60 512 m (                })s
+60 500 m (            },)s
+60 476 m (            fetch: function \(\) {)s
+60 464 m (                if \(this.fetched\) {)s
+52 464 m linfn (800)rs
+filfn 60 452 m (                    return;)s
+60 440 m (                })s
+60 428 m (                this.fetched = true;)s
+60 404 m (                context.startTime = \(new Date\(\)\).getTime\(\);)s
+52 404 m linfn (805)rs
+filfn 60 380 m (                var map = this.map;)s
+60 356 m (                //If the manager is for a plugin managed resource,)s
+60 344 m (                //ask the plugin to load it now.)s
+52 344 m linfn (810)rs
+filfn 60 332 m (                if \(this.shim\) {)s
+60 320 m (                    context.makeRequire\(this.map, {)s
+60 308 m (                        enableBuildCallback: true)s
+60 296 m (                    }\)\(this.shim.deps || [], bind\(this, function \(\) {)s
+60 284 m (                        return map.prefix ? this.callPlugin\(\) : this.load\(\);)s
+52 284 m linfn (815)rs
+filfn 60 272 m (                    }\)\);)s
+60 260 m (                } else {)s
+60 248 m (                    //Regular dependency.)s
+60 236 m (                    return map.prefix ? this.callPlugin\(\) : this.load\(\);)s
+60 224 m (                })s
+52 224 m linfn (820)rs
+filfn 60 212 m (            },)s
+60 188 m (            load: function \(\) {)s
+60 176 m (                var url = this.map.url;)s
+52 164 m linfn (825)rs
+filfn 60 152 m (                //Regular dependency.)s
+60 140 m (                if \(!urlFetched[url]\) {)s
+60 128 m (                    urlFetched[url] = true;)s
+60 116 m (                    context.load\(this.map.id, url\);)s
+60 104 m (                })s
+52 104 m linfn (830)rs
+filfn 60 92 m (            },)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (16)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 20 20
+filfn 60 692 m (            /**)s
+52 692 m linfn (833)rs
+filfn 60 680 m (             * Checks if the module is ready to define itself, and if so,)s
+60 668 m (             * define it.)s
+52 668 m linfn (835)rs
+filfn 60 656 m (             */)s
+60 644 m (            check: function \(\) {)s
+60 632 m (                if \(!this.enabled || this.enabling\) {)s
+60 620 m (                    return;)s
+60 608 m (                })s
+52 608 m linfn (840)rs
+filfn 60 584 m (                var err, cjsModule,)s
+60 572 m (                    id = this.map.id,)s
+60 560 m (                    depExports = this.depExports,)s
+60 548 m (                    exports = this.exports,)s
+52 548 m linfn (845)rs
+filfn 60 536 m (                    factory = this.factory;)s
+60 512 m (                if \(!this.inited\) {)s
+60 500 m (                    // Only fetch if not already in the defQueue.)s
+60 488 m (                    if \(!hasProp\(context.defQueueMap, id\)\) {)s
+52 488 m linfn (850)rs
+filfn 60 476 m (                        this.fetch\(\);)s
+60 464 m (                    })s
+60 452 m (                } else if \(this.error\) {)s
+60 440 m (                    this.emit\('error', this.error\);)s
+60 428 m (                } else if \(!this.defining\) {)s
+52 428 m linfn (855)rs
+filfn 60 416 m (                    //The factory could trigger another require call)s
+60 404 m (                    //that would result in checking this module to)s
+60 392 m (                    //define itself again. If already in the process)s
+60 380 m (                    //of doing that, skip this work.)s
+60 368 m (                    this.defining = true;)s
+52 368 m linfn (860)rs
+filfn 60 344 m (                    if \(this.depCount < 1 && !this.defined\) {)s
+60 332 m (                        if \(isFunction\(factory\)\) {)s
+60 320 m (                            try {)s
+60 308 m (                                exports = context.execCb\(id, factory, depExports, exports\);)s
+52 308 m linfn (865)rs
+filfn 60 296 m (                            } catch \(e\) {)s
+60 284 m (                                err = e;)s
+60 272 m (                            })s
+60 248 m (                            // Favor return value over exports. If node/cjs in play,)s
+52 248 m linfn (870)rs
+filfn 60 236 m (                            // then will not have a return value anyway. Favor)s
+60 224 m (                            // module.exports assignment over exports object.)s
+60 212 m (                            if \(this.map.isDefine && exports === undefined\) {)s
+60 200 m (                                cjsModule = this.module;)s
+60 188 m (                                if \(cjsModule\) {)s
+52 188 m linfn (875)rs
+filfn 60 176 m (                                    exports = cjsModule.exports;)s
+60 164 m (                                } else if \(this.usingExports\) {)s
+60 152 m (                                    //exports already set the defined value.)s
+60 140 m (                                    exports = this.exports;)s
+60 128 m (                                })s
+52 128 m linfn (880)rs
+filfn 60 116 m (                            })s
+60 92 m (                            if \(err\) {)s
+60 80 m (                                // If there is an error listener, favor passing)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (17)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 21 21
+filfn 60 692 m (                                // to that instead of throwing an error. However,)s
+52 692 m linfn (885)rs
+filfn 60 680 m (                                // only do it for define\(\)'d  modules. require)s
+60 668 m (                                // errbacks should not be called for failures in)s
+60 656 m (                                // their callbacks \(#699\). However if a global)s
+60 644 m (                                // onError is set, use that.)s
+60 632 m (                                if \(\(this.events.error && this.map.isDefine\) ||)s
+52 632 m linfn (890)rs
+filfn 60 620 m (                                    req.onError !== defaultOnError\) {)s
+60 608 m (                                    err.requireMap = this.map;)s
+60 596 m (                                    err.requireModules = this.map.isDefine ? [this.map.id] : null;)s
+60 584 m (                                    err.requireType = this.map.isDefine ? 'define' : 'require';)s
+60 572 m (                                    return onError\(\(this.error = err\)\);)s
+52 572 m linfn (895)rs
+filfn 60 560 m (                                } else if \(typeof console !== 'undefined' &&)s
+60 548 m (                                           console.error\) {)s
+60 536 m (                                    // Log the error for debugging. If promises could be)s
+60 524 m (                                    // used, this would be different, but making do.)s
+60 512 m (                                    console.error\(err\);)s
+52 512 m linfn (900)rs
+filfn 60 500 m (                                } else {)s
+60 488 m (                                    // Do not want to completely lose the error. While this)s
+60 476 m (                                    // will mess up processing and lead to similar results)s
+60 464 m (                                    // as bug 1440, it at least surfaces the error.)s
+60 452 m (                                    req.onError\(err\);)s
+52 452 m linfn (905)rs
+filfn 60 440 m (                                })s
+60 428 m (                            })s
+60 416 m (                        } else {)s
+60 404 m (                            //Just a literal value)s
+60 392 m (                            exports = factory;)s
+52 392 m linfn (910)rs
+filfn 60 380 m (                        })s
+60 356 m (                        this.exports = exports;)s
+60 332 m (                        if \(this.map.isDefine && !this.ignore\) {)s
+52 332 m linfn (915)rs
+filfn 60 320 m (                            defined[id] = exports;)s
+60 296 m (                            if \(req.onResourceLoad\) {)s
+60 284 m (                                var resLoadMaps = [];)s
+60 272 m (                                each\(this.depMaps, function \(depMap\) {)s
+52 272 m linfn (920)rs
+filfn 60 260 m (                                    resLoadMaps.push\(depMap.normalizedMap || depMap\);)s
+60 248 m (                                }\);)s
+60 236 m (                                req.onResourceLoad\(context, this.map, resLoadMaps\);)s
+60 224 m (                            })s
+60 212 m (                        })s
+52 212 m linfn (925)rs
+filfn 60 188 m (                        //Clean up)s
+60 176 m (                        cleanRegistry\(id\);)s
+60 152 m (                        this.defined = true;)s
+52 152 m linfn (930)rs
+filfn 60 140 m (                    })s
+60 116 m (                    //Finished the define stage. Allow calling check again)s
+60 104 m (                    //to allow define notifications below in the case of a)s
+60 92 m (                    //cycle.)s
+52 92 m linfn (935)rs
+filfn 60 80 m (                    this.defining = false;)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (18)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 22 22
+filfn 60 692 m (                    if \(this.defined && !this.defineEmitted\) {)s
+52 692 m linfn (938)rs
+filfn 60 680 m (                        this.defineEmitted = true;)s
+60 668 m (                        this.emit\('defined', this.exports\);)s
+52 668 m linfn (940)rs
+filfn 60 656 m (                        this.defineEmitComplete = true;)s
+60 644 m (                    })s
+60 620 m (                })s
+60 608 m (            },)s
+52 608 m linfn (945)rs
+filfn 60 584 m (            callPlugin: function \(\) {)s
+60 572 m (                var map = this.map,)s
+60 560 m (                    id = map.id,)s
+60 548 m (                    //Map already normalized the prefix.)s
+52 548 m linfn (950)rs
+filfn 60 536 m (                    pluginMap = makeModuleMap\(map.prefix\);)s
+60 512 m (                //Mark this as a dependency for this plugin, so it)s
+60 500 m (                //can be traced for cycles.)s
+60 488 m (                this.depMaps.push\(pluginMap\);)s
+52 488 m linfn (955)rs
+filfn 60 464 m (                on\(pluginMap, 'defined', bind\(this, function \(plugin\) {)s
+60 452 m (                    var load, normalizedMap, normalizedMod,)s
+60 440 m (                        bundleId = getOwn\(bundlesMap, this.map.id\),)s
+60 428 m (                        name = this.map.name,)s
+52 428 m linfn (960)rs
+filfn 60 416 m (                        parentName = this.map.parentMap ? this.map.parentMap.name : null,)s
+60 404 m (                        localRequire = context.makeRequire\(map.parentMap, {)s
+60 392 m (                            enableBuildCallback: true)s
+60 380 m (                        }\);)s
+52 368 m linfn (965)rs
+filfn 60 356 m (                    //If current map is not normalized, wait for that)s
+60 344 m (                    //normalized name to load instead of continuing.)s
+60 332 m (                    if \(this.map.unnormalized\) {)s
+60 320 m (                        //Normalize the ID if the plugin allows it.)s
+60 308 m (                        if \(plugin.normalize\) {)s
+52 308 m linfn (970)rs
+filfn 60 296 m (                            name = plugin.normalize\(name, function \(name\) {)s
+60 284 m (                                return normalize\(name, parentName, true\);)s
+60 272 m (                            }\) || '';)s
+60 260 m (                        })s
+52 248 m linfn (975)rs
+filfn 60 236 m (                        //prefix and name should already be normalized, no need)s
+60 224 m (                        //for applying map config again either.)s
+60 212 m (                        normalizedMap = makeModuleMap\(map.prefix + '!' + name,)s
+60 200 m (                                                      this.map.parentMap\);)s
+60 188 m (                        on\(normalizedMap,)s
+52 188 m linfn (980)rs
+filfn 60 176 m (                            'defined', bind\(this, function \(value\) {)s
+60 164 m (                                this.map.normalizedMap = normalizedMap;)s
+60 152 m (                                this.init\([], function \(\) { return value; }, null, {)s
+60 140 m (                                    enabled: true,)s
+60 128 m (                                    ignore: true)s
+52 128 m linfn (985)rs
+filfn 60 116 m (                                }\);)s
+60 104 m (                            }\)\);)s
+60 80 m (                        normalizedMod = getOwn\(registry, normalizedMap.id\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (19)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 23 23
+filfn 60 692 m (                        if \(normalizedMod\) {)s
+52 692 m linfn (990)rs
+filfn 60 680 m (                            //Mark this as a dependency for this plugin, so it)s
+60 668 m (                            //can be traced for cycles.)s
+60 656 m (                            this.depMaps.push\(normalizedMap\);)s
+60 632 m (                            if \(this.events.error\) {)s
+52 632 m linfn (995)rs
+filfn 60 620 m (                                normalizedMod.on\('error', bind\(this, function \(err\) {)s
+60 608 m (                                    this.emit\('error', err\);)s
+60 596 m (                                }\)\);)s
+60 584 m (                            })s
+60 572 m (                            normalizedMod.enable\(\);)s
+52 572 m linfn (1000)rs
+filfn 60 560 m (                        })s
+60 536 m (                        return;)s
+60 524 m (                    })s
+52 512 m linfn (1005)rs
+filfn 60 500 m (                    //If a paths config, then just load that file instead to)s
+60 488 m (                    //resolve the plugin, as it is built into that paths layer.)s
+60 476 m (                    if \(bundleId\) {)s
+60 464 m (                        this.map.url = context.nameToUrl\(bundleId\);)s
+60 452 m (                        this.load\(\);)s
+52 452 m linfn (1010)rs
+filfn 60 440 m (                        return;)s
+60 428 m (                    })s
+60 404 m (                    load = bind\(this, function \(value\) {)s
+60 392 m (                        this.init\([], function \(\) { return value; }, null, {)s
+52 392 m linfn (1015)rs
+filfn 60 380 m (                            enabled: true)s
+60 368 m (                        }\);)s
+60 356 m (                    }\);)s
+60 332 m (                    load.error = bind\(this, function \(err\) {)s
+52 332 m linfn (1020)rs
+filfn 60 320 m (                        this.inited = true;)s
+60 308 m (                        this.error = err;)s
+60 296 m (                        err.requireModules = [id];)s
+60 272 m (                        //Remove temp unnormalized modules for this module,)s
+52 272 m linfn (1025)rs
+filfn 60 260 m (                        //since they will never be resolved otherwise now.)s
+60 248 m (                        eachProp\(registry, function \(mod\) {)s
+60 236 m (                            if \(mod.map.id.indexOf\(id + '_unnormalized'\) === 0\) {)s
+60 224 m (                                cleanRegistry\(mod.map.id\);)s
+60 212 m (                            })s
+52 212 m linfn (1030)rs
+filfn 60 200 m (                        }\);)s
+60 176 m (                        onError\(err\);)s
+60 164 m (                    }\);)s
+52 152 m linfn (1035)rs
+filfn 60 140 m (                    //Allow plugins to load other code without having to know the)s
+60 128 m (                    //context or how to 'complete' the load.)s
+60 116 m (                    load.fromText = bind\(this, function \(text, textAlt\) {)s
+60 104 m (                        /*jslint evil: true */)s
+60 92 m (                        var moduleName = map.name,)s
+52 92 m linfn (1040)rs
+filfn 60 80 m (                            moduleMap = makeModuleMap\(moduleName\),)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (20)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 24 24
+filfn 60 692 m (                            hasInteractive = useInteractive;)s
+52 692 m linfn (1042)rs
+filfn 60 668 m (                        //As of 2.1.0, support just passing the text, to reinforce)s
+60 656 m (                        //fromText only being called once per resource. Still)s
+52 656 m linfn (1045)rs
+filfn 60 644 m (                        //support old style of passing moduleName but discard)s
+60 632 m (                        //that moduleName in favor of the internal ref.)s
+60 620 m (                        if \(textAlt\) {)s
+60 608 m (                            text = textAlt;)s
+60 596 m (                        })s
+52 596 m linfn (1050)rs
+filfn 60 572 m (                        //Turn off interactive script matching for IE for any define)s
+60 560 m (                        //calls in the text, then turn it back on at the end.)s
+60 548 m (                        if \(hasInteractive\) {)s
+60 536 m (                            useInteractive = false;)s
+52 536 m linfn (1055)rs
+filfn 60 524 m (                        })s
+60 500 m (                        //Prime the system by creating a module instance for)s
+60 488 m (                        //it.)s
+60 476 m (                        getModule\(moduleMap\);)s
+52 476 m linfn (1060)rs
+filfn 60 452 m (                        //Transfer any config to this other module.)s
+60 440 m (                        if \(hasProp\(config.config, id\)\) {)s
+60 428 m (                            config.config[moduleName] = config.config[id];)s
+60 416 m (                        })s
+52 416 m linfn (1065)rs
+filfn 60 392 m (                        try {)s
+60 380 m (                            req.exec\(text\);)s
+60 368 m (                        } catch \(e\) {)s
+60 356 m (                            return onError\(makeError\('fromtexteval',)s
+52 356 m linfn (1070)rs
+filfn 60 344 m (                                             'fromText eval for ' + id +)s
+60 332 m (                                            ' failed: ' + e,)s
+60 320 m (                                             e,)s
+60 308 m (                                             [id]\)\);)s
+60 296 m (                        })s
+52 296 m linfn (1075)rs
+filfn 60 272 m (                        if \(hasInteractive\) {)s
+60 260 m (                            useInteractive = true;)s
+60 248 m (                        })s
+52 236 m linfn (1080)rs
+filfn 60 224 m (                        //Mark this as a dependency for the plugin)s
+60 212 m (                        //resource)s
+60 200 m (                        this.depMaps.push\(moduleMap\);)s
+60 176 m (                        //Support anonymous modules.)s
+52 176 m linfn (1085)rs
+filfn 60 164 m (                        context.completeLoad\(moduleName\);)s
+60 140 m (                        //Bind the value of that module to the value for this)s
+60 128 m (                        //resource ID.)s
+60 116 m (                        localRequire\([moduleName], load\);)s
+52 116 m linfn (1090)rs
+filfn 60 104 m (                    }\);)s
+60 80 m (                    //Use parentName here since the plugin's name is not reliable,)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (21)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 25 25
+filfn 60 692 m (                    //could be some weird string with no path that actually wants to)s
+52 692 m linfn (1094)rs
+filfn 60 680 m (                    //reference the parentName's path.)s
+52 680 m linfn (1095)rs
+filfn 60 668 m (                    plugin.load\(map.name, localRequire, load, config\);)s
+60 656 m (                }\)\);)s
+60 632 m (                context.enable\(pluginMap, this\);)s
+60 620 m (                this.pluginMaps[pluginMap.id] = pluginMap;)s
+52 620 m linfn (1100)rs
+filfn 60 608 m (            },)s
+60 584 m (            enable: function \(\) {)s
+60 572 m (                enabledRegistry[this.map.id] = this;)s
+60 560 m (                this.enabled = true;)s
+52 560 m linfn (1105)rs
+filfn 60 536 m (                //Set flag mentioning that the module is enabling,)s
+60 524 m (                //so that immediate calls to the defined callbacks)s
+60 512 m (                //for dependencies do not trigger inadvertent load)s
+60 500 m (                //with the depCount still being zero.)s
+52 500 m linfn (1110)rs
+filfn 60 488 m (                this.enabling = true;)s
+60 464 m (                //Enable each dependency)s
+60 452 m (                each\(this.depMaps, bind\(this, function \(depMap, i\) {)s
+60 440 m (                    var id, mod, handler;)s
+52 440 m linfn (1115)rs
+filfn 60 416 m (                    if \(typeof depMap === 'string'\) {)s
+60 404 m (                        //Dependency needs to be converted to a depMap)s
+60 392 m (                        //and wired up to this module.)s
+60 380 m (                        depMap = makeModuleMap\(depMap,)s
+52 380 m linfn (1120)rs
+filfn 60 368 m (                                               \(this.map.isDefine ? this.map : this.map.parentMap\),)s
+60 356 m (                                               false,)s
+60 344 m (                                               !this.skipMap\);)s
+60 332 m (                        this.depMaps[i] = depMap;)s
+52 320 m linfn (1125)rs
+filfn 60 308 m (                        handler = getOwn\(handlers, depMap.id\);)s
+60 284 m (                        if \(handler\) {)s
+60 272 m (                            this.depExports[i] = handler\(this\);)s
+60 260 m (                            return;)s
+52 260 m linfn (1130)rs
+filfn 60 248 m (                        })s
+60 224 m (                        this.depCount += 1;)s
+60 200 m (                        on\(depMap, 'defined', bind\(this, function \(depExports\) {)s
+52 200 m linfn (1135)rs
+filfn 60 188 m (                            if \(this.undefed\) {)s
+60 176 m (                                return;)s
+60 164 m (                            })s
+60 152 m (                            this.defineDep\(i, depExports\);)s
+60 140 m (                            this.check\(\);)s
+52 140 m linfn (1140)rs
+filfn 60 128 m (                        }\)\);)s
+60 104 m (                        if \(this.errback\) {)s
+60 92 m (                            on\(depMap, 'error', bind\(this, this.errback\)\);)s
+60 80 m (                        } else if \(this.events.error\) {)s
+52 80 m linfn (1145)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (22)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 26 26
+filfn 60 692 m (                            // No direct errback on this module, but something)s
+52 692 m linfn (1146)rs
+filfn 60 680 m (                            // else is listening for errors, so be sure to)s
+60 668 m (                            // propagate the error correctly.)s
+60 656 m (                            on\(depMap, 'error', bind\(this, function\(err\) {)s
+60 644 m (                                this.emit\('error', err\);)s
+52 644 m linfn (1150)rs
+filfn 60 632 m (                            }\)\);)s
+60 620 m (                        })s
+60 608 m (                    })s
+60 584 m (                    id = depMap.id;)s
+52 584 m linfn (1155)rs
+filfn 60 572 m (                    mod = registry[id];)s
+60 548 m (                    //Skip special modules like 'require', 'exports', 'module')s
+60 536 m (                    //Also, don't call enable if it is already enabled,)s
+60 524 m (                    //important in circular dependency cases.)s
+52 524 m linfn (1160)rs
+filfn 60 512 m (                    if \(!hasProp\(handlers, id\) && mod && !mod.enabled\) {)s
+60 500 m (                        context.enable\(depMap, this\);)s
+60 488 m (                    })s
+60 476 m (                }\)\);)s
+52 464 m linfn (1165)rs
+filfn 60 452 m (                //Enable each plugin that is used in)s
+60 440 m (                //a dependency)s
+60 428 m (                eachProp\(this.pluginMaps, bind\(this, function \(pluginMap\) {)s
+60 416 m (                    var mod = getOwn\(registry, pluginMap.id\);)s
+60 404 m (                    if \(mod && !mod.enabled\) {)s
+52 404 m linfn (1170)rs
+filfn 60 392 m (                        context.enable\(pluginMap, this\);)s
+60 380 m (                    })s
+60 368 m (                }\)\);)s
+60 344 m (                this.enabling = false;)s
+52 344 m linfn (1175)rs
+filfn 60 320 m (                this.check\(\);)s
+60 308 m (            },)s
+60 284 m (            on: function \(name, cb\) {)s
+52 284 m linfn (1180)rs
+filfn 60 272 m (                var cbs = this.events[name];)s
+60 260 m (                if \(!cbs\) {)s
+60 248 m (                    cbs = this.events[name] = [];)s
+60 236 m (                })s
+60 224 m (                cbs.push\(cb\);)s
+52 224 m linfn (1185)rs
+filfn 60 212 m (            },)s
+60 188 m (            emit: function \(name, evt\) {)s
+60 176 m (                each\(this.events[name], function \(cb\) {)s
+60 164 m (                    cb\(evt\);)s
+52 164 m linfn (1190)rs
+filfn 60 152 m (                }\);)s
+60 140 m (                if \(name === 'error'\) {)s
+60 128 m (                    //Now that the error handler was triggered, remove)s
+60 116 m (                    //the listeners, since this broken Module instance)s
+60 104 m (                    //can stay around for a while in the registry.)s
+52 104 m linfn (1195)rs
+filfn 60 92 m (                    delete this.events[name];)s
+60 80 m (                })s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (23)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 27 27
+filfn 60 692 m (            })s
+52 692 m linfn (1198)rs
+filfn 60 680 m (        };)s
+52 668 m linfn (1200)rs
+filfn 60 656 m (        function callGetModule\(args\) {)s
+60 644 m (            //Skip modules already defined.)s
+60 632 m (            if \(!hasProp\(defined, args[0]\)\) {)s
+60 620 m (                getModule\(makeModuleMap\(args[0], null, true\)\).init\(args[1], args[2]\);)s
+60 608 m (            })s
+52 608 m linfn (1205)rs
+filfn 60 596 m (        })s
+60 572 m (        function removeListener\(node, func, name, ieName\) {)s
+60 560 m (            //Favor detachEvent because of IE9)s
+60 548 m (            //issue, see attachEvent/addEventListener comment elsewhere)s
+52 548 m linfn (1210)rs
+filfn 60 536 m (            //in this file.)s
+60 524 m (            if \(node.detachEvent && !isOpera\) {)s
+60 512 m (                //Probably IE. If not it will throw an error, which will be)s
+60 500 m (                //useful to know.)s
+60 488 m (                if \(ieName\) {)s
+52 488 m linfn (1215)rs
+filfn 60 476 m (                    node.detachEvent\(ieName, func\);)s
+60 464 m (                })s
+60 452 m (            } else {)s
+60 440 m (                node.removeEventListener\(name, func, false\);)s
+60 428 m (            })s
+52 428 m linfn (1220)rs
+filfn 60 416 m (        })s
+60 392 m (        /**)s
+60 380 m (         * Given an event from a script node, get the requirejs info from it,)s
+60 368 m (         * and then removes the event listeners on the node.)s
+52 368 m linfn (1225)rs
+filfn 60 356 m (         * @param {Event} evt)s
+60 344 m (         * @returns {Object})s
+60 332 m (         */)s
+60 320 m (        function getScriptData\(evt\) {)s
+60 308 m (            //Using currentTarget instead of target for Firefox 2.0's sake. Not)s
+52 308 m linfn (1230)rs
+filfn 60 296 m (            //all old browsers will be supported, but this one was easy enough)s
+60 284 m (            //to support and still makes sense.)s
+60 272 m (            var node = evt.currentTarget || evt.srcElement;)s
+60 248 m (            //Remove the listeners once here.)s
+52 248 m linfn (1235)rs
+filfn 60 236 m (            removeListener\(node, context.onScriptLoad, 'load', 'onreadystatechange'\);)s
+60 224 m (            removeListener\(node, context.onScriptError, 'error'\);)s
+60 200 m (            return {)s
+60 188 m (                node: node,)s
+52 188 m linfn (1240)rs
+filfn 60 176 m (                id: node && node.getAttribute\('data-requiremodule'\))s
+60 164 m (            };)s
+60 152 m (        })s
+60 128 m (        function intakeDefines\(\) {)s
+52 128 m linfn (1245)rs
+filfn 60 116 m (            var args;)s
+60 92 m (            //Any defined modules in the global queue, intake them now.)s
+60 80 m (            takeGlobalQueue\(\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (24)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 28 28
+filfn 60 692 m (            //Make sure any remaining defQueue items get properly processed.)s
+52 692 m linfn (1251)rs
+filfn 60 680 m (            while \(defQueue.length\) {)s
+60 668 m (                args = defQueue.shift\(\);)s
+60 656 m (                if \(args[0] === null\) {)s
+60 644 m (                    return onError\(makeError\('mismatch', 'Mismatched anonymous define\(\) module: ' +)s
+52 644 m linfn (1255)rs
+filfn 60 632 m (                        args[args.length - 1]\)\);)s
+60 620 m (                } else {)s
+60 608 m (                    //args are id, deps, factory. Should be normalized by the)s
+60 596 m (                    //define\(\) function.)s
+60 584 m (                    callGetModule\(args\);)s
+52 584 m linfn (1260)rs
+filfn 60 572 m (                })s
+60 560 m (            })s
+60 548 m (            context.defQueueMap = {};)s
+60 536 m (        })s
+52 524 m linfn (1265)rs
+filfn 60 512 m (        context = {)s
+60 500 m (            config: config,)s
+60 488 m (            contextName: contextName,)s
+60 476 m (            registry: registry,)s
+60 464 m (            defined: defined,)s
+52 464 m linfn (1270)rs
+filfn 60 452 m (            urlFetched: urlFetched,)s
+60 440 m (            defQueue: defQueue,)s
+60 428 m (            defQueueMap: {},)s
+60 416 m (            Module: Module,)s
+60 404 m (            makeModuleMap: makeModuleMap,)s
+52 404 m linfn (1275)rs
+filfn 60 392 m (            nextTick: req.nextTick,)s
+60 380 m (            onError: onError,)s
+60 356 m (            /**)s
+60 344 m (             * Set a configuration for the context.)s
+52 344 m linfn (1280)rs
+filfn 60 332 m (             * @param {Object} cfg config object to integrate.)s
+60 320 m (             */)s
+60 308 m (            configure: function \(cfg\) {)s
+60 296 m (                //Make sure the baseUrl ends in a slash.)s
+60 284 m (                if \(cfg.baseUrl\) {)s
+52 284 m linfn (1285)rs
+filfn 60 272 m (                    if \(cfg.baseUrl.charAt\(cfg.baseUrl.length - 1\) !== '/'\) {)s
+60 260 m (                        cfg.baseUrl += '/';)s
+60 248 m (                    })s
+60 236 m (                })s
+52 224 m linfn (1290)rs
+filfn 60 212 m (                //Save off the paths since they require special processing,)s
+60 200 m (                //they are additive.)s
+60 188 m (                var shim = config.shim,)s
+60 176 m (                    objs = {)s
+60 164 m (                        paths: true,)s
+52 164 m linfn (1295)rs
+filfn 60 152 m (                        bundles: true,)s
+60 140 m (                        config: true,)s
+60 128 m (                        map: true)s
+60 116 m (                    };)s
+52 104 m linfn (1300)rs
+filfn 60 92 m (                eachProp\(cfg, function \(value, prop\) {)s
+60 80 m (                    if \(objs[prop]\) {)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (25)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 29 29
+filfn 60 692 m (                        if \(!config[prop]\) {)s
+52 692 m linfn (1303)rs
+filfn 60 680 m (                            config[prop] = {};)s
+60 668 m (                        })s
+52 668 m linfn (1305)rs
+filfn 60 656 m (                        mixin\(config[prop], value, true, true\);)s
+60 644 m (                    } else {)s
+60 632 m (                        config[prop] = value;)s
+60 620 m (                    })s
+60 608 m (                }\);)s
+52 608 m linfn (1310)rs
+filfn 60 584 m (                //Reverse map the bundles)s
+60 572 m (                if \(cfg.bundles\) {)s
+60 560 m (                    eachProp\(cfg.bundles, function \(value, prop\) {)s
+60 548 m (                        each\(value, function \(v\) {)s
+52 548 m linfn (1315)rs
+filfn 60 536 m (                            if \(v !== prop\) {)s
+60 524 m (                                bundlesMap[v] = prop;)s
+60 512 m (                            })s
+60 500 m (                        }\);)s
+60 488 m (                    }\);)s
+52 488 m linfn (1320)rs
+filfn 60 476 m (                })s
+60 452 m (                //Merge shim)s
+60 440 m (                if \(cfg.shim\) {)s
+60 428 m (                    eachProp\(cfg.shim, function \(value, id\) {)s
+52 428 m linfn (1325)rs
+filfn 60 416 m (                        //Normalize the structure)s
+60 404 m (                        if \(isArray\(value\)\) {)s
+60 392 m (                            value = {)s
+60 380 m (                                deps: value)s
+60 368 m (                            };)s
+52 368 m linfn (1330)rs
+filfn 60 356 m (                        })s
+60 344 m (                        if \(\(value.exports || value.init\) && !value.exportsFn\) {)s
+60 332 m (                            value.exportsFn = context.makeShimExports\(value\);)s
+60 320 m (                        })s
+60 308 m (                        shim[id] = value;)s
+52 308 m linfn (1335)rs
+filfn 60 296 m (                    }\);)s
+60 284 m (                    config.shim = shim;)s
+60 272 m (                })s
+60 248 m (                //Adjust packages if necessary.)s
+52 248 m linfn (1340)rs
+filfn 60 236 m (                if \(cfg.packages\) {)s
+60 224 m (                    each\(cfg.packages, function \(pkgObj\) {)s
+60 212 m (                        var location, name;)s
+60 188 m (                        pkgObj = typeof pkgObj === 'string' ? {name: pkgObj} : pkgObj;)s
+52 188 m linfn (1345)rs
+filfn 60 164 m (                        name = pkgObj.name;)s
+60 152 m (                        location = pkgObj.location;)s
+60 140 m (                        if \(location\) {)s
+60 128 m (                            config.paths[name] = pkgObj.location;)s
+52 128 m linfn (1350)rs
+filfn 60 116 m (                        })s
+60 92 m (                        //Save pointer to main module ID for pkg name.)s
+60 80 m (                        //Remove leading dot in main, so main paths are normalized,)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (26)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 30 30
+filfn 60 692 m (                        //and remove any trailing .js, since different package)s
+52 692 m linfn (1355)rs
+filfn 60 680 m (                        //envs have different conventions: some use a module name,)s
+60 668 m (                        //some use a file name.)s
+60 656 m (                        config.pkgs[name] = pkgObj.name + '/' + \(pkgObj.main || 'main'\))s
+60 644 m (                                     .replace\(currDirRegExp, ''\))s
+60 632 m (                                     .replace\(jsSuffixRegExp, ''\);)s
+52 632 m linfn (1360)rs
+filfn 60 620 m (                    }\);)s
+60 608 m (                })s
+60 584 m (                //If there are any "waiting to execute" modules in the registry,)s
+60 572 m (                //update the maps for them, since their info, like URLs to load,)s
+52 572 m linfn (1365)rs
+filfn 60 560 m (                //may have changed.)s
+60 548 m (                eachProp\(registry, function \(mod, id\) {)s
+60 536 m (                    //If module already has init called, since it is too)s
+60 524 m (                    //late to modify them, and ignore unnormalized ones)s
+60 512 m (                    //since they are transient.)s
+52 512 m linfn (1370)rs
+filfn 60 500 m (                    if \(!mod.inited && !mod.map.unnormalized\) {)s
+60 488 m (                        mod.map = makeModuleMap\(id, null, true\);)s
+60 476 m (                    })s
+60 464 m (                }\);)s
+52 452 m linfn (1375)rs
+filfn 60 440 m (                //If a deps array or a config callback is specified, then call)s
+60 428 m (                //require with those args. This is useful when require is defined as a)s
+60 416 m (                //config object before require.js is loaded.)s
+60 404 m (                if \(cfg.deps || cfg.callback\) {)s
+60 392 m (                    context.require\(cfg.deps || [], cfg.callback\);)s
+52 392 m linfn (1380)rs
+filfn 60 380 m (                })s
+60 368 m (            },)s
+60 344 m (            makeShimExports: function \(value\) {)s
+60 332 m (                function fn\(\) {)s
+52 332 m linfn (1385)rs
+filfn 60 320 m (                    var ret;)s
+60 308 m (                    if \(value.init\) {)s
+60 296 m (                        ret = value.init.apply\(global, arguments\);)s
+60 284 m (                    })s
+60 272 m (                    return ret || \(value.exports && getGlobal\(value.exports\)\);)s
+52 272 m linfn (1390)rs
+filfn 60 260 m (                })s
+60 248 m (                return fn;)s
+60 236 m (            },)s
+60 212 m (            makeRequire: function \(relMap, options\) {)s
+52 212 m linfn (1395)rs
+filfn 60 200 m (                options = options || {};)s
+60 176 m (                function localRequire\(deps, callback, errback\) {)s
+60 164 m (                    var id, map, requireMod;)s
+52 152 m linfn (1400)rs
+filfn 60 140 m (                    if \(options.enableBuildCallback && callback && isFunction\(callback\)\) {)s
+60 128 m (                        callback.__requireJsBuild = true;)s
+60 116 m (                    })s
+60 92 m (                    if \(typeof deps === 'string'\) {)s
+52 92 m linfn (1405)rs
+filfn 60 80 m (                        if \(isFunction\(callback\)\) {)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (27)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 31 31
+filfn 60 692 m (                            //Invalid call)s
+52 692 m linfn (1407)rs
+filfn 60 680 m (                            return onError\(makeError\('requireargs', 'Invalid require call'\), errback\);)s
+60 668 m (                        })s
+52 656 m linfn (1410)rs
+filfn 60 644 m (                        //If require|exports|module are requested, get the)s
+60 632 m (                        //value for them from the special handlers. Caveat:)s
+60 620 m (                        //this only works while module is being defined.)s
+60 608 m (                        if \(relMap && hasProp\(handlers, deps\)\) {)s
+60 596 m (                            return handlers[deps]\(registry[relMap.id]\);)s
+52 596 m linfn (1415)rs
+filfn 60 584 m (                        })s
+60 560 m (                        //Synchronous access to one module. If require.get is)s
+60 548 m (                        //available \(as in the Node adapter\), prefer that.)s
+60 536 m (                        if \(req.get\) {)s
+52 536 m linfn (1420)rs
+filfn 60 524 m (                            return req.get\(context, deps, relMap, localRequire\);)s
+60 512 m (                        })s
+60 488 m (                        //Normalize module name, if it contains . or ..)s
+60 476 m (                        map = makeModuleMap\(deps, relMap, false, true\);)s
+52 476 m linfn (1425)rs
+filfn 60 464 m (                        id = map.id;)s
+60 440 m (                        if \(!hasProp\(defined, id\)\) {)s
+60 428 m (                            return onError\(makeError\('notloaded', 'Module name "' +)s
+60 416 m (                                        id +)s
+52 416 m linfn (1430)rs
+filfn 60 404 m (                                        '" has not been loaded yet for context: ' +)s
+60 392 m (                                        contextName +)s
+60 380 m (                                        \(relMap ? '' : '. Use require\([]\)'\)\)\);)s
+60 368 m (                        })s
+60 356 m (                        return defined[id];)s
+52 356 m linfn (1435)rs
+filfn 60 344 m (                    })s
+60 320 m (                    //Grab defines waiting in the global queue.)s
+60 308 m (                    intakeDefines\(\);)s
+52 296 m linfn (1440)rs
+filfn 60 284 m (                    //Mark all the dependencies as needing to be loaded.)s
+60 272 m (                    context.nextTick\(function \(\) {)s
+60 260 m (                        //Some defines could have been added since the)s
+60 248 m (                        //require call, collect them.)s
+60 236 m (                        intakeDefines\(\);)s
+52 236 m linfn (1445)rs
+filfn 60 212 m (                        requireMod = getModule\(makeModuleMap\(null, relMap\)\);)s
+60 188 m (                        //Store if map config should be applied to this require)s
+60 176 m (                        //call for dependencies.)s
+52 176 m linfn (1450)rs
+filfn 60 164 m (                        requireMod.skipMap = options.skipMap;)s
+60 140 m (                        requireMod.init\(deps, callback, errback, {)s
+60 128 m (                            enabled: true)s
+60 116 m (                        }\);)s
+52 116 m linfn (1455)rs
+filfn 60 92 m (                        checkLoaded\(\);)s
+60 80 m (                    }\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (28)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 32 32
+filfn 60 692 m (                    return localRequire;)s
+52 692 m linfn (1460)rs
+filfn 60 680 m (                })s
+60 656 m (                mixin\(localRequire, {)s
+60 644 m (                    isBrowser: isBrowser,)s
+52 632 m linfn (1465)rs
+filfn 60 620 m (                    /**)s
+60 608 m (                     * Converts a module name + .extension into an URL path.)s
+60 596 m (                     * *Requires* the use of a module name. It does not support using)s
+60 584 m (                     * plain URLs like nameToUrl.)s
+60 572 m (                     */)s
+52 572 m linfn (1470)rs
+filfn 60 560 m (                    toUrl: function \(moduleNamePlusExt\) {)s
+60 548 m (                        var ext,)s
+60 536 m (                            index = moduleNamePlusExt.lastIndexOf\('.'\),)s
+60 524 m (                            segment = moduleNamePlusExt.split\('/'\)[0],)s
+60 512 m (                            isRelative = segment === '.' || segment === '..';)s
+52 512 m linfn (1475)rs
+filfn 60 488 m (                        //Have a file extension alias, and it is not the)s
+60 476 m (                        //dots from a relative path.)s
+60 464 m (                        if \(index !== -1 && \(!isRelative || index > 1\)\) {)s
+60 452 m (                            ext = moduleNamePlusExt.substring\(index, moduleNamePlusExt.length\);)s
+52 452 m linfn (1480)rs
+filfn 60 440 m (                            moduleNamePlusExt = moduleNamePlusExt.substring\(0, index\);)s
+60 428 m (                        })s
+60 404 m (                        return context.nameToUrl\(normalize\(moduleNamePlusExt,)s
+60 392 m (                                                relMap && relMap.id, true\), ext,  true\);)s
+52 392 m linfn (1485)rs
+filfn 60 380 m (                    },)s
+60 356 m (                    defined: function \(id\) {)s
+60 344 m (                        return hasProp\(defined, makeModuleMap\(id, relMap, false, true\).id\);)s
+60 332 m (                    },)s
+52 332 m linfn (1490)rs
+filfn 60 308 m (                    specified: function \(id\) {)s
+60 296 m (                        id = makeModuleMap\(id, relMap, false, true\).id;)s
+60 284 m (                        return hasProp\(defined, id\) || hasProp\(registry, id\);)s
+60 272 m (                    })s
+52 272 m linfn (1495)rs
+filfn 60 260 m (                }\);)s
+60 236 m (                //Only allow undef on top level require calls)s
+60 224 m (                if \(!relMap\) {)s
+60 212 m (                    localRequire.undef = function \(id\) {)s
+52 212 m linfn (1500)rs
+filfn 60 200 m (                        //Bind any waiting define\(\) calls to this context,)s
+60 188 m (                        //fix for #408)s
+60 176 m (                        takeGlobalQueue\(\);)s
+60 152 m (                        var map = makeModuleMap\(id, relMap, true\),)s
+52 152 m linfn (1505)rs
+filfn 60 140 m (                            mod = getOwn\(registry, id\);)s
+60 116 m (                        mod.undefed = true;)s
+60 104 m (                        removeScript\(id\);)s
+52 92 m linfn (1510)rs
+filfn 60 80 m (                        delete defined[id];)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (29)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 33 33
+filfn 60 692 m (                        delete urlFetched[map.url];)s
+52 692 m linfn (1512)rs
+filfn 60 680 m (                        delete undefEvents[id];)s
+60 656 m (                        //Clean queued defines too. Go backwards)s
+52 656 m linfn (1515)rs
+filfn 60 644 m (                        //in array so that the splices do not)s
+60 632 m (                        //mess up the iteration.)s
+60 620 m (                        eachReverse\(defQueue, function\(args, i\) {)s
+60 608 m (                            if \(args[0] === id\) {)s
+60 596 m (                                defQueue.splice\(i, 1\);)s
+52 596 m linfn (1520)rs
+filfn 60 584 m (                            })s
+60 572 m (                        }\);)s
+60 560 m (                        delete context.defQueueMap[id];)s
+60 536 m (                        if \(mod\) {)s
+52 536 m linfn (1525)rs
+filfn 60 524 m (                            //Hold on to listeners in case the)s
+60 512 m (                            //module will be attempted to be reloaded)s
+60 500 m (                            //using a different config.)s
+60 488 m (                            if \(mod.events.defined\) {)s
+60 476 m (                                undefEvents[id] = mod.events;)s
+52 476 m linfn (1530)rs
+filfn 60 464 m (                            })s
+60 440 m (                            cleanRegistry\(id\);)s
+60 428 m (                        })s
+60 416 m (                    };)s
+52 416 m linfn (1535)rs
+filfn 60 404 m (                })s
+60 380 m (                return localRequire;)s
+60 368 m (            },)s
+52 356 m linfn (1540)rs
+filfn 60 344 m (            /**)s
+60 332 m (             * Called to enable a module if it is still in the registry)s
+60 320 m (             * awaiting enablement. A second arg, parent, the parent module,)s
+60 308 m (             * is passed in for context, when this method is overridden by)s
+60 296 m (             * the optimizer. Not shown here to keep code compact.)s
+52 296 m linfn (1545)rs
+filfn 60 284 m (             */)s
+60 272 m (            enable: function \(depMap\) {)s
+60 260 m (                var mod = getOwn\(registry, depMap.id\);)s
+60 248 m (                if \(mod\) {)s
+60 236 m (                    getModule\(depMap\).enable\(\);)s
+52 236 m linfn (1550)rs
+filfn 60 224 m (                })s
+60 212 m (            },)s
+60 188 m (            /**)s
+60 176 m (             * Internal method used by environment adapters to complete a load event.)s
+52 176 m linfn (1555)rs
+filfn 60 164 m (             * A load event could be a script load or just a load pass from a synchronous)s
+60 152 m (             * load call.)s
+60 140 m (             * @param {String} moduleName the name of the module to potentially complete.)s
+60 128 m (             */)s
+60 116 m (            completeLoad: function \(moduleName\) {)s
+52 116 m linfn (1560)rs
+filfn 60 104 m (                var found, args, mod,)s
+60 92 m (                    shim = getOwn\(config.shim, moduleName\) || {},)s
+60 80 m (                    shExports = shim.exports;)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (30)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 34 34
+filfn 60 692 m (                takeGlobalQueue\(\);)s
+52 692 m linfn (1565)rs
+filfn 60 668 m (                while \(defQueue.length\) {)s
+60 656 m (                    args = defQueue.shift\(\);)s
+60 644 m (                    if \(args[0] === null\) {)s
+60 632 m (                        args[0] = moduleName;)s
+52 632 m linfn (1570)rs
+filfn 60 620 m (                        //If already found an anonymous module and bound it)s
+60 608 m (                        //to this name, then this is some other anon module)s
+60 596 m (                        //waiting for its completeLoad to fire.)s
+60 584 m (                        if \(found\) {)s
+60 572 m (                            break;)s
+52 572 m linfn (1575)rs
+filfn 60 560 m (                        })s
+60 548 m (                        found = true;)s
+60 536 m (                    } else if \(args[0] === moduleName\) {)s
+60 524 m (                        //Found matching define call for this script!)s
+60 512 m (                        found = true;)s
+52 512 m linfn (1580)rs
+filfn 60 500 m (                    })s
+60 476 m (                    callGetModule\(args\);)s
+60 464 m (                })s
+60 452 m (                context.defQueueMap = {};)s
+52 452 m linfn (1585)rs
+filfn 60 428 m (                //Do this after the cycle of callGetModule in case the result)s
+60 416 m (                //of those calls/init calls changes the registry.)s
+60 404 m (                mod = getOwn\(registry, moduleName\);)s
+52 392 m linfn (1590)rs
+filfn 60 380 m (                if \(!found && !hasProp\(defined, moduleName\) && mod && !mod.inited\) {)s
+60 368 m (                    if \(config.enforceDefine && \(!shExports || !getGlobal\(shExports\)\)\) {)s
+60 356 m (                        if \(hasPathFallback\(moduleName\)\) {)s
+60 344 m (                            return;)s
+60 332 m (                        } else {)s
+52 332 m linfn (1595)rs
+filfn 60 320 m (                            return onError\(makeError\('nodefine',)s
+60 308 m (                                             'No define call for ' + moduleName,)s
+60 296 m (                                             null,)s
+60 284 m (                                             [moduleName]\)\);)s
+60 272 m (                        })s
+52 272 m linfn (1600)rs
+filfn 60 260 m (                    } else {)s
+60 248 m (                        //A script that does not call define\(\), so just simulate)s
+60 236 m (                        //the call for it.)s
+60 224 m (                        callGetModule\([moduleName, \(shim.deps || []\), shim.exportsFn]\);)s
+60 212 m (                    })s
+52 212 m linfn (1605)rs
+filfn 60 200 m (                })s
+60 176 m (                checkLoaded\(\);)s
+60 164 m (            },)s
+52 152 m linfn (1610)rs
+filfn 60 140 m (            /**)s
+60 128 m (             * Converts a module name to a file path. Supports cases where)s
+60 116 m (             * moduleName may actually be just an URL.)s
+60 104 m (             * Note that it **does not** call normalize on the moduleName,)s
+60 92 m (             * it is assumed to have already been normalized. This is an)s
+52 92 m linfn (1615)rs
+filfn 60 80 m (             * internal API, not a public one. Use toUrl for the public API.)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (31)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 35 35
+filfn 60 692 m (             */)s
+52 692 m linfn (1617)rs
+filfn 60 680 m (            nameToUrl: function \(moduleName, ext, skipExt\) {)s
+60 668 m (                var paths, syms, i, parentModule, url,)s
+60 656 m (                    parentPath, bundleId,)s
+52 656 m linfn (1620)rs
+filfn 60 644 m (                    pkgMain = getOwn\(config.pkgs, moduleName\);)s
+60 620 m (                if \(pkgMain\) {)s
+60 608 m (                    moduleName = pkgMain;)s
+60 596 m (                })s
+52 596 m linfn (1625)rs
+filfn 60 572 m (                bundleId = getOwn\(bundlesMap, moduleName\);)s
+60 548 m (                if \(bundleId\) {)s
+60 536 m (                    return context.nameToUrl\(bundleId, ext, skipExt\);)s
+52 536 m linfn (1630)rs
+filfn 60 524 m (                })s
+60 500 m (                //If a colon is in the URL, it indicates a protocol is used and it is just)s
+60 488 m (                //an URL to a file, or if it starts with a slash, contains a query arg \(i.e. ?\))s
+60 476 m (                //or ends with .js, then assume the user meant to use an url and not a module id.)s
+52 476 m linfn (1635)rs
+filfn 60 464 m (                //The slash is important for protocol-less URLs as well as full paths.)s
+60 452 m (                if \(req.jsExtRegExp.test\(moduleName\)\) {)s
+60 440 m (                    //Just a plain path, not module name lookup, so just return it.)s
+60 428 m (                    //Add extension if it is included. This is a bit wonky, only non-.js things pass)s
+60 416 m (                    //an extension, this method probably needs to be reworked.)s
+52 416 m linfn (1640)rs
+filfn 60 404 m (                    url = moduleName + \(ext || ''\);)s
+60 392 m (                } else {)s
+60 380 m (                    //A module that needs to be converted to a path.)s
+60 368 m (                    paths = config.paths;)s
+52 356 m linfn (1645)rs
+filfn 60 344 m (                    syms = moduleName.split\('/'\);)s
+60 332 m (                    //For each module name segment, see if there is a path)s
+60 320 m (                    //registered for it. Start with most specific name)s
+60 308 m (                    //and work up from it.)s
+60 296 m (                    for \(i = syms.length; i > 0; i -= 1\) {)s
+52 296 m linfn (1650)rs
+filfn 60 284 m (                        parentModule = syms.slice\(0, i\).join\('/'\);)s
+60 260 m (                        parentPath = getOwn\(paths, parentModule\);)s
+60 248 m (                        if \(parentPath\) {)s
+60 236 m (                            //If an array, it means there are a few choices,)s
+52 236 m linfn (1655)rs
+filfn 60 224 m (                            //Choose the one that is desired)s
+60 212 m (                            if \(isArray\(parentPath\)\) {)s
+60 200 m (                                parentPath = parentPath[0];)s
+60 188 m (                            })s
+60 176 m (                            syms.splice\(0, i, parentPath\);)s
+52 176 m linfn (1660)rs
+filfn 60 164 m (                            break;)s
+60 152 m (                        })s
+60 140 m (                    })s
+60 116 m (                    //Join the path parts together, then figure out if baseUrl is needed.)s
+52 116 m linfn (1665)rs
+filfn 60 104 m (                    url = syms.join\('/'\);)s
+60 92 m (                    url += \(ext || \(/^data\\:|\\?/.test\(url\) || skipExt ? '' : '.js'\)\);)s
+60 80 m (                    url = \(url.charAt\(0\) === '/' || url.match\(/^[\\w\\+\\.\\-]+:/\) ? '' : config.baseUrl\) + \\)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (32)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 36 36
+filfn 60 692 m (url;)s
+52 692 m linfn (1668)rs
+filfn 60 680 m (                })s
+52 668 m linfn (1670)rs
+filfn 60 656 m (                return config.urlArgs ? url +)s
+60 644 m (                                        \(\(url.indexOf\('?'\) === -1 ? '?' : '&'\) +)s
+60 632 m (                                         config.urlArgs\) : url;)s
+60 620 m (            },)s
+52 608 m linfn (1675)rs
+filfn 60 596 m (            //Delegates to req.load. Broken out as a separate function to)s
+60 584 m (            //allow overriding in the optimizer.)s
+60 572 m (            load: function \(id, url\) {)s
+60 560 m (                req.load\(context, id, url\);)s
+60 548 m (            },)s
+52 548 m linfn (1680)rs
+filfn 60 524 m (            /**)s
+60 512 m (             * Executes a module callback function. Broken out as a separate function)s
+60 500 m (             * solely to allow the build system to sequence the files in the built)s
+60 488 m (             * layer in the right sequence.)s
+52 488 m linfn (1685)rs
+filfn 60 476 m (             *)s
+60 464 m (             * @private)s
+60 452 m (             */)s
+60 440 m (            execCb: function \(name, callback, args, exports\) {)s
+60 428 m (                return callback.apply\(exports, args\);)s
+52 428 m linfn (1690)rs
+filfn 60 416 m (            },)s
+60 392 m (            /**)s
+60 380 m (             * callback for script loads, used to check status of loading.)s
+60 368 m (             *)s
+52 368 m linfn (1695)rs
+filfn 60 356 m (             * @param {Event} evt the event from the browser for the script)s
+60 344 m (             * that was loaded.)s
+60 332 m (             */)s
+60 320 m (            onScriptLoad: function \(evt\) {)s
+60 308 m (                //Using currentTarget instead of target for Firefox 2.0's sake. Not)s
+52 308 m linfn (1700)rs
+filfn 60 296 m (                //all old browsers will be supported, but this one was easy enough)s
+60 284 m (                //to support and still makes sense.)s
+60 272 m (                if \(evt.type === 'load' ||)s
+60 260 m (                        \(readyRegExp.test\(\(evt.currentTarget || evt.srcElement\).readyState\)\)\) {)s
+60 248 m (                    //Reset interactive script so a script node is not held onto for)s
+52 248 m linfn (1705)rs
+filfn 60 236 m (                    //to long.)s
+60 224 m (                    interactiveScript = null;)s
+60 200 m (                    //Pull out the name of the module and the context.)s
+60 188 m (                    var data = getScriptData\(evt\);)s
+52 188 m linfn (1710)rs
+filfn 60 176 m (                    context.completeLoad\(data.id\);)s
+60 164 m (                })s
+60 152 m (            },)s
+60 128 m (            /**)s
+52 128 m linfn (1715)rs
+filfn 60 116 m (             * Callback for script errors.)s
+60 104 m (             */)s
+60 92 m (            onScriptError: function \(evt\) {)s
+60 80 m (                var data = getScriptData\(evt\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (33)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 37 37
+filfn 60 692 m (                if \(!hasPathFallback\(data.id\)\) {)s
+52 692 m linfn (1720)rs
+filfn 60 680 m (                    var parents = [];)s
+60 668 m (                    eachProp\(registry, function\(value, key\) {)s
+60 656 m (                        if \(key.indexOf\('_@r'\) !== 0\) {)s
+60 644 m (                            each\(value.depMaps, function\(depMap\) {)s
+60 632 m (                                if \(depMap.id === data.id\) {)s
+52 632 m linfn (1725)rs
+filfn 60 620 m (                                    parents.push\(key\);)s
+60 608 m (                                })s
+60 596 m (                                return true;)s
+60 584 m (                            }\);)s
+60 572 m (                        })s
+52 572 m linfn (1730)rs
+filfn 60 560 m (                    }\);)s
+60 548 m (                    return onError\(makeError\('scripterror', 'Script error for "' + data.id +)s
+60 536 m (                                             \(parents.length ?)s
+60 524 m (                                             '", needed by: ' + parents.join\(', '\) :)s
+60 512 m (                                             '"'\), evt, [data.id]\)\);)s
+52 512 m linfn (1735)rs
+filfn 60 500 m (                })s
+60 488 m (            })s
+60 476 m (        };)s
+60 452 m (        context.require = context.makeRequire\(\);)s
+52 452 m linfn (1740)rs
+filfn 60 440 m (        return context;)s
+60 428 m (    })s
+60 404 m (    /**)s
+60 392 m (     * Main entry point.)s
+52 392 m linfn (1745)rs
+filfn 60 380 m (     *)s
+60 368 m (     * If the only argument to require is a string, then the module that)s
+60 356 m (     * is represented by that string is fetched for the appropriate context.)s
+60 344 m (     *)s
+60 332 m (     * If the first argument is an array, then it will be treated as an array)s
+52 332 m linfn (1750)rs
+filfn 60 320 m (     * of dependency string names to fetch. An optional function callback can)s
+60 308 m (     * be specified to execute when all of those dependencies are available.)s
+60 296 m (     *)s
+60 284 m (     * Make a local req variable to help Caja compliance \(it assumes things)s
+60 272 m (     * on a require that are not standardized\), and to give a short)s
+52 272 m linfn (1755)rs
+filfn 60 260 m (     * name for minification/local scope use.)s
+60 248 m (     */)s
+60 236 m (    req = requirejs = function \(deps, callback, errback, optional\) {)s
+60 212 m (        //Find the right context, use default)s
+52 212 m linfn (1760)rs
+filfn 60 200 m (        var context, config,)s
+60 188 m (            contextName = defContextName;)s
+60 164 m (        // Determine if have config object in the call.)s
+60 152 m (        if \(!isArray\(deps\) && typeof deps !== 'string'\) {)s
+52 152 m linfn (1765)rs
+filfn 60 140 m (            // deps is a config object)s
+60 128 m (            config = deps;)s
+60 116 m (            if \(isArray\(callback\)\) {)s
+60 104 m (                // Adjust args if there are dependencies)s
+60 92 m (                deps = callback;)s
+52 92 m linfn (1770)rs
+filfn 60 80 m (                callback = errback;)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (34)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 38 38
+filfn 60 692 m (                errback = optional;)s
+52 692 m linfn (1772)rs
+filfn 60 680 m (            } else {)s
+60 668 m (                deps = [];)s
+60 656 m (            })s
+52 656 m linfn (1775)rs
+filfn 60 644 m (        })s
+60 620 m (        if \(config && config.context\) {)s
+60 608 m (            contextName = config.context;)s
+60 596 m (        })s
+52 596 m linfn (1780)rs
+filfn 60 572 m (        context = getOwn\(contexts, contextName\);)s
+60 560 m (        if \(!context\) {)s
+60 548 m (            context = contexts[contextName] = req.s.newContext\(contextName\);)s
+60 536 m (        })s
+52 536 m linfn (1785)rs
+filfn 60 512 m (        if \(config\) {)s
+60 500 m (            context.configure\(config\);)s
+60 488 m (        })s
+52 476 m linfn (1790)rs
+filfn 60 464 m (        return context.require\(deps, callback, errback\);)s
+60 452 m (    };)s
+60 428 m (    /**)s
+60 416 m (     * Support require.config\(\) to make it easier to cooperate with other)s
+52 416 m linfn (1795)rs
+filfn 60 404 m (     * AMD loaders on globally agreed names.)s
+60 392 m (     */)s
+60 380 m (    req.config = function \(config\) {)s
+60 368 m (        return req\(config\);)s
+60 356 m (    };)s
+52 356 m linfn (1800)rs
+filfn 60 332 m (    /**)s
+60 320 m (     * Execute something after the current tick)s
+60 308 m (     * of the event loop. Override for other envs)s
+60 296 m (     * that have a better solution than setTimeout.)s
+52 296 m linfn (1805)rs
+filfn 60 284 m (     * @param  {Function} fn function to execute later.)s
+60 272 m (     */)s
+60 260 m (    req.nextTick = typeof setTimeout !== 'undefined' ? function \(fn\) {)s
+60 248 m (        setTimeout\(fn, 4\);)s
+60 236 m (    } : function \(fn\) { fn\(\); };)s
+52 236 m linfn (1810)rs
+filfn 60 212 m (    /**)s
+60 200 m (     * Export require as a global, but only if it does not already exist.)s
+60 188 m (     */)s
+60 176 m (    if \(!require\) {)s
+52 176 m linfn (1815)rs
+filfn 60 164 m (        require = req;)s
+60 152 m (    })s
+60 128 m (    req.version = version;)s
+52 116 m linfn (1820)rs
+filfn 60 104 m (    //Used to filter out dependencies that are already paths.)s
+60 92 m (    req.jsExtRegExp = /^\\/|:|\\?|\\.js$/;)s
+60 80 m (    req.isBrowser = isBrowser;)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (35)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 39 39
+filfn 60 692 m (    s = req.s = {)s
+52 692 m linfn (1824)rs
+filfn 60 680 m (        contexts: contexts,)s
+52 680 m linfn (1825)rs
+filfn 60 668 m (        newContext: newContext)s
+60 656 m (    };)s
+60 632 m (    //Create default context.)s
+60 620 m (    req\({}\);)s
+52 620 m linfn (1830)rs
+filfn 60 596 m (    //Exports some context-sensitive methods on global require.)s
+60 584 m (    each\([)s
+60 572 m (        'toUrl',)s
+60 560 m (        'undef',)s
+52 560 m linfn (1835)rs
+filfn 60 548 m (        'defined',)s
+60 536 m (        'specified')s
+60 524 m (    ], function \(prop\) {)s
+60 512 m (        //Reference from contexts instead of early binding to default context,)s
+60 500 m (        //so that during builds, the latest instance of the default context)s
+52 500 m linfn (1840)rs
+filfn 60 488 m (        //with its config gets used.)s
+60 476 m (        req[prop] = function \(\) {)s
+60 464 m (            var ctx = contexts[defContextName];)s
+60 452 m (            return ctx.require[prop].apply\(ctx, arguments\);)s
+60 440 m (        };)s
+52 440 m linfn (1845)rs
+filfn 60 428 m (    }\);)s
+60 404 m (    if \(isBrowser\) {)s
+60 392 m (        head = s.head = document.getElementsByTagName\('head'\)[0];)s
+60 380 m (        //If BASE tag is in play, using appendChild is a problem for IE6.)s
+52 380 m linfn (1850)rs
+filfn 60 368 m (        //When that browser dies, this can be removed. Details in this jQuery bug:)s
+60 356 m (        //http://dev.jquery.com/ticket/2709)s
+60 344 m (        baseElement = document.getElementsByTagName\('base'\)[0];)s
+60 332 m (        if \(baseElement\) {)s
+60 320 m (            head = s.head = baseElement.parentNode;)s
+52 320 m linfn (1855)rs
+filfn 60 308 m (        })s
+60 296 m (    })s
+60 272 m (    /**)s
+60 260 m (     * Any errors that require explicitly generates will be passed to this)s
+52 260 m linfn (1860)rs
+filfn 60 248 m (     * function. Intercept/override it if you want custom error handling.)s
+60 236 m (     * @param {Error} err the error object.)s
+60 224 m (     */)s
+60 212 m (    req.onError = defaultOnError;)s
+52 200 m linfn (1865)rs
+filfn 60 188 m (    /**)s
+60 176 m (     * Creates the node for the load command. Only used in browser envs.)s
+60 164 m (     */)s
+60 152 m (    req.createNode = function \(config, moduleName, url\) {)s
+60 140 m (        var node = config.xhtml ?)s
+52 140 m linfn (1870)rs
+filfn 60 128 m (                document.createElementNS\('http://www.w3.org/1999/xhtml', 'html:script'\) :)s
+60 116 m (                document.createElement\('script'\);)s
+60 104 m (        node.type = config.scriptType || 'text/javascript';)s
+60 92 m (        node.charset = 'utf-8';)s
+60 80 m (        node.async = true;)s
+52 80 m linfn (1875)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (36)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 40 40
+filfn 60 692 m (        return node;)s
+52 692 m linfn (1876)rs
+filfn 60 680 m (    };)s
+60 656 m (    /**)s
+60 644 m (     * Does the request to load a module for the browser case.)s
+52 644 m linfn (1880)rs
+filfn 60 632 m (     * Make this a separate function to allow other environments)s
+60 620 m (     * to override it.)s
+60 608 m (     *)s
+60 596 m (     * @param {Object} context the require context to find state.)s
+60 584 m (     * @param {String} moduleName the name of the module.)s
+52 584 m linfn (1885)rs
+filfn 60 572 m (     * @param {Object} url the URL to the module.)s
+60 560 m (     */)s
+60 548 m (    req.load = function \(context, moduleName, url\) {)s
+60 536 m (        var config = \(context && context.config\) || {},)s
+60 524 m (            node;)s
+52 524 m linfn (1890)rs
+filfn 60 512 m (        if \(isBrowser\) {)s
+60 500 m (            //In the browser so use a script tag)s
+60 488 m (            node = req.createNode\(config, moduleName, url\);)s
+60 476 m (            if \(config.onNodeCreated\) {)s
+60 464 m (                config.onNodeCreated\(node, config, moduleName, url\);)s
+52 464 m linfn (1895)rs
+filfn 60 452 m (            })s
+60 428 m (            node.setAttribute\('data-requirecontext', context.contextName\);)s
+60 416 m (            node.setAttribute\('data-requiremodule', moduleName\);)s
+52 404 m linfn (1900)rs
+filfn 60 392 m (            //Set up load listener. Test attachEvent first because IE9 has)s
+60 380 m (            //a subtle issue in its addEventListener and script onload firings)s
+60 368 m (            //that do not match the behavior of all other browsers with)s
+60 356 m (            //addEventListener support, which fire the onload event for a)s
+60 344 m (            //script right after the script execution. See:)s
+52 344 m linfn (1905)rs
+filfn 60 332 m (            //https://connect.microsoft.com/IE/feedback/details/648057/script-onload-event-is-not-fired-\\)s
+60 320 m (immediately-after-script-execution)s
+60 308 m (            //UNFORTUNATELY Opera implements attachEvent but does not follow the script)s
+60 296 m (            //script execution mode.)s
+60 284 m (            if \(node.attachEvent &&)s
+60 272 m (                    //Check if node.attachEvent is artificially added by custom script or)s
+52 272 m linfn (1910)rs
+filfn 60 260 m (                    //natively supported by browser)s
+60 248 m (                    //read https://github.com/jrburke/requirejs/issues/187)s
+60 236 m (                    //if we can NOT find [native code] then it must NOT natively supported.)s
+60 224 m (                    //in IE8, node.attachEvent does not have toString\(\))s
+60 212 m (                    //Note the test for "[native code" with no closing brace, see:)s
+52 212 m linfn (1915)rs
+filfn 60 200 m (                    //https://github.com/jrburke/requirejs/issues/273)s
+60 188 m (                    !\(node.attachEvent.toString && node.attachEvent.toString\(\).indexOf\('[native code'\) <\\)s
+60 176 m ( 0\) &&)s
+60 164 m (                    !isOpera\) {)s
+60 152 m (                //Probably IE. IE \(at least 6-8\) do not fire)s
+60 140 m (                //script onload right after executing the script, so)s
+52 140 m linfn (1920)rs
+filfn 60 128 m (                //we cannot tie the anonymous define call to a name.)s
+60 116 m (                //However, IE reports the script as being in 'interactive')s
+60 104 m (                //readyState at the time of the define call.)s
+60 92 m (                useInteractive = true;)s
+52 80 m linfn (1925)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (37)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 41 41
+filfn 60 692 m (                node.attachEvent\('onreadystatechange', context.onScriptLoad\);)s
+52 692 m linfn (1926)rs
+filfn 60 680 m (                //It would be great to add an error handler here to catch)s
+60 668 m (                //404s in IE9+. However, onreadystatechange will fire before)s
+60 656 m (                //the error handler, so that does not help. If addEventListener)s
+60 644 m (                //is used, then IE will fire error before load, but we cannot)s
+52 644 m linfn (1930)rs
+filfn 60 632 m (                //use that pathway given the connect.microsoft.com issue)s
+60 620 m (                //mentioned above about not doing the 'script execute,)s
+60 608 m (                //then fire the script load event listener before execute)s
+60 596 m (                //next script' that other browsers do.)s
+60 584 m (                //Best hope: IE10 fixes the issues,)s
+52 584 m linfn (1935)rs
+filfn 60 572 m (                //and then destroys all installs of IE 6-9.)s
+60 560 m (                //node.attachEvent\('onerror', context.onScriptError\);)s
+60 548 m (            } else {)s
+60 536 m (                node.addEventListener\('load', context.onScriptLoad, false\);)s
+60 524 m (                node.addEventListener\('error', context.onScriptError, false\);)s
+52 524 m linfn (1940)rs
+filfn 60 512 m (            })s
+60 500 m (            node.src = url;)s
+60 476 m (            //For some cache cases in IE 6-8, the script executes before the end)s
+60 464 m (            //of the appendChild execution, so to tie an anonymous define)s
+52 464 m linfn (1945)rs
+filfn 60 452 m (            //call to the module name \(which is stored on the node\), hold on)s
+60 440 m (            //to a reference to this node, but clear after the DOM insertion.)s
+60 428 m (            currentlyAddingScript = node;)s
+60 416 m (            if \(baseElement\) {)s
+60 404 m (                head.insertBefore\(node, baseElement\);)s
+52 404 m linfn (1950)rs
+filfn 60 392 m (            } else {)s
+60 380 m (                head.appendChild\(node\);)s
+60 368 m (            })s
+60 356 m (            currentlyAddingScript = null;)s
+52 344 m linfn (1955)rs
+filfn 60 332 m (            return node;)s
+60 320 m (        } else if \(isWebWorker\) {)s
+60 308 m (            try {)s
+60 296 m (                //In a web worker, use importScripts. This is not a very)s
+60 284 m (                //efficient use of importScripts, importScripts will block until)s
+52 284 m linfn (1960)rs
+filfn 60 272 m (                //its script is downloaded and evaluated. However, if web workers)s
+60 260 m (                //are in play, the expectation is that a build has been done so)s
+60 248 m (                //that only one script needs to be loaded anyway. This may need)s
+60 236 m (                //to be reevaluated if other use cases become common.)s
+60 224 m (                importScripts\(url\);)s
+52 224 m linfn (1965)rs
+filfn 60 200 m (                //Account for anonymous modules)s
+60 188 m (                context.completeLoad\(moduleName\);)s
+60 176 m (            } catch \(e\) {)s
+60 164 m (                context.onError\(makeError\('importscripts',)s
+52 164 m linfn (1970)rs
+filfn 60 152 m (                                'importScripts failed for ' +)s
+60 140 m (                                    moduleName + ' at ' + url,)s
+60 128 m (                                e,)s
+60 116 m (                                [moduleName]\)\);)s
+60 104 m (            })s
+52 104 m linfn (1975)rs
+filfn 60 92 m (        })s
+60 80 m (    };)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (38)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 42 42
+filfn 60 692 m (    function getInteractiveScript\(\) {)s
+52 692 m linfn (1979)rs
+filfn 60 680 m (        if \(interactiveScript && interactiveScript.readyState === 'interactive'\) {)s
+52 680 m linfn (1980)rs
+filfn 60 668 m (            return interactiveScript;)s
+60 656 m (        })s
+60 632 m (        eachReverse\(scripts\(\), function \(script\) {)s
+60 620 m (            if \(script.readyState === 'interactive'\) {)s
+52 620 m linfn (1985)rs
+filfn 60 608 m (                return \(interactiveScript = script\);)s
+60 596 m (            })s
+60 584 m (        }\);)s
+60 572 m (        return interactiveScript;)s
+60 560 m (    })s
+52 560 m linfn (1990)rs
+filfn 60 536 m (    //Look for a data-main script attribute, which could also adjust the baseUrl.)s
+60 524 m (    if \(isBrowser && !cfg.skipDataMain\) {)s
+60 512 m (        //Figure out baseUrl. Get it from the script tag with require.js in it.)s
+60 500 m (        eachReverse\(scripts\(\), function \(script\) {)s
+52 500 m linfn (1995)rs
+filfn 60 488 m (            //Set the 'head' where we can append children by)s
+60 476 m (            //using the script's parent.)s
+60 464 m (            if \(!head\) {)s
+60 452 m (                head = script.parentNode;)s
+60 440 m (            })s
+52 440 m linfn (2000)rs
+filfn 60 416 m (            //Look for a data-main attribute to set main script for the page)s
+60 404 m (            //to load. If it is there, the path to data main becomes the)s
+60 392 m (            //baseUrl, if it is not already set.)s
+60 380 m (            dataMain = script.getAttribute\('data-main'\);)s
+52 380 m linfn (2005)rs
+filfn 60 368 m (            if \(dataMain\) {)s
+60 356 m (                //Preserve dataMain in case it is a path \(i.e. contains '?'\))s
+60 344 m (                mainScript = dataMain;)s
+60 320 m (                //Set final baseUrl if there is not already an explicit one.)s
+52 320 m linfn (2010)rs
+filfn 60 308 m (                if \(!cfg.baseUrl\) {)s
+60 296 m (                    //Pull off the directory of data-main for use as the)s
+60 284 m (                    //baseUrl.)s
+60 272 m (                    src = mainScript.split\('/'\);)s
+60 260 m (                    mainScript = src.pop\(\);)s
+52 260 m linfn (2015)rs
+filfn 60 248 m (                    subPath = src.length ? src.join\('/'\)  + '/' : './';)s
+60 224 m (                    cfg.baseUrl = subPath;)s
+60 212 m (                })s
+52 200 m linfn (2020)rs
+filfn 60 188 m (                //Strip off any trailing .js since mainScript is now)s
+60 176 m (                //like a module name.)s
+60 164 m (                mainScript = mainScript.replace\(jsSuffixRegExp, ''\);)s
+60 140 m (                //If mainScript is still a path, fall back to dataMain)s
+52 140 m linfn (2025)rs
+filfn 60 128 m (                if \(req.jsExtRegExp.test\(mainScript\)\) {)s
+60 116 m (                    mainScript = dataMain;)s
+60 104 m (                })s
+60 80 m (                //Put the data-main script in the files to load.)s
+52 80 m linfn (2030)rs
+filfn topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (39)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 43 43
+filfn 60 692 m (                cfg.deps = cfg.deps ? cfg.deps.concat\(mainScript\) : [mainScript];)s
+52 692 m linfn (2031)rs
+filfn 60 668 m (                return true;)s
+60 656 m (            })s
+60 644 m (        }\);)s
+52 644 m linfn (2035)rs
+filfn 60 632 m (    })s
+60 608 m (    /**)s
+60 596 m (     * The function that handles definitions of modules. Differs from)s
+60 584 m (     * require\(\) in that a string for the module should be the first argument,)s
+52 584 m linfn (2040)rs
+filfn 60 572 m (     * and the function to execute after dependencies are loaded should)s
+60 560 m (     * return a value to define the module corresponding to the first argument's)s
+60 548 m (     * name.)s
+60 536 m (     */)s
+60 524 m (    define = function \(name, deps, callback\) {)s
+52 524 m linfn (2045)rs
+filfn 60 512 m (        var node, context;)s
+60 488 m (        //Allow for anonymous modules)s
+60 476 m (        if \(typeof name !== 'string'\) {)s
+60 464 m (            //Adjust args appropriately)s
+52 464 m linfn (2050)rs
+filfn 60 452 m (            callback = deps;)s
+60 440 m (            deps = name;)s
+60 428 m (            name = null;)s
+60 416 m (        })s
+52 404 m linfn (2055)rs
+filfn 60 392 m (        //This module may not have dependencies)s
+60 380 m (        if \(!isArray\(deps\)\) {)s
+60 368 m (            callback = deps;)s
+60 356 m (            deps = null;)s
+60 344 m (        })s
+52 344 m linfn (2060)rs
+filfn 60 320 m (        //If no name, and callback is a function, then figure out if it a)s
+60 308 m (        //CommonJS thing with dependencies.)s
+60 296 m (        if \(!deps && isFunction\(callback\)\) {)s
+60 284 m (            deps = [];)s
+52 284 m linfn (2065)rs
+filfn 60 272 m (            //Remove comments from the callback string,)s
+60 260 m (            //look for require calls, and pull them into the dependencies,)s
+60 248 m (            //but only if there are function args.)s
+60 236 m (            if \(callback.length\) {)s
+60 224 m (                callback)s
+52 224 m linfn (2070)rs
+filfn 60 212 m (                    .toString\(\))s
+60 200 m (                    .replace\(commentRegExp, ''\))s
+60 188 m (                    .replace\(cjsRequireRegExp, function \(match, dep\) {)s
+60 176 m (                        deps.push\(dep\);)s
+60 164 m (                    }\);)s
+52 164 m linfn (2075)rs
+filfn 60 140 m (                //May be a CommonJS thing even without require calls, but still)s
+60 128 m (                //could use exports, and module. Avoid doing exports and module)s
+60 116 m (                //work though if it just needs require.)s
+60 104 m (                //REQUIRES the function to expect the CommonJS variables in the)s
+52 104 m linfn (2080)rs
+filfn 60 92 m (                //order listed below.)s
+60 80 m (                deps = \(callback.length === 1 ? ['require'] : ['require', 'exports', 'module']\).concat\(d\\)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (40)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 44 44
+filfn 60 692 m (eps\);)s
+52 692 m linfn (2082)rs
+filfn 60 680 m (            })s
+60 668 m (        })s
+52 656 m linfn (2085)rs
+filfn 60 644 m (        //If in IE 6-8 and hit an anonymous define\(\) call, do the interactive)s
+60 632 m (        //work.)s
+60 620 m (        if \(useInteractive\) {)s
+60 608 m (            node = currentlyAddingScript || getInteractiveScript\(\);)s
+60 596 m (            if \(node\) {)s
+52 596 m linfn (2090)rs
+filfn 60 584 m (                if \(!name\) {)s
+60 572 m (                    name = node.getAttribute\('data-requiremodule'\);)s
+60 560 m (                })s
+60 548 m (                context = contexts[node.getAttribute\('data-requirecontext'\)];)s
+60 536 m (            })s
+52 536 m linfn (2095)rs
+filfn 60 524 m (        })s
+60 500 m (        //Always save off evaluating the def call until the script onload handler.)s
+60 488 m (        //This allows multiple modules to be in a file without prematurely)s
+60 476 m (        //tracing dependencies, and allows for anonymous module support,)s
+52 476 m linfn (2100)rs
+filfn 60 464 m (        //where the module name is not known until the script onload event)s
+60 452 m (        //occurs. If no context, use the global queue, and get it processed)s
+60 440 m (        //in the onscript load callback.)s
+60 428 m (        if \(context\) {)s
+60 416 m (            context.defQueue.push\([name, deps, callback]\);)s
+52 416 m linfn (2105)rs
+filfn 60 404 m (            context.defQueueMap[name] = true;)s
+60 392 m (        } else {)s
+60 380 m (            globalDefQueue.push\([name, deps, callback]\);)s
+60 368 m (        })s
+60 356 m (    };)s
+52 356 m linfn (2110)rs
+filfn 60 332 m (    define.amd = {)s
+60 320 m (        jQuery: true)s
+60 308 m (    };)s
+52 296 m linfn (2115)rs
+filfn 60 284 m (    /**)s
+60 272 m (     * Executes the text. Normally just uses eval, but can be modified)s
+60 260 m (     * to use a better, environment-specific call. Only used for transpiling)s
+60 248 m (     * loader plugins, not for plain JS modules.)s
+60 236 m (     * @param {String} text the text to execute/evaluate.)s
+52 236 m linfn (2120)rs
+filfn 60 224 m (     */)s
+60 212 m (    req.exec = function \(text\) {)s
+60 200 m (        /*jslint evil: true */)s
+60 188 m (        return eval\(text\);)s
+60 176 m (    };)s
+52 176 m linfn (2125)rs
+filfn 60 152 m (    //Set up with config info.)s
+60 140 m (    req\(cfg\);)s
+60 128 m (}\(this\)\);)s
+topfn 60 732 m (Friday  1 January 2016 at 09:43:15 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/require.js)rs
+pagfn 576 732 m (41)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 45 45
+filfn 60 692 m (/*jshint)s
+52 692 m linfn (1)rs
+filfn 60 680 m (    expr:   true)s
+60 668 m (*/)s
+60 656 m (/*global self, respecEvents, respecConfig */)s
+52 644 m linfn (5)rs
+filfn 60 632 m (// Module core/base-runner)s
+60 620 m (// The module in charge of running the whole processing pipeline.)s
+60 608 m (// CONFIGURATION:)s
+60 596 m (//  - trace: activate tracing for all modules)s
+60 584 m (//  - preProcess: an array of functions that get called \(with no parameters\))s
+52 584 m linfn (10)rs
+filfn 60 572 m (//      before anything else happens. This is not recommended and the feature is not)s
+60 560 m (//      tested. Use with care, if you know what you're doing. Chances are you really)s
+60 548 m (//      want to be using a new module with your own profile)s
+60 536 m (//  - postProcess: the same as preProcess but at the end and with the same caveats)s
+60 524 m (//  - afterEnd: a single function called at the end, after postProcess, with the)s
+52 524 m linfn (15)rs
+filfn 60 512 m (//      same caveats. These two coexist for historical reasons; please not that they)s
+60 500 m (//      are all considered deprecated and may all be removed.)s
+60 476 m (\(function \(GLOBAL\) {)s
+60 464 m (    // pubsub)s
+52 464 m linfn (20)rs
+filfn 60 452 m (    // freely adapted from http://higginsforpresident.net/js/static/jq.pubsub.js)s
+60 440 m (    var handlers = {})s
+60 428 m (    ,   embedded = \(top !== self\))s
+60 416 m (    ;)s
+60 404 m (    if \(!\("respecConfig" in window\)\) window.respecConfig = {};)s
+52 404 m linfn (25)rs
+filfn 60 392 m (    GLOBAL.respecEvents = {)s
+60 380 m (        pub:    function \(topic\) {)s
+60 368 m (            var args = Array.prototype.slice.call\(arguments\);)s
+60 356 m (            args.shift\(\);)s
+60 344 m (            if \(embedded && window.postMessage\) {)s
+52 344 m linfn (30)rs
+filfn 60 332 m (                // Make sure all args are structured-cloneable.)s
+60 320 m (                args = args.map\(function\(arg\) {)s
+60 308 m (                    return \(arg.stack || arg\) + '';)s
+60 296 m (                }\);)s
+60 284 m (                parent.postMessage\({ topic: topic, args: args}, "*"\);)s
+52 284 m linfn (35)rs
+filfn 60 272 m (            })s
+60 260 m (            $.each\(handlers[topic] || [], function \(\) {)s
+60 248 m (                this.apply\(GLOBAL, args\);)s
+60 236 m (            }\);)s
+60 224 m (        })s
+52 224 m linfn (40)rs
+filfn 60 212 m (    ,   sub:    function \(topic, cb\) {)s
+60 200 m (            if \(!handlers[topic]\) handlers[topic] = [];)s
+60 188 m (            handlers[topic].push\(cb\);)s
+60 176 m (            return [topic, cb];)s
+60 164 m (        })s
+52 164 m linfn (45)rs
+filfn 60 152 m (    ,   unsub:  function \(opaque\) { // opaque is whatever is returned by sub\(\))s
+60 140 m (            var t = opaque[0];)s
+60 128 m (            handlers[t] && $.each\(handlers[t] || [], function \(idx\) {)s
+60 116 m (                if \(this == opaque[1]\) handlers[t].splice\(idx, 1\);)s
+60 104 m (            }\);)s
+52 104 m linfn (50)rs
+filfn 60 92 m (        })s
+60 80 m (    };)s
+topfn 60 732 m (Sunday  6 December 2015 at 06:31:08 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/core/base-runner.js)rs
+pagfn 576 732 m (1)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 46 46
+filfn 60 692 m (}\(this\)\);)s
+52 692 m linfn (53)rs
+filfn 60 668 m (// these need to be improved, or complemented with proper UI indications)s
+52 668 m linfn (55)rs
+filfn 60 656 m (if \(window.console\) {)s
+60 644 m (    respecEvents.sub\("warn", function \(details\) {)s
+60 632 m (        console.warn\("WARN: ", details\);)s
+60 620 m (    }\);)s
+60 608 m (    respecEvents.sub\("error", function \(details\) {)s
+52 608 m linfn (60)rs
+filfn 60 596 m (        console.error\("ERROR: ", details\);)s
+60 584 m (    }\);)s
+60 572 m (    respecEvents.sub\("start", function \(details\) {)s
+60 560 m (        if \(respecConfig && respecConfig.trace\) console.log\(">>> began: " + details\);)s
+60 548 m (    }\);)s
+52 548 m linfn (65)rs
+filfn 60 536 m (    respecEvents.sub\("end", function \(details\) {)s
+60 524 m (        if \(respecConfig && respecConfig.trace\) console.log\("<<< finished: " + details\);)s
+60 512 m (    }\);)s
+60 500 m (    respecEvents.sub\("start-all", function \(\) {)s
+60 488 m (        console.log\("RESPEC PROCESSING STARTED"\);)s
+52 488 m linfn (70)rs
+filfn 60 476 m (        if \("respecVersion" in window && respecVersion\) {)s
+60 464 m (            console.log\("RESPEC Version: " + respecVersion\) ;)s
+60 452 m (        })s
+60 440 m (    }\);)s
+60 428 m (    respecEvents.sub\("end-all", function \(\) {)s
+52 428 m linfn (75)rs
+filfn 60 416 m (        console.log\("RESPEC DONE!"\);)s
+60 404 m (    }\);)s
+60 392 m (})s
+52 368 m linfn (80)rs
+filfn 60 356 m (define\()s
+60 344 m (    ["jquery", "Promise.min"],)s
+60 332 m (    function \(\) {)s
+60 320 m (        return {)s
+60 308 m (            runAll:    function \(plugs\) {)s
+52 308 m linfn (85)rs
+filfn 60 296 m (                // publish messages for beginning of all and end of all)s
+60 284 m (                var pluginStack = 0;)s
+60 272 m (                respecEvents.pub\("start-all"\);)s
+60 260 m (                respecEvents.sub\("start", function \(\) {)s
+60 248 m (                    pluginStack++;)s
+52 248 m linfn (90)rs
+filfn 60 236 m (                }\);)s
+60 224 m (                respecEvents.sub\("end", function \(\) {)s
+60 212 m (                    pluginStack--;)s
+60 200 m (                    if \(!pluginStack\) {)s
+60 188 m (                        respecEvents.pub\("end-all"\);)s
+52 188 m linfn (95)rs
+filfn 60 176 m (                        document.respecDone = true;)s
+60 164 m (                    })s
+60 152 m (                }\);)s
+60 140 m (                respecEvents.pub\("start", "core/base-runner"\);)s
+52 128 m linfn (100)rs
+filfn 60 116 m (                if \(respecConfig.preProcess\) {)s
+60 104 m (                    for \(var i = 0; i < respecConfig.preProcess.length; i++\) {)s
+60 92 m (                        try { respecConfig.preProcess[i].apply\(this\); })s
+60 80 m (                        catch \(e\) { respecEvents.pub\("error", e\); })s
+topfn 60 732 m (Sunday  6 December 2015 at 06:31:08 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/core/base-runner.js)rs
+pagfn 576 732 m (2)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 47 47
+filfn 60 692 m (                    })s
+52 692 m linfn (105)rs
+filfn 60 680 m (                })s
+60 656 m (                var pipeline = Promise.resolve\(\);)s
+60 644 m (                // the first in the plugs is going to be us)s
+60 632 m (                plugs.shift\(\);)s
+52 632 m linfn (110)rs
+filfn 60 620 m (                plugs.forEach\(function\(plug\) {)s
+60 608 m (                    pipeline = pipeline.then\(function \(\) {)s
+60 596 m (                        if \(plug.run\) {)s
+60 584 m (                            return new Promise\(function runPlugin\(resolve, reject\) {)s
+60 572 m (                                var result = plug.run.call\(plug, respecConfig, document, resolve, respec\\)s
+60 560 m (Events\);)s
+52 560 m linfn (115)rs
+filfn 60 548 m (                                // If the plugin returns a promise, have that)s
+60 536 m (                                // control the end of the plugin's run.)s
+60 524 m (                                // Otherwise, assume it'll call resolve\(\) as a)s
+60 512 m (                                // completion callback.)s
+60 500 m (                                if \(result\) {)s
+52 500 m linfn (120)rs
+filfn 60 488 m (                                    resolve\(result\);)s
+60 476 m (                                })s
+60 464 m (                            }\).catch\(function\(e\) {)s
+60 452 m (                                respecEvents.pub\("error", e\);)s
+60 440 m (                                respecEvents.pub\("end", "unknown/with-error"\);)s
+52 440 m linfn (125)rs
+filfn 60 428 m (                            }\);)s
+60 416 m (                        })s
+60 404 m (                        else return Promise.resolve\(\);)s
+60 392 m (                    }\);)s
+60 380 m (                }\);)s
+52 380 m linfn (130)rs
+filfn 60 368 m (                return pipeline.then\(function\(\) {)s
+60 356 m (                    if \(respecConfig.postProcess\) {)s
+60 344 m (                        for \(var i = 0; i < respecConfig.postProcess.length; i++\) {)s
+60 332 m (                            try { respecConfig.postProcess[i].apply\(this\); })s
+60 320 m (                            catch \(e\) { respecEvents.pub\("error", e\); })s
+52 320 m linfn (135)rs
+filfn 60 308 m (                        })s
+60 296 m (                    })s
+60 284 m (                    if \(respecConfig.afterEnd\) {)s
+60 272 m (                        try { respecConfig.afterEnd.apply\(window, Array.prototype.slice.call\(arguments\)\)\\)s
+60 260 m (; })s
+60 248 m (                        catch \(e\) { respecEvents.pub\("error", e\); })s
+52 248 m linfn (140)rs
+filfn 60 236 m (                    })s
+60 224 m (                    respecEvents.pub\("end", "core/base-runner"\);)s
+60 212 m (                }\);)s
+60 200 m (            })s
+60 188 m (        };)s
+52 188 m linfn (145)rs
+filfn 60 176 m (    })s
+60 164 m (\);)s
+topfn 60 732 m (Sunday  6 December 2015 at 06:31:08 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/core/base-runner.js)rs
+pagfn 576 732 m (3)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 48 48
+filfn 60 692 m (// Module core/shiv)s
+52 692 m linfn (2)rs
+filfn 60 680 m (// Injects the HTML5 shiv conditional comment)s
+60 656 m (define\()s
+52 656 m linfn (5)rs
+filfn 60 644 m (    [],)s
+60 632 m (    function \(\) {)s
+60 620 m (        return {)s
+60 608 m (            run:    function \(conf, doc, cb, msg\) {)s
+60 596 m (                msg.pub\("start", "core/shiv"\);)s
+52 596 m linfn (10)rs
+filfn 60 584 m (                var cmt = doc.createComment\("[if lt IE 9]><script src='https://www.w3.org/2008/site/js/h\\)s
+60 572 m (tml5shiv.js'></script><![endif]"\);)s
+60 560 m (                $\("head"\).append\(cmt\);)s
+60 548 m (                msg.pub\("end", "core/shiv"\);)s
+60 536 m (                cb\(\);)s
+60 524 m (            })s
+52 524 m linfn (15)rs
+filfn 60 512 m (        };)s
+60 500 m (    })s
+60 488 m (\);)s
+topfn 60 732 m (Monday  9 December 2013 at 08:29:38 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/core/shiv.js)rs
+pagfn 576 732 m (1)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Page: 49 49
+filfn 60 692 m (// Module core/remove-respec)s
+52 692 m linfn (2)rs
+filfn 60 680 m (// Removes all ReSpec artefacts right before processing ends)s
+60 656 m (define\()s
+52 656 m linfn (5)rs
+filfn 60 644 m (    ["core/utils"],)s
+60 632 m (    function \(utils\) {)s
+60 620 m (        return {)s
+60 608 m (            run:    function \(conf, doc, cb, msg\) {)s
+60 596 m (                msg.pub\("start", "core/remove-respec"\);)s
+52 596 m linfn (10)rs
+filfn 60 584 m (                // it is likely that some asynch operations won't have completed at that moment)s
+60 572 m (                // if they happen to need the artefacts, we could change this to be hooked into)s
+60 560 m (                // the base-runner to run right before end-all)s
+60 548 m (                utils.removeReSpec\(doc\);)s
+60 536 m (                msg.pub\("end", "core/remove-respec"\);)s
+52 536 m linfn (15)rs
+filfn 60 524 m (                cb\(\);)s
+60 512 m (            })s
+60 500 m (        };)s
+60 488 m (    })s
+60 476 m (\);)s
+52 476 m linfn (20)rs
+filfn topfn 60 732 m (Monday  9 December 2013 at 08:29:38 PM)s 576 716 m (/Users/sglaser/Repositories/PCISIG/respec-sglaser/js/core/remove-respec.js)rs
+pagfn 576 732 m (1)rs
+56 712 580 712 l
+56 48 56 744 l
+showpage
+%%Trailer
+%%Pages: 49

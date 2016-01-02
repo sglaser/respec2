@@ -11,8 +11,8 @@ var requireConfig = {
 };
 if ("respecVersion" in window && respecVersion) {
     requireConfig.paths = {
-//      "ui":   "https://sglaser.github.io/respec/js/ui"
-        "ui":   "file:///Users/sglaser/Repositories/PCISIG/respec-sglaser/js/ui"
+        "ui":   "https://sglaser.github.io/respec/js/ui"
+//      "ui":   "file:///Users/sglaser/Repositories/PCISIG/respec-sglaser/js/ui"
     };
 }
 require.config(requireConfig);
@@ -48,8 +48,8 @@ define([
         ,   "core/biblio"
         ,   "core/webidl-contiguous"
         ,   "core/webidl-oldschool"
-        ,   "core/regpict"
         ,   "core/contrib"
+        ,   "core/regpict"
         ,   "core/fix-headers"
         ,   "core/structure"
         ,   "w3c/informative"
@@ -63,7 +63,6 @@ define([
         ,   "core/location-hash"
         ],
         function (domReady, runner, ui) {
-            "use strict";
             var args = Array.prototype.slice.call(arguments);
             domReady(function () {
                 ui.addCommand("Save Snapshot", "ui/save-html", "Ctrl+Shift+Alt+S");

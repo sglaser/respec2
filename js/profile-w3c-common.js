@@ -1,4 +1,5 @@
-/*global respecVersion */
+/*global define, respecVersion, require */
+/*jshint laxcomma:true, browser:true */
 
 // this is only set in a build, not at all in the dev environment
 var requireConfig = {
