@@ -90,8 +90,10 @@ page.open(source, function (status) {
                            window.callPhantom({ html: saver.toString() });
                 });
             }
-            if (document.respecDone) saveToPhantom();
-            else respecEvents.sub("end-all", saveToPhantom);
+            require(["core/base-runner"], function () {
+                if (document.respecDone) saveToPhantom();
+                else respecEvents.sub("end-all", saveToPhantom);
+            });
         });
         timer = setInterval(function () {
             if (timeout === 0) {

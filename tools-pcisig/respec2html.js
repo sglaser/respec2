@@ -84,20 +84,16 @@ page.open(source, function (status) {
     else {
         console.error("Loading " + source);
         page.evaluateAsync(function () {
-            console.error("entering page.evaluateAsync");
             function saveToPhantom () {
-                console.error("entering saveToPhantom");
                 require(["core/ui", "ui/save-html"], function (ui, saver) {
                            saver.show(ui, respecConfig, document, respecEvents);
                            window.callPhantom({ html: saver.toString() });
                 });
-                console.error("exiting saveToPhantom");
             }
-            var done = document.respecDone;
-            console.error("document.respecDone = " + done);
-            if (document.respecDone) saveToPhantom();
-            else respecEvents.sub("end-all", saveToPhantom);
-            console.error("exiting page.evaluateAsync");
+            require(["core/base-runner"], function () {
+                if (document.respecDone) saveToPhantom();
+                else respecEvents.sub("end-all", saveToPhantom);
+            });
         });
         timer = setInterval(function () {
             if (timeout === 0) {
