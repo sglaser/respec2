@@ -107,7 +107,7 @@ define(
                     this.removeAttr(theAttr) ;
                 }
                 // if there is no pre-defined type, assume it is a 'dfn'
-                if (!this.attr("dfn-type")) {
+                if (!this.attr("dfn-type") && !this.attr("data-dfn-type")) {
                     this.attr("data-dfn-type", "dfn");
                 }
                 else {

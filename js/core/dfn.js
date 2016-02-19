@@ -15,96 +15,65 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "core/dfn");
                 doc.normalize();
-                if (!conf.definitionMap) {
-                    conf.definitionMap = {};
-                }
-                if (!conf.definitionHTML) {
-                    conf.definitionHTML = {};
-                }
-
-                //console.log("\n\n\n\n");
-
                 $("[dfn-for]").each(function() {
                     this.setAttribute("data-dfn-for", this.getAttribute("dfn-for").toLowerCase());
                     this.removeAttribute("dfn-for");
                 });
+                if (!conf.definitionMap)  conf.definitionMap = {};
 
-                $("table[id] dfn.field", doc).each(function() {
-                    var $dfn = $(this);
-                    var $parent_table = $dfn.parents("table[id]")[0];
-                    var base_id = "field-" + $parent_table.id.replace(/^tbl-/, "") + "-";
-                    var title = $dfn.dfnTitle();
-                    $dfn.attr("data-dfn-for", $parent_table.id);
-                    //console.log("table[id] dfn.field  base_id=\"" + base_id + "\"");
-                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
-
-                    if (conf.definitionMap[base_id + title[0]]) {
-                        msg.pub("error", "Duplicate definition '" + base_id + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> {{ Definition '" + base_id + title[0] + "' is defined more than once. }} </span>");
-                    }
-                    var id = $dfn.makeID(null, base_id + title[0]);
-                    //console.log("<dfn class=\"field\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
-                    conf.definitionMap[id] = id;
-                    conf.definitionHTML[id] = $dfn.html();
-                    for (i = 0; i < title.length; i++) {
-                        //console.log("<dfn" + i + " class=\"field\" title=\"" + base_id + title[i] + "\">" + $dfn.html() + "</dfn>");
-                        conf.definitionMap[base_id + title[i]] = conf.definitionMap[id];
-                        conf.definitionHTML[base_id + title[i]] = conf.definitionHTML[id];
-                    }
-
-                });
-
-                //console.log("\n\n\n\n");
+                //msg.pub("warn", "dfn done with part 1\n");
 
                 $("dfn", doc).each(function() {
+                    //console.log("before: " + this.outerHTML);
                     var $dfn = $(this);
-                    if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length > 0)) {
-                        return;
-                    }
                     if ($dfn.attr("for")) {
                         $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
                         $dfn.removeAttr("for");
+                    } else if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length = 1)) {
+                        $dfn.attr("data-dfn-for", ($dfn.parents("table[id]").attr("id").replace(/^tbl-/,"") || ""));
                     } else {
-                        $dfn.attr("data-dfn-for", ($dfn.closest("[data-dfn-for]").attr("data-dfn-for") || "").toLowerCase());
-                    }
-                    var tag = dfnClass[0];  // default "dfn"
-                    for (var i = 1; i < dfnClass.length; i++) {
-                        if ($dfn.hasClass(dfnClass[i])) {
-                            tag = dfnClass[i];
+                        var $closest = $dfn.closest("[data-dfn-for]");
+                        if ($closest.length > 0) {
+                            $dfn.attr("data-dfn-for", ($closest.attr("data-dfn-for")).toLowerCase());
                         }
                     }
-                    var title = $dfn.dfnTitle();
-                    //console.log("title.length = " + title.length + "  title=\"" + title.join("|||") + "\"");
-                    if (conf.definitionMap[tag + "-" + title[0]]) {
-                        msg.pub("error", "Duplicate definition '" + tag + "-" + title[0] + "'");
-                        $dfn.append("<span class=\"respec-error\"> {{ Definition '" + tag + "-" + title[0] + "' is defined more than once. }} </span>");
-                    }
-                    var id = $dfn.makeID(tag, title[0]);
-                    //console.log("<dfn class=\"" + tag + "\" id=\"" + id + "\">" + $dfn.html() + "</dfn>");
-                    conf.definitionMap[id] = id;
-                    conf.definitionHTML[id] = $dfn.html();
-                    for (i = 0; i < title.length; i++) {
-                        //console.log("<dfn" + i + " class=\"" + tag + "\" title=\"" + tag + "-" + title[i] + "\">" + $dfn.html() + "</dfn>");
-                        conf.definitionMap[tag + "-" + title[i]] = conf.definitionMap[id];
-                        conf.definitionHTML[tag + "-" + title[i]] = conf.definitionHTML[id];
-                    }
+                    var tag = dfnClass[0];  // default "dfn"
+                    dfnClass.forEach(function(t) { if ($dfn.hasClass(t)) tag = t; });
+                    $dfn.attr("data-dfn-type", tag);
+                    //console.log("middle: " + this.outerHTML);
+                    var id = $dfn.makeID(tag);
+                    var titles = $dfn.getDfnTitles( { isDefinition: true } );
+                    //msg.pub("warn", "titles.length = " + titles.length + "  titles=\"" + titles.join("|||") + "\"");
+                    titles.forEach( function( item ) {
+                        if (!conf.definitionMap[item]) {
+                            conf.definitionMap[item] = [];
+                        }
+                        conf.definitionMap[item].push(id);
+                        if (conf.definitionMap[tag + "-" + item]) {
+                            //msg.pub("error", "Duplicate definition '" + tag + "-" + item + "'");
+                            $dfn.append("<span class=\"respec-error\"> {{ Definition '" + tag + "-" + item + "' is defined more than once. }} </span>");
+                        }
+                        if (!conf.definitionMap[tag + "-" + item]) {
+                            conf.definitionMap[tag + "-" + item] = [];
+                        }
+                        conf.definitionMap[tag + "-" + item].push(id);
+                    });
+                    //console.log(" after: " + this.outerHTML);
                 });
 
-                //console.log("\n\n\n\n");
+                //msg.pub("warn", "dfn done with part 2\n");
 
                 $("div.hasSVG g[id]", doc).each(function() {
                     var $text = $("text.regFieldName", this).first();
                     if ($text) {
                         var title = $text.dfnTitle();
                         var id = $(this).attr("id");
-                        //console.log("<dfn class=\"regpict\" id=\"" + id + "\">" + $(this).text() + "</dfn>");
+                        //msg.pub("warn", "<dfn class=\"regpict\" id=\"" + id + "\">" + $(this).text() + "</dfn>");
                         conf.definitionMap[id] = id;
-                        conf.definitionHTML[id] = $text.text();
                         var found = null;
                         for (i = 0; i < title.length; i++) {
-                            //console.log("<dfn" + i + " class=\"regpict\" title=\"regpict-" + title[i] + "\">" + $(this).text() + "</dfn>");
+                            //msg.pub("warn", "<dfn" + i + " class=\"regpict\" title=\"regpict-" + title[i] + "\">" + $(this).text() + "</dfn>");
                             conf.definitionMap["regpict-" + title[i]] = id;
-                            conf.definitionHTML["regpict-" + title[i]] = conf.definitionHTML[id];
                             if (conf.definitionMap["field-" + title[i]]) {
                                 found = conf.definitionMap["field-" + title[i]];
                             }
@@ -115,10 +84,10 @@ define(
                         }
                         if (found) {
                             var $rect = $("rect.regFieldBox", this).first();
-                            //console.log("Map[field-" + title + "]=" + conf.definitionMap["field-" + title]);
-                            //console.log(" $rect.length= " + $rect.length);
-                            //console.log(" $rect[0] is " + $rect[0]);
-                            //console.log(" wrapping field-" + title);
+                            //msg.pub("warn", "Map[field-" + title + "]=" + conf.definitionMap["field-" + title]);
+                            //msg.pub("warn", " $rect.length= " + $rect.length);
+                            //msg.pub("warn", " $rect[0] is " + $rect[0]);
+                            //msg.pub("warn", " wrapping field-" + title);
                             var a = doc.createElementNS("http://www.w3.org/2000/svg", "a");
                             a.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + found);
 //                            a.setAttribute("class", "regLink");
@@ -139,26 +108,26 @@ define(
                     }
                 });
 
-                //console.log("\n\n\n\n");
+                //msg.pub("warn", "dfn done with part 3\n");
 
                 $("dfn.field", doc).each(function() {
                     var id = this.id.replace(/^field-/,"#regpict-");
                     if (id !== this.id) {
-                        //console.log("field-->regpict: looking for " + this.id + " --> " + id);
+                        //msg.pub("warn", "field-->regpict: looking for " + this.id + " --> " + id);
                         var $regpict = $(id, doc);
                         if ($regpict.length > 0) {
                             var $regfig = $regpict.parents("figure[id]");
                             if ($regfig.length > 0) {
                                 $(this).wrapInner("<a href=\"#" + $regfig.attr("id") + "\"></a>");
-                                //console.log("field-->regpict: <dfn class=\"" + this["class"] +
-                                //                 "\" id=\"" + $regfig("id") + "\">" + $(this).html() + "</dfn>");
-                                //console.log("");
+                                //msg.pub("warn", "field-->regpict: <dfn class=\"" + this["class"] +
+                                // "\" id=\"" + $regfig("id") + "\">" + $(this).html() + "</dfn>");
+                                //msg.pub("warn", "");
                             }
                         }
                     }
                 });
 
-                //console.log("\n\n\n\n");
+                //msg.pub("warn", "dfn done with part 4\n");
 
                 $("a:not([href]):not([tabindex])", doc)
                     .filter(
@@ -167,14 +136,14 @@ define(
                     })
                     .each(
                     function() {
-                        //console.log("a:not([href]): " + this.tagName + "  " + this.namespaceURI + "  " + this.outerHTML);
+                        //msg.pub("warn", "a:not([href]): " + this.tagName + "  " + this.namespaceURI + "  " + this.outerHTML);
                         var $ant = $(this);
                         if ($ant.hasClass("externalDFN")) {
                             return;
                         }
                         /*var hrefNode = this.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
                          if (hrefNode) {
-                         console.log("  getAttributeNS() localName=" + hrefNode.localName +
+                         msg.pub("warn", "  getAttributeNS() localName=" + hrefNode.localName +
                          " nodeName=" + hrefNode.nodeName +
                          " nodeType=" + hrefNode.nodeType +
                          " namespaceURI=" + hrefNode.namespaceURI);
@@ -185,74 +154,76 @@ define(
                         var temp = $ant.attr("class");
                         var i;
                         if (temp) {
-                            //console.log("class=" + temp);
+                            //msg.pub("warn", "class=" + temp);
                             temp = temp.split(/\s+/);
                             for (i = 0; i < temp.length; i++) {
-                                //console.log("checking " + temp[i] + "-" + title);
+                                //msg.pub("warn", "checking " + temp[i] + "-" + title);
                                 if (conf.definitionMap[temp[i] + "-" + title]) {
                                     tag = temp[i];
-                                    //console.log("found " + temp[i] + "-" + title);
+                                    //msg.pub("warn", "found " + temp[i] + "-" + title);
                                 }
                             }
                         }
                         if (tag === null) {
-                            for (i = 0; i < dfnClass.length; i++) {
-                                if (conf.definitionMap[dfnClass[i] + "-" + title]) {
+                            dfnClass.forEach(function(t) {
+                                if (conf.definitionMap[t + "-" + title]) {
                                     if (tag === null) {
-                                        tag = dfnClass[i];
+                                        tag = t;
                                     } else {
-                                        tag = tag + "-" + dfnClass[i];
+                                        tag = tag + "-" + t;
                                     }
                                 }
-                            }
+                            });
                         }
                         if (tag !== null) {
-                            //console.log("tag= " + tag);
+                            //msg.pub("warn", "tag= " + tag);
                             if (tag === "regpict-field" || tag === "field-regpict") {
                                 tag = "field";
                             }
-                            //console.log("tag= " + tag);
+                            //msg.pub("warn", "tag= " + tag);
                             var warn = null;
                             if (tag.match(/-/)) {
                                 warn = "Ambiguous reference to '(" + tag + ")-" + title + "'";
                                 tag = tag.split("-")[0];
                                 warn = warn + ", resolved as '" + tag + "'";
-                                msg.pub("warn", warn);
+                                //msg.pub("warn", "warn", warn);
                             }
-                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title])
+                            //$ant.attr("href", "#" + conf.definitionMap[tag + "-" + title][0].attr("id"))
+                            $ant.attr("href", "#" + tag + "-" + title)
                                 .addClass("internalDFN")
                                 .addClass(tag);
-                            if (conf.definitionHTML[tag + "-" + title] && !$ant.attr("title")) {
-                                $ant.html(conf.definitionHTML[tag + "-" + title]);
-                            }
                             if (warn !== null) {
                                 $ant.append("<span class=\"respec-error\"> {{ " + warn + " }} </span>");
                             }
-                            //console.log("result: " + $ant[0].outerHTML);
+                            //msg.pub("warn", "result: " + $ant[0].outerHTML);
                         }
                         else {
                             // ignore WebIDL
                             if (!$ant.parents(".idl, dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc").length) {
-                                msg.pub("warn",
-                                        "Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
+                                //msg.pub("warn",
+                                //"Found linkless <a> element with text '" + title + "' but no matching <dfn>.");
                             }
                             $ant.replaceWith($ant.contents());
                         }
                     }
-                )
-                ;
+                );
+
                 if (conf.addDefinitionMap) {
                     msg.pub("start", "core/dfn/addDefinitionMap");
                     var $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-                    var $tbody = $("<table class='data'><thead><tr><th>Kind</th><th>Name</th><th>ID</th><th>HTML</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+                    var $tbody = $("<table class='data'><thead><tr><th>Kind</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
                     var keys = Object.keys(conf.definitionMap).sort();
-                    for (var i = 0; i < keys.length; i++) {
-                        var d = keys[i];
-                        var item = d.split(/-/);
-                        var kind = item.shift();
-                        var id = conf.definitionMap[d];
-                        $("<tr><td class='long'>" + kind + "</td><td class='long'>" + item.join("-") + "</td><td class='long'><a href=\"" + "#" + id + "\">" + id + "</a></td><td class='long'>" + conf.definitionHTML[d] + "</td></tr>").appendTo($tbody);
-                    }
+                    keys.forEach(function(k) {
+                        var kind = k.split(/-/).shift()
+                        var id = conf.definitionMap[k];
+                        if (dfnClass.indexOf(kind) >= 0) {
+                            $("<tr>" +
+                              "<td class='long'>" + kind + "</td>" +
+                              "<td class='long'>" + k + "</td>" +
+                              "<td class='long'><a href=\"" + "#" + id + "\">" + id + "</a></td>" +
+                              "</tr>").appendTo($tbody);
+                        }
+                    });
                     msg.pub("end", "core/dfn/addDefinitionMap");
                 }
                 msg.pub("end", "core/dfn");
