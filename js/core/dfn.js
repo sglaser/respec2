@@ -29,7 +29,7 @@ define(
                     if ($dfn.attr("for")) {
                         $dfn.attr("data-dfn-for", $dfn.attr("for").toLowerCase());
                         $dfn.removeAttr("for");
-                    } else if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length = 1)) {
+                    } else if ($dfn.hasClass("field") && ($dfn.parents("table[id]").length == 1)) {
                         $dfn.attr("data-dfn-for", ($dfn.parents("table[id]").attr("id").replace(/^tbl-/,"") || ""));
                     } else {
                         var $closest = $dfn.closest("[data-dfn-for]");
