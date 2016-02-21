@@ -552,7 +552,7 @@ define(
             run: function(conf, doc, cb, msg) {
                 msg.pub("start", "core/regpict");
                 if (!(conf.noReSpecCSS)) {
-                    $(doc).find("head link").first().before($("<style></style>").text(css));
+                    $(doc).find("head link").first().before($("<style class=\"regpict\" id=\"regpict\"></style>").text(css));
                 }
                 var figNum = 1;
                 $("figure.register", doc).each(
