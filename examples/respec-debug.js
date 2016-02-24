@@ -7177,7 +7177,7 @@ define(
                                 //msg.pub("warn", "warn", warn);
                             }
                             //$ant.attr("href", "#" + conf.definitionMap[tag + "-" + title][0].attr("id"))
-                            $ant.attr("href", "#" + tag + "-" + title)
+                            $ant.attr("href", "#" + conf.definitionMap[tag + "-" + title])
                                 .addClass("internalDFN")
                                 .addClass(tag);
                             if (warn !== null) {
@@ -7202,12 +7202,13 @@ define(
                     var $tbody = $("<table class='data'><thead><tr><th>Kind</th><th>Name</th><th>ID</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
                     var keys = Object.keys(conf.definitionMap).sort();
                     keys.forEach(function(k) {
-                        var kind = k.split(/-/).shift()
+                        var ksplit = k.split(/-/);
+                        var kind = ksplit.shift();
                         var id = conf.definitionMap[k];
                         if (dfnClass.indexOf(kind) >= 0) {
                             $("<tr>" +
                               "<td class='long'>" + kind + "</td>" +
-                              "<td class='long'>" + k + "</td>" +
+                              "<td class='long'>" + ksplit.join('-') + "</td>" +
                               "<td class='long'><a href=\"" + "#" + id + "\">" + id + "</a></td>" +
                               "</tr>").appendTo($tbody);
                         }
