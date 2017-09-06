@@ -42,7 +42,7 @@ export function run(conf, doc, cb) {
   var figMap = {},
     tof = [],
     num = 0;
-  $("figure").each(function() {
+  $("figure:not(.equation)").each(function() {
     var $fig = $(this),
       $cap = $fig.find("figcaption"),
       tit = $cap.text(),
@@ -60,6 +60,8 @@ export function run(conf, doc, cb) {
     figMap[id] = $cap.contents();
     var $tofCap = $cap.clone();
     $tofCap.find("a").renameElement("span").removeAttr("href");
+    $tofCap.find("span.footnote").remove();   // footnotes are in the caption, not #tof
+    $tofCap.find("span.issue").remove();      // issues are in the caption, not #tof
     tof.push(
       $("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
         .find(".tocxref")

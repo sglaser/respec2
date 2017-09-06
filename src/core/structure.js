@@ -41,14 +41,16 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     ) {
       continue;
     }
-    var title = h.textContent,
-      $kidsHolder = $("<div></div>").append($(h).contents().clone());
+    var $kidsHolder = $("<div></div>").append($(h).contents().clone());
     $kidsHolder
       .find("a")
       .renameElement("span")
       .attr("class", "formerLink")
       .removeAttr("href");
     $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
+    $kidsHolder.find("span.footnote").remove();
+    $kidsHolder.find("span.issue").remove();
+    var title = $kidsHolder.textContent;
     var id = h.id ? h.id : $sec.makeID(null, title);
 
     if (!isIntro) {
@@ -64,6 +66,9 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     }
     var secno = secnos.join("."),
       isTopLevel = secnos.length == 1;
+    if (!isIntro) {
+      $sec["data-secno"] = secno;   // Note: before adding "." to top level section numbers
+    }
     if (isTopLevel) {
       secno = secno + ".";
       // if this is a top level item, insert
