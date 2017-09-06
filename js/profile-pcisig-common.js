@@ -69,7 +69,7 @@ define(
     "w3c/informative",
     "w3c/permalinks",
     "core/id-headers",
-    "pcisig/fig-tbl-eqn-numbering.js",
+    "pcisig/fig-tbl-eqn-numbering",
     "core/rdfa",
     "w3c/aria",
 //    "pcisig/xref-map",
