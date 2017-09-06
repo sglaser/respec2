@@ -3,10 +3,11 @@
 */
 /*global hb*/
 
-// Module w3c/headers
+// Module pcisig/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION
-//  - specStatus: the short code for the specification's maturity level or type (required)
+//  - specStatus: the short code for the specification's status or type (required)
+//  - specLevel: the short code for the specification's maturity level
 //  - shortName: the small name that is used after /TR/ in published reports (required)
 //  - editors: an array of people editing the document (at least one is required). People
 //      are defined using:
@@ -21,7 +22,8 @@
 //  - publishDate: the date to use for the publication, default to document.lastModified, and
 //      failing that to now. The format is YYYY-MM-DD or a Date object.
 //  - previousPublishDate: the date on which the previous version was published.
-//  - previousMaturity: the specStatus of the previous version
+//  - previousStatus: the specStatus of the previous version
+//  - previousLevel: the specLevel of the previous version
 //  - errata: the URI of the errata document, if any
 //  - alternateFormats: a list of alternate formats for the document, each of which being
 //      defined by:
@@ -29,7 +31,7 @@
 //          - label: a label for the alternate
 //          - lang: optional language
 //          - type: optional MIME type
-//  - logos: a list of logos to use instead of the W3C logo, each of which being defined by:
+//  - logos: a list of logos to use instead of the PCISIG logo, each of which being defined by:
 //          - src: the URI to the logo (target of <img src=>)
 //          - alt: alternate text for the image (<img alt=>), defaults to "Logo" or "Logo 1", "Logo 2", ...
 //            if src is not specified, this is the text of the "logo"
@@ -43,10 +45,10 @@
 //  - bugTracker: and object with the following details
 //      - open: pointer to the list of open bugs
 //      - new: pointer to where to raise new bugs
-//  - noRecTrack: set to true if this document is not intended to be on the Recommendation track
+//  - noSpecTrack: set to true if this document is not intended to be on the Recommendation track
 //  - edDraftURI: the URI of the Editor's Draft for this document, if any. Required if
 //      specStatus is set to "ED".
-//  - additionalCopyrightHolders: a copyright owner in addition to W3C (or the only one if specStatus
+//  - additionalCopyrightHolders: a copyright owner in addition to PCISIG (or the only one if specStatus
 //      is unofficial)
 //  - overrideCopyright: provides markup to completely override the copyright
 //  - copyrightStart: the year from which the copyright starts running
@@ -83,32 +85,29 @@
 //          - href: a URL for the value (e.g., "https://foo.com/issues"). Optional.
 //          - class: a string representing CSS classes. Optional.
 //  - license: can be one of the following
-//      - "w3c", currently the default (restrictive) license
-//      - "cc-by", which is experimentally available in some groups (but likely to be phased out).
-//          Note that this is a dual licensing regime.
-//      - "cc0", an extremely permissive license. It is only recommended if you are working on a document that is
-//          intended to be pushed to the WHATWG.
-//      - "w3c-software", a permissive and attributions license (but GPL-compatible).
-//      - "w3c-software-doc", the W3C Software and Document License
-//            https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
-import { concatDate, joinAnd, ISODate } from "core/utils";
+//      - "nda", document covered by workgroup NDA agreement (this is the default)
+//      - "pcisig", the default pcisig license for published specifications
+//      - "cc0", an extremely permissive license. Only recommended for documents intended for use
+//            outside of PCISIG.
+
+
+import {concatDate, joinAnd, ISODate} from "core/utils";
 import hb from "handlebars.runtime";
-import { pub } from "core/pubsubhub";
+import {pub} from "core/pubsubhub";
 import tmpls from "templates";
 
-export const name = "w3c/headers";
+export const name = "pcisig/headers";
 
-const cgbgHeadersTmpl = tmpls["cgbg-headers.html"];
 const headersTmpl = tmpls["headers.html"];
 
-const W3CDate = new Intl.DateTimeFormat(["en-AU"], {
+const PCISIGDate = new Intl.DateTimeFormat(["en-AU"], {
   timeZone: "UTC",
   year: "numeric",
   month: "long",
   day: "2-digit",
 });
 
-hb.registerHelper("showPeople", function(name, items = []) {
+hb.registerHelper("showPeople", function (name, items = []) {
   // stuff to handle RDFa
   var re = "",
     rp = "",
@@ -136,8 +135,8 @@ hb.registerHelper("showPeople", function(name, items = []) {
   var ret = "";
   for (var i = 0, n = items.length; i < n; i++) {
     var p = items[i];
-    if (p.w3cid) {
-      editorid = " data-editor-id='" + parseInt(p.w3cid, 10) + "'";
+    if (p.pcisigid) {
+      editorid = " data-editor-id='" + parseInt(p.pcisigid, 10) + "'";
     }
     if (this.doRDFa) {
       ret +=
@@ -206,12 +205,12 @@ hb.registerHelper("showPeople", function(name, items = []) {
     if (p.extras) {
       var self = this;
       var resultHTML = p.extras
-        // Remove empty names
-        .filter(function(extra) {
+      // Remove empty names
+        .filter(function (extra) {
           return extra.name && extra.name.trim();
         })
         // Convert to HTML
-        .map(function(extra) {
+        .map(function (extra) {
           var span = document.createElement("span");
           var textContainer = span;
           if (extra.class) {
@@ -271,95 +270,149 @@ hb.registerHelper("showLogos", logos => {
   return p.outerHTML;
 });
 
-const status2maturity = {
-  FPWD: "WD",
-  LC: "WD",
-  FPLC: "WD",
-  "FPWD-NOTE": "NOTE",
-  "WD-NOTE": "WD",
-  "LC-NOTE": "LC",
-  "IG-NOTE": "NOTE",
-  "WG-NOTE": "NOTE",
+const status2format = {
+  "WD": "WD",
+  "ED": "ED",
+  "RC": "RC",
+  "PUB": "FINAL",
+
+  "WD-CWG": "WD",
+  "ED-CWG": "ED",
+  "RC-CWG": "RC",
+  "PUB-CWG": "CWG",
+
+  "WD-MEM": "WD",
+  "ED-MEM": "ED",
+  "RC-MEM": "RC",
+  "PUB-MEM": "MEM",
+
+  "WD-FINAL": "WD",
+  "ED-FINAL": "ED",
+  "RC-FINAL": "RC",
+  "PUB-FINAL": "FINAL",
+  "FINAL": "FINAL",
+
+  "WG-DRAFT-NOTE": "WG-NOTE",
+  "WG-NOTE": "WG-NOTE",
+
+  "PUB-DRAFT-NOTE": "NOTE",
+  "PUB-NOTE": "NOTE"
 };
 
 const status2rdf = {
-  NOTE: "w3p:NOTE",
-  WD: "w3p:WD",
-  LC: "w3p:LastCall",
-  CR: "w3p:CR",
-  PR: "w3p:PR",
-  REC: "w3p:REC",
-  PER: "w3p:PER",
-  RSCND: "w3p:RSCND",
+  "WG-NOTE": "pcisigp:NOTE",
+  "WG-DRAGT-NOTE": "pcisigp:NOTE",
+  "PUB-NOTE": "pcisigp:NOTE",
+  "PUB-DRAFT-NOTE": "pcisigp:NOTE",
+  WD: "pcisigp:WD",
+  "WD-CWG": "pcisigp:WD",
+  "WD-MEM": "pcisigp:WD",
+  "WD-FINAL": "pcisigp:WD",
+  ED: "pcisigp:ED",
+  "ED-CWG": "pcisigp:ED",
+  "ED-MEM": "pcisigp:ED",
+  "ED-FINAL": "pcisigp:ED",
+  RC: "pcisigp:RC",
+  "RC-CWG": "pcisigp:RC",
+  "RC-MEM": "pcisigp:RC",
+  "RC-FINAL": "pcisigp:RC",
+  PUB: "pcisigp:CWG",
+  "PUB-CWG": "pcisigp:CWG",
+  "PUB-MEM": "pcisigp:MEM",
+  "PUB-FINAL": "pcisigp:FINAL",
+  FINAL: "pcisigp:FINAL",
+
+  RESCINDED: "pcisigp:RESCINDED",
+  REPLACED: "pcisigp:REPLACED",
+  PRIVATE: "pcisigp:PRIVATE"
 };
 const status2text = {
-  NOTE: "Working Group Note",
+  "WG-DRAFT-NOTE": "Draft Working Group Note",
   "WG-NOTE": "Working Group Note",
-  "CG-NOTE": "Co-ordination Group Note",
-  "IG-NOTE": "Interest Group Note",
-  "Member-SUBM": "Member Submission",
-  "Team-SUBM": "Team Submission",
-  MO: "Member-Only Document",
-  ED: "Editor's Draft",
-  FPWD: "First Public Working Draft",
+  "PUB-DRAFT-NOTE": "Published Draft Note",
+  "PUB-NOTE": "Published Note",
+  "member-private": "Member Private Document",
+  "member-submission": "Member Submission",
+  "team-private": "Team Private Document",
+  "team-submission": "Team Submission",
+
   WD: "Working Draft",
-  "FPWD-NOTE": "Working Group Note",
-  "WD-NOTE": "Working Draft",
-  "LC-NOTE": "Working Draft",
-  FPLC: "First Public and Last Call Working Draft",
-  LC: "Last Call Working Draft",
-  CR: "Candidate Recommendation",
-  PR: "Proposed Recommendation",
-  PER: "Proposed Edited Recommendation",
-  REC: "Recommendation",
-  RSCND: "Rescinded Recommendation",
-  unofficial: "Unofficial Draft",
+  "WD-CWG": "Working Draft",
+  "WD-MEM": "Working Draft",
+  "WD-FINAL": "Working Draft",
+
+  ED: "Editor's Draft",
+  "ED-CWG": "Editor's Draft",
+  "ED-MEM": "Editor's Draft",
+  "ED-FINAL": "Editor's Draft",
+
+  RC: "Release Candidate",
+  "RC-CWG": "Release Candidate",
+  "RC-MEM": "Release Candidate",
+  "RC-FINAL": "Release Candidate",
+
+  PUB: "Draft Spec.",
+  "PUB-CWG": "Draft Spec.",
+  "PUB-MEM": "Draft Spec.",
+  "PUB-FINAL": "Final Spec.",
+  FINAL: "Final Spec.",
+
+  RESCINDED: "Spececification Rescinded",
+  REPLACED: "Specification Replaced",
+  PRIVATE: "Private Document",
+  unofficial: "Unofficial Document",
   base: "Document",
-  finding: "TAG Finding",
-  "draft-finding": "Draft TAG Finding",
-  "CG-DRAFT": "Draft Community Group Report",
-  "CG-FINAL": "Final Community Group Report",
-  "BG-DRAFT": "Draft Business Group Report",
-  "BG-FINAL": "Final Business Group Report",
 };
 const status2long = {
-  "FPWD-NOTE": "First Public Working Group Note",
-  "LC-NOTE": "Last Call Working Draft",
+  WD: "Unpublished Working Draft",
+  ED: "Unpublished Editor's Draft",
+  RC: "Unpublished Release Candidate",
+  PUB: "Published Specification",
+  "WD-CWG": "Unpublished Cross Workgroup Review Working Draft",
+  "ED-CWG": "Unpublished Cross Workgroup Review Editor's Draft",
+  "RC-CWG": "Unpublished Cross Workgroup Review Release Candidate",
+  "PUB-CWG": "Published Cross Workgroup Review Draft",
+  "WD-MEM": "Unpublished Member Review Working Draft",
+  "ED-MEM": "Unpublished Member Review Editor's Draft",
+  "RC-MEM": "Unpublished Member Review Release Candidate",
+  "PUB-MEM": "Published Member Review Draft",
+  FINAL: "Published Final Specification"
 };
-const recTrackStatus = ["FPWD", "WD", "FPLC", "LC", "CR", "PR", "PER", "REC"];
+const specTrackStatus = [
+  "WD", "ED", "RC", "PUB", "FINAL",
+  "WD-CWG", "ED-CWG", "RC-CWG", "PUB-CWG",
+  "WD-MEM", "ED-MEM", "RC-MEM", "PUB-MEM"
+];
+
 const noTrackStatus = [
-  "MO",
+  "private",
   "unofficial",
   "base",
-  "finding",
-  "draft-finding",
-  "CG-DRAFT",
-  "CG-FINAL",
-  "BG-DRAFT",
-  "BG-FINAL",
+  "note",
+  "draft-note",
+  "private",
+  "member-private",
+  "member-submission",
+  "team-private",
+  "team-submission"
 ];
-const cgbg = ["CG-DRAFT", "CG-FINAL", "BG-DRAFT", "BG-FINAL"];
-const precededByAn = ["ED", "IG-NOTE"];
+const precededByAn = ["ED", "unofficial"];  // specStatus values that should grammatically be preceded by an instead of a.
+
 const licenses = {
+  "pcisig": {
+    name: "PCISIG Specification License",
+    short: "PCISIG Spec",
+    url: "https://www.pcisig.com/Spec/Legal/2017/copyright-specification",
+  },
+  "nda": {
+    name: "PCISIG Non-Disclosure Agreement",
+    short: "PCISIG NDA",
+    url: "https://www.pcisig.com/Spec/Legal/2017/copyright-nda",
+  },
   cc0: {
     name: "Creative Commons 0 Public Domain Dedication",
     short: "CC0",
     url: "https://creativecommons.org/publicdomain/zero/1.0/",
-  },
-  "w3c-software": {
-    name: "W3C Software Notice and License",
-    short: "W3C Software",
-    url: "https://www.w3.org/Consortium/Legal/2002/copyright-software-20021231",
-  },
-  "w3c-software-doc": {
-    name: "W3C Software and Document Notice and License",
-    short: "W3C Software and Document",
-    url: "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
-  },
-  "cc-by": {
-    name: "Creative Commons Attribution 4.0 International Public License",
-    short: "CC-BY",
-    url: "https://creativecommons.org/licenses/by/4.0/legalcode",
   },
 };
 
@@ -380,14 +433,14 @@ function validateDateAndRecover(conf, prop, fallbackDate = new Date()) {
     return new Date(formattedDate);
   }
   const msg =
-    `[\`${prop}\`](https://github.com/w3c/respec/wiki/${prop}) ` +
+    `[\`${prop}\`](https://github.com/pcisig/respec/wiki/${prop}) ` +
     `is not a valid date: "${conf[prop]}". Expected format 'YYYY-MM-DD'.`;
   pub("error", msg);
   return new Date(ISODate.format(new Date()));
 }
 
 export function run(conf, doc, cb) {
-  // TODO: move to w3c defaults
+  // TODO: move to pcisig defaults
   if (!conf.logos) {
     conf.logos = [];
   }
@@ -395,23 +448,20 @@ export function run(conf, doc, cb) {
   if (conf.doRDFa === undefined) conf.doRDFa = true;
   // validate configuration and derive new configuration values
   if (!conf.license) {
-    conf.license = "w3c-software-doc";
+    conf.license = "nda";
   }
-  conf.isCCBY = conf.license === "cc-by";
-  conf.isW3CSoftAndDocLicense = conf.license === "w3c-software-doc";
-  if (["cc-by", "w3c"].includes(conf.license)) {
-    let msg = `You cannot use license "\`${conf.license}\`" with W3C Specs. `;
-    msg += `Please set \`respecConfig.license: "w3c-software-doc"\` instead.`;
+  if (["cc0"].includes(conf.license)) {
+    let msg = `You cannot use license "\`${conf.license}\`" with PCISIG Specs. `;
+    msg += `Please set \`respecConfig.license: "pcisig"\` or \`resapectConfig: "nda"\` instead.`;
     pub("error", msg);
   }
   conf.licenseInfo = licenses[conf.license];
-  conf.isCGBG = cgbg.includes(conf.specStatus);
-  conf.isCGFinal = conf.isCGBG && /G-FINAL$/.test(conf.specStatus);
   conf.isBasic = conf.specStatus === "base";
-  conf.isRegular = !conf.isCGBG && !conf.isBasic;
+  conf.isRegular = !conf.isBasic;
   if (!conf.specStatus) {
     pub("error", "Missing required configuration: `specStatus`");
   }
+
   if (conf.isRegular && !conf.shortName) {
     pub("error", "Missing required configuration: `shortName`");
   }
@@ -423,49 +473,76 @@ export function run(conf, doc, cb) {
     doc.lastModified
   );
   conf.publishYear = conf.publishDate.getUTCFullYear();
-  conf.publishHumanDate = W3CDate.format(conf.publishDate);
+  conf.publishHumanDate = PCISIGDate.format(conf.publishDate);
   conf.isNoTrack = noTrackStatus.includes(conf.specStatus);
-  conf.isRecTrack = conf.noRecTrack
+  conf.isSpecTrack = conf.noSpecTrack
     ? false
-    : recTrackStatus.includes(conf.specStatus);
-  conf.isMemberSubmission = conf.specStatus === "Member-SUBM";
+    : specTrackStatus.includes(conf.specStatus);
+  if (conf.isSpecTrack && !conf.specLevel) {
+    pub("error", "Missing required configuration: `specLevel`");
+  }
+  conf.isMemberPrivate = conf.specStatus === "member-private";
+  if (conf.isMemberPrivate) {
+    const memPrivateLogo = {
+      alt: "PCISIG Member Private",
+      href: "https://www.pcisig.com/Spec/MemberSubmission/Private/",
+      src: "https://www.pcisig.com/Spec/Icons/member_private-v.svg",
+      width: "211",
+    };
+    conf.logos.push({...baseLogo, ...memPrivateLogo});
+  }
+  conf.isMemberSubmission = conf.specStatus === "member-submission";
   if (conf.isMemberSubmission) {
     const memSubmissionLogo = {
-      alt: "W3C Member Submission",
-      href: "https://www.w3.org/Submission/",
-      src: "https://www.w3.org/Icons/member_subm-v.svg",
+      alt: "PCISIG Member Submission",
+      href: "https://www.pcisig.com/Spec/MemberSubmission/",
+      src: "https://www.pcisig.com/Spec/Icons/member_submission-v.svg",
       width: "211",
     };
-    conf.logos.push({ ...baseLogo, ...memSubmissionLogo });
+    conf.logos.push({...baseLogo, ...memSubmissionLogo});
   }
-  conf.isTeamSubmission = conf.specStatus === "Team-SUBM";
+  conf.isTeamPrivate = conf.specStatus === "team-private";
+  if (conf.isTeamPrivate) {
+    const teamPrivateLogo = {
+      alt: "PCISIG Team Private",
+      href: "https://www.pcisig.com/Spec/TeamSubmission/Private/",
+      src: "https://www.pcisig.com/Spec/Icons/team_private-v.svg",
+      width: "211",
+    };
+    conf.logos.push({...baseLogo, ...teamPrivateLogo});
+  }
+  conf.isTeamSubmission = conf.specStatus === "team-submission";
   if (conf.isTeamSubmission) {
     const teamSubmissionLogo = {
-      alt: "W3C Team Submission",
-      href: "https://www.w3.org/TeamSubmission/",
-      src: "https://www.w3.org/Icons/team_subm-v.svg",
+      alt: "PCISIG Team Submission",
+      href: "https://www.pcisig.com/Spec/TeamSubmission/",
+      src: "https://www.pcisig.com/Spec/Icons/team_submmission-v.svg",
       width: "211",
     };
-    conf.logos.push({ ...baseLogo, ...teamSubmissionLogo });
+    conf.logos.push({...baseLogo, ...teamSubmissionLogo});
   }
   conf.isSubmission = conf.isMemberSubmission || conf.isTeamSubmission;
+  conf.isPrivate = conf.isMemberPrivate || conf.isPrivate || conf.specStatus === "private";
   conf.anOrA = precededByAn.includes(conf.specStatus) ? "an" : "a";
-  conf.isTagFinding =
-    conf.specStatus === "finding" || conf.specStatus === "draft-finding";
   if (!conf.edDraftURI) {
     conf.edDraftURI = "";
     if (conf.specStatus === "ED")
       pub("warn", "Editor's Drafts should set edDraftURI.");
   }
-  conf.maturity = status2maturity[conf.specStatus]
-    ? status2maturity[conf.specStatus]
+  conf.maturity = status2format[conf.specStatus]
+    ? status2format[conf.specStatus]
     : conf.specStatus;
-  var publishSpace = "TR";
-  if (conf.specStatus === "Member-SUBM") publishSpace = "Submission";
-  else if (conf.specStatus === "Team-SUBM") publishSpace = "TeamSubmission";
+  if (conf.specLevel) {
+    conf.maturity = conf.maturity + "-" + conf.specLevel;
+  }
+  var publishSpace = "Spec";
+  if (conf.specStatus === "member-submission") publishSpace = "Spec/Submission";
+  else if (conf.specStatus === "member-private") publishSpace = "Spec/Submission/Private";
+  else if (conf.specStatus === "team-submission") publishSpace = "Spec/TeamSubmission";
+  else if (conf.specStatus === "team-private") publishSpace = "Spec/TeamSubmission/Private";
   if (conf.isRegular)
     conf.thisVersion =
-      "https://www.w3.org/" +
+      "https://www.pcisig.com/" +
       publishSpace +
       "/" +
       conf.publishDate.getUTCFullYear() +
@@ -479,15 +556,14 @@ export function run(conf, doc, cb) {
   if (conf.specStatus === "ED") conf.thisVersion = conf.edDraftURI;
   if (conf.isRegular)
     conf.latestVersion =
-      "https://www.w3.org/" + publishSpace + "/" + conf.shortName + "/";
-  if (conf.isTagFinding) {
-    conf.latestVersion = "https://www.w3.org/2001/tag/doc/" + conf.shortName;
-    conf.thisVersion =
-      conf.latestVersion + "-" + ISODate.format(conf.publishDate);
-  }
+      "https://www.pcisig.com/" + publishSpace + "/" + conf.shortName + "/";
+
   if (conf.previousPublishDate) {
-    if (!conf.previousMaturity && !conf.isTagFinding) {
-      pub("error", "`previousPublishDate` is set, but not `previousMaturity`.");
+    if (!conf.previousStatus) {
+      pub("error", "`previousPublishDate` is set, but not `previousStatus`.");
+    }
+    if (!conf.previousLevel) {
+      pub("error", "`previousPublishDate` is set, but not `previousLevel`.");
     }
 
     conf.previousPublishDate = validateDateAndRecover(
@@ -495,24 +571,21 @@ export function run(conf, doc, cb) {
       "previousPublishDate"
     );
 
-    var pmat = status2maturity[conf.previousMaturity]
-      ? status2maturity[conf.previousMaturity]
-      : conf.previousMaturity;
-    if (conf.isTagFinding) {
-      conf.prevVersion =
-        conf.latestVersion + "-" + ISODate.format(conf.previousPublishDate);
-    } else if (conf.isCGBG) {
-      conf.prevVersion = conf.prevVersion || "";
-    } else if (conf.isBasic) {
+    var pmat = status2format[conf.previousStatus]
+      ? status2format[conf.previousStatus]
+      : conf.previousStatus;
+    if (conf.isBasic) {
       conf.prevVersion = "";
     } else {
       conf.prevVersion =
-        "https://www.w3.org/TR/" +
+        "https://www.pcisig.com/Spec/" +
         conf.previousPublishDate.getUTCFullYear() +
         "/" +
         pmat +
         "-" +
         conf.shortName +
+        "-" +
+        conf.previousLevel +
         "-" +
         concatDate(conf.previousPublishDate) +
         "/";
@@ -520,25 +593,23 @@ export function run(conf, doc, cb) {
   } else {
     if (
       !/NOTE$/.test(conf.specStatus) &&
-      conf.specStatus !== "FPWD" &&
-      conf.specStatus !== "FPLC" &&
       conf.specStatus !== "ED" &&
-      !conf.noRecTrack &&
+      !conf.noSpecTrack &&
       !conf.isNoTrack &&
       !conf.isSubmission
     )
       pub(
         "error",
         "Document on track but no previous version:" +
-          " Add `previousMaturity`, and `previousPublishDate` to ReSpec's config."
+        " Add `previousStatus`, `previousLevel`, and `previousPublishDate` to ReSpec's config."
       );
     if (!conf.prevVersion) conf.prevVersion = "";
   }
-  if (conf.prevRecShortname && !conf.prevRecURI)
-    conf.prevRecURI = "https://www.w3.org/TR/" + conf.prevRecShortname;
+  if (conf.prevSpecShortname && !conf.prevSpecURI)
+    conf.prevSpecURI = "https://www.pcisig.com/Spec/" + conf.prevSpecShortname;
   if (!conf.editors || conf.editors.length === 0)
     pub("error", "At least one editor is required");
-  var peopCheck = function(it) {
+  var peopCheck = function (it) {
     if (!it.name) pub("error", "All authors and editors must have a name.");
   };
   if (conf.editors) {
@@ -549,7 +620,7 @@ export function run(conf, doc, cb) {
   }
   conf.multipleEditors = conf.editors && conf.editors.length > 1;
   conf.multipleAuthors = conf.authors && conf.authors.length > 1;
-  $.each(conf.alternateFormats || [], function(i, it) {
+  $.each(conf.alternateFormats || [], function (i, it) {
     if (!it.uri || !it.label)
       pub("error", "All alternate formats must have a uri and a label.");
   });
@@ -557,7 +628,7 @@ export function run(conf, doc, cb) {
     conf.alternateFormats && conf.alternateFormats.length > 1;
   conf.alternatesHTML =
     conf.alternateFormats &&
-    joinAnd(conf.alternateFormats, function(alt) {
+    joinAnd(conf.alternateFormats, function (alt) {
       var optional = alt.hasOwnProperty("lang") && alt.lang
         ? " hreflang='" + alt.lang + "'"
         : "";
@@ -608,66 +679,50 @@ export function run(conf, doc, cb) {
   if (status2rdf[conf.specStatus]) {
     conf.rdfStatus = status2rdf[conf.specStatus];
   }
-  conf.showThisVersion = !conf.isNoTrack || conf.isTagFinding;
+  conf.showThisVersion = !conf.isNoTrack;
   conf.showPreviousVersion =
-    conf.specStatus !== "FPWD" &&
-    conf.specStatus !== "FPLC" &&
     conf.specStatus !== "ED" &&
     !conf.isNoTrack &&
     !conf.isSubmission;
   if (/NOTE$/.test(conf.specStatus) && !conf.prevVersion)
     conf.showPreviousVersion = false;
-  if (conf.isTagFinding)
-    conf.showPreviousVersion = conf.previousPublishDate ? true : false;
-  conf.notYetRec = conf.isRecTrack && conf.specStatus !== "REC";
-  conf.isRec = conf.isRecTrack && conf.specStatus === "REC";
-  if (conf.isRec && !conf.errata)
+  conf.notYetFinal = conf.isSpecTrack && conf.specStatus !== "FINAL";
+  conf.isFinal = conf.isSpecTrack && conf.specStatus === "FINAL";
+  if (conf.isFinal && !conf.errata)
     pub("error", "Recommendations must have an errata link.");
   conf.notRec = conf.specStatus !== "REC";
   conf.isUnofficial = conf.specStatus === "unofficial";
-  conf.prependW3C = !conf.isUnofficial;
-  conf.isED = conf.specStatus === "ED";
-  conf.isCR = conf.specStatus === "CR";
-  conf.isPR = conf.specStatus === "PR";
-  conf.isPER = conf.specStatus === "PER";
-  conf.isMO = conf.specStatus === "MO";
-  conf.isIGNote = conf.specStatus === "IG-NOTE";
+  conf.prependPCISIG = !conf.isUnofficial;
+  conf.isED = conf.specStatus === "ED" || conf.specStatus === "ED-CWG" || conf.specStatus === "ED-MEM";
+  conf.isWD = conf.specStatus === "WD" || conf.specStatus === "WD-CWG" || conf.specStatus === "WD-MEM";
+  conf.isRC = conf.specStatus === "RC" || conf.specStatus === "RC-CWG" || conf.specStatus === "RC-MEM";
+  conf.isPUB = conf.specStatus === "PUB" || conf.specStatus === "PUB-CWG" || conf.specStatus === "PUB-MEM";
   conf.dashDate = ISODate.format(conf.publishDate);
   conf.publishISODate = conf.publishDate.toISOString();
   conf.shortISODate = ISODate.format(conf.publishDate);
-  conf.processVersion = conf.processVersion || "2017";
-  if (conf.processVersion == "2014" || conf.processVersion == "2015") {
-    pub(
-      "warn",
-      "Process " + conf.processVersion + " has been superceded by Process 2017."
-    );
-    conf.processVersion = "2017";
-  }
-  conf.isNewProcess = conf.processVersion == "2017";
-  // configuration done - yay!
+// configuration done - yay!
 
-  // annotate html element with RFDa
+// annotate html element with RFDa
   if (conf.doRDFa) {
     if (conf.rdfStatus)
       $("html").attr("typeof", "bibo:Document " + conf.rdfStatus);
     else $("html").attr("typeof", "bibo:Document ");
     var prefixes =
-      "bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#";
+      "bibo: http://purl.org/ontology/bibo/ pcisigp: http://www.pcisig.com/2001/02pd/rec54#";
     $("html").attr("prefix", prefixes);
     $("html>head").prepend(
       $("<meta lang='' property='dc:language' content='en'>")
     );
   }
-  // insert into document and mark with microformat
+// insert into document and mark with microformat
   var bp;
-  if (conf.isCGBG) bp = cgbgHeadersTmpl(conf);
-  else bp = headersTmpl(conf);
+  bp = headersTmpl(conf);
   $("body", doc).prepend($(bp)).addClass("h-entry");
 
-  // handle SotD
+// handle SotD
   var sotd =
     document.body.querySelector("#sotd") || document.createElement("section");
-  if ((conf.isCGBG || !conf.isNoTrack || conf.isTagFinding) && !sotd.id) {
+  if ((!conf.isNoTrack) && !sotd.id) {
     pub(
       "error",
       "A custom SotD paragraph is required for your type of document."
@@ -675,14 +730,14 @@ export function run(conf, doc, cb) {
   }
   sotd.id = sotd.id || "stod";
   sotd.classList.add("introductory");
-  // NOTE:
-  //  When arrays, wg and wgURI have to be the same length (and in the same order).
-  //  Technically wgURI could be longer but the rest is ignored.
-  //  However wgPatentURI can be shorter. This covers the case where multiple groups
-  //  publish together but some aren't used for patent policy purposes (typically this
-  //  happens when one is foolish enough to do joint work with the TAG). In such cases,
-  //  the groups whose patent policy applies need to be listed first, and wgPatentURI
-  //  can be shorter — but it still needs to be an array.
+// NOTE:
+//  When arrays, wg and wgURI have to be the same length (and in the same order).
+//  Technically wgURI could be longer but the rest is ignored.
+//  However wgPatentURI can be shorter. This covers the case where multiple groups
+//  publish together but some aren't used for patent policy purposes (typically this
+//  happens when one is foolish enough to do joint work with the TAG). In such cases,
+//  the groups whose patent policy applies need to be listed first, and wgPatentURI
+//  can be shorter — but it still needs to be an array.
   var wgPotentialArray = [conf.wg, conf.wgURI, conf.wgPatentURI];
   if (
     wgPotentialArray.some(item => Array.isArray(item)) &&
@@ -695,18 +750,18 @@ export function run(conf, doc, cb) {
   }
   if (Array.isArray(conf.wg)) {
     conf.multipleWGs = conf.wg.length > 1;
-    conf.wgHTML = joinAnd(conf.wg, function(wg, idx) {
+    conf.wgHTML = joinAnd(conf.wg, function (wg, idx) {
       return "the <a href='" + conf.wgURI[idx] + "'>" + wg + "</a>";
     });
     var pats = [];
     for (var i = 0, n = conf.wg.length; i < n; i++) {
       pats.push(
         "a <a href='" +
-          conf.wgPatentURI[i] +
-          "' rel='disclosure'>" +
-          "public list of any patent disclosures  (" +
-          conf.wg[i] +
-          ")</a>"
+        conf.wgPatentURI[i] +
+        "' rel='disclosure'>" +
+        "public list of any patent disclosures  (" +
+        conf.wg[i] +
+        ")</a>"
       );
     }
     conf.wgPatentHTML = joinAnd(pats);
@@ -714,64 +769,39 @@ export function run(conf, doc, cb) {
     conf.multipleWGs = false;
     conf.wgHTML = "the <a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
   }
-  if (conf.specStatus === "PR" && !conf.crEnd) {
+  if (conf.specStatus === "PUB-CWG" && !conf.cwgReviewEnd) {
     pub(
       "error",
-      `\`specStatus\` is "PR" but no \`crEnd\` is specified (needed to indicate end of previous CR).`
+      `\`specStatus\` is "PUB-CWG" but no \`cwgReviewEnd\` is specified (needed to indicate end of the Cross Workgroup Review).`
     );
   }
+  conf.cwgReviewEnd = validateDateAndRecover(conf, "cwgReviewEnd");
+  conf.humanCwgReviewEnd = PCISIGDate.format(conf.cwgReviewEnd);
 
-  if (conf.specStatus === "CR" && !conf.crEnd) {
+
+  if (conf.specStatus === "PUB-MEM" && !conf.memReviewEnd) {
     pub(
       "error",
-      `\`specStatus\` is "CR", but no \`crEnd\` is specified in Respec config.`
+      `\`specStatus\` is "PUB-MEM", but no \`memReviewEnd\` is specified (needed to indicate end of the Member Review).`
     );
   }
-  conf.crEnd = validateDateAndRecover(conf, "crEnd");
-  conf.humanCREnd = W3CDate.format(conf.crEnd);
+  conf.memReviewEnd = validateDateAndRecover(conf, "memReviewEnd");
+  conf.humanMemReviewEnd = PCISIGDate.format(conf.memReviewEnd);
 
-  if (conf.specStatus === "PR" && !conf.prEnd) {
-    pub("error", `\`specStatus\` is "PR" but no \`prEnd\` is specified.`);
-  }
-  conf.prEnd = validateDateAndRecover(conf, "prEnd");
-  conf.humanPREnd = W3CDate.format(conf.prEnd);
-
-  if (conf.specStatus === "PER" && !conf.perEnd) {
-    pub("error", "Status is PER but no perEnd is specified");
-  }
-  conf.perEnd = validateDateAndRecover(conf, "perEnd");
-  conf.humanPEREnd = W3CDate.format(conf.perEnd);
-
-  conf.recNotExpected =
-    !conf.isRecTrack &&
-    conf.maturity == "WD" &&
-    conf.specStatus !== "FPWD-NOTE";
-  if (conf.isIGNote && !conf.charterDisclosureURI)
-    pub(
-      "error",
-      "IG-NOTEs must link to charter's disclosure section using `charterDisclosureURI`."
-    );
-  // ensure subjectPrefix is encoded before using template
+// ensure subjectPrefix is encoded before using template
   if (conf.subjectPrefix !== "")
     conf.subjectPrefixEnc = encodeURIComponent(conf.subjectPrefix);
 
   sotd.innerHTML = populateSoTD(conf, sotd);
 
-  if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isRec)) {
+  if (!conf.implementationReportURI && (conf.isCR || conf.isPR || conf.isFinal)) {
     pub(
       "error",
       "CR, PR, and REC documents need to have an `implementationReportURI` defined."
     );
   }
-  if (conf.isTagFinding && !conf.additionalContent) {
-    pub(
-      "warn",
-      "ReSpec does not support automated SotD generation for TAG findings, " +
-        "please add the prerequisite content in the 'sotd' section"
-    );
-  }
-  // Requested by https://github.com/w3c/respec/issues/504
-  // Makes a record of a few auto-generated things.
+// Requested by https://github.com/pcisig/respec/issues/504
+// Makes a record of a few auto-generated things.
   pub("amend-user-config", {
     publishISODate: conf.publishISODate,
     generatedSubtitle: `${conf.longStatus} ${conf.publishHumanDate}`,
@@ -799,5 +829,5 @@ function populateSoTD(conf, sotd) {
   conf.additionalContent = additionalContent.innerHTML;
   // Whatever sections are left, we throw at the end.
   conf.additionalSections = sotdClone.innerHTML;
-  return tmpls[conf.isCGBG ? "cgbg-sotd.html" : "sotd.html"](conf);
+  return tmpls["sotd.html"](conf);
 }
