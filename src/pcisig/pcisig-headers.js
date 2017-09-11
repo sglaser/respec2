@@ -552,14 +552,14 @@ export function run(conf, doc, cb) {
   } else {
     if (
       !/NOTE$/.test(conf.specStatus) &&
-      !conf.prevStatus !== "none" &&
+      !conf.prevStatus === "none" &&
       !conf.noSpecTrack &&
       !conf.isNoTrack &&
       !conf.isSubmission
     )
       pub(
         "error",
-        "Document on track but no previous version:" +
+        "Document on specification track but has no previous version:" +
         " Add `previousStatus`, `previousRevision`, `previousDraftLevel`, and `previousPublishDate` to ReSpec's config."
       );
     if (!conf.prevVersion) conf.prevVersion = "";
