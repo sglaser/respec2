@@ -169,6 +169,7 @@ window.$.fn.makeID = function (pfx = "", txt = "", noLC = false) {
   var id = noLC ? txt : txt.toLowerCase();
   id = id
     .replace(/\s/gm, "-")
+    .replace(/[^-_a-zA-Z0-9]+/gm, "-")
     .replace(/^-+/, "")
     .replace(/-+$/, "")
     .replace(/-+/g, "-");
