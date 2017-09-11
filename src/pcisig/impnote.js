@@ -32,7 +32,7 @@ export function run(conf, doc, cb) {
           $tit = $(
             "<div class='" + report.type + "-title'><span></span></div>"
           ),
-          text = conf.l10n.implementation_note;
+          text = conf.l10n.impnote;
         report.title = $inno.attr("title");
         $tit.find("span").text(text);
         if (report.title) {
