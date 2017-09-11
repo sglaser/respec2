@@ -751,7 +751,7 @@
 	}
 	table.data caption,
 	table.index caption {
-		width: 100%;
+		width: auto;
 	}
 
 	table.data td,  table.data th,
