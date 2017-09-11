@@ -5,7 +5,7 @@
 
 // Module pcisig/headers
 // Generate the headers material based on the provided configuration.
-// \GURATION
+// CONFIGURATION
 //  - specStatus: the short code for the specification's status or type (required)
 //  - specRevision: the revision of the spec (e.g., PCIe Base 4.0 would be 4.0) (required)
 //  - specDraftLevel: the short code for the specification's Draft Level (required)
@@ -75,7 +75,7 @@ import tmpls from "templates";
 
 export const name = "pcisig/headers";
 
-const headersTmpl = tmpls["headers.html"];
+const headersTmpl = tmpls["pcisig-headers"];
 
 const PCISIGDate = new Intl.DateTimeFormat(["en-AU"], {
   timeZone: "UTC",
@@ -473,18 +473,18 @@ export function run(conf, doc, cb) {
   conf.isPrivate = conf.isMemberPrivate || conf.isPrivate || conf.specStatus === "private";
   conf.anOrA = precededByAn.includes(conf.specStatus) ? "an" : "a";
 
-  conf.maturity = "";
+  let temp = [];
+
   if (conf.specRevision) {
-    conf.maturity = conf.maturity + "-" + conf.specRevision;
+    temp.push(conf.specRevision);
   }
   if (conf.specDraftLevel) {
-    conf.maturity = conf.maturity + "-" + conf.specDraftLevel;
+    temp.push(conf.specDraftLevel);
   }
-  if (conf.maturity === "") {
-    conf.maturity = conf.specStatus;
-  } else {
-    conf.maturity = conf.maturity + "-" + conf.specStatus;
+  if (conf.specStatus) {
+    temp.push(conf.specStatus);
   }
+  conf.maturity = temp.join("-");
 
   let publishSpace = "Spec/Published";
   if (conf.specStatus === "member-submission") publishSpace = "Spec/Submission";
@@ -524,18 +524,17 @@ export function run(conf, doc, cb) {
       "previousPublishDate"
     );
 
-    let pmat = "";
     if (conf.previousRevision) {
-      pmat = pmat + "-" + conf.previousRevision;
+      temp.push(conf.previousRevision);
     }
     if (conf.previousDraftLevel) {
-      pmat = pmat + "-" + conf.previousDraftLevel;
+      temp.push(conf.previousDraftLevel);
     }
-    if (pmat === "") {
-      pmat = conf.previousStatus;
-    } else {
-      pmat = pmat + "-" + conf.previousStatus;
+    if (conf.previousStatus) {
+      temp.push(conf.previousStatus);
     }
+    let pmat = temp.join("-");
+
     if (conf.isBasic) {
       conf.prevVersion = "";
     } else {
@@ -553,6 +552,7 @@ export function run(conf, doc, cb) {
   } else {
     if (
       !/NOTE$/.test(conf.specStatus) &&
+      !conf.prevStatus !== "none" &&
       !conf.noSpecTrack &&
       !conf.isNoTrack &&
       !conf.isSubmission
@@ -642,6 +642,7 @@ export function run(conf, doc, cb) {
   }
   conf.showThisVersion = !conf.isNoTrack;
   conf.showPreviousVersion =
+    !conf.previousStatus === "none" &&
     !conf.isNoTrack &&
     !conf.isSubmission;
   if (/NOTE$/.test(conf.specStatus) && !conf.prevVersion)
@@ -674,12 +675,22 @@ export function run(conf, doc, cb) {
       );
     }
   }
+
+  // NOTE:
+  if (Array.isArray(conf.wg)) {
+    conf.multipleWGs = conf.wg.length > 1;
+    conf.wgHTML = joinAnd(conf.wg);
+  } else {
+    conf.multipleWGs = false;
+    conf.wgHTML = conf.wg;
+  }
+
 // insert into document and mark with microformat
   let bp;
   bp = headersTmpl(conf);
   $("body", doc).prepend($(bp)).addClass("h-entry");
 
-  // handle Revision History
+// handle Revision History
   let revision_history =
     document.body.querySelector("#revision-history") || document.createElement("section");
   if ((!conf.isNoTrack) && !revision_history.id) {
@@ -703,16 +714,7 @@ export function run(conf, doc, cb) {
   sotd.id = sotd.id || "stod";
   sotd.classList.add("introductory");
 
-// NOTE:
-  if (Array.isArray(conf.wg)) {
-    conf.multipleWGs = conf.wg.length > 1;
-    conf.wgHTML = joinAnd(conf.wg, function (wg, idx) {
-      return "the " + wg;
-    });
-  } else {
-    conf.multipleWGs = false;
-    conf.wgHTML = "the " + conf.wg;
-  }
+
   if (conf.specStatus === "PUB-CWG" && !conf.cwgReviewEnd) {
     pub(
       "error",
@@ -763,5 +765,5 @@ function populateSoTD(conf, sotd) {
   conf.additionalContent = additionalContent.innerHTML;
   // Whatever sections are left, we throw at the end.
   conf.additionalSections = sotdClone.innerHTML;
-  return tmpls["sotd.html"](conf);
+  return tmpls["pcisig-sotd"](conf);
 }

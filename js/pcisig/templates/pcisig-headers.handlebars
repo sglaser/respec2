@@ -4,13 +4,13 @@
       {{#if prependPCIeLogo}}
         <a href="https://www.pcisig.com/">
           <img width="210" height="80" alt="PCI Express Logo"
-               src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_express_PMS.svg"/>
+               src="https://sglaser.github.io/respec/Spec/StyleSheets/pcisig/pci_express_PMS.svg"/>
         </a>
       {{else}}
         {{#if prependPCISIGLogo}}
           <a href="https://www.pcisig.com/">
             <img width="210" height="108" alt="PCI-SIG Logo"
-                 src="https://sglaser.github.io/respec/stylesheets/pcisig/pci_sig_logo_PMS_273.svg"/>
+                 src="https://sglaser.github.io/respec/Spec/StyleSheets/pcisig/pci_sig_logo_PMS_273.svg"/>
           </a>
         {{/if}}
       {{/if}}
@@ -47,35 +47,22 @@
       <dt>{{l10n.latest_published_version}}</dt>
       <dd>{{#if latestVersion}}<a href='{{latestVersion}}'>{{latestVersion}}</a>{{else}}none{{/if}}</dd>
     {{/unless}}
-    {{#if edDraftURI}}
-      <dt>{{l10n.latest_editors_draft}}</dt>
-      <dd><a href='{{edDraftURI}}'>{{edDraftURI}}</a></dd>
-    {{/if}}
     {{#if bugTrackerHTML}}
       <dt>{{l10n.bug_tracker}}</dt>
       <dd>{{{bugTrackerHTML}}}</dd>
-    {{/if}}
-    {{#if isED}}
-      {{#if prevED}}
-        <dt>Previous editor's draft:</dt>
-        <dd><a href='{{prevED}}'>{{prevED}}</a></dd>
-      {{/if}}
     {{/if}}
     {{#if showPreviousVersion}}
       <dt>Previous version:</dt>
       <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href='{{prevVersion}}'>{{prevVersion}}</a></dd>
     {{/if}}
-    {{#if prevRecURI}}
-      {{#if isRec}}
-        <dt>Previous Specification:</dt>
-        <dd><a {{#if doRDFa}}rel="dcterms:replaces"{{/if}} href='{{prevRecURI}}'>{{prevRecURI}}</a></dd>
-      {{else}}
-        <dt>Latest Specification:</dt>
-        <dd><a href='{{prevRecURI}}'>{{prevRecURI}}</a></dd>
-      {{/if}}
+    {{#if wg}}
+      <dt>{{#if multipleWGs}}{{l10n.workgroups}}{{else}}{{l10n.workgroup}}{{/if}}</dt>
+      <dd>{{{wgHTML}}}</dd>
     {{/if}}
-    <dt>{{#if multipleEditors}}{{l10n.editors}}{{else}}{{l10n.editor}}{{/if}}</dt>
-    {{showPeople "Editor" editors}}
+    {{#if editors}}
+      <dt>{{#if multipleEditors}}{{l10n.editors}}{{else}}{{l10n.editor}}{{/if}}</dt>
+      {{showPeople "Editor" editors}}
+    {{/if}}
     {{#if authors}}
       <dt>{{#if multipleAuthors}}{{l10n.authors}}{{else}}{{l10n.author}}{{/if}}</dt>
       {{showPeople "Author" authors}}

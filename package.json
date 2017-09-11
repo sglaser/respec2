@@ -59,7 +59,7 @@
     "build": "npm run copydeps && npm run hb:build && npm run highlight:build && npm run babel:build",
     "copydeps": "node ./tools/copydeps.js",
     "handlebars": "handlebars",
-    "hb:build": "node ./tools/expandpaths.js -a js/*/templates/*.html js/*/templates/*.css js/core/templates/webidl-contiguous/*.html | xargs handlebars -f js/templates.js",
+    "hb:build": "node ./tools/expandpaths.js -a js/*/templates/*.html js/*/templates/*.handlebars js/*/templates/*.css js/core/templates/webidl-contiguous/*.html | xargs handlebars -f js/templates.js",
     "highlight:build": "hljs -n --output js/deps/ xml javascript css http markdown json abnf && mv -f js/deps/highlight.pack.js js/deps/highlight.js",
     "karma": "karma start --single-run",
     "release": "node ./tools/release.js",

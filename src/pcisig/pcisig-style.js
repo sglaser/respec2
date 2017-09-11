@@ -174,6 +174,10 @@ export function run(conf, doc, cb) {
   const finalVersionPath = version ? version + "/" : "";
   const finalStyleURL = `https://sglaser.github.io/respec/Spec/StyleSheets/${finalVersionPath}${styleFile}.css`;
 
-  linkCSS(doc, finalStyleURL);
+  if (conf.cssOverride) {
+    linkCSS(doc, conf.cssOverride);
+  } else {
+    linkCSS(doc, finalStyleURL);
+  }
   cb();
 }

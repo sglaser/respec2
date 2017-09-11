@@ -4,7 +4,7 @@ import tmpls from "templates";
 import { pub } from "core/pubsubhub";
 
 export const name = "pcisig/conformance";
-const confoTmpl = tmpls["conformance.html"];
+const confoTmpl = tmpls["pcisig-conformance"];
 
 export function run(conf, doc, cb) {
   var $confo = $("#conformance");

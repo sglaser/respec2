@@ -55,6 +55,10 @@ const base = {
   this_version: "This version:",
   toc: "Table of Contents",
   warning: "Warning",
+  workgroup: "Workgroup",
+  workgroups: "Workgroups",
+  impnote: "Implementation Note",
+  revision_history: "Revision History",
 };
 
 const ko = {
