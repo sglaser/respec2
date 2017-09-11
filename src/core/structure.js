@@ -67,7 +67,7 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     var secno = secnos.join("."),
       isTopLevel = secnos.length == 1;
     if (!isIntro) {
-      $sec["data-secno"] = secno;   // Note: before adding "." to top level section numbers
+      $sec.attr({"data-secno": secno});   // Note: before adding "." to top level section numbers
     }
     if (isTopLevel) {
       secno = secno + ".";
