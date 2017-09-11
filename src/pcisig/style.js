@@ -1,25 +1,27 @@
 /*jshint strict: true, browser:true, jquery: true*/
 /*globals define*/
-// Module w3c/style
-// Inserts a link to the appropriate W3C style for the specification's maturity level.
+// Module pcisig/style
+// Inserts a link to the appropriate PCISIG style for the specification's maturity level.
 // CONFIGURATION
 //  - specStatus: the short code for the specification's maturity level or type (required)
 
-import { toKeyValuePairs, createResourceHint, linkCSS } from "core/utils";
-import { pub, sub } from "core/pubsubhub";
-export const name = "w3c/style";
+import {toKeyValuePairs, createResourceHint, linkCSS} from "core/utils";
+import {pub, sub} from "core/pubsubhub";
+
+export const name = "pcisig/style";
+
 function attachFixupScript(doc, version) {
   const script = doc.createElement("script");
   script.addEventListener(
     "load",
-    function() {
+    function () {
       if (window.location.hash) {
         window.location = window.location;
       }
     },
-    { once: true }
+    {once: true}
   );
-  script.src = `https://www.w3.org/scripts/TR/${version}/fixup.js`;
+  script.src = `https://sglaser.github.io/respec/Spec/scripts/${version}/fixup.js`;
   doc.body.appendChild(script);
 }
 
@@ -43,7 +45,7 @@ function createMetaViewport() {
 function createBaseStyle() {
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = "https://www.w3.org/StyleSheets/TR/2016/base.css";
+  link.href = "https://sglaser.github.io/respec/Spec/StyleSheets/2017/base.css";
   link.classList.add("removeOnSave");
   return link;
 }
@@ -53,7 +55,7 @@ function selectStyleVersion(styleVersion) {
   switch (styleVersion) {
     case null:
     case true:
-      version = "2016";
+      version = "2017";
       break;
     default:
       if (styleVersion && !isNaN(styleVersion)) {
@@ -66,32 +68,33 @@ function selectStyleVersion(styleVersion) {
 function createResourceHints() {
   const resourceHints = [
     {
-      hint: "preconnect", // for W3C styles and scripts.
-      href: "https://www.w3.org",
+      hint: "preconnect", // for PCISIG styles and scripts.
+      href: "https://sglaser.github.io/respec/Spec",
     },
     {
       hint: "preload", // all specs need it, and we attach it on end-all.
-      href: "https://www.w3.org/scripts/TR/2016/fixup.js",
+      href: "https://sglaser.github.io/respec/Spec/scripts/2017/fixup.js",
       as: "script",
     },
     {
       hint: "preload", // all specs include on base.css.
-      href: "https://www.w3.org/StyleSheets/TR/2016/base.css",
+      href: "https://sglaser.github.io/respec/Spec/StyleSheets/2017/base.css",
       as: "style",
     },
     {
       hint: "preload", // all specs show the logo.
-      href: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
+      href: "https://sglaser.github.io/respec/Spec/StyleSheets/2017/logos/PCISIG",
       as: "image",
     },
   ]
     .map(createResourceHint)
-    .reduce(function(frag, link) {
+    .reduce(function (frag, link) {
       frag.appendChild(link);
       return frag;
     }, document.createDocumentFragment());
   return resourceHints;
 }
+
 // Collect elements for insertion (document fragment)
 const elements = createResourceHints();
 
@@ -111,52 +114,65 @@ export function run(conf, doc, cb) {
     pub("warn", warn);
   }
 
-  let styleFile = "W3C-";
+  let styleFile = "PCISIG-";
 
   // Figure out which style file to use.
   switch (conf.specStatus.toUpperCase()) {
-    case "CG-DRAFT":
-    case "CG-FINAL":
-    case "BG-DRAFT":
-    case "BG-FINAL":
-      styleFile = conf.specStatus.toLowerCase();
+    case "WG-DRAFT-NOTE":
+    case "PUB-DRAFT-NOTE":
+    case "WG-NOTE":
+    case "PUB-NOTE":
+      styleFile = "NOTE";
       break;
-    case "FPWD":
-    case "LC":
-    case "WD-NOTE":
-    case "LC-NOTE":
+    case "WD":
+    case "WD-CWG":
+    case "WD-MEM":
+    case "WC-FINAL":
       styleFile += "WD";
       break;
-    case "WG-NOTE":
-    case "FPWD-NOTE":
-      styleFile += "WG-NOTE.css";
+    case "RC":
+    case "RC-CWG":
+    case "RC-MEM":
+    case "RC-FINAL":
+      styleFile += "RC";
+      break;
+    case "PUB":
+    case "PUB-CWG":
+    case "PUB-MEM":
+      styleFile += "PUB";
+      break;
+    case "FINAL":
+      styleFile += "FINAL";
       break;
     case "UNOFFICIAL":
-      styleFile += "UD";
-      break;
-    case "FINDING":
-    case "FINDING-DRAFT":
+    case "PRIVATE":
     case "BASE":
-      styleFile = "base.css";
+    case "NOTE":
+    case "DRAFT-NOTE":
+    case "MEMBER-PRIVATE":
+    case "MEMBER-SUBMISSION":
+    case "TEAM-PRIVATE":
+    case "TEAM-SUBMISSION":
+      styleFile = "base";
       break;
     default:
       styleFile += conf.specStatus;
   }
 
   // Select between released styles and experimental style.
-  const version = selectStyleVersion(conf.useExperimentalStyles || "2016");
-  // Attach W3C fixup script after we are done.
+  const version = selectStyleVersion(conf.useExperimentalStyles || "2017");
+  // Attach PCISIG fixup script after we are done.
   if (version && !conf.noToc) {
     sub(
       "end-all",
-      function() {
+      function () {
         attachFixupScript(doc, version);
       },
-      { once: true }
+      {once: true}
     );
   }
   const finalVersionPath = version ? version + "/" : "";
-  const finalStyleURL = `https://www.w3.org/StyleSheets/TR/${finalVersionPath}${styleFile}`;
+  const finalStyleURL = `https://sglaser.github.io/respec/Spec/StyleSheets/${finalVersionPath}${styleFile}.css`;
 
   linkCSS(doc, finalStyleURL);
   cb();
