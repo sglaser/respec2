@@ -42,7 +42,7 @@ define(
     "core/data-include",
     "core/markdown",
     "pcisig/pcisig-headers",
-//    "pcisig/footnotes",
+    "pcisig/footnotes",
     "w3c/abstract",
     "pcisig/pcisig-conformance",
     "core/data-transform",
