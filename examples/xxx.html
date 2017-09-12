@@ -126,7 +126,7 @@
 
     g.regFieldExternal0 path.regBitLine {
       stroke: green;
-      stroke-dasharray: 4,2;
+      stroke-dasharray: 4, 2;
       stroke-width: 1px;
     }
 
@@ -157,14 +157,15 @@
 
     figure div.json,
     figure pre.json {
-      color: rgb(0,90,156);
+      color: rgb(0, 90, 156);
       display: inherit;
     }
 
     @media screen {
       g.regLink:hover rect.regFieldBox,
       g.regLink:focus rect.regFieldBox {
-        fill: #ffa; stroke: blue;
+        fill: #ffa;
+        stroke: blue;
       }
 
       g.regLink:hover line.regBitNumLine,
@@ -184,7 +185,8 @@
       g.regLink:focus text.regFieldName,
       g.regLink.regFieldExternal:hover text.regFieldValue,
       g.regLink.regFieldExternal:focus text.regFieldValue {
-        fill: blue; font-weight: bold;
+        fill: blue;
+        font-weight: bold;
       }
 
       g.regLink:hover text.regBitNumMiddle,
@@ -193,7 +195,9 @@
       g.regLink:focus text.regBitNumStart,
       g.regLink:hover text.regBitNumEnd,
       g.regLink:focus text.regBitNumEnd {
-        fill: blue; font-weight: bold; font-size: 9pt;
+        fill: blue;
+        font-weight: bold;
+        font-size: 9pt;
       }
 
       g.regLink:hover text.regBitWidth,
@@ -355,6 +359,9 @@
   </script>
 </head>
 <body>
+<section id="tof"></section>
+<section id="tot"></section>
+<section id="toe"></section>
 <section id="abstract">
   <p> This is just a very basic document. The following items automatically generate references in the
     <a href="#references">References</a> Appendix. [[!REX]] Yeah for memes [[MEMES]].
@@ -538,7 +545,8 @@
 </section>
 <section>
   <h2>MathML Test</h2>
-  <p>This is a simple MathML equation (pi times r squared).
+  <p>This is a simple MathML equation.</p>
+  <figure class="equation">
     <math>
       <mi>&pi;<!-- &#x03C0; π --></mi>
       <mo>&times;<!-- &it; &#x02062; &#8290; &InvisibleTimes; --></mo>
@@ -547,7 +555,9 @@
         <mn>2</mn>
       </msup>
     </math>
-  </p>
+    <figcaption>pi times r squared</figcaption>
+  </figure>
+
 
 </section>
 <section>

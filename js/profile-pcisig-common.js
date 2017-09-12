@@ -72,7 +72,7 @@ define(
     "pcisig/fig-tbl-eqn-numbering",
     "core/rdfa",
     "w3c/aria",
-//    "pcisig/xref-map",
+    "pcisig/xref-map",
     "core/location-hash",
     "ui/about-respec",
     "ui/dfn-list",
