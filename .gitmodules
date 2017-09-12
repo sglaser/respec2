@@ -1,0 +1,3 @@
+[submodule "submodules/jquery-svg"]
+	path = submodules/jquery-svg
+	url = https://sglaser@github.com/kbwood/svg.git
