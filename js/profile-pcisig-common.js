@@ -63,7 +63,7 @@ define(
     "core/webidl-index",
     "core/link-to-dfn",
     "core/contrib",
-//    "pcisig/regpict",
+    "pcisig/regpict",
     "core/fix-headers",
     "core/structure",
     "w3c/informative",
