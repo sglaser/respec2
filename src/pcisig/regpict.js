@@ -9,7 +9,8 @@
 
 
 import {pub} from "core/pubsubhub";
-import "deps/jquery.svg.min.js";
+import "deps/jquery";
+import "deps/jquery.svg";
 import css from "deps/text!pcisig/css/regpict.css";
 
 export const name = "pcisig/regpict";
