@@ -434,7 +434,7 @@ export function run(conf, doc, cb) {
     const memPrivateLogo = {
       alt: "PCISIG Member Private",
       href: "https://sglaser.github.io/respec/Spec/MemberSubmission/Private/",
-      src: "https://sglaser.github.io/respec/Spec/Icons/member_private-v.svg",
+      src: "https://sglaser.github.io/respec/Spec/Icons/member_private.svg",
       width: "211",
     };
     conf.logos.push({...baseLogo, ...memPrivateLogo});
@@ -444,7 +444,7 @@ export function run(conf, doc, cb) {
     const memSubmissionLogo = {
       alt: "PCISIG Member Submission",
       href: "https://sglaser.github.io/respec/Spec/MemberSubmission/",
-      src: "https://sglaser.github.io/respec/Spec/Icons/member_submission-v.svg",
+      src: "https://sglaser.github.io/respec/Spec/Icons/member_submission.svg",
       width: "211",
     };
     conf.logos.push({...baseLogo, ...memSubmissionLogo});
@@ -454,7 +454,7 @@ export function run(conf, doc, cb) {
     const teamPrivateLogo = {
       alt: "PCISIG Team Private",
       href: "https://sglaser.github.io/respec/Spec/TeamSubmission/Private/",
-      src: "https://sglaser.github.io/respec/Spec/Icons/team_private-v.svg",
+      src: "https://sglaser.github.io/respec/Spec/Icons/team_private.svg",
       width: "211",
     };
     conf.logos.push({...baseLogo, ...teamPrivateLogo});
@@ -464,7 +464,7 @@ export function run(conf, doc, cb) {
     const teamSubmissionLogo = {
       alt: "PCISIG Team Submission",
       href: "https://sglaser.github.io/respec/Spec/TeamSubmission/",
-      src: "https://sglaser.github.io/respec/Spec/Icons/team_submmission-v.svg",
+      src: "https://sglaser.github.io/respec/Spec/Icons/team_submmission.svg",
       width: "211",
     };
     conf.logos.push({...baseLogo, ...teamSubmissionLogo});
