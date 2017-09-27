@@ -562,9 +562,9 @@ function draw_regpict(divsvg, svg, reg) {
   });
 }
 
-function parse_table(json, tbl) {
+function parse_table(json, $tbl) {
   let parsed = {fields: {}};
-  let $tbody = $("tbody", tbl).first();
+  let $tbody = $("tbody", $tbl).first();
   //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
   $tbody.children().each(function () {
     let $td = $(this).children();
@@ -596,6 +596,7 @@ function parse_table(json, tbl) {
         }
       } else {
         fieldName = $dfn.first().text().trim();
+        $dfn.first().attr("data-for", $tbl.attr("id"));
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
