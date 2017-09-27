@@ -596,7 +596,7 @@ function parse_table(json, $tbl) {
         }
       } else {
         fieldName = $dfn.first().text().trim();
-        $dfn.first().attr("data-for", $tbl.attr("id"));
+        $dfn.first().attr("data-dfn-for", $tbl.attr("id"));
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
