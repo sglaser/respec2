@@ -21,6 +21,7 @@ export function run(conf, doc, cb) {
           content: $inno.html(),
         };
       report.type = "impnote";
+      $inno.makeID("impnote", $inno.attr("title"));
       // wrap
       if (!isInline) {
         var $div = $(
