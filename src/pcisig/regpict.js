@@ -152,8 +152,12 @@ function draw_regpict(divsvg, svg, reg) {
     let ret;
     let adj_bit = i;
     if (i >= 0) {
-      if (i > visibleMSB) { adj_bit = visibleMSB; }
-      if (i < visibleLSB) { adj_bit = visibleLSB; }
+      if (i > visibleMSB) {
+        adj_bit = visibleMSB;
+      }
+      if (i < visibleLSB) {
+        adj_bit = visibleLSB;
+      }
       if (left_to_right) {
         adj_bit = adj_bit - visibleLSB;
       } else {
@@ -180,8 +184,12 @@ function draw_regpict(divsvg, svg, reg) {
     let ret = -1000;
     let adj_bit = i;
     if (i >= 0) {
-      if (i > visibleMSB) { adj_bit = visibleMSB; }
-      if (i < visibleLSB) { adj_bit = visibleLSB; }
+      if (i > visibleMSB) {
+        adj_bit = visibleMSB;
+      }
+      if (i < visibleLSB) {
+        adj_bit = visibleLSB;
+      }
       if (left_to_right) {
         adj_bit = adj_bit - visibleLSB;
       } else {
@@ -208,8 +216,12 @@ function draw_regpict(divsvg, svg, reg) {
     let ret = -1000;
     let adj_bit = i;
     if (i >= 0) {
-      if (i > visibleMSB) { adj_bit = visibleMSB; }
-      if (i < visibleLSB) { adj_bit = visibleLSB; }
+      if (i > visibleMSB) {
+        adj_bit = visibleMSB;
+      }
+      if (i < visibleLSB) {
+        adj_bit = visibleLSB;
+      }
       if (left_to_right) {
         adj_bit = adj_bit - visibleLSB;
       } else {
@@ -550,16 +562,141 @@ function draw_regpict(divsvg, svg, reg) {
   });
 }
 
+function parse_table(json, tbl) {
+  let parsed = {fields: {}};
+  let $tbody = $("tbody", tbl).first();
+  //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
+  $tbody.children().each(function () {
+    let $td = $(this).children();
+    if ($td.length >= 3) {
+      let bits = $td[0].textContent;
+      let desc = $td[1];
+      let attr = $td[2].textContent.toLowerCase();
+      let lsb, msb, match;
+      lsb = msb = -1;
+      match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
+      if (match) {
+        msb = lsb = Number(match[1]);
+        if ((typeof(match[3]) === "string") && (match[3] !== "")) {
+          lsb = Number(match[3]);
+        }
+        if (lsb > msb) {
+          msb = lsb;
+          lsb = Number(match[1]);
+        }
+      }
+      let fieldName;
+      let $dfn = $("code:first, dfn:first", desc);
+      if ($dfn.length === 0) {
+        fieldName = /^\s*([-_\w]+)/.exec(desc.textContent);
+        if (fieldName) {
+          fieldName = fieldName[1];
+        } else {
+          fieldName = "Bogus_" + desc.textContent.trim();
+        }
+      } else {
+        fieldName = $dfn.first().text().trim();
+      }
+      let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
+      if (!validAttr.test(attr)) {
+        attr = "other";
+      }
+      let unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused)$/i;
+      let isUnused = !!unusedAttr.test(attr);
+      // console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
+      parsed.fields[fieldName] = {
+        msb: msb,
+        lsb: lsb,
+        attr: attr,
+        isUnused: isUnused
+      };
+    }
+  });
+  //console.log("parsed=" + JSON.stringify(parsed, null, 2));
+  $.extend(true, json, parsed);
+  //console.log("json=" + JSON.stringify(json, null, 2));
+  return json;
+}
+
 export function run(conf, doc, cb) {
 
   pub("start", "core/regpict");
   if (!(conf.noRegpictCSS)) {
-    $(doc).find("head link").first().before($("<style class=\"regpict\" id=\"regpict\"></style>").text(css));
+    $(doc).find("head link").first().before($("<style id=\"regpict\"></style>").text(css));
   }
   let figNum = 1;
+  $("figure.regipct-generated", doc).remove();
+  $("table.register", doc).each(function () {
+    let $tbl = $(this);
+    let json = {};
+    if ($tbl.attr("id")) {
+      json.figName = $tbl.attr("id").replace(/^tbl-/, "");
+    } else if ($tbl.attr("title")) {
+      json.figName = $tbl.attr("title");
+    } else if ($("caption", this)) {
+      json.figName = $("caption", this).text();
+    } else {
+      json.figName = "unnamed-" + figNum;
+      figNum++;
+    }
+    json.figName = json.figName
+      .replace(/^\s+/, "")
+      .replace(/\s+$/, "")
+      .replace(/[^\-.0-9a-z_]+/ig, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "")
+      .replace(/\.$/, ".x")
+      .replace(/^([^a-z])/i, "x$1")
+      .replace(/^$/, "generatedID");
+    if (!$tbl.attr("id")) {
+      $tbl.attr("id", "tbl-" + json.figName);
+    }
+    pub("start", "core/regpict table id='" + $tbl.attr("id") + "'");
+    let temp = $tbl.attr("data-json");
+    if (temp !== null && temp !== undefined && temp !== "") {
+      $.extend(true, json, $.parseJSON(temp));
+    }
+
+    temp = $tbl.attr("data-width");
+    if (temp !== null && temp !== undefined && temp !== "") {
+      json.width = temp;
+    }
+
+    temp = $tbl.attr("data-unused");
+    if (temp !== null && temp !== undefined && temp !== "") {
+      json.defaultUnused = temp;
+    }
+
+    temp = $tbl.attr("data-href");
+    if (temp !== null && temp !== undefined && temp !== "") {
+      json.href = temp;
+    }
+
+    json.table = '#' + $tbl.attr('id');
+
+    temp = $tbl.attr("data-register");
+    if (temp !== null && temp !== undefined && temp !== "") {
+      json.register = temp;
+    }
+
+    json = parse_table(json, $tbl);
+
+    //console.log("regpict.table.register json = " + JSON.stringify(json, null, 2));
+
+
+    // insert a figure before this table
+    $tbl.before("<figure id=\"" + $tbl.attr('id').sub(/^tbl/, 'fig') + "\" class=\"regpict-generated\">"
+      + "<div class=\"svg\"></div>"
+      + "<figcaption>" + $('caption', $tbl).text() + "</figcaption>"
+      + "</figure>").prev().children('div.svg').first().svg(function (svg) {
+      draw_regpict(this, svg, json);
+    });
+
+    pub("end", "core/regpict table id='" + $tbl.attr("id") + "'");
+  });
+
   $("figure.register", doc).each(
     function () {
-      let parsed, $tbody, pattern, bitpattern;
       let $fig = $(this);
       let json = {};
       if ($fig.attr("id")) {
@@ -622,58 +759,7 @@ export function run(conf, doc, cb) {
       });
 
       if ($fig.hasClass("pcisig_reg") && json.hasOwnProperty("table")) {
-        parsed = {fields: {}};
-        $tbody = $(json.table + " tbody", doc).first();
-        //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
-        $tbody.children().each(function () {
-          let $td = $(this).children();
-          if ($td.length >= 3) {
-            let bits = $td[0].textContent;
-            let desc = $td[1];
-            let attr = $td[2].textContent.toLowerCase();
-            let lsb, msb, match;
-            lsb = msb = -1;
-            match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
-            if (match) {
-              msb = lsb = Number(match[1]);
-              if ((typeof(match[3]) === "string") && (match[3] !== "")) {
-                lsb = Number(match[3]);
-              }
-              if (lsb > msb) {
-                msb = lsb;
-                lsb = Number(match[1]);
-              }
-            }
-            let fieldName;
-            let $dfn = $("code:first, dfn:first", desc);
-            if ($dfn.length === 0) {
-              fieldName = /^\s*([-_\w]+)/.exec(desc.textContent);
-              if (fieldName) {
-                fieldName = fieldName[1];
-              } else {
-                fieldName = "Bogus_" + desc.textContent.trim();
-              }
-            } else {
-              fieldName = $dfn.first().text().trim();
-            }
-            let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
-            if (!validAttr.test(attr)) {
-              attr = "other";
-            }
-            let unusedAttr = /^(rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused)$/i;
-            let isUnused = !!unusedAttr.test(attr);
-            // console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
-            parsed.fields[fieldName] = {
-              msb: msb,
-              lsb: lsb,
-              attr: attr,
-              isUnused: isUnused
-            };
-          }
-        });
-        //console.log("parsed=" + JSON.stringify(parsed, null, 2));
-        $.extend(true, json, parsed);
-        // console.log("json=" + JSON.stringify(json, null, 2));
+        json = parse_table(json, $(json.table, doc));
       }
 
       // invent a div to hold the svg, if necessary
