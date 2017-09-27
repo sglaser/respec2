@@ -45,12 +45,14 @@ export function run(conf, doc, cb) {
       } else if (dataNum) {
         report.number = dataNum;
       }
+      var noteid = $inno.makeID(report.type, $inno.attr("id"));
       // wrap
       if (!isInline) {
         var $div = $(
           "<div class='" +
             report.type +
             (isFeatureAtRisk ? " atrisk" : "") +
+            "' id='" + noteid +
             "'></div>"
         ),
           $tit = $(
@@ -116,6 +118,7 @@ export function run(conf, doc, cb) {
           $inno.removeAttr("title");
         }
         $tit.addClass("marker");
+        $inno.removeAttr("id");
         $div.append($tit);
         $inno.replaceWith($div);
         var body = $inno.removeClass(report.type).removeAttr("data-number");

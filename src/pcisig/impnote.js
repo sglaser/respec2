@@ -21,13 +21,14 @@ export function run(conf, doc, cb) {
           content: $inno.html(),
         };
       report.type = "impnote";
-      $inno.makeID("impnote", $inno.attr("title"));
+      var impnoteid = $inno.makeID("impnote", $inno.attr("title"));
       // wrap
       if (!isInline) {
         var $div = $(
           "<div class='" +
           report.type +
           (isFeatureAtRisk ? " atrisk" : "") +
+          "' id='" + impnoteid +
           "'></div>"
           ),
           $tit = $(
@@ -46,6 +47,7 @@ export function run(conf, doc, cb) {
         }
         $tit.addClass("marker");
         $div.append($tit);
+        $inno.removeAttr("id");
         $inno.replaceWith($div);
         var body = $inno.removeClass(report.type);
         $div.append(body);
