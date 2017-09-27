@@ -71,7 +71,7 @@ define(
     "core/id-headers",
     "pcisig/fig-tbl-eqn-numbering",
     "core/rdfa",
-    "w3c/aria",
+    "pcisig/aria",
     "pcisig/xref-map",
     "core/location-hash",
     "ui/about-respec",

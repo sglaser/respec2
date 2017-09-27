@@ -21,12 +21,14 @@ export function run(conf, doc, cb) {
   var noteCount = 1;
   var issueCount = 1;
   var ednoteCount = 1;
+  var impnoteCount = 1;
   Array.from(
-    doc.querySelectorAll(".note-title, .ednote-title, .issue-title")
+    doc.querySelectorAll(".impnote-title, .note-title, .ednote-title, .issue-title")
   ).forEach(function(element) {
     var $element = $(element);
     var isIssue = element.classList.contains("issue-title");
     var isEdNote = element.classList.contains("ednote-title");
+    var isImpnote = element.classList.contains("impnote-title");
     var level = $element.parents("section").length + 2;
     element.setAttribute("aria-level", level);
     element.setAttribute("role", "heading");
@@ -34,6 +36,8 @@ export function run(conf, doc, cb) {
       $element.makeID("h", "issue" + issueCount++);
     } else if (isEdNote) {
       $element.makeID("h", "ednote" + ednoteCount++);
+    } else if (isImpnote) {
+      $element.makeID("h", "impnote" + impnoteCount++);
     } else {
       $element.makeID("h", "note" + noteCount++);
     }
