@@ -75,6 +75,7 @@ js/w3c/permalinks.js
 js/w3c/rfc2119.js
 js/w3c/seo.js
 js/w3c/style.js
+js/pcisig/aria.js
 js/pcisig/equations.js
 js/pcisig/fig-tbl-eqn-numbering.js
 js/pcisig/footnotes.js
