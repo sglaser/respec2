@@ -841,10 +841,7 @@ svg.regpict {
   color: green;
 }
 
-svg *.svg_error text:not(.regBitWidth),
-svg *.svg_error text:not(.regBitNumMiddle),
-svg *.svg_error text:not(.regBitNumEnd),
-svg *.svg_error text:not(.regBitNumStart) {
+svg *.svg_error text:not(.regBitWidth):not(.regBitNumMiddle):not(.regBitNumEnd):not(.regBitNumStart) {
   fill: red;
   font-size: 12pt;
   font-weight: bold;
