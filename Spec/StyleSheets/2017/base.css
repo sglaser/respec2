@@ -1324,6 +1324,13 @@ table.pcisig_reg td:nth-child(3) {
 	/*#38197a; /* PCIe Logo Blue */
 }
 
+span.respec-error {
+  color:       red;
+  font-size:   9pt;
+  font-weight: bold;
+  font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+}
+
 /******************************************************************************/
 /*                                    Print                                   */
 /******************************************************************************/
@@ -1569,12 +1576,6 @@ table.pcisig_reg td:nth-child(3) {
 
 		span.footnote-online { display: none; }
 
-		span.respec-error {
-			color:       red;
-			font-size:   9pt;
-			font-weight: bold;
-			font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
-		}
 	}
 
 
