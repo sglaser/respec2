@@ -95,7 +95,9 @@ export function run(conf, doc, cb) {
         title +
         "' but no matching <dfn>.";
       pub("warn", error_msg);
-      const error_span = $("<span class=\"respec-error\"></span>").text(error_msg); // escapes HTML &<>
+      $ant.makeID("error", error_msg);
+      const error_span = $("<span class=\"respec-error\"></span>").text(error_msg + " ")  // .text() escapes HTML &<>
+        .append("<a href=\"#" + $ant.attr("id") + "\">" + $and.attr("id") + "</a>");
       $ant.append(error_span);
       console.warn("Linkless element:", $ant[0]);
     }
