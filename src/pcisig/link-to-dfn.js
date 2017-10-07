@@ -128,15 +128,17 @@ export function run(conf, doc, cb) {
       let $tbody = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-type</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
       Object.keys(conf.definitionMap).sort().forEach(function (k) {
         conf.definitionMap[k].forEach(function (f) {
-            $("<tr>" +
-              "<td class='long'>" + k + "</td>" +
-              "<td class='long'>" + f.attr("data-dfn-type") + "</td>" +
-              "<td class='long'>" + f.attr("data-dfn-for") + "</td>" +
-              "<td class='long'><a href=\"" + "#" + f.attr("id") + "\">" + f.attr("id") + "</a></td>" +
-              "</tr>").appendTo($tbody);
-          });
+          $("<tr>" +
+            "<td class='long'>" + k + "</td>" +
+            "<td class='long'>" + f.attr("data-dfn-type") + "</td>" +
+            "<td class='long'>" + f.attr("data-dfn-for") + "</td>" +
+            "<td class='long'><a href=\"" + "#" + f.attr("id") + "\">" + f.attr("id") + "</a></td>" +
+            "</tr>").appendTo($tbody);
+        });
       });
+    }
 
+    if (conf.addDefinitionMap2) {
       let $mapsec2 = $("<section id='definition-map-2' class='introductory appendix'><h2>Definition Map 2</h2></section>").appendTo($("body"));
       let $tbody2 = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec2).children("tbody");
       Object.keys(titles).sort().forEach(function (title) {
