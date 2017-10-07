@@ -8,6 +8,7 @@ scratch
 examples/touchevents.html
 bevy.json
 .idea
+Spec/Icons/_site
 js/deps/*
 !js/deps/highlight.js
 js/**/*.map
@@ -76,7 +77,6 @@ js/w3c/rfc2119.js
 js/w3c/seo.js
 js/w3c/style.js
 js/pcisig/aria.js
-js/pcisig/dfn.js
 js/pcisig/equations.js
 js/pcisig/fig-tbl-eqn-numbering.js
 js/pcisig/footnotes.js
@@ -86,7 +86,7 @@ js/pcisig/link-to-dfn.js
 js/pcisig/pcisig-conformance.js
 js/pcisig/pcisig-headers.js
 js/pcisig/pcisig-style.js
+js/pcisig/pre-dfn.js
 js/pcisig/regpict.js
 js/pcisig/tables.js
 js/pcisig/xref-map.js
-Spec/Icons/_site
