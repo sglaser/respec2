@@ -33,6 +33,10 @@ export function run(conf, doc, cb) {
       }
       titles[title][dfn_for] = dfn;
     });
+    if (conf.definitionMap[title].length === 1) {
+      titles[title][""] = conf.definitionMap[title][0];    // don't require data-for unless it's ambiguous
+    }
+
   });
 
   $("a:not([href]):not([data-cite]):not(.logo)").each(function () {
@@ -122,13 +126,13 @@ export function run(conf, doc, cb) {
       let $tbody = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-type</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
       Object.keys(conf.definitionMap).sort().forEach(function (k) {
         conf.definitionMap[k].forEach(function (f) {
-          $("<tr>" +
-            "<td class='long'>" + k + "</td>" +
-            "<td class='long'>" + f.attr("data-dfn-type") + "</td>" +
-            "<td class='long'>" + f.attr("data-dfn-for") + "</td>" +
-            "<td class='long'><a href=\"" + "#" + f.attr("id") + "\">" + f.attr("id") + "</a></td>" +
-            "</tr>").appendTo($tbody);
-        });
+            $("<tr>" +
+              "<td class='long'>" + k + "</td>" +
+              "<td class='long'>" + f.attr("data-dfn-type") + "</td>" +
+              "<td class='long'>" + f.attr("data-dfn-for") + "</td>" +
+              "<td class='long'><a href=\"" + "#" + f.attr("id") + "\">" + f.attr("id") + "</a></td>" +
+              "</tr>").appendTo($tbody);
+          });
       });
 
       let $mapsec2 = $("<section id='definition-map-2' class='introductory appendix'><h2>Definition Map 2</h2></section>").appendTo($("body"));
@@ -136,13 +140,13 @@ export function run(conf, doc, cb) {
       Object.keys(titles).sort().forEach(function (title) {
         Object.keys(titles[title]).forEach(function (for_) {
           let item = titles[title][for_];
-            $("<tr>" +
-              "<td class='long'>" + title + "</td>" +
-              "<td class='long'>" + for_ + "</td>" +
-              "<td class='long'><a href=\"" + "#" + item.attr("id") + "\">" + item.attr("id") + "</a></td>" +
-              "</tr>").appendTo($tbody2);
-          });
+          $("<tr>" +
+            "<td class='long'>" + title + "</td>" +
+            "<td class='long'>" + for_ + "</td>" +
+            "<td class='long'><a href=\"" + "#" + item.attr("id") + "\">" + item.attr("id") + "</a></td>" +
+            "</tr>").appendTo($tbody2);
         });
+      });
       pub("end", "core/dfn/addDefinitionMap");
     }
 
