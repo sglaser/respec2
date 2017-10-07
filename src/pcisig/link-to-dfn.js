@@ -1,59 +1,49 @@
-// Module core/link-to-dfn
+// Module pcisig/link-to-dfn
 // Gives definitions in conf.definitionMap IDs and links <a> tags
 // to the matching definitions.
-import { linkInlineCitations } from "core/data-cite";
-import { pub } from "core/pubsubhub";
-export const name = "core/link-to-dfn";
+// Modified from core/link-to-dfn.js to remove requirements that only data-for happens for webIDL
+import {linkInlineCitations} from "core/data-cite";
+import {pub} from "core/pubsubhub";
+
+export const name = "pcisig/link-to-dfn";
+
+function ref_to(dfn) {
+  const dfn_id = dfn.attr("id");
+  return (dfn_id !== undefined) ? ("<a href=\"#" + encodeURIComponent(dfn_id) + "\">" + dfn_id + "</a>") : "";
+}
+
 export function run(conf, doc, cb) {
   doc.normalize();
-  var titles = {};
-  Object.keys(conf.definitionMap).forEach(function(title) {
+  let titles = {};
+  Object.keys(conf.definitionMap).forEach(function (title) {
     titles[title] = {};
-    conf.definitionMap[title].forEach(function(dfn) {
-      if (dfn.attr("data-idl") === undefined) {
-        // Non-IDL definitions aren't "for" an interface.
-        dfn.removeAttr("data-dfn-for");
+    conf.definitionMap[title].forEach(function (dfn) {
+      if (dfn.attr("id") === undefined) {
+        dfn.makeID("dfn", title);
       }
-      var dfn_for = dfn.attr("data-dfn-for") || "";
+      const dfn_for = dfn.attr("data-dfn-for") || "";
       if (dfn_for in titles[title]) {
-        // We want <dfn> definitions to take precedence over
-        // definitions from WebIDL. WebIDL definitions wind
-        // up as <span>s instead of <dfn>.
-        var oldIsDfn = titles[title][dfn_for].filter("dfn").length !== 0;
-        var newIsDfn = dfn.filter("dfn").length !== 0;
-        if (oldIsDfn && newIsDfn) {
-          // Only complain if the user provides 2 <dfn>s
-          // for the same term.
-          pub(
-            "error",
-            "Duplicate definition of '" +
-              (dfn_for ? dfn_for + "/" : "") +
-              title +
-              "'"
-          );
-        }
-        if (oldIsDfn) {
-          // Don't overwrite <dfn> definitions.
-          return;
-        }
+        // Only complain if the user provides 2 <dfn>s for the same term.
+        const error_msg = "Duplicate definition of '" + (dfn_for ? dfn_for + "/" : "") + title + "' "
+          + ref_to(dfn) + " and " + ref_to(titles[title][dfn_for]);
+        pub("error", error_msg);
+        dfn.after("<span class=\"respec-error\"> {{ " + error_msg + " }} </span>");
+        // keep first definition
+        return;
       }
       titles[title][dfn_for] = dfn;
-      if (dfn.attr("id") === undefined) {
-        if (dfn.attr("data-idl")) {
-          dfn.makeID("dom", (dfn_for ? dfn_for + "-" : "") + title);
-        } else {
-          dfn.makeID("dfn", title);
-        }
-      }
     });
   });
-  $("a:not([href]):not([data-cite]):not(.logo)").each(function() {
-    var $ant = $(this);
+
+  $("a:not([href]):not([data-cite]):not(.logo)").each(function () {
+    let $ant = $(this);
     if ($ant.hasClass("externalDFN")) return;
-    var linkTargets = $ant.linkTargets();
-    var foundDfn = linkTargets.some(function(target) {
+    console.log("link-to-dfn:" + $ant.html());
+    let linkTargets = $ant.linkTargets();
+    let foundDfn = linkTargets.some(function (target) {
+      console.log("  linkTarget.title = '" + target.title + "' linkTarget.for_='" + target.for_ + "'");
       if (titles[target.title] && titles[target.title][target.for_]) {
-        var dfn = titles[target.title][target.for_];
+        let dfn = titles[target.title][target.for_];
         if (dfn[0].dataset.cite) {
           $ant[0].dataset.cite = dfn[0].dataset.cite;
         } else {
@@ -89,51 +79,74 @@ export function run(conf, doc, cb) {
       }
       return false;
     });
+
     if (!foundDfn) {
-      // ignore WebIDL
-      if (
-        !$ant.parents(
-          ".idl:not(.extAttr), dl.methods, dl.attributes, dl.constants, dl.constructors, dl.fields, dl.dictionary-members, span.idlMemberType, span.idlTypedefType, div.idlImplementsDesc"
-        ).length
-      ) {
-        var link_for = linkTargets[0].for_;
-        var title = linkTargets[0].title;
-        this.classList.add("respec-offending-element");
-        this.title = "Linking error: not matching <dfn>";
-        pub(
-          "warn",
-          "Found linkless <a> element " +
-            (link_for ? "for '" + link_for + "' " : "") +
-            "with text '" +
-            title +
-            "' but no matching `<dfn>`."
-        );
-        console.warn("Linkless element:", $ant[0]);
-        return;
-      }
-      $ant.replaceWith($ant.contents());
+      let link_for = linkTargets[0].for_;
+      let title = linkTargets[0].title;
+      this.classList.add("respec-offending-element");
+      this.title = "Linking error: not matching <dfn>";
+      const error_msg = "Found linkless <a> element " +
+        (link_for ? "for '" + link_for + "' " : "") +
+        "with text '" +
+        title +
+        "' but no matching <dfn>.";
+      pub("warn", error_msg);
+      const error_span = $("<span class=\"respec-error\"></span>").text(error_msg); // escapes HTML &<>
+      $ant.append(error_span);
+      console.warn("Linkless element:", $ant[0]);
     }
   });
-  linkInlineCitations(doc, conf).then(function() {
+
+  linkInlineCitations(doc, conf).then(function () {
     // done linking, so clean up
     function attrToDataAttr(name) {
-      return function(elem) {
-        var value = elem.getAttribute(name);
+      return function (elem) {
+        let value = elem.getAttribute(name);
         elem.removeAttribute(name);
         elem.setAttribute("data-" + name, value);
       };
     }
-    var forList = doc.querySelectorAll("*[for]");
+
+    let forList = doc.querySelectorAll("*[for]");
     Array.prototype.forEach.call(forList, attrToDataAttr("for"));
 
-    var dfnForList = doc.querySelectorAll("*[dfn-for]");
+    let dfnForList = doc.querySelectorAll("*[dfn-for]");
     Array.prototype.forEach.call(dfnForList, attrToDataAttr("dfn-for"));
 
-    var linkForList = doc.querySelectorAll("*[link-for]");
+    let linkForList = doc.querySelectorAll("*[link-for]");
     Array.prototype.forEach.call(linkForList, attrToDataAttr("link-for"));
-    // Added message for legacy compat with Aria specs
-    // See https://github.com/w3c/respec/issues/793
-    pub("end", "core/link-to-dfn");
+
+    if (conf.addDefinitionMap) {
+      pub("start", "core/dfn/addDefinitionMap");
+      let $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
+      let $tbody = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-type</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+      Object.keys(conf.definitionMap).sort().forEach(function (k) {
+        conf.definitionMap[k].forEach(function (f) {
+          $("<tr>" +
+            "<td class='long'>" + k + "</td>" +
+            "<td class='long'>" + f.attr("data-dfn-type") + "</td>" +
+            "<td class='long'>" + f.attr("data-dfn-for") + "</td>" +
+            "<td class='long'><a href=\"" + "#" + f.attr("id") + "\">" + f.attr("id") + "</a></td>" +
+            "</tr>").appendTo($tbody);
+        });
+      });
+
+      let $mapsec2 = $("<section id='definition-map-2' class='introductory appendix'><h2>Definition Map 2</h2></section>").appendTo($("body"));
+      let $tbody2 = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec2).children("tbody");
+      Object.keys(titles).sort().forEach(function (title) {
+        Object.keys(titles[title]).forEach(function (for_) {
+          let item = titles[title][for_];
+            $("<tr>" +
+              "<td class='long'>" + title + "</td>" +
+              "<td class='long'>" + for_ + "</td>" +
+              "<td class='long'><a href=\"" + "#" + item.attr("id") + "\">" + item.attr("id") + "</a></td>" +
+              "</tr>").appendTo($tbody2);
+          });
+        });
+      pub("end", "core/dfn/addDefinitionMap");
+    }
+
     cb();
-  });
+  })
+  ;
 }

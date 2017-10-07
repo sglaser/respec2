@@ -107,7 +107,7 @@ window.$.fn.getDfnTitles = function (args) {
     }
   }
   titleString.split("|").forEach(function (item) {
-    if (item != "") {
+    if (item !== "") {
       titles.push(item);
     }
   });

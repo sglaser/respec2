@@ -76,11 +76,13 @@ js/w3c/rfc2119.js
 js/w3c/seo.js
 js/w3c/style.js
 js/pcisig/aria.js
+js/pcisig/dfn.js
 js/pcisig/equations.js
 js/pcisig/fig-tbl-eqn-numbering.js
 js/pcisig/footnotes.js
 js/pcisig/impnote.js
 js/pcisig/include-final-config.js
+js/pcisig/link-to-dfn.js
 js/pcisig/pcisig-conformance.js
 js/pcisig/pcisig-headers.js
 js/pcisig/pcisig-style.js

@@ -181,7 +181,7 @@ function draw_regpict(divsvg, svg, reg) {
 
   // x position of right edge of bit i
   function rightOf(i) {
-    let ret = -1000;
+    let ret;
     let adj_bit = i;
     if (i >= 0) {
       if (i > visibleMSB) {
@@ -213,7 +213,7 @@ function draw_regpict(divsvg, svg, reg) {
 
   // x position of middle of bit i
   function middleOf(i) {
-    let ret = -1000;
+    let ret;
     let adj_bit = i;
     if (i >= 0) {
       if (i > visibleMSB) {
@@ -586,17 +586,22 @@ function parse_table(json, $tbl) {
         }
       }
       let fieldName;
-      let $dfn = $("code:first, dfn:first", desc);
+      let $dfn = $("dfn:first", desc);
       if ($dfn.length === 0) {
         fieldName = /^\s*([-_\w]+)/.exec(desc.textContent);
         if (fieldName) {
-          fieldName = fieldName[1];
+          fieldName = fieldName[1]; // first word of text content
         } else {
           fieldName = "Bogus_" + desc.textContent.trim();
         }
       } else {
-        fieldName = $dfn.first().text().trim();
-        $dfn.first().attr("data-dfn-for", $tbl.attr("id"));
+        $dfn = $dfn.first();
+        fieldName = $dfn.text().trim().toLowerCase();
+        $dfn.addClass('field');
+        const lt = $tbl.attr("id").replace(/^tbl-/, '');
+        $dfn.attr('dfn-for', lt);
+        $dfn.attr('dfn-type', 'field');
+        $dfn.last().makeID('field', lt + '-' + fieldName);
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
@@ -640,7 +645,7 @@ export function run(conf, doc, cb) {
       json.figName = "unnamed-" + figNum;
       figNum++;
     }
-    json.figName = json.figName
+    json.figName = json.figName.toLowerCase()
       .replace(/^\s+/, "")
       .replace(/\s+$/, "")
       .replace(/[^\-.0-9a-z_]+/ig, "-")
@@ -684,15 +689,16 @@ export function run(conf, doc, cb) {
 
     //console.log("regpict.table.register json = " + JSON.stringify(json, null, 2));
 
-
     // insert a figure before this table
-    $tbl.before("<figure id=\"" + $tbl.attr('id').sub(/^tbl/, 'fig') + "\" class=\"regpict-generated\">"
+    $tbl.before("<figure id=\"fig-" + json.table.replace(/^#tbl-/, '') + "\" class=\"regpict-generated\">"
       + "<div class=\"svg\"></div>"
       + "<figcaption>" + $('caption', $tbl).text() + "</figcaption>"
-      + "</figure>").prev().children('div.svg').first().svg(function (svg) {
+      + "</figure>");
+    const $divsvg = $('div.svg', $tbl.prev()).last();
+    $divsvg.last().svg(function (svg) {
       draw_regpict(this, svg, json);
     });
-
+    $tbl.before(`<pre style="display: none;">${JSON.stringify(json, null, 2)}</pre>`);
     pub("end", "core/regpict table id='" + $tbl.attr("id") + "'");
   });
 
@@ -710,7 +716,7 @@ export function run(conf, doc, cb) {
         json.figName = "unnamed-" + figNum;
         figNum++;
       }
-      json.figName = json.figName
+      json.figName = json.figName.toLowerCase()
         .replace(/^\s+/, "")
         .replace(/\s+$/, "")
         .replace(/[^\-.0-9a-z_]+/ig, "-")
@@ -807,9 +813,8 @@ export function run(conf, doc, cb) {
         $render.each(function (index) {
           let temp_json = {};
           $.extend(true, temp_json, json);
-          // console.log("temp_json=" + JSON.stringify(temp_json, null, 2));
           merge_json(temp_json, this);
-          $(this).hide();
+          //$(this).hide();
           $divsvg.last().makeID("svg", "render-" + index);
           $divsvg.last().svg(function (svg) {
             draw_regpict(this, svg, temp_json);
