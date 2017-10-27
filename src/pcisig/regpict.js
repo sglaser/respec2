@@ -22,48 +22,49 @@ function pget(obj, prop, def) {
   return def;
 }
 
-function draw_regpict(divsvg, svg, reg) {
-  let width = Number(pget(reg, "width", 32));
-  let left_to_right = Boolean(pget(reg, "leftToRight", false));
-  let debug = Boolean(pget(reg, "debug", false));
-  let defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
-  let defaultAttr = String(pget(reg, "defaultAttr", "other"));
-  let cellWidth = Number(pget(reg, "cellWidth", 16));
-  let cellHeight = Number(pget(reg, "cellHeight", 32));
-  let cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-  let cellValueTop = Number(pget(reg, "cellValueTop", 20)); // top of text for regFieldValueInternal
-  let cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
-  let cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
-  let bracketHeight = Number(pget(reg, "bracketHeight", 4));
-  let cellTop = Number(pget(reg, "cellTop", 40));
-  let bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
-  let figName = String(pget(reg, "figName", "???"));
-  let maxFigWidth = Number(pget(reg, "maxFigWidth", 624));   // 6.5 inches (assuming 96 px per inch)
-  let figLeft = Number(pget(reg, "figLeft", 40));
-  let visibleLSB = Number(pget(reg, "visibleLSB", 0));
-  let visibleMSB = Number(pget(reg, "visibleMSB", width));
-  let fields = pget(reg, "fields", {}); // default to empty register
+function choose_defaults(reg) {
+  let json = {};
+  json.width = Number(pget(reg, "width", 32));
+  json.left_to_right = Boolean(pget(reg, "leftToRight", false));
+  json.debug = Boolean(pget(reg, "debug", false));
+  json.defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
+  json.defaultAttr = String(pget(reg, "defaultAttr", "other"));
+  json.cellWidth = Number(pget(reg, "cellWidth", 16));
+  json.cellHeight = Number(pget(reg, "cellHeight", 32));
+  json.cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
+  json.cellValueTop = Number(pget(reg, "cellValueTop", 20)); // top of text for regFieldValueInternal
+  json.cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
+  json.cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
+  json.bracketHeight = Number(pget(reg, "bracketHeight", 4));
+  json.cellTop = Number(pget(reg, "cellTop", 40));
+  json.bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
+  json.figName = String(pget(reg, "figName", "???"));
+  json.maxFigWidth = Number(pget(reg, "maxFigWidth", 624));   // 6.5 inches (assuming 96 px per inch)
+  json.figLeft = Number(pget(reg, "figLeft", 40));
+  json.visibleLSB = Number(pget(reg, "visibleLSB", 0));
+  json.visibleMSB = Number(pget(reg, "visibleMSB", json.width));
+  json.fields = pget(reg, "fields", {}); // default to empty register
   let temp;
 
-  if (visibleMSB < 0) {
-    visibleMSB = 0;
+  if (json.visibleMSB < 0) {
+    json.visibleMSB = 0;
   }
-  if (visibleMSB > width) {
-    visibleMSB = width;
+  if (json.visibleMSB > json.width) {
+    json.visibleMSB = json.width;
   }
-  if (visibleLSB < 0) {
-    visibleLSB = 0;
+  if (json.visibleLSB < 0) {
+    json.visibleLSB = 0;
   }
-  if (visibleLSB > width) {
-    visibleLSB = width;
+  if (json.visibleLSB > json.width) {
+    json.visibleLSB = json.width;
   }
-  //console.log("draw_regpict: width=" + width + " defaultUnused ='" + defaultUnused + "' cellWidth=" + cellWidth + " cellHeight=" + cellHeight + " cellInternalHeight=" + cellInternalHeight + " cellTop=" + cellTop + " bracketHeight=" + bracketHeight);
-  //console.log("draw_regpict: fields=" + fields.toString());
+  //console.log("choose_defaults: width=" + json.width + " defaultUnused ='" + json.defaultUnused + "' cellWidth=" + json.cellWidth + " cellHeight=" + json.cellHeight + " cellInternalHeight=" + json.cellInternalHeight + " cellTop=" + json.cellTop + " bracketHeight=" + json.bracketHeight);
+  //console.log("choose_defaults: fields=" + json.fields.toString());
 
   // sanitize field array to avoid subsequent problems
-  for (let index in fields) {
-    if (fields.hasOwnProperty(index)) {
-      let item = fields[index];
+  for (let index in json.fields) {
+    if (json.fields.hasOwnProperty(index)) {
+      let item = json.fields[index];
       if (item.hasOwnProperty("msb") && !item.hasOwnProperty("lsb")) {
         item.lsb = item.msb;
       }
@@ -79,7 +80,7 @@ function draw_regpict(divsvg, svg, reg) {
         item.isUnused = false;
       }
       if (!item.hasOwnProperty("attr")) {
-        item.attr = defaultAttr;
+        item.attr = json.defaultAttr;
       }
       if (!item.hasOwnProperty("name")) {
         item.name = index;
@@ -87,10 +88,39 @@ function draw_regpict(divsvg, svg, reg) {
       if (!item.hasOwnProperty("value")) {
         item.value = "";
       }
-      //console.log("draw_regpict: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " isUnused=" + item.isUnused + " name='" + item.name + "'");
-
+      if (!item.hasOwnProperty("index")) {
+        item.index = -1;  // no associated table row
+      }
+      json.fields[index] = item;
+      //console.log("choose_defaults: field msb=" + item.msb + " lsb=" + item.lsb + " attr=" + item.attr + " isUnused=" + item.isUnused + " name='" + item.name + "' index=" + item.index);
     }
   }
+  return json;
+}
+
+function draw_regpict(divsvg, svg, reg) {
+  let reg2 = choose_defaults(reg);
+  let width = reg2.width;
+  //console.log("width=" + reg2.width);
+  let left_to_right = reg2.left_to_right;
+  let debug = reg2.debug;
+  let defaultUnused = reg2.defaultUnused;
+  //let defaultAttr = reg2.defaultAttr;
+  let cellWidth = reg2.cellWidth;
+  let cellHeight = reg2.cellHeight;
+  let cellInternalHeight = reg2.cellInternalHeight;
+  let cellValueTop = reg2.cellValueTop;
+  let cellBitValueTop = reg2.cellBitValueTop;
+  let cellNameTop = reg2.cellNameTop;
+  let bracketHeight = reg2.bracketHeight;
+  let cellTop = reg2.cellTop;
+  let bitWidthPos = reg2.bitWidthPos;
+  let figName = reg2.figName;
+  let maxFigWidth = reg2.maxFigWidth;
+  let figLeft = reg2.figLeft;
+  let visibleLSB = reg2.visibleLSB;
+  let visibleMSB = reg2.visibleMSB;
+  let fields = reg2.fields;
 
   let bitarray = [];  // Array indexed by bit # in register range 0:width
   // field[bitarray[N]] contains bit N
@@ -168,7 +198,7 @@ function draw_regpict(divsvg, svg, reg) {
     }
     ret = figLeft + cellWidth * (adj_bit - 0.5);
     if (debug) {
-      console.log(i + " leftOf   left_to_right=" + left_to_right +
+       console.log(i + " leftOf   left_to_right=" + left_to_right +
         " figLeft=" + figLeft +
         " cellWidth=" + cellWidth +
         " visibleLSB=" + visibleLSB +
@@ -200,7 +230,7 @@ function draw_regpict(divsvg, svg, reg) {
     }
     ret = figLeft + cellWidth * (adj_bit + 0.5);
     if (debug) {
-      console.log(i + " rightOf  left_to_right=" + left_to_right +
+       console.log(i + " rightOf  left_to_right=" + left_to_right +
         " figLeft=" + figLeft +
         " cellWidth=" + cellWidth +
         " visibleLSB=" + visibleLSB +
@@ -232,7 +262,7 @@ function draw_regpict(divsvg, svg, reg) {
     }
     ret = figLeft + cellWidth * (adj_bit);
     if (debug) {
-      console.log(i + " middleOf left_to_right=" + left_to_right +
+       console.log(i + " middleOf left_to_right=" + left_to_right +
         " figLeft=" + figLeft +
         " cellWidth=" + cellWidth +
         " visibleLSB=" + visibleLSB +
@@ -475,7 +505,7 @@ function draw_regpict(divsvg, svg, reg) {
               " attr=" + f.attr +
               " isUnused=" + f.isUnused +
               (("id" in f) ? f.id : ""));
-            console.log(" text.clientWidth=" + text.clientWidth +
+             console.log(" text.clientWidth=" + text.clientWidth +
               " text_width=" + text_width +
               " text.clientHeight=" + text.clientHeight +
               " text_height=" + text_height +
@@ -560,18 +590,66 @@ function draw_regpict(divsvg, svg, reg) {
     viewBox: "0 0 " + max_text_width + " " + nextBitLine,
     "xmlns:xlink": "http://www.w3.org/1999/xlink"
   });
+  return reg2;
+}
+
+function insert_unused_table_rows($tbl, json) {
+  let last_lsb = json.width;
+  let field_slot = [];
+  let $tbody = $("tbody", $tbl).first();
+  if ($tbody !== undefined) {
+    //console.log("non-empty tbody");
+    let rows = $tbody.children();
+    if (rows !== undefined) {
+      //console.log("rows.length=" + rows.length);
+      //console.log("json=" + JSON.stringify(json, null, 2));
+      // console.log(`Object.keys(json.fields).length=${Object.keys(json.fields).length}`);
+      if (Object.keys(json.fields).length > 0) {
+        Object.keys(json.fields).forEach(function (name) {
+          let item = json.fields[name];
+          // console.log(`field_slot[${item.msb}]=${JSON.stringify(item, null, 2)}`);
+          field_slot[item.msb] = item;
+        });
+        for (let msb = json.width; msb >= 0; msb--) {
+          let item = field_slot[msb];
+          if (item !== undefined) {
+            // console.log(`msb=${msb} item.index=${item.index} last_lsb=${last_lsb}`);
+            if (msb < (last_lsb - 1)) {
+              let bit_location = ((last_lsb - 1) === msb) ? `${msb + 1}` : `${last_lsb - 1}:${msb + 1}`;
+              let new_row = `<tr><td>${bit_location}</td><td>${json.defaultUnused}</td><td>${json.defaultUnused}</td></tr>`;
+              $(rows[item.index]).after(new_row);
+              // console.log(`rows[${item.index}].after(${new_row})`);
+            }
+            last_lsb = item.lsb;
+          }
+        }
+      }
+      if (last_lsb > 0) {
+        let bit_location = ((last_lsb - 1) === 1) ? "0" : `${last_lsb - 1}:0`;
+        let new_row = `<tr><td>${bit_location}</td><td>${json.defaultUnused}</td><td>${json.defaultUnused}</td></tr>`;
+        $(rows[0]).before(new_row);
+        // console.log(`rows[0].before(${new_row})`);
+        // console.log("$tbody=" + $tbody);
+      }
+    } else {
+      let bit_location = ((last_lsb - 1) === 1) ? "0" : `${last_lsb - 1}:0`;
+      let new_row = `<tr><td>${bit_location}</td><td>${json.defaultUnused}</td><td>${json.defaultUnused}</td></tr>`;
+      $tbody.append(new_row);
+      // console.log(`$tbody.append(${new_row})`);
+    }
+  }
 }
 
 function parse_table(json, $tbl) {
   let parsed = {fields: {}};
   let $tbody = $("tbody", $tbl).first();
   //console.log("pcisig_reg: tbody='" + $tbody.get(0).outerHTML);
-  $tbody.children().each(function () {
+  $tbody.children().each(function (index) {
     let $td = $(this).children();
     if ($td.length >= 3) {
-      let bits = $td[0].textContent;
+      let bits = $td[0].textContent.trim();
       let desc = $td[1];
-      let attr = $td[2].textContent.toLowerCase();
+      let attr = $td[2].textContent.toLowerCase().trim();
       let lsb, msb, match;
       lsb = msb = -1;
       match = /^\s*(\d+)\s*(:\s*(\d+))?\s*$/.exec(bits);
@@ -596,12 +674,12 @@ function parse_table(json, $tbl) {
         }
       } else {
         $dfn = $dfn.first();
-        fieldName = $dfn.text().trim().toLowerCase();
+        fieldName = $dfn.text().trim();
         $dfn.addClass('field');
         const lt = $tbl.attr("id").replace(/^tbl-/, '');
-        $dfn.attr('dfn-for', lt);
-        $dfn.attr('dfn-type', 'field');
-        $dfn.last().makeID('field', lt + '-' + fieldName);
+        $dfn.attr('data-dfn-for', lt);
+        $dfn.attr('data-dfn-type', 'field');
+        $dfn.last().makeID('field', lt + '-' + fieldName.toLowerCase());
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
@@ -611,6 +689,7 @@ function parse_table(json, $tbl) {
       let isUnused = !!unusedAttr.test(attr);
       // console.log("field: " + fieldName + " bits=\"" + bits + "\"  match=" + match + "\" lsb=" + lsb + " msb=" + msb + "  attr=" + attr + "  isUnused=" + isUnused);
       parsed.fields[fieldName] = {
+        index: index,
         msb: msb,
         lsb: lsb,
         attr: attr,
@@ -618,9 +697,9 @@ function parse_table(json, $tbl) {
       };
     }
   });
-  //console.log("parsed=" + JSON.stringify(parsed, null, 2));
+  // console.log("parsed=" + JSON.stringify(parsed, null, 2));
   $.extend(true, json, parsed);
-  //console.log("json=" + JSON.stringify(json, null, 2));
+  // console.log("json=" + JSON.stringify(json, null, 2));
   return json;
 }
 
@@ -696,15 +775,17 @@ export function run(conf, doc, cb) {
       + "</figure>");
     const $divsvg = $('div.svg', $tbl.prev()).last();
     $divsvg.last().svg(function (svg) {
-      draw_regpict(this, svg, json);
+      json = draw_regpict(this, svg, json);
     });
     $tbl.before(`<pre style="display: none;">${JSON.stringify(json, null, 2)}</pre>`);
+    insert_unused_table_rows($tbl, json);
     pub("end", "core/regpict table id='" + $tbl.attr("id") + "'");
   });
 
   $("figure.register", doc).each(
     function () {
       let $fig = $(this);
+      let $tbl = undefined;
       let json = {};
       if ($fig.attr("id")) {
         json.figName = $fig.attr("id").replace(/^fig-/, "");
@@ -766,7 +847,8 @@ export function run(conf, doc, cb) {
       });
 
       if ($fig.hasClass("pcisig_reg") && json.hasOwnProperty("table")) {
-        json = parse_table(json, $(json.table, doc));
+        $tbl = $(json.table, doc);
+        json = parse_table(json, $tbl);
       }
 
       // invent a div to hold the svg, if necessary
@@ -831,6 +913,9 @@ export function run(conf, doc, cb) {
       } else {
         pub("warn",
           "core/regpict: no register definition " + $fig.get(0).outerHTML);
+      }
+      if ($tbl !== undefined) {
+        insert_unused_table_rows($tbl, choose_defaults(json));
       }
       pub("end", "core/regpict figure id='" + $fig.attr("id") + "'");
     });

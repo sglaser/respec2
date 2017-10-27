@@ -97,7 +97,7 @@ export function run(conf, doc, cb) {
       pub("warn", error_msg);
       $ant.makeID("error", error_msg);
       const error_span = $("<span class=\"respec-error\"></span>").text(error_msg + " ")  // .text() escapes HTML &<>
-        .append("<a href=\"#" + $ant.attr("id") + "\">" + $and.attr("id") + "</a>");
+        .append("<a href=\"#" + $ant.attr("id") + "\">" + $ant.attr("id") + "</a>");
       $ant.append(error_span);
       console.warn("Linkless element:", $ant[0]);
     }
@@ -125,7 +125,7 @@ export function run(conf, doc, cb) {
     if (conf.addDefinitionMap) {
       pub("start", "core/dfn/addDefinitionMap");
       let $mapsec = $("<section id='definition-map' class='introductory appendix'><h2>Definition Map</h2></section>").appendTo($("body"));
-      let $tbody = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-type</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
+      let $tbody = $("<table class='data'><thead><tr><th>dfn</th><th>data-dfn-type</th><th>data-dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec).children("tbody");
       Object.keys(conf.definitionMap).sort().forEach(function (k) {
         conf.definitionMap[k].forEach(function (f) {
           $("<tr>" +
@@ -140,7 +140,7 @@ export function run(conf, doc, cb) {
 
     if (conf.addDefinitionMap2) {
       let $mapsec2 = $("<section id='definition-map-2' class='introductory appendix'><h2>Definition Map 2</h2></section>").appendTo($("body"));
-      let $tbody2 = $("<table class='data'><thead><tr><th>dfn</th><th>dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec2).children("tbody");
+      let $tbody2 = $("<table class='data'><thead><tr><th>dfn</th><th>data-dfn-for</th><th>id</th></tr></thead><tbody/></table>").appendTo($mapsec2).children("tbody");
       Object.keys(titles).sort().forEach(function (title) {
         Object.keys(titles[title]).forEach(function (for_) {
           let item = titles[title][for_];
