@@ -16,7 +16,7 @@ const parseURL = require("url").parse;
 colors.setTheme({
   debug: "cyan",
   error: "red",
-  warn: "yellow",
+  warn: "yellow"
 });
 const tasks = {
   /**
