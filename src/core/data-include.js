@@ -9,8 +9,10 @@
 //  This module only really works when you are in an HTTP context, and will most likely
 //  fail if you are editing your documents on your local drive. That is due to security
 //  restrictions in the browser.
-import { pub } from "core/pubsubhub";
-import { runTransforms } from "core/utils";
+"use strict";
+
+import {pub} from "core/pubsubhub";
+import {runTransforms} from "core/utils";
 
 export const name = "core/data-include";
 
@@ -29,6 +31,17 @@ function processResponse(rawData, id, url) {
         el.textContent = data;
       }
       break;
+    case "first-section":
+      console.log(`processResponse(..., ${id}, ${el.dataset.includeFormat})`);
+      console.log(`data.length = ${data.length})`);
+      el.innerHTML = data;
+      console.log(`el.innerHTML.length = ${el.innerHTML.length}`);
+      replacementNode = $("section:first", el);
+      console.log(`$("section:first", el).length = ${replacementNode.length}`);
+      if (replacementNode.length > 0) {
+        $(`[data-include-id=${id}]`).replaceWith(replacementNode);
+      }
+      break;
     default:
       // html, which is just using "innerHTML"
       el.innerHTML = data;
@@ -45,6 +58,7 @@ function processResponse(rawData, id, url) {
     cleanUp(el);
   }
 }
+
 /**
  * Removes attributes after they are used for inclusion, if present.
  *
