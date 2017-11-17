@@ -1617,7 +1617,7 @@ span.respec-error {
 }
 
 @font-face {
-	font-family: CalistoMT
+	font-family: CalistoMT;
 	src: local("DejaVu Sans");
 }
 
