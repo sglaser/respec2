@@ -8,8 +8,10 @@ window.addEventListener("error", function(ev) {
 require.config({
   shim: {
     shortcut: {
-      exports: "shortcut",
+      exports: "shortcut"
     },
+    "jquery.svg": ["jquery"]
+
     //highlight: {
     //  exports: "hljs",
     //},
