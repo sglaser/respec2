@@ -88,7 +88,7 @@ export function run(conf, doc, cb) {
       let link_for = linkTargets[0].for_;
       let title = linkTargets[0].title;
       this.classList.add("respec-offending-element");
-      this.title = "Linking error: not matching <dfn>";
+      this.title = "Linking error: not matching &lt;dfn&gt;";
       const error_msg = "Found linkless <a> element " +
         (link_for ? "for '" + link_for + "' " : "") +
         "with text '" +

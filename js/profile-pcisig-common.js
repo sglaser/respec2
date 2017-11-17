@@ -39,7 +39,7 @@ define(
     "core/aria",
     "core/style",
     "pcisig/pcisig-style",
-    "w3c/l10n",
+    //"w3c/l10n",
     "core/github",
     "core/data-include",
     "core/data-include",
