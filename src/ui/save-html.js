@@ -1,8 +1,8 @@
 // Module ui/save-html
 // Saves content to HTML when asked to
 
-import beautify from "deps/beautify-html";
-import { beautifyOpts } from "core/beautify-options";
+//import beautify from "deps/beautify-html";
+//import { beautifyOpts } from "core/beautify-options";
 import { xmlEscape, removeReSpec } from "core/utils";
 import { pub } from "core/pubsubhub";
 import { ui } from "core/ui";
@@ -171,9 +171,11 @@ const save = {
     cleanup(rootEl);
     str += rootEl.innerHTML;
     str += "</html>";
-    var uglyHTML = preBeautify(str);
+    return str;
+    /*var uglyHTML = preBeautify(str);
     var beautifulHTML = beautify.html_beautify(uglyHTML, beautifyOpts);
     return beautifulHTML;
+    */
   },
   // convert the document to XML, pass 5 as mode for XHTML5
   toXML: function(mode) {
@@ -249,9 +251,12 @@ const save = {
       return out;
     };
     str += dumpNode(rootEl) + "</html>";
+    return str;
+    /*
     var uglyHTML = preBeautify(str);
     var beautifulXML = beautify.html_beautify(uglyHTML, beautifyOpts);
     return beautifulXML;
+    */
   },
   // create a diff marked version against the previousURI
   // strategy - open a window in which there is a form with the

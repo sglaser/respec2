@@ -10,18 +10,18 @@ require.config({
     shortcut: {
       exports: "shortcut",
     },
-    highlight: {
-      exports: "hljs",
-    },
-    beautify: {
-      exports: "beautify",
-    },
+    //highlight: {
+    //  exports: "hljs",
+    //},
+    //beautify: {
+    //  exports: "beautify",
+    //},
   },
   paths: {
-    "beautify-css": "deps/beautify-css",
-    "beautify-html": "deps/beautify-html",
+    //"beautify-css": "deps/beautify-css",
+    //"beautify-html": "deps/beautify-html",
     "handlebars.runtime": "deps/handlebars",
-    "deps/highlight": "https://www.w3.org/Tools/respec/respec-highlight",
+    //"deps/highlight": "https://www.w3.org/Tools/respec/respec-highlight",
   },
   deps: ["deps/hyperhtml", "deps/url-search-params"],
 });
@@ -33,7 +33,7 @@ define(
     "core/base-runner",
     "core/ui",
     "core/l10n",
-    "w3c/defaults",
+    "pcisig/pcisig-defaults",
     "core/aria",
     "core/style",
     "pcisig/pcisig-style",
@@ -46,7 +46,6 @@ define(
     "core/markdown",
     "pcisig/pcisig-headers",
     "pcisig/footnotes",
-    "w3c/abstract",
     "pcisig/pcisig-conformance",
     "core/data-transform",
     "core/inlines",
@@ -63,7 +62,7 @@ define(
     "pcisig/pre-dfn",
     "core/dfn",
     "core/data-cite",
-    "core/biblio",
+    //"core/biblio",
     "pcisig/link-to-dfn",
     "core/contrib",
     "core/fix-headers",
@@ -79,10 +78,10 @@ define(
     "ui/about-respec",
     "ui/dfn-list",
     "ui/save-html",
-    "ui/search-specref",
-    "core/seo",
-    "w3c/seo",
-    "core/highlight",
+    //"ui/search-specref",
+    //"core/seo",
+    //"w3c/seo",
+    //"core/highlight",
     "core/data-tests",
     "pcisig/include-final-config",
     /*Linter must be the last thing to run*/
