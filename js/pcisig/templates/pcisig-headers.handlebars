@@ -26,7 +26,11 @@
     {{#if specLevelLong}}
       <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;
     {{/if}}
-    <span id="respec-banner-spec-name">{{title}}</span>&nbsp;&nbsp;&nbsp;
+    <span id="respec-banner-spec-name">{{title}}</span>
+    {{#if specChapter}}
+      &nbsp;&mdash;&nbsp;<span id="respec-banner-chapter">{{specChapter}}</span>
+    {{/if}}
+    &nbsp;&nbsp;&nbsp;
   </div>
 
   <h1 class='title p-name' id='title'{{#if doRDFa}} property='dcterms:title'{{/if}}>{{title}}</h1>
@@ -150,16 +154,20 @@
       </p>
       {{#if isNoTrack}}
         <p class="copyright">
-          PCI-SIG disclaims all warranties and liability for the use of this document and the information contained
-          herein and assumes no responsibility for any errors that may appear in this document, nor does PCI-SIG make a
-          commitment to update the information contained herein.
+          PCI-SIG disclaims all warranties and liability for the use of this document
+          and the information contained herein and assumes no responsibility
+          for any errors that may appear in this document, nor does PCI-SIG make a commitment
+          to update the information contained herein.
         </p>
       {{else}}
         <p class="copyright">
-          Contact PCI-SIG Membership Services for questions about membership in the PCI-SIG or to obtain the latest
-          revision of this specification. Contact PCI-SIG Technical Support for technical questions about this
-          specification.</p>
+          Contact PCI-SIG Membership Services for questions about membership in the PCI-SIG
+          or to obtain the latest revision of this specification.
+          Contact PCI-SIG Technical Support for technical questions about this specification.
+        </p>
         <dl class="copyright">
+          <dt>Web Site</dt>
+          <dd><a href="http://www.pcisig.com">http://www.pcisig.com</a></dd>
           <dt>Membership Services</dt>
           <dd><a href="mailto:administration@pcisig.com">administration@pcisig.com</a></dd>
           <dd><a href="tel:+1-503-619-0569">+1-503-619-0569</a> (Phone)</dd>
@@ -169,13 +177,31 @@
         </dl>
         <p class="copyright"><strong>DISCLAIMER</strong></p>
         <p class="copyright">
-          This Specification is provided “as is” with no warranties whatsoever, including any warranty of
-          merchantability, noninfringement, fitness for any particular purpose, or any warranty otherwise arising out of
-          any proposal, specification, or sample. PCI-SIG disclaims all liability for infringement of proprietary
-          rights, relating to use of information in this specification. No license, express or implied, by estoppel or
-          otherwise, to any intellectual property rights is granted herein. PCI-SIG assumes no responsibility for any
-          errors that may appear in this document, nor does PCI-SIG make a commitment to update the information
-          contained herein.</p>
+          {{#if isClickThrough}}
+            This specification is the sole property of PCI-SIG® and
+            provided under a click through license through its website,
+            <a href="http://www.pcisig.com">www.pcisig.com</a>
+          {{/if}}
+          PCI-SIG disclaims all warranties and liability for the use of this document
+          and the information contained herein and assumes no responsibility
+          for any errors that may appear in this document, nor does PCI-SIG make a commitment
+          to update the information contained herein.
+        </p>
+        <p class="copyright">
+          This PCI Specification is provided “as is” without any warranties of any kind,
+          including any warranty of merchantability, non-infringement, fitness for any
+          particular purpose, or any warranty otherwise arising out of any proposal,
+          specification, or sample. PCI-SIG disclaims all liability for infringement
+          of proprietary rights, relating to use of information in this specification.
+          This document itself may not be modified in any way, including by removing the
+          copyright notice or references to PCI-SIG.
+          No license, express or implied, by estoppel or otherwise, to any intellectual
+          property rights is granted herein.
+          PCI, PCI Express, PCIe, and PCI-SIG are trademarks or registered trademarks of
+          PCI-SIG.
+          All other product names are trademarks, registered trademarks, or servicemarks of
+          their respective owners.
+        </p>
       {{/if}}
     {{/if}}
   {{/if}}

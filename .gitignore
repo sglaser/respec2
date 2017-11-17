@@ -84,6 +84,7 @@ js/pcisig/impnote.js
 js/pcisig/include-final-config.js
 js/pcisig/link-to-dfn.js
 js/pcisig/pcisig-conformance.js
+js/pcisig/pcisig-defaults.js
 js/pcisig/pcisig-headers.js
 js/pcisig/pcisig-style.js
 js/pcisig/pre-dfn.js

@@ -12,6 +12,9 @@
 //      Even numbers (0.2, 0.4, ...) are WG internal drafts.
 //      Odd numbers are published drafts (0.1, 0.3, 0.5, 0.7, 0.71, 0.9, ...)
 //      1.0 is the published final release
+//  - specChapter: if present, indicates this document is a chapter of a specification.
+//      If specChapter is present, "final" values of specStatus will be converted to RC
+//      (we don't publish final "chapters")
 //  - shortName: the small name that is used after /Spec/ in published reports (required)
 //  - editors: an array of people editing the document (at least one is required). People
 //      are defined using:
@@ -249,7 +252,7 @@ hb.registerHelper("showLogos", logos => {
 
 const status2rdf = {
   "WG-NOTE": "pcisigp:NOTE",
-  "WG-DRAGT-NOTE": "pcisigp:NOTE",
+  "WG-DRAFT-NOTE": "pcisigp:NOTE",
   "PUB-NOTE": "pcisigp:NOTE",
   "PUB-DRAFT-NOTE": "pcisigp:NOTE",
   WD: "pcisigp:WD",
@@ -296,7 +299,7 @@ const status2text = {
   "PUB-FINAL": "Final Spec.",
   FINAL: "Final Spec.",
 
-  RESCINDED: "Spececification Rescinded",
+  RESCINDED: "Specification Rescinded",
   REPLACED: "Specification Replaced",
   PRIVATE: "Private Document",
   unofficial: "Unofficial Document",
@@ -311,14 +314,35 @@ const status2long = {
   "PUB-CWG": "Published Cross Workgroup Review Draft",
   "WD-MEM": "Unpublished Member Review Working Draft",
   "RC-MEM": "Unpublished Member Review Release Candidate",
+  "RC-FINAL": "Unpublished Final Release Candidate",
+  "WD-FINAL": "Unpublished Final Working Draft",
   "PUB-MEM": "Published Member Review Draft",
   FINAL: "Published Final Specification"
 };
 const specTrackStatus = [
   "WD", "RC", "PUB", "FINAL",
   "WD-CWG", "RC-CWG", "PUB-CWG",
-  "WD-MEM", "RC-MEM", "PUB-MEM"
+  "WD-MEM", "RC-MEM", "PUB-MEM",
+  "WD-FINAL", "RC-FINAL", "PUB-FINAL"
 ];
+
+// Chapters are never published standalone. if conf.specChapter is present,
+// this map is used to convert "final" specStatus values to equivalent "RC" values.
+const specFinal2Draft = {
+  "WD": "WD",
+  "RC": "RC",
+  "PUB": "RC",
+  "FINAL": "RC",
+  "WD-CWG": "WD-CWG",
+  "RC-CWG": "RC-CWG",
+  "PUB-CWG": "RC-CWG",
+  "WD-MEM": "WD-MEM",
+  "RC-MEM": "RC-MEM",
+  "PUB-MEM": "RC-MEM",
+  "WD-FINAL": "WD-FINAL",
+  "RC-FINAL": "RC-FINAL",
+  "PUB-FINAL": "RC-FINAL"
+};
 
 const noTrackStatus = [
   "unofficial",
@@ -338,27 +362,44 @@ const licenses = {
     name: "PCISIG Specification License",
     short: "PCISIG Spec",
     url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-draft-specification",
+    click_through: false
+  },
+  "pcisig-draft-click-through": {
+    name: "PCISIG Specification License",
+    short: "PCISIG Spec",
+    url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-draft-specification",
+    click_through: false
   },
   "pcisig-final": {
     name: "PCISIG Specification License",
     short: "PCISIG Spec",
     url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-final-specification",
+    click_through: false
+  },
+  "pcisig-final-click-through": {
+    name: "PCISIG Click-Through Specification License",
+    short: "PCISIG Spec (Click Through License)",
+    url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-final-click-through-specification",
+    click_through: true
   },
   "pcisig-note": {
     name: "PCISIG Note, Whitepaper, or Presentation License",
     short: "PCISIG Spec",
     url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-note",
+    click_through: false
   },
   "nda": {
     name: "PCISIG Non-Disclosure Agreement",
     short: "PCISIG NDA",
     url: "https://sglaser.github.io/respec/Spec/Legal/2017/copyright-nda",
+    click_through: false
   },
   cc0: {
     name: "Creative Commons 0 Public Domain Dedication",
     short: "CC0",
     url: "https://creativecommons.org/publicdomain/zero/1.0/",
-  },
+    click_through: false
+  }
 };
 
 const baseLogo = Object.freeze({
@@ -389,6 +430,9 @@ export function run(conf, doc, cb) {
   if (!conf.logos) {
     conf.logos = [];
   }
+  if (conf.specStatus && conf.specChapter && specFinal2Draft.includes(conf.specStatus)){
+    conf.specStatus = specFinal2Draft[conf.specStatus];
+  }
   // Default include RDFa document metadata
   if (conf.doRDFa === undefined) conf.doRDFa = true;
   // validate configuration and derive new configuration values
@@ -397,10 +441,17 @@ export function run(conf, doc, cb) {
   }
   if (["cc0"].includes(conf.license)) {
     let msg = `You cannot use license "\`${conf.license}\`" with PCISIG Specs. `;
-    msg += `Please set \`respecConfig.license: "pcisig"\` or \`resapectConfig: "nda"\` instead.`;
+    let non_cc0 = licenses.keys.remove("cc0").toString();
+    msg += `Please set \`respecConfig.license:\` to one of ${non_cc0} instead.`;
     pub("error", msg);
   }
   conf.licenseInfo = licenses[conf.license];
+  conf.isClickThrough = conf.licenseInfo.click_through;
+  if (["final"].includes(conf.license)) {
+    if (conf.specChapter) {
+      conf.license = conf.license.sub("final", "draft");
+    }
+  }
   conf.isBasic = conf.specStatus === "base";
   conf.isRegular = !conf.isBasic;
   if (!conf.specStatus) {
@@ -419,7 +470,7 @@ export function run(conf, doc, cb) {
   );
   conf.publishYear = conf.publishDate.getUTCFullYear();
   conf.publishHumanDate = PCISIGDate.format(conf.publishDate);
-  conf.isNoTrack = noTrackStatus.includes(conf.specStatus);
+  conf.isNoTrack = noTrackStatus.includes(conf.specStatus) || !conf.specChapter;
   conf.isSpecTrack = conf.noSpecTrack
     ? false
     : specTrackStatus.includes(conf.specStatus);
@@ -483,6 +534,9 @@ export function run(conf, doc, cb) {
   }
   if (conf.specStatus) {
     temp.push(conf.specStatus);
+  }
+  if (conf.specChapter) {
+    temp.push(conf.specChapter);
   }
   conf.maturity = temp.join("-");
 

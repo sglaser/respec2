@@ -27,7 +27,7 @@ function show() {
       const dfn = $dfn[0];
       return window.hyperHTML.wire(dfn, ":li>a")`
         <li>
-          <a href="${"#" + dfn.id}">
+          <a href="${"#" + dfn.attr["id"]}">
             ${key}
           </a>
         </li>

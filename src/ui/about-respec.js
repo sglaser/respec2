@@ -48,7 +48,11 @@ function show() {
     You can find more information in the <a href='https://w3.org/respec/'>documentation</a>.
   </p>
   <p>
-    Found a bug in ReSpec? <a href='https://github.com/w3c/respec/issues'>File it!</a>.
+   You can find more information on the PCISIG version of ReSpec at
+   <a href="https://sglaser.github.io/respec/Documentation">https://sglaser.github.io/respec/Documentation</a>.
+  </p>
+  <p>
+    Found a bug in ReSpec? <a href='https://github.com/sglaser/respec/issues'>File it!</a>.
   </p>
   <table border="1" width="100%" hidden="${entries.length ? false : true}">
     <caption>
@@ -71,7 +75,7 @@ function show() {
 
 function perfEntryToTR({ name, duration }) {
   const render = hyperHTML.bind(document.createElement("tr"));
-  const moduleURL = `https://github.com/w3c/respec/tree/develop/src/${name}.js`;
+  const moduleURL = `https://github.com/sglaser/respec/tree/develop/src/${name}.js`;
   return render`
     <td>
       <a href="${moduleURL}">
@@ -79,7 +83,7 @@ function perfEntryToTR({ name, duration }) {
       </a>
     </td>
     <td>
-      ${duration} 
+      ${duration}
     </td>
   `;
 }
