@@ -50,6 +50,8 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     $kidsHolder.find("dfn").renameElement("span").removeAttr("id");
     $kidsHolder.find("span.footnote").remove();
     $kidsHolder.find("span.issue").remove();
+    $kidsHolder.find("span.respec-error").remove();
+    $kidsHolder.find("span.noToc").remove();
     var title = $kidsHolder[0].textContent;
     var id = h.id ? h.id : $sec.makeID("sect", title);
 

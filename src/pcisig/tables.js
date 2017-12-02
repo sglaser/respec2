@@ -28,9 +28,12 @@ export function run(conf, doc, cb) {
       .prepend(doc.createTextNode(conf.l10n.tbl));
     tblMap[id] = $cap.contents();
     var $totCap = $cap.clone();
-    $totCap.find("a").renameElement("span").removeAttr("href");
+    $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+    $totCap.find("dfn").renameElement("span").removeAttr("id");
     $totCap.find("span.footnote").remove();   // footnotes are in the caption, not #tot
     $totCap.find("span.issue").remove();      // issues are in the caption, not #tot
+    $totCap.find("span.respec-error").remove(); // errors are in the caption, not #tot
+    $totCap.find("span.noToc").remove();      // explicitly not in #tot
     tot.push(
       $("<li class='totline'><a class='tocxref' href='#" + id + "'></a></li>")
         .find(".tocxref")
@@ -47,7 +50,16 @@ export function run(conf, doc, cb) {
     id = id.substring(1);
     if (tblMap[id]) {
       $a.addClass("tbl-ref");
-      if ($a.html() === "") $a.append(tblMap[id].clone());
+      if ($a.html() === "") {
+        ref = tblMap[id].clone();
+        ref.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+        ref.find("dfn").renameElement("span").removeAttr("id");
+        ref.find("span.footnote").remove();   // footnotes are in the caption, not references
+        ref.find("span.issue").remove();      // issues are in the caption, not references
+        ref.find("span.respec-error").remove(); // errors are in the caption, not references
+        ref.find("span.noToc").remove();      // explicitly not in refs
+        $a.append(ref);
+      }
     }
   });
 
