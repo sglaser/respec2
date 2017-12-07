@@ -59,9 +59,12 @@ export function run(conf, doc, cb) {
       .prepend(doc.createTextNode(conf.l10n.fig));
     figMap[id] = $cap.contents();
     var $tofCap = $cap.clone();
-    $tofCap.find("a").renameElement("span").removeAttr("href");
+    $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+    $tofCap.find("dfn").renameElement("span").removeAttr("id");
     $tofCap.find("span.footnote").remove();   // footnotes are in the caption, not #tof
     $tofCap.find("span.issue").remove();      // issues are in the caption, not #tof
+    $totCap.find("span.respec-error").remove(); // errors are in the caption, not #tof
+    $tofCap.find("span.noToc").remove();      // explicitly not in #tof
     tof.push(
       $("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
         .find(".tocxref")
@@ -78,7 +81,16 @@ export function run(conf, doc, cb) {
     id = id.substring(1);
     if (figMap[id]) {
       $a.addClass("fig-ref");
-      if ($a.html() === "") $a.append(figMap[id].clone());
+      if ($a.html() === "") {
+        ref = figMap[id].clone();
+        ref.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+        ref.find("dfn").renameElement("span").removeAttr("id");
+        ref.find("span.footnote").remove();   // footnotes are in the caption, not references
+        ref.find("span.issue").remove();      // issues are in the caption, not references
+        ref.find("span.respec-error").remove(); // errors are in the caption, not references
+        ref.find("span.noToc").remove();      // explicitly not in refs
+        $a.append(ref);
+      }
     }
   });
 

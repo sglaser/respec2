@@ -88,7 +88,7 @@ export function run(conf, doc, cb) {
       let link_for = linkTargets[0].for_;
       let title = linkTargets[0].title;
       this.classList.add("respec-offending-element");
-      this.title = "Linking error: not matching &lt;dfn&gt;";
+      this.title = "Linking error: no matching &lt;dfn&gt;";
       const error_msg = "Found linkless <a> element " +
         (link_for ? "for '" + link_for + "' " : "") +
         "with text '" +
@@ -96,10 +96,8 @@ export function run(conf, doc, cb) {
         "' but no matching <dfn>.";
       pub("warn", error_msg);
       $ant.makeID("error", error_msg);
-      const error_span = $("<span class=\"respec-error\"></span>").text(error_msg + " ")  // .text() escapes HTML &<>
-        .append("<a href=\"#" + $ant.attr("id") + "\">" + $ant.attr("id") + "</a>");
-      $ant.append(error_span);
       console.warn("Linkless element:", $ant[0]);
+      //console.warn("Linkless Element Reference: "$("<span class=\"respec-error\"><a href=\"#" + $ant.attr("id") + "\">" + $ant.attr("id") + "</a></span>"));
     }
   });
 
