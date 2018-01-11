@@ -419,7 +419,7 @@ function validateDateAndRecover(conf, prop, fallbackDate = new Date()) {
     return new Date(formattedDate);
   }
   const msg =
-    `[\`${prop}\`](https://github.com/pcisig/respec/wiki/${prop}) ` +
+    `[${prop}](https://github.com/pcisig/respec/wiki/${prop}) ` +
     `is not a valid date: "${conf[prop]}". Expected format 'YYYY-MM-DD'.`;
   pub("error", msg);
   return new Date(ISODate.format(new Date()));
@@ -430,7 +430,7 @@ export function run(conf, doc, cb) {
   if (!conf.logos) {
     conf.logos = [];
   }
-  if (conf.specStatus && conf.specChapter && specFinal2Draft.includes(conf.specStatus)){
+  if (conf.specStatus && conf.specChapter && specFinal2Draft.hasOwnProperty(conf.specStatus)){
     conf.specStatus = specFinal2Draft[conf.specStatus];
   }
   // Default include RDFa document metadata
@@ -440,9 +440,9 @@ export function run(conf, doc, cb) {
     conf.license = "nda";
   }
   if (["cc0"].includes(conf.license)) {
-    let msg = `You cannot use license "\`${conf.license}\`" with PCISIG Specs. `;
+    let msg = `You cannot use license "${conf.license}" with PCISIG Specs. `;
     let non_cc0 = licenses.keys.remove("cc0").toString();
-    msg += `Please set \`respecConfig.license:\` to one of ${non_cc0} instead.`;
+    msg += `Please set 'respecConfig.license:' to one of ${non_cc0} instead.`;
     pub("error", msg);
   }
   conf.licenseInfo = licenses[conf.license];
@@ -468,9 +468,9 @@ export function run(conf, doc, cb) {
     "publishDate",
     doc.lastModified
   );
-  conf.publishYear = conf.publishDate.getUTCFullYear();
+  conf.publishYear = conf.publishDate.getUTCFullYear().toString();
   conf.publishHumanDate = PCISIGDate.format(conf.publishDate);
-  conf.isNoTrack = noTrackStatus.includes(conf.specStatus) || !conf.specChapter;
+  conf.isNoTrack = noTrackStatus.includes(conf.specStatus) || conf.specChapter;
   conf.isSpecTrack = conf.noSpecTrack
     ? false
     : specTrackStatus.includes(conf.specStatus);
@@ -605,7 +605,7 @@ export function run(conf, doc, cb) {
     }
   } else {
     if (
-      !/NOTE$/.test(conf.specStatus) &&
+      !(/NOTE$/.test(conf.specStatus)) &&
       !conf.prevStatus === "none" &&
       !conf.noSpecTrack &&
       !conf.isNoTrack &&
@@ -744,6 +744,11 @@ export function run(conf, doc, cb) {
   bp = headersTmpl(conf);
   $("body", doc).prepend($(bp)).addClass("h-entry");
 
+// invent toc if not already present
+  if (!document.body.querySelector("#toc")) {
+    $("body", doc).prepend($("<nav id=\"toc\"><section class=\"introductory\"></section></nav>"));
+  }
+
 // handle Revision History
   let revision_history =
     document.body.querySelector("#revision-history") || document.createElement("section");
@@ -772,7 +777,7 @@ export function run(conf, doc, cb) {
   if (conf.specStatus === "PUB-CWG" && !conf.cwgReviewEnd) {
     pub(
       "error",
-      `\`specStatus\` is "PUB-CWG" but no \`cwgReviewEnd\` is specified (needed to indicate end of the Cross Workgroup Review).`
+      `'specStatus' is "PUB-CWG" but no 'cwgReviewEnd' is specified (needed to indicate end of the Cross Workgroup Review).`
     );
   }
   conf.cwgReviewEnd = validateDateAndRecover(conf, "cwgReviewEnd");
@@ -782,7 +787,7 @@ export function run(conf, doc, cb) {
   if (conf.specStatus === "PUB-MEM" && !conf.memReviewEnd) {
     pub(
       "error",
-      `\`specStatus\` is "PUB-MEM", but no \`memReviewEnd\` is specified (needed to indicate end of the Member Review).`
+      `'specStatus' is "PUB-MEM", but no 'memReviewEnd' is specified (needed to indicate end of the Member Review).`
     );
   }
   conf.memReviewEnd = validateDateAndRecover(conf, "memReviewEnd");

@@ -12,7 +12,7 @@ export const name = "core/figures";
 export function run(conf, doc, cb) {
   // Move old syntax to new syntax
   $(".figure", doc).each(function(i, figure) {
-    var $figure = $(figure),
+    let $figure = $(figure),
       title =
         $figure.attr("title") ||
         $figure.find("[title]").attr("title") ||
@@ -39,11 +39,11 @@ export function run(conf, doc, cb) {
   });
 
   // process all figures
-  var figMap = {},
+  let figMap = {},
     tof = [],
     num = 0;
   $("figure:not(.equation)").each(function() {
-    var $fig = $(this),
+    let $fig = $(this),
       $cap = $fig.find("figcaption"),
       tit = $cap.text(),
       id = $fig.makeID("fig", tit);
@@ -54,16 +54,17 @@ export function run(conf, doc, cb) {
     num++;
     $cap
       .wrapInner($("<span class='fig-title'/>"))
-      .prepend(doc.createTextNode(" "))
+      .prepend($("<span class='fig-title-decoration'> </span>"))
       .prepend($("<span class='figno'>" + num + "</span>"))
-      .prepend(doc.createTextNode(conf.l10n.fig));
+      .prepend($("<span class='fig-figno-decoration'>" + conf.l10n.fig + " </span>"));
     figMap[id] = $cap.contents();
-    var $tofCap = $cap.clone();
+    let $tofCap = $cap.clone();
     $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
-    $tofCap.find("dfn").renameElement("span").removeAttr("id");
+    $tofCap.find("dfn").renameElement("span");
+    $tofCap.find("[id]").removeAttr("id");
     $tofCap.find("span.footnote").remove();   // footnotes are in the caption, not #tof
     $tofCap.find("span.issue").remove();      // issues are in the caption, not #tof
-    $totCap.find("span.respec-error").remove(); // errors are in the caption, not #tof
+    $tofCap.find("span.respec-error").remove(); // errors are in the caption, not #tof
     $tofCap.find("span.noToc").remove();      // explicitly not in #tof
     tof.push(
       $("<li class='tofline'><a class='tocxref' href='#" + id + "'></a></li>")
@@ -75,16 +76,17 @@ export function run(conf, doc, cb) {
 
   // Update all anchors with empty content that reference a figure ID
   $("a[href]", doc).each(function() {
-    var $a = $(this),
+    let $a = $(this),
       id = $a.attr("href");
     if (!id) return;
     id = id.substring(1);
     if (figMap[id]) {
       $a.addClass("fig-ref");
       if ($a.html() === "") {
-        ref = figMap[id].clone();
+        let ref = figMap[id].clone();
         ref.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
-        ref.find("dfn").renameElement("span").removeAttr("id");
+        ref.find("dfn").renameElement("span");
+        ref.find("[id]").removeAttr("id");
         ref.find("span.footnote").remove();   // footnotes are in the caption, not references
         ref.find("span.issue").remove();      // issues are in the caption, not references
         ref.find("span.respec-error").remove(); // errors are in the caption, not references
@@ -95,7 +97,7 @@ export function run(conf, doc, cb) {
   });
 
   // Create a Table of Figures if a section with id 'tof' exists.
-  var $tof = $("#tof", doc);
+  let $tof = $("#tof", doc);
   if (tof.length && $tof.length) {
     // if it has a parent section, don't touch it
     // if it has a class of appendix or introductory, don't touch it
@@ -117,7 +119,7 @@ export function run(conf, doc, cb) {
     }
     $tof.append($("<h2>" + conf.l10n.table_of_fig + "</h2>"));
     $tof.append($("<ul class='tof'/>"));
-    var $ul = $tof.find("ul");
+    let $ul = $tof.find("ul");
     while (tof.length) $ul.append(tof.shift());
   }
   cb();

@@ -19,18 +19,11 @@
   </p>
 
   <div id="respec-banner">
-    <span id="respec-banner-status">{{specStatusLong}}</span>&nbsp;&mdash;&nbsp;
-    {{#if specReviewLong}}
-      <span id="respec-banner-next-state">{{specReviewLong}}</span>&nbsp;&mdash;&nbsp;
-    {{/if}}
-    {{#if specLevelLong}}
-      <span id="respec-banner-maturity">{{specLevelLong}}</span>&nbsp;&mdash;&nbsp;
-    {{/if}}
-    <span id="respec-banner-spec-name">{{title}}</span>
+    <span id="respec-banner-status">{{maturity}}</span>&nbsp;&mdash;&nbsp;
     {{#if specChapter}}
       &nbsp;&mdash;&nbsp;<span id="respec-banner-chapter">{{specChapter}}</span>
     {{/if}}
-    &nbsp;&nbsp;&nbsp;
+    &nbsp;&mdash;&nbsp;<span id="respec-banner-spec-name">{{title}}</span>
   </div>
 
   <h1 class='title p-name' id='title'{{#if doRDFa}} property='dcterms:title'{{/if}}>{{title}}</h1>

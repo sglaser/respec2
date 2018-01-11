@@ -11,11 +11,11 @@ export const name = "core/equations";
 
 export function run(conf, doc, cb) {
   // process all equations
-  var eqnMap = {},
+  let eqnMap = {},
     toe = [],
     num = 0;
   $("figure.equation").each(function() {
-    var $eqn = $(this),
+    let $eqn = $(this),
       $cap = $eqn.find("figcaption"),
       tit = $cap.text(),
       id = $eqn.makeID("eqn", tit);
@@ -24,14 +24,18 @@ export function run(conf, doc, cb) {
     num++;
     $cap
       .wrapInner($("<span class='eqn-title'/>"))
-      .prepend(doc.createTextNode(" "))
+      .prepend($("<span class='eqn-title-decoration'> </span>"))
       .prepend($("<span class='eqnno'>" + num + "</span>"))
-      .prepend(doc.createTextNode(conf.l10n.eqn));
+      .prepend($("<span class='eqn-eqnno-decoration'>" + conf.l10n.eqn + " </span>"));
     eqnMap[id] = $cap.contents();
-    var $toeCap = $cap.clone();
-    $toeCap.find("a").renameElement("span").removeAttr("href");
+    let $toeCap = $cap.clone();
+    $toeCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+    $toeCap.find("dfn").renameElement("span");
+    $toeCap.find("[id]").removeAttr("id");
     $toeCap.find("span.footnote").remove();   // footnotes are in the caption, not #toe
     $toeCap.find("span.issue").remove();      // issues are in the caption, not #toe
+    $toeCap.find("span.respec-error").remove(); // errors are in the caption, not #toe
+    $toeCap.find("span.noToc").remove();      // explicitly not in #toe
     toe.push(
       $("<li class='toeline'><a class='tocxref' href='#" + id + "'></a></li>")
         .find(".tocxref")
@@ -42,18 +46,28 @@ export function run(conf, doc, cb) {
 
   // Update all anchors with empty content that reference a equation ID
   $("a[href]", doc).each(function() {
-    var $a = $(this),
+    let $a = $(this),
       id = $a.attr("href");
     if (!id) return;
     id = id.substring(1);
     if (eqnMap[id]) {
       $a.addClass("eqn-ref");
-      if ($a.html() === "") $a.append(eqnMap[id].clone());
+      if ($a.html() === "") {
+        let ref = eqnMap[id].clone();
+        ref.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
+        ref.find("dfn").renameElement("span");
+        ref.find("[id]").removeAttr("id");
+        ref.find("span.footnote").remove();   // footnotes are in the caption, not references
+        ref.find("span.issue").remove();      // issues are in the caption, not references
+        ref.find("span.respec-error").remove(); // errors are in the caption, not references
+        ref.find("span.noToc").remove();      // explicitly not in refs
+        $a.append(ref);
+      }
     }
   });
 
   // Create a Table of Equations if a section with id 'toe' exists.
-  var $toe = $("#toe", doc);
+  let $toe = $("#toe", doc);
   if (toe.length && $toe.length) {
     // if it has a parent section, don't touch it
     // if it has a class of appendix or introductory, don't touch it
@@ -75,7 +89,7 @@ export function run(conf, doc, cb) {
     }
     $toe.append($("<h2>" + conf.l10n.table_of_eqn + "</h2>"));
     $toe.append($("<ul class='toe'/>"));
-    var $ul = $toe.find("ul");
+    let $ul = $toe.find("ul");
     while (toe.length) $ul.append(toe.shift());
   }
   cb();
