@@ -83,7 +83,7 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     let $kidsClone = $kidsHolder.clone();
     $kidsClone.wrapInner($("<span class='sec-title'/>"));
     let secType = (isTopLevel ? (appendixMode ? conf.l10n.appendix : conf.l10n.chapter) : conf.l10n.section);
-    if (isIntro) {
+    if (!isIntro) {
       $kidsClone.prepend($("<span class='sec-title-decoration'> </span>"))
         .prepend($("<span class='secno'>" + bareSecno + "</span>"))
         .prepend($("<span class='sec-secno-decoration'>" + secType + " </span>"));
@@ -176,7 +176,6 @@ export function run(conf, doc, cb) {
         ref.find("span.respec-error").remove(); // errors are in the caption, not references
         ref.find("span.noToc").remove();      // explicitly not in refs
         $a.append(ref);
-        $a.html(($a.hasClass("sectionRef") ? "section " : "") + secMap[id]);
       }
     }
   });
