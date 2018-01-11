@@ -1777,12 +1777,12 @@ span.respec-error {
   ul.tot, ul.tot li,
   ul.tof, ul.tof li,
   ul.toe, ul.toe li,
-  ul.toc, ul.toc li {
+  ol.toc, ol.toc li {
     font-weight: normal;
     margin-left: 0;
   }
 
-  ul.toc ul.toc {
+  ol.toc ol.toc {
     font-weight: normal;
     margin-left: 2em;
   }
@@ -1790,7 +1790,7 @@ span.respec-error {
   ul.tot a::after,
   ul.tof a::after,
   ul.toe a::after,
-  ul.toc a::after {
+  ol.toc a::after {
     content: leader('.') target-counter(attr(href), page);
   }
 
