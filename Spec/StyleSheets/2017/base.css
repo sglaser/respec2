@@ -1636,6 +1636,7 @@ table.pcisig_reg td:nth-child(3) {
   /*#38197a; /* PCIe Logo Blue */
 }
 
+a.respec-offending-element,
 span.respec-error {
   color: red;
   font-size: 9pt;
