@@ -436,6 +436,45 @@ dl dd {
   margin: 0 0 1em 2em;
 }
 
+table dl {
+       width: 100%;
+}
+
+table dt {
+    float:       left;
+    width:       12%;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+table dl.wide dt {
+  float:       left;
+  width:       20%;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+table dl.extra_wide dt {
+  float:       left;
+  width:       30%;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+td dl dd {
+  overflow:      hidden;
+  margin-bottom: 0.5em;
+}
+
+td dl {
+  margin-top:    0;
+  margin-bottom: 0;
+}
+
+td dl + p {
+  margin-top: 0;
+}
+
 .head dd + dt {
   margin-top: .5em;
 }
@@ -1636,6 +1675,15 @@ span.respec-error {
   span.footnote > input {
     vertical-align: super;
     color: #0060A9;
+  }
+
+  input#show-all-footnotes + label {
+    color: #0060A9;
+  }
+
+  input:checked + span.footnote-contents,
+  input#show-all-footnotes:checked  ~ section span.footnote-contents {
+    display: inline;
   }
 
   a.sec-ref span.sec-title,
