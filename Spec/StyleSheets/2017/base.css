@@ -1659,6 +1659,11 @@ span.respec-error {
     font-family: Garamond, "DejaVu Serif", "Source Serif Pro", Times, serif;
   }
 
+  span.footnote {
+    font: 100% serif; /* Reset all font styling to clear out UA styles */
+    font-family: Garamond, "DejaVu Serif", "Source Serif Pro", Times, serif;
+  }
+
   /* Camoflage links; they're inactivatable anyway. */
   a {
     color: inherit !important;
