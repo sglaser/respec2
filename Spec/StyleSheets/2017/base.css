@@ -616,6 +616,14 @@ a[href] {
   margin: 0 -0.1em 0;
 }
 
+a[href]:empty::before {
+  color: red;
+  font-size: 9pt;
+  font-weight: bold;
+  font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+  content: attr(href);
+}
+
 a:visited {
   border-bottom-color: gray;
 }
