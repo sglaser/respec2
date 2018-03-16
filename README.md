@@ -1,9 +1,9 @@
 # ReSpec
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/w3c/respec.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/sglaser/respec.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/w3c/respec.svg?branch=develop)](https://travis-ci.org/w3c/respec)
-[![Known Vulnerabilities](https://snyk.io/test/github/w3c/respec/badge.svg)](https://snyk.io/test/github/w3c/respec)
+[![Build Status](https://travis-ci.org/sglaser/respec.svg?branch=develop)](https://travis-ci.org/sglaser/respec)
+[![Known Vulnerabilities](https://snyk.io/test/github/sglaser/respec/badge.svg)](https://snyk.io/test/github/sglaser/respec)
 
 ReSpec is a JS library that makes it easier to write technical specifications, or documents
 that tend to be technical in nature in general. It was originally designed for the purpose
