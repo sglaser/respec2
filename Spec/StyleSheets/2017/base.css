@@ -346,33 +346,33 @@ h2, h3, h4, h5, h6 {
   margin-top: 3em;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   color: #005A9C;
   background: transparent;
 }
 
 h1 {
-  font-size: 170%;
+  font-size: 225%;
 }
 
 h2 {
-  font-size: 140%;
+  font-size: 170%;
 }
 
 h3 {
-  font-size: 120%;
+  font-size: 140%;
 }
 
 h4 {
-  font-weight: bold;
+  font-size: 120%;
 }
 
 h5 {
-  font-style: italic;
+  font-weight: bold;
 }
 
 h6 {
-  font-variant: small-caps;
+  font-style: italic;
 }
 
 dt {
@@ -616,7 +616,8 @@ a[href] {
   margin: 0 -0.1em 0;
 }
 
-a[href]:empty::before {
+
+a[href]:not(.tocxref):empty::before {
   color: red;
   font-size: 9pt;
   font-weight: bold;
@@ -691,8 +692,9 @@ div.figure object, div.sidefigure object, figure object {
 }
 
 p.caption, figcaption, caption {
+  color: #005A9C;
   font-style: italic;
-  font-size: 90%;
+  font-size: 100%;
 }
 
 p.caption::before, figcaption::before, figcaption > .marker {
@@ -1188,7 +1190,7 @@ table.data {
 
 table.data caption,
 table.index caption {
-  width: auto;
+  width: 100%;
 }
 
 table.data td, table.data th,
@@ -1210,6 +1212,14 @@ table.index thead th[scope="row"] {
   color: inherit;
 }
 
+table.data,
+table.complex.data {
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+
+table.complex.data thead,
+table.complex.data tbody,
 table.data thead,
 table.index thead,
 table.data tbody,
@@ -1223,8 +1233,11 @@ table.index colgroup {
   border-left: 2px solid;
 }
 
-table.data tbody th:first-child,
-table.index tbody th:first-child {
+table.data thead th.solid-right,
+table.data > tbody > tr > th:last-of-type,
+table.data > tbody > tr > th:last-of-type,
+table.index > tbody > tr > th:first-child,
+table.index > tbody > tr > th:first-child {
   text-align: right;
   color: inherit;
   border-right: 2px solid;
@@ -1253,7 +1266,10 @@ table.complex.data td {
 }
 
 table.data.longlastcol td:last-child,
-table.data td.long {
+table.data tbody.notes td,
+table.data td.long,
+table.pcisig_reg tbody.notes td,
+table.pcisig_reg td.long {
   vertical-align: baseline;
   text-align: left;
 }
@@ -1296,13 +1312,13 @@ table.data img {
 }
 
 .toc > li li li li {
-  font-size: 0.9em;
+  margin-left: 0;
   font-style: normal;
 }
 
 .tof > li {
-  margin: 1.2em 0;
-  font-weight: bold;
+  margin: 0;
+  font-weight: normal;
 }
 
 .tof > li li {
@@ -1321,8 +1337,8 @@ table.data img {
 }
 
 .toe > li {
-  margin: 1.2em 0;
-  font-weight: bold;
+  margin: 0;
+  font-weight: normal;
 }
 
 .toe > li li {
@@ -1341,8 +1357,8 @@ table.data img {
 }
 
 .tot > li {
-  margin: 1.2em 0;
-  font-weight: bold;
+  margin: 0;
+  font-weight: normal;
 }
 
 .tot > li li {
@@ -1382,22 +1398,60 @@ table.data img {
 }
 
 /* Section numbers in a column of their own */
-:not(li) > .tof,
-:not(li) > .toe,
-:not(li) > .tot,
 :not(li) > .toc {
   margin-left: 4em;
 }
 
-.tof .figno,
-.toe .eqnno,
-.tot .tblno,
+:not(li) > .tof,
+:not(li) > .tot {
+  margin-left: 5em;
+}
+
+:not(li) > .toe {
+  margin-left: 6em;
+}
+
+.tof .fig-figno-decoration,
+.toe .eqn-eqnno-decoration,
+.tot .tbl-tblno-decoration {
+  float: left;
+}
+
 .toc .secno {
   float: left;
   width: 4em;
   margin-left: -4em;
 }
 
+.toc > li li li .secno {
+  float: left;
+  width: 6em;
+  margin-left: -6em;
+}
+
+.toc > li li li li li li .secno {
+  float: left;
+  width: 8em;
+  margin-left: -8em;
+}
+
+.tof .figno,
+.tot .tblno {
+  float: left;
+  width: 5em;
+  margin-left: -5em;
+}
+
+.toe .eqnno {
+  float: left;
+  width: 6em;
+  margin-left: -6em;
+}
+
+
+.tof .fig-figno-decoration,
+.toe .eqn-eqnno-decoration,
+.tot .tbl-tblno-decoration,
 .tof .figdecoration,
 .toe .eqndecoration,
 .tot .tbldecoration,
@@ -1405,11 +1459,23 @@ table.data img {
   display: none;
 }
 
+.tof .figno::before {
+  content: "Figure ";
+}
+
+.tot .tblno::before {
+  content: "Table ";
+}
+
+.toe .eqnno::before {
+  content: "Equation ";
+}
+
 .tof > li li li .figno,
 .toe > li li li .eqnno,
 .tot > li li li .tblno,
 .toc > li li li .secno {
-  margin-left: -6em;
+  margin-left: -7em;
 }
 
 .tof li,
@@ -1560,10 +1626,15 @@ table.pcisig_reg tbody {
   border-bottom: 2px solid;
 }
 
+table.pcisig_reg thead {
+  border-top: 2px solid;
+}
+
 table.pcisig_reg colgroup {
   border-left: 2px solid;
 }
 
+table.pcisig_reg tbody th:last-of-type,
 table.pcisig_reg tbody th:first-child {
   text-align: right;
   color: inherit;
@@ -1661,7 +1732,12 @@ span.respec-error {
 
   span.footnote {
     font: 100% serif; /* Reset all font styling to clear out UA styles */
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
     font-family: Garamond, "DejaVu Serif", "Source Serif Pro", Times, serif;
+    text-align: left;
+    text-decoration: none;
   }
 
   /* Camoflage links; they're inactivatable anyway. */
@@ -1731,7 +1807,7 @@ span.respec-error {
       margin: 0;
     }
     @bottom-center {
-      content: "Page " counter(page) " of " counter(pages);
+      content: "Page " counter(page);
       vertical-align: top;
       height: 20px;
       left: auto;
@@ -1811,6 +1887,131 @@ span.respec-error {
     page-break-after: avoid;
   }
 
+  div.head dl  {
+    display: none;
+  }
+
+  div.introductory > h1,
+  div.introductory > h2,
+  nav.introductory > h1,
+  nav.introductory > h2 {
+    font-weight: bold;
+    font-size: 18pt;
+  }
+
+  section[data-level="0"] > h1,
+  section[data-level="0"] > h2,
+  section[data-level="0"] > h3,
+  section[data-level="0"] > h4,
+  section[data-level="0"] > h5,
+  section[data-level="0"] > h6 {
+    font-weight: bold;
+    font-size: 18pt;
+  }
+
+  section[data-level="0"] > h1 > span.secno,
+  section[data-level="0"] > h2 > span.secno,
+  section[data-level="0"] > h3 > span.secno,
+  section[data-level="0"] > h4 > span.secno,
+  section[data-level="0"] > h5 > span.secno,
+  section[data-level="0"] > h6 > span.secno {
+    font-size: 72pt;
+    color: white;
+    background-color: #00559C;
+    padding: 20px;
+    font-weight: 700;
+    float: right;
+    display: block;
+  }
+
+  section[data-level="1"] > h1,
+  section[data-level="1"] > h2,
+  section[data-level="1"] > h3,
+  section[data-level="1"] > h4,
+  section[data-level="1"] > h5,
+  section[data-level="1"] > h6 {
+    font-weight: bold;
+    font-size: 16pt;
+  }
+
+  section[data-level="2"] > h1,
+  section[data-level="2"] > h2,
+  section[data-level="2"] > h3,
+  section[data-level="2"] > h4,
+  section[data-level="2"] > h5,
+  section[data-level="2"] > h6 {
+    font-weight: bold;
+    font-size: 14pt;
+  }
+
+  section[data-level="3"] > h1,
+  section[data-level="3"] > h2,
+  section[data-level="3"] > h3,
+  section[data-level="3"] > h4,
+  section[data-level="3"] > h5,
+  section[data-level="3"] > h6 {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13pt;
+  }
+
+  section[data-level="4"] > h1,
+  section[data-level="4"] > h2,
+  section[data-level="4"] > h3,
+  section[data-level="4"] > h4,
+  section[data-level="4"] > h5,
+  section[data-level="4"] > h6 {
+    font-weight: bold;
+    font-style: normal;
+    font-size: 12pt;
+  }
+
+  section[data-level="5"] > h1,
+  section[data-level="5"] > h2,
+  section[data-level="5"] > h3,
+  section[data-level="5"] > h4,
+  section[data-level="5"] > h5,
+  section[data-level="5"] > h6 {
+    font-weight: bold;
+    font-style: normal;
+    font-size: 12pt;
+  }
+
+  section[data-level="6"] > h1,
+  section[data-level="6"] > h2,
+  section[data-level="6"] > h3,
+  section[data-level="6"] > h4,
+  section[data-level="6"] > h5,
+  section[data-level="6"] > h6,
+  section[data-level="7"] > h1,
+  section[data-level="7"] > h2,
+  section[data-level="7"] > h3,
+  section[data-level="7"] > h4,
+  section[data-level="7"] > h5,
+  section[data-level="7"] > h6,
+  section[data-level="8"] > h1,
+  section[data-level="8"] > h2,
+  section[data-level="8"] > h3,
+  section[data-level="8"] > h4,
+  section[data-level="8"] > h5,
+  section[data-level="8"] > h6,
+  section[data-level="9"] > h1,
+  section[data-level="9"] > h2,
+  section[data-level="9"] > h3,
+  section[data-level="9"] > h4,
+  section[data-level="9"] > h5,
+  section[data-level="9"] > h6,
+  section[data-level="10"] > h1,
+  section[data-level="10"] > h2,
+  section[data-level="10"] > h3,
+  section[data-level="10"] > h4,
+  section[data-level="10"] > h5,
+  section[data-level="10"] > h6 {
+    font-weight: bold;
+    font-style: normal;
+    font-size: 12pt;
+  }
+
   caption, figcaption {
     font-family: "Source Sans Pro", "DejaVu Sans", "Arial Unicode MS", Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
   }
@@ -1830,7 +2031,12 @@ span.respec-error {
     font-weight: lighter;
   }
 
-  #sect-toc, #tof, #toe, #tot,
+  #toc, #tof, #toe, #tot,
+  section[data-level="0"],
+  #revision-history,
+  #status-of-this-document,
+  #definition-map,
+  #xref-map,
   .section-level-1 {
     page-break-before: right;
   }
@@ -1872,7 +2078,7 @@ span.respec-error {
   }
 
   html, body {
-    font-size: 9pt;
+    font-size: 12pt;
     /*padding: 0;*/
     /*margin: 0;*/
   }
@@ -1895,6 +2101,7 @@ span.respec-error {
   span.footnote {
     /*noinspection CssInvalidElement*/
     float: footnote;
+    text-align: left;
   }
 
   span.footnote > input {
