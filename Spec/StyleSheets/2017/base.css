@@ -765,6 +765,10 @@ blockquote {
   border-color: silver;
 }
 
+/** Open Issues / Examples / Implementation Notes / ...  **********************/
+
+.marker { font-size: x-large; }
+
 /** Open issue ****************************************************************/
 
 .issue {
@@ -778,7 +782,6 @@ blockquote {
   text-transform: uppercase;
   color: #AE1E1E;
   padding-right: 1em;
-  text-transform: uppercase;
 }
 
 /* Add .issue::before { content: "Issue " counter(issue); } for autogen numbers,
@@ -848,7 +851,7 @@ details.impnote > summary > .marker {
   color: #0060A9;
 }
 
-/* Add .impnote::before { content: "Note"; } for autogen label,
+/* Add .impnote::before { content: "Implementation Note"; } for autogen label,
      or use class="marker" to mark up the label in source. */
 
 details.impnote > summary {
