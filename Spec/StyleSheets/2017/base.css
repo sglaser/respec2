@@ -2128,22 +2128,22 @@ span.respec-error {
 
 @font-face {
   font-family: ArialMT;
-  src: local("DejaVu Sans");
+  src: local("Arial");
 }
 
 @font-face {
-  font-family: AriaBoldItaliclMT;
-  src: local("DejaVu Sans");
+  font-family: AriaBoldItalicMT;
+  src: local("Arial Bold Italic");
 }
 
 @font-face {
   font-family: ArialBoldMT;
-  src: local("DejaVu Sans");
+  src: local("Arial Bold");
 }
 
 @font-face {
   font-family: ArialItalicMT;
-  src: local("DejaVu Sans");
+  src: local("Arial Italic");
 }
 
 @font-face {
@@ -2153,27 +2153,27 @@ span.respec-error {
 
 @font-face {
   font-family: Calibri;
-  src: local("DejaVu Sans");
+  src: local("Arial");
 }
 
 @font-face {
   font-family: CalistoMT;
-  src: local("DejaVu Sans");
+  src: local("Arial");
 }
 
 @font-face {
   font-family: Helvetica;
-  src: local("DejaVu Sans");
+  src: local("Arial");
 }
 
 @font-face {
   font-family: Helvetica-Bold;
-  src: local("DejaVu Sans");
+  src: local("Arial Bold");
 }
 
 @font-face {
   font-family: Helvetica-BoldOblique;
-  src: local("DejaVu Sans");
+  src: local("Arial Bold Italic");
 }
 
 @font-face {
@@ -2183,12 +2183,12 @@ span.respec-error {
 
 @font-face {
   font-family: TimesNewRomanPS-ItalicMT;
-  src: local("DejaVu Sans");
+  src: local("Times New Roman Italic");
 }
 
 @font-face {
   font-family: TimesNewRomanPSMT;
-  src: local("DejaVu Sans");
+  src: local("Times New Roman");
 }
 
 @font-face {
