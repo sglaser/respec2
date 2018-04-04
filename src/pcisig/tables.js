@@ -23,9 +23,9 @@ export function run(conf, doc, cb) {
     num++;
     $cap
       .wrapInner($("<span class='tbl-title'/>"))
-      .prepend($("<span class='tbl-title-decoration'> </span>"))
+      .prepend($("<span class='tbl-title-decoration'>&nbsp;</span>"))
       .prepend($("<span class='tblno'>" + num + "</span>"))
-      .prepend($("<span class='tbl-tblno-decoration'>" + conf.l10n.tbl + " </span>"));
+      .prepend($("<span class='tbl-tblno-decoration'>" + conf.l10n.tbl + "&nbsp;</span>"));
     tblMap[id] = $cap.contents();
     let $totCap = $cap.clone();
     $totCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");

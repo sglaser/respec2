@@ -54,9 +54,9 @@ export function run(conf, doc, cb) {
     num++;
     $cap
       .wrapInner($("<span class='fig-title'/>"))
-      .prepend($("<span class='fig-title-decoration'> </span>"))
+      .prepend($("<span class='fig-title-decoration'>&nbsp;</span>"))
       .prepend($("<span class='figno'>" + num + "</span>"))
-      .prepend($("<span class='fig-figno-decoration'>" + conf.l10n.fig + " </span>"));
+      .prepend($("<span class='fig-figno-decoration'>" + conf.l10n.fig + "&nbsp;</span>"));
     figMap[id] = $cap.contents();
     let $tofCap = $cap.clone();
     $tofCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");

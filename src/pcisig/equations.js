@@ -24,9 +24,9 @@ export function run(conf, doc, cb) {
     num++;
     $cap
       .wrapInner($("<span class='eqn-title'/>"))
-      .prepend($("<span class='eqn-title-decoration'> </span>"))
+      .prepend($("<span class='eqn-title-decoration'>&nbsp;</span>"))
       .prepend($("<span class='eqnno'>" + num + "</span>"))
-      .prepend($("<span class='eqn-eqnno-decoration'>" + conf.l10n.eqn + " </span>"));
+      .prepend($("<span class='eqn-eqnno-decoration'>" + conf.l10n.eqn + "&nbsp;</span>"));
     eqnMap[id] = $cap.contents();
     let $toeCap = $cap.clone();
     $toeCap.find("a").renameElement("span").attr("class", "formerLink").removeAttr("href");
