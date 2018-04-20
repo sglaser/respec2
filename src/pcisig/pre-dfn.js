@@ -5,7 +5,7 @@ export const name = "pcisig/pre-dfn";
 
 export function run(conf, doc, cb) {
   "use strict";
-  const dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "response",
+  const dfnClass = ["dfn", "pin", "signal", "op", "opcode", "operation", "request", "response", "bit",
     "reply", "message", "msg", "command", "term", "field", "register",
     "regpict", "state", "value", "parameter", "argument"];
 
