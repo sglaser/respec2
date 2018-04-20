@@ -585,8 +585,8 @@ function draw_regpict(divsvg, svg, reg) {
     scale = maxFigWidth / max_text_width;
   }
   svg.configure({
-    height: (scale * nextBitLine) + "px",
-    width: (scale * max_text_width) + "px",
+    height: Math.ceil((scale * nextBitLine)) + "",
+    width: Math.ceil((scale * max_text_width)) + "",
     viewBox: "0 0 " + max_text_width + " " + nextBitLine,
     "xmlns:xlink": "http://www.w3.org/1999/xlink"
   });
