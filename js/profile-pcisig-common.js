@@ -86,6 +86,7 @@ define(
     //"core/highlight",
     "core/data-tests",
     "pcisig/include-final-config",
+    "pcisig/empty-references",
     /*Linter must be the last thing to run*/
     "core/linter",
   ],
