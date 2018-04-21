@@ -84,7 +84,7 @@ function makeTOCAtLevel($parent, doc, current, level, conf) {
     $kidsClone.wrapInner($("<span class='sec-title'/>"));
     let secType = (isTopLevel ? (appendixMode ? conf.l10n.appendix : conf.l10n.chapter) : conf.l10n.section);
     if (!isIntro) {
-      $kidsClone.prepend($("<span class='sec-title-decoration'> </span>"))
+      $kidsClone.prepend($("<span class='sec-title-decoration'>&nbsp;</span>"))
         .prepend($("<span class='secno'>" + bareSecno + "</span>"))
         .prepend($("<span class='sec-secno-decoration'>" + secType + " </span>"));
     }
