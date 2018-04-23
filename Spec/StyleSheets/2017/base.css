@@ -976,7 +976,7 @@ g.regAttr_rsvdp rect.regFieldBox,
 g.regAttr_rsvdz rect.regFieldBox,
 g.regAttr_reserved rect.regFieldBox,
 g.regAttr_unused rect.regFieldBox {
-  fill: white;
+  fill: #e8e8e8;
 }
 
 g.regFieldExternal line.regFieldBox,
