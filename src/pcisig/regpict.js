@@ -152,8 +152,8 @@ function draw_regpict(divsvg, svg, reg) {
       fields[index] = {
         "msb": (i - 1),
         "lsb": lsb,
-        "name": ((i - lsb) * 2 - 1) >=
-        defaultUnused.length ? defaultUnused : defaultUnused[0].toUpperCase(), // use full name if if fits, else use 1st char
+        // "name": ((i - lsb) * 2 - 1) >= defaultUnused.length ? defaultUnused : defaultUnused[0].toUpperCase(), // use full name if if fits, else use 1st char
+        "name": defaultUnused,
         "attr": defaultUnused.toLowerCase(),   // attribute is name
         "isUnused": true,
         "value": ""
