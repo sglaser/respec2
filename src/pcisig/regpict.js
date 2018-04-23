@@ -684,7 +684,12 @@ function parse_table(json, $tbl) {
       let $val = $("span.value:first", desc);
       let value = "";
       if ($val.length === 1) {
-        value = $.parseJSON($val.text().trim());
+        try {
+          value = JSON.parse($val.text().trim());
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid data-json attribute in next span.value</p>p>");
+          $val.addclass("respec-error");
+        }
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
@@ -745,7 +750,14 @@ export function run(conf, doc, cb) {
     pub("start", "core/regpict table id='" + $tbl.attr("id") + "'");
     let temp = $tbl.attr("data-json");
     if (temp !== null && temp !== undefined && temp !== "") {
-      $.extend(true, json, $.parseJSON(temp));
+      let temp2 = {};
+      try {
+        temp2 = JSON.parse(temp);
+        $.extend(true, json, temp2);
+      } catch (e) {
+        $tbl.before("<p class=\"issue\">Invalid data-json attribute in next table</p>");
+        $tbl.addclass("respec-error");
+      }
     }
 
     temp = $tbl.attr("data-width");
@@ -819,7 +831,14 @@ export function run(conf, doc, cb) {
 
       let temp = $fig.attr("data-json");
       if (temp !== null && temp !== undefined && temp !== "") {
-        $.extend(true, json, $.parseJSON(temp));
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(temp);
+          $.extend(true, json, temp2);
+        } catch (e) {
+          $fig.before("<p class=\"issue\">Invalid data-json attribute in next figure</p>");
+          $fig.addclass("respec-error");
+        }
       }
 
       temp = $fig.attr("data-width");
@@ -848,8 +867,15 @@ export function run(conf, doc, cb) {
       }
 
       $("pre.json,div.json,span.json", $fig).each(function () {
-        $.extend(true, json, $.parseJSON(this.textContent));
-        $(this).hide();
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(this.textContent);
+          $.extend(true, json, temp2);
+          $(this).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in pre.json, div.json, or span.json</p>");
+          $(this).addclass("respec-error");
+        }
       });
 
       if ($fig.hasClass("pcisig_reg") && json.hasOwnProperty("table")) {
@@ -884,16 +910,23 @@ export function run(conf, doc, cb) {
             if ($temp.length > 0) {
               // console.log("merge_json: adding \"" + $temp[0].textContent + "\"");
               merge_json(result, $temp[0]);
-              //$.extend(true, result, $.parseJSON($temp[0].textContent));
+              //$.extend(true, result, JSON.parse($temp[0].textContent));
               // console.log("result=" + JSON.stringify(result, null, 2));
               $temp.hide();
             }
           }
         }
         // console.log("merge_json: adding \"" + me.textContent + "\"");
-        $.extend(true, result, $.parseJSON(me.textContent));
-        // console.log("result=" + JSON.stringify(result, null, 2));
-        $(me).hide();
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(me.textContent);
+          $.extend(true, result, temp2);
+          // console.log("result=" + JSON.stringify(result, null, 2));
+          $(me).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in next merge_json</p>");
+          $(me).addclass("respec-error");
+        }
       }
 
       let $render = $("pre.render,div.render,span.render", $fig);
