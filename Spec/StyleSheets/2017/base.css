@@ -1885,7 +1885,7 @@ span.respec-error {
   }
 
   /* general statements which perhaps should be part of the UA style sheet? */
-  h1, h2, h3, h4, h5, h6, dt {
+  h1, h2, h3, h4, h5, h6, dt, .marker {
     font-family: "Source Sans Pro", "DejaVu Sans", "Arial Unicode MS", Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
     page-break-after: avoid;
   }
@@ -2093,7 +2093,7 @@ span.respec-error {
   }
 
   th {
-    font-size: larger;
+    font-size: medium;
     font-weight: normal;
   }
 
