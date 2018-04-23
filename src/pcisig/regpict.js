@@ -486,7 +486,7 @@ function draw_regpict(divsvg, svg, reg) {
           let text_width = text.clientWidth;
           if (text_width === 0) {
             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
-            text_width = f.name.length * 6; // Assume 6px per character on average for 15px height chars
+            text_width = f.name.length * 8; // Assume 8px per character on average for 15px height chars
           }
           if (text_width > max_text_width) {
             max_text_width = text_width;
