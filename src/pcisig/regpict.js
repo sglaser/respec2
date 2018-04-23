@@ -684,7 +684,7 @@ function parse_table(json, $tbl) {
       let $val = $("span.value:first", desc);
       let value = "";
       if ($val.length === 1) {
-        value = JSON.parse($val.text().trim());
+        value = $.parseJSON($val.text().trim());
       }
       let validAttr = /^(rw|rws|ro|ros|rw1c|rw1cs|rw1s|rw1ss|wo|wos|hardwired|fixed|hwinit|rsvd|rsvdp|rsvdz|reserved|ignored|ign|unused|other)$/i;
       if (!validAttr.test(attr)) {
