@@ -975,7 +975,8 @@ g.regAttr_rsvd rect.regFieldBox,
 g.regAttr_rsvdp rect.regFieldBox,
 g.regAttr_rsvdz rect.regFieldBox,
 g.regAttr_reserved rect.regFieldBox,
-g.regAttr_unused rect.regFieldBox {
+g.regAttr_unused rect.regFieldBox,
+g.regFieldUnused rect.regFieldBox {
   fill: #e8e8e8;
 }
 
