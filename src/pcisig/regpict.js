@@ -526,7 +526,7 @@ function draw_regpict(divsvg, svg, reg) {
           if ((f.lsb > visibleMSB) || (f.msb < visibleLSB)) {
             gAddClass[0] = "regFieldHidden";
           } else {
-            if (!forceFit && ((f.value !== "") ||
+            if (!(forceFit || f.forceFit) && ((f.value !== "") ||
               ((text_width + 2) > (boxRight - boxLeft)) ||
               ((text_height + 2) > (cellHeight - cellInternalHeight)))) {
               svg.change(text,
