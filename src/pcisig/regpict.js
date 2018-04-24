@@ -26,6 +26,7 @@ function choose_defaults(reg) {
   let json = {};
   json.width = Number(pget(reg, "width", 32));
   json.left_to_right = Boolean(pget(reg, "leftToRight", false));
+  json.forceFit = Boolean(pget(reg, "forceFit", false));
   json.debug = Boolean(pget(reg, "debug", false));
   json.defaultUnused = String(pget(reg, "defaultUnused", "RsvdP"));
   json.defaultAttr = String(pget(reg, "defaultAttr", "other"));
@@ -103,6 +104,7 @@ function draw_regpict(divsvg, svg, reg) {
   let width = reg2.width;
   //console.log("width=" + reg2.width);
   let left_to_right = reg2.left_to_right;
+  let forceFit = reg2.forceFit;
   let debug = reg2.debug;
   let defaultUnused = reg2.defaultUnused;
   //let defaultAttr = reg2.defaultAttr;
@@ -271,6 +273,11 @@ function draw_regpict(divsvg, svg, reg) {
         "\t--> ret=" + ret);
     }
     return ret;
+  }
+
+  if (debug) {
+    console.log(" forceFit=" + forceFit +
+                " left_to_right=" + left_to_right);
   }
 
   let g, p, f, text;
@@ -519,9 +526,9 @@ function draw_regpict(divsvg, svg, reg) {
           if ((f.lsb > visibleMSB) || (f.msb < visibleLSB)) {
             gAddClass[0] = "regFieldHidden";
           } else {
-            if ((f.value !== "") ||
+            if (!forceFit && ((f.value !== "") ||
               ((text_width + 2) > (boxRight - boxLeft)) ||
-              ((text_height + 2) > (cellHeight - cellInternalHeight))) {
+              ((text_height + 2) > (cellHeight - cellInternalHeight)))) {
               svg.change(text,
                 {
                   x: rightOf(-0.5),
@@ -827,7 +834,7 @@ export function run(conf, doc, cb) {
       if (!$fig.attr("id")) {
         $fig.attr("id", "fig-" + json.figName);
       }
-      pub("start", "core/regpict figure id='" + $fig.attr("id") + "'");
+      pub("start", "core/regpict figure.register id='" + $fig.attr("id") + "'");
 
       let temp = $fig.attr("data-json");
       if (temp !== null && temp !== undefined && temp !== "") {
@@ -836,7 +843,7 @@ export function run(conf, doc, cb) {
           temp2 = JSON.parse(temp);
           $.extend(true, json, temp2);
         } catch (e) {
-          $fig.before("<p class=\"issue\">Invalid data-json attribute in next figure</p>");
+          $fig.before("<p class=\"issue\">Invalid data-json attribute in next figure.register</p>");
           $fig.addclass("respec-error");
         }
       }
@@ -956,7 +963,254 @@ export function run(conf, doc, cb) {
       if ($tbl !== undefined) {
         insert_unused_table_rows($tbl, choose_defaults(json));
       }
-      pub("end", "core/regpict figure id='" + $fig.attr("id") + "'");
+      pub("end", "core/regpict figure.register id='" + $fig.attr("id") + "'");
     });
+
+  $("figure.capability", doc).each(
+    function () {
+      let $fig = $(this);
+      let $tbl = undefined;
+      let json = {};
+      if ($fig.attr("id")) {
+        json.figName = $fig.attr("id").replace(/^fig-/, "");
+      } else if ($fig.attr("title")) {
+        json.figName = $fig.attr("title");
+      } else if ($("figcaption", this)) {
+        json.figName = $("figcaption", this).text();
+      } else {
+        json.figName = "unnamed-" + figNum;
+        figNum++;
+      }
+      json.figName = json.figName.toLowerCase()
+        .replace(/^\s+/, "")
+        .replace(/\s+$/, "")
+        .replace(/[^\-.0-9a-z_]+/ig, "-")
+        .replace(/^-+/, "")
+        .replace(/-+$/, "")
+        .replace(/\.$/, ".x")
+        .replace(/^([^a-z])/i, "x$1")
+        .replace(/^$/, "generatedID");
+      if (!$fig.attr("id")) {
+        $fig.attr("id", "fig-" + json.figName);
+      }
+      pub("start", "core/regpict figure.capability id='" + $fig.attr("id") + "'");
+
+      json.forceFit = true;
+
+      let temp = $fig.attr("data-json");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(temp);
+          $.extend(true, json, temp2);
+        } catch (e) {
+          $fig.before("<p class=\"issue\">Invalid data-json attribute in next figure.capability</p>");
+          $fig.addclass("respec-error");
+        }
+      }
+
+      temp = $fig.attr("data-width");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        json.width = temp;
+      }
+
+      temp = $fig.attr("data-unused");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        json.defaultUnused = temp;
+      }
+
+      $("pre.json,div.json,span.json", $fig).each(function () {
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(this.textContent);
+          $.extend(true, json, temp2);
+          $(this).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in pre.json, div.json, or span.json</p>");
+          $(this).addclass("respec-error");
+        }
+      });
+
+      // invent a div to hold the svg, if necessary
+      let $divsvg = $("div.svg", this).last();
+      if ($divsvg.length === 0) {
+        let $cap = $("figcaption", this);
+        if ($cap.length > 0) {
+          //console.log("inserting div.svg before <figcaption>");
+          $cap.before('<div class="svg"></div>');
+        } else {
+          //console.log("inserting div.svg at end of <figure>");
+          $(this).append('<div class="svg"></div>');
+        }
+        $divsvg = $("div.svg", this).last();
+      }
+
+      function merge_json(result, me) {
+        let $me = $(me);
+        let parents = $me.attr("data-parents");
+        if (parents !== null && parents !== undefined && parents !== "") {
+          // console.log("parents = \"" + parents + "\"");
+          parents = parents.split(/\s+/);
+          let i;
+          for (i = 0; i < parents.length; i++) {
+            let $temp = $("#" + parents[i]);
+            // console.log("merging: #" + parents[i]);
+            if ($temp.length > 0) {
+              // console.log("merge_json: adding \"" + $temp[0].textContent + "\"");
+              merge_json(result, $temp[0]);
+              //$.extend(true, result, JSON.parse($temp[0].textContent));
+              // console.log("result=" + JSON.stringify(result, null, 2));
+              $temp.hide();
+            }
+          }
+        }
+        // console.log("merge_json: adding \"" + me.textContent + "\"");
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(me.textContent);
+          $.extend(true, result, temp2);
+          // console.log("result=" + JSON.stringify(result, null, 2));
+          $(me).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in next merge_json</p>");
+          $(me).addclass("respec-error");
+        }
+      }
+
+     if (json !== null) {
+        $divsvg.last().svg(function (svg) {
+          draw_regpict(this, svg, json);
+        });
+      } else {
+        pub("warn",
+          "core/regpict: no register definition " + $fig.get(0).outerHTML);
+      }
+
+      pub("end", "core/regpict figure.capability id='" + $fig.attr("id") + "'");
+    });
+
+  $("figure.message", doc).each(
+    function () {
+      let $fig = $(this);
+      let $tbl = undefined;
+      let json = {};
+      if ($fig.attr("id")) {
+        json.figName = $fig.attr("id").replace(/^fig-/, "");
+      } else if ($fig.attr("title")) {
+        json.figName = $fig.attr("title");
+      } else if ($("figcaption", this)) {
+        json.figName = $("figcaption", this).text();
+      } else {
+        json.figName = "unnamed-" + figNum;
+        figNum++;
+      }
+      json.figName = json.figName.toLowerCase()
+        .replace(/^\s+/, "")
+        .replace(/\s+$/, "")
+        .replace(/[^\-.0-9a-z_]+/ig, "-")
+        .replace(/^-+/, "")
+        .replace(/-+$/, "")
+        .replace(/\.$/, ".x")
+        .replace(/^([^a-z])/i, "x$1")
+        .replace(/^$/, "generatedID");
+      if (!$fig.attr("id")) {
+        $fig.attr("id", "fig-" + json.figName);
+      }
+      pub("start", "core/regpict figure.message id='" + $fig.attr("id") + "'");
+
+      json.forceFit = true;
+
+      let temp = $fig.attr("data-json");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(temp);
+          $.extend(true, json, temp2);
+        } catch (e) {
+          $fig.before("<p class=\"issue\">Invalid data-json attribute in next figure.message</p>");
+          $fig.addclass("respec-error");
+        }
+      }
+
+      temp = $fig.attr("data-width");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        json.width = temp;
+      }
+
+      temp = $fig.attr("data-unused");
+      if (temp !== null && temp !== undefined && temp !== "") {
+        json.defaultUnused = temp;
+      }
+
+      $("pre.json,div.json,span.json", $fig).each(function () {
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(this.textContent);
+          $.extend(true, json, temp2);
+          $(this).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in pre.json, div.json, or span.json</p>");
+          $(this).addclass("respec-error");
+        }
+      });
+
+      // invent a div to hold the svg, if necessary
+      let $divsvg = $("div.svg", this).last();
+      if ($divsvg.length === 0) {
+        let $cap = $("figcaption", this);
+        if ($cap.length > 0) {
+          //console.log("inserting div.svg before <figcaption>");
+          $cap.before('<div class="svg"></div>');
+        } else {
+          //console.log("inserting div.svg at end of <figure>");
+          $(this).append('<div class="svg"></div>');
+        }
+        $divsvg = $("div.svg", this).last();
+      }
+
+      function merge_json(result, me) {
+        let $me = $(me);
+        let parents = $me.attr("data-parents");
+        if (parents !== null && parents !== undefined && parents !== "") {
+          // console.log("parents = \"" + parents + "\"");
+          parents = parents.split(/\s+/);
+          let i;
+          for (i = 0; i < parents.length; i++) {
+            let $temp = $("#" + parents[i]);
+            // console.log("merging: #" + parents[i]);
+            if ($temp.length > 0) {
+              // console.log("merge_json: adding \"" + $temp[0].textContent + "\"");
+              merge_json(result, $temp[0]);
+              //$.extend(true, result, JSON.parse($temp[0].textContent));
+              // console.log("result=" + JSON.stringify(result, null, 2));
+              $temp.hide();
+            }
+          }
+        }
+        // console.log("merge_json: adding \"" + me.textContent + "\"");
+        let temp2 = {};
+        try {
+          temp2 = JSON.parse(me.textContent);
+          $.extend(true, result, temp2);
+          // console.log("result=" + JSON.stringify(result, null, 2));
+          $(me).hide();
+        } catch (e) {
+          $tbl.before("<p class=\"issue\">Invalid JSON in next merge_json</p>");
+          $(me).addclass("respec-error");
+        }
+      }
+
+      if (json !== null) {
+        $divsvg.last().svg(function (svg) {
+          draw_regpict(this, svg, json);
+        });
+      } else {
+        pub("warn",
+          "core/regpict: no register definition " + $fig.get(0).outerHTML);
+      }
+
+      pub("end", "core/regpict figure.message id='" + $fig.attr("id") + "'");
+    });
+
   cb();
 }

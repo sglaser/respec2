@@ -202,6 +202,101 @@
     </figure>
     <p>This is the body of an implementation note.</p>
   </div>
+
+  <figure id="json-capability" class="capability">
+        <pre class="json">
+           { "debug": true,
+             "width" : 48,
+              "defaultUnused" : "Capability",
+              "fields": [
+                {   "msb": 4,
+                    "lsb": 0,
+                    "name": "field 4:0",
+                    "attr": "ro"
+                }, {
+                    "msb": 7,
+                    "lsb": 6,
+                    "name": "Very long name that will never fit"
+                }, {
+                    "msb": 9,
+                    "name": "bit9"
+                }, {
+                    "lsb": 10,
+                    "name": "bit10",
+                    "addClass": "svg_error"
+                }, {
+                    "lsb": 11,
+                    "name": "bit11"
+                }, {
+                    "lsb": 12,
+                    "name": "bit12",
+                    "value": "1"
+                }, {
+                    "lsb": 13,
+                    "name": "bit13",
+                    "href": "field-bit13"
+                }, {
+                    "lsb": 14,
+                    "msb": 24,
+                    "name": "bit 20:14",
+                    "value": "value"
+                }, {
+                    "lsb": 25,
+                    "msb": 32,
+                    "name": "byte",
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
+                } ] }
+        </pre>
+    <figcaption>Graph for JSON Defined Capability Example</figcaption>
+  </figure>
+
+  <figure id="json-message" class="message">
+        <pre class="json">
+           { "debug": true,
+             "width" : 48,
+              "defaultUnused" : "Message",
+              "fields": [
+                {   "msb": 4,
+                    "lsb": 0,
+                    "name": "field 4:0",
+                    "attr": "ro"
+                }, {
+                    "msb": 7,
+                    "lsb": 6,
+                    "name": "Very long name that will never fit"
+                }, {
+                    "msb": 9,
+                    "name": "bit9"
+                }, {
+                    "lsb": 10,
+                    "name": "bit10",
+                    "addClass": "svg_error"
+                }, {
+                    "lsb": 11,
+                    "name": "bit11"
+                }, {
+                    "lsb": 12,
+                    "name": "bit12",
+                    "value": "1"
+                }, {
+                    "lsb": 13,
+                    "name": "bit13",
+                    "href": "field-bit13"
+                }, {
+                    "lsb": 14,
+                    "msb": 24,
+                    "name": "bit 20:14",
+                    "value": "value"
+                }, {
+                    "lsb": 25,
+                    "msb": 32,
+                    "name": "byte",
+                    "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
+                } ] }
+        </pre>
+    <figcaption>Graph for JSON Defined Message Example</figcaption>
+  </figure>
+
   <figure id="json-register" class="register">
         <pre class="json">
            { "width" : 48,
