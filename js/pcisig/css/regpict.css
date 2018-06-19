@@ -28,6 +28,27 @@ text.regBitWidth {
     font-size: 11pt;
 }
 
+text.regByteNumMiddle {
+  text-anchor: middle;
+  fill: grey;
+  font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+  font-size: 11pt;
+}
+
+text.regRowTagLeft {
+  text-anchor: end;
+  fill: grey;
+  font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+  font-size: 11pt;
+}
+
+text.regRowTagRight {
+  text-anchor: start;
+  fill: grey;
+  font-family: "Source Sans Pro", Calibri, Tahoma, "Lucinda Grande", Arial, Helvetica, sans-serif;
+  font-size: 11pt;
+}
+
 g line.regBitNumLine {
 	stroke: grey;
 	stroke-width: 1px;
@@ -149,7 +170,7 @@ figure pre.json {
     g.regLink:focus rect.regFieldBox {
         fill: #ffa; stroke: blue;
     }
-    
+
     g.regLink:hover line.regBitNumLine,
     g.regLink:focus line.regBitNumLine,
     g.regLink:hover line.regBitNumLine_Hide,
