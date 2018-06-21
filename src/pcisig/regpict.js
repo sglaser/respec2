@@ -1063,7 +1063,7 @@ function parse_table(json, $tbl) {
         try {
           value = JSON.parse($val.text().trim());
         } catch (e) {
-          $tbl.before("<p class=\"issue\">Invalid data-json attribute in next span.value</p>p>");
+          $tbl.before("<p class=\"issue\">Invalid data-json attribute in next span.value</p>");
           $val.addclass("respec-error");
         }
       }
