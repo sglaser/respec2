@@ -446,7 +446,7 @@ function draw_regpict(divsvg, svg, reg) {
       }
       if (isMultiRow) {
         adj_bit = adj_bit % wordWidth; // modulo
-        adj_bit = (!left_to_right && (adj_bit == 0)) ? wordWidth : adj_bit;
+        adj_bit = (!left_to_right && (adj_bit === 0)) ? wordWidth : adj_bit;
       }
     } else { // negative bit #, always to the right
       if (isMultiRow) {
@@ -487,7 +487,7 @@ function draw_regpict(divsvg, svg, reg) {
       }
       if (isMultiRow) {
         adj_bit = adj_bit % wordWidth; // modulo
-        adj_bit = (!left_to_right && (adj_bit == 0)) ? wordWidth : adj_bit;
+        adj_bit = (!left_to_right && (adj_bit === 0)) ? wordWidth : adj_bit;
       }
     } else { // negative bit #, always to the right
       if (isMultiRow) {
@@ -528,7 +528,7 @@ function draw_regpict(divsvg, svg, reg) {
       }
       if (isMultiRow) {
         adj_bit = adj_bit % wordWidth; // modulo
-        adj_bit = (!left_to_right && (adj_bit == 0)) ? wordWidth : adj_bit;
+        adj_bit = (!left_to_right && (adj_bit === 0)) ? wordWidth : adj_bit;
       }
     } else { // negative bit #, always to the right
       if (isMultiRow) {
@@ -582,14 +582,18 @@ function draw_regpict(divsvg, svg, reg) {
       pos = left_to_right ? leftOf(b) : rightOf(b);
       svg.line(g,
         pos, cellTop,
-        pos, cellTop - (text_height * (((b % 8) == 0) ? 1.0 : 0.75)),
+        pos, cellTop - (text_height * (((b % 8) === 0) ? 1.0 : 0.75)),
         {"class_": "regBitNumLine"});
     }
     pos = left_to_right ? rightOf(wordWidth - 1) : leftOf(wordWidth - 1);
     svg.line(g,
       pos, cellTop,
-      pos, cellTop - (text_height * 1.0),
+      pos, cellTop - text_height,
       {"class_": "regBitNumLine"});
+    svg.text(g, (rightOf(-1.5) - 6),
+      cellTop -4,
+      svg.createText().string("Byte Offset"),
+      {"class_": "regRowTagRight rowTagByteOffset"});
   } else if (isMessage) {
     // create header for message (+0/+1/+2/+3 then 4 of 7..0)
     let pos;
@@ -608,7 +612,7 @@ function draw_regpict(divsvg, svg, reg) {
         pos = left_to_right ? leftOf(byte + bit) : rightOf(byte + bit);
         svg.line(g,
           pos, cellTop,
-          pos, cellTop - (text_height * ((bit == 0) ? 1.75 : 0.75)),
+          pos, cellTop - (text_height * ((bit === 0) ? 1.75 : 0.75)),
           {"class_": "regBitNumLine"});
       }
 
@@ -948,10 +952,12 @@ function draw_regpict(divsvg, svg, reg) {
 
   if (isMultiRow) {
     for (let i = 0; i < width; i += wordWidth) {
+      let rowLabel = isMemoryBlock ? ("+" + Math.floor(i / 8).hex(3, "0") + "h") :
+        ("Byte " + (i / 8) + " → ");
       svg.text(g, left_to_right ? (leftOf(0) - 8) : (rightOf(-1.5) + 2),
         cellTop + cellValueTop + cellHeight * (i / wordWidth),
-        svg.createText().string("+" + Math.floor(i / 8).hex(2, "0") + "h"),
-        left_to_right ? {"class_": "regRowTagLeft"} : {"class_": "regRowTagRight"});
+        svg.createText().string(rowLabel),
+          {"class_": left_to_right ? "regRowTagLeft" : "regRowTagRight"});
     }
   }
 
@@ -960,11 +966,15 @@ function draw_regpict(divsvg, svg, reg) {
   if (isRegister && (maxFigWidth > 0) && (max_text_width > maxFigWidth)) {
     scale = maxFigWidth / max_text_width;
   }
+  let svgClass = [
+    (isMessage ? "isMessage" : (isMemoryBlock ? "isMemoryBlock" : "isRegister")),
+    (left_to_right ? "isLeftToRight" : "isRightToLeft")];
   svg.configure({
     height: Math.ceil(scale * Math.ceil(nextBitLine + cellHeight * rowOf(width - 1))) + "",
     width: Math.ceil(scale * max_text_width) + "",
     viewBox: "0 0 " + max_text_width + " " + (Math.ceil(nextBitLine + cellHeight * rowOf(width - 1)) + ""),
-    "xmlns:xlink": "http://www.w3.org/1999/xlink"
+    "xmlns:xlink": "http://www.w3.org/1999/xlink",
+    "class_": svgClass.join(" ")
   });
   return reg2;
 }
@@ -1051,11 +1061,11 @@ function parse_table(json, $tbl) {
       } else {
         $dfn = $dfn.first();
         fieldName = $dfn.text().trim();
-        $dfn.addClass('field');
-        const lt = $tbl.attr("id").replace(/^tbl-/, '');
-        $dfn.attr('data-dfn-for', lt);
-        $dfn.attr('data-dfn-type', 'field');
-        $dfn.last().makeID('field', lt + '-' + fieldName.toLowerCase());
+        $dfn.addClass("field");
+        const lt = $tbl.attr("id").replace(/^tbl-/, "");
+        $dfn.attr("data-dfn-for", lt);
+        $dfn.attr("data-dfn-type", "field");
+        $dfn.last().makeID("field", lt + "-" + fieldName.toLowerCase());
       }
       let $val = $("span.value:first", desc);
       let value = "";
@@ -1151,7 +1161,7 @@ export function run(conf, doc, cb) {
       json.href = temp;
     }
 
-    json.table = '#' + $tbl.attr('id');
+    json.table = "#" + $tbl.attr("id");
 
     temp = $tbl.attr("data-register");
     if (temp !== null && temp !== undefined && temp !== "") {
@@ -1163,11 +1173,11 @@ export function run(conf, doc, cb) {
     //console.log("regpict.table.register json = " + JSON.stringify(json, null, 2));
 
     // insert a figure before this table
-    $tbl.before("<figure id=\"fig-" + json.table.replace(/^#tbl-/, '') + "\" class=\"regpict-generated\">"
+    $tbl.before("<figure id=\"fig-" + json.table.replace(/^#tbl-/, "") + "\" class=\"regpict-generated\">"
       + "<div class=\"svg\"></div>"
-      + "<figcaption>" + $('caption', $tbl).text() + "</figcaption>"
+      + "<figcaption>" + $("caption", $tbl).text() + "</figcaption>"
       + "</figure>");
-    const $divsvg = $('div.svg', $tbl.prev()).last();
+    const $divsvg = $("div.svg", $tbl.prev()).last();
     $divsvg.last().svg(function (svg) {
       json = draw_regpict(this, svg, json);
     });
@@ -1293,10 +1303,10 @@ export function run(conf, doc, cb) {
         let $cap = $("figcaption", this);
         if ($cap.length > 0) {
           //console.log("inserting div.svg before <figcaption>");
-          $cap.before('<div class="svg"></div>');
+          $cap.before("<div class=\"svg\"></div>");
         } else {
           //console.log("inserting div.svg at end of <figure>");
-          $(this).append('<div class="svg"></div>');
+          $(this).append("<div class=\"svg\"></div>");
         }
         $divsvg = $("div.svg", this).last();
       }
@@ -1345,7 +1355,7 @@ export function run(conf, doc, cb) {
             draw_regpict(this, svg, temp_json);
           });
           if (index < ($render.length - 1)) {
-            $divsvg.after('<div class="svg"></div>');
+            $divsvg.after("<div class=\"svg\"></div>");
             $divsvg = $("div.svg", $fig).last();
           }
         });
@@ -1366,7 +1376,7 @@ export function run(conf, doc, cb) {
       //     });
       //     if (wordLSB + wordWidth < width) {
       //       // all but last iteration
-      //       $divsvg.after('<div class="svg"</div>');
+      //       $divsvg.after("<div class=\"svg\"</div>");
       //       $divsvg = $("div.svg", $fig).last();
       //     }
       //   }
