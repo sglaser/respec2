@@ -222,9 +222,6 @@ function choose_defaults(reg) {
   json.cellWidth = Number(pget(reg, "cellWidth", 16));
   json.cellHeight = Number(pget(reg, "cellHeight", 32));
   json.cellInternalHeight = Number(pget(reg, "cellInternalHeight", 8));
-  json.cellValueTop = Number(pget(reg, "cellValueTop", 20)); // top of text for regFieldValueInternal
-  json.cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
-  json.cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
   json.bracketHeight = Number(pget(reg, "bracketHeight", 4));
   json.cellTop = Number(pget(reg, "cellTop", 40));
   json.bitWidthPos = Number(pget(reg, "bitWidthPos", 20));
@@ -251,9 +248,22 @@ function choose_defaults(reg) {
     json.isMemoryBlock = false;
     json.isMessage = false;
   }
+
+  if (json.isRegister) {
+    json.rowLabelTop = Number(pget(reg, "rowLabelTop", 20)); // top of text for regLabel
+    json.cellValueTop = Number(pget(reg, "cellValueTop", 20)); // top of text for regFieldValueInternal
+    json.cellBitValueTop = Number(pget(reg, "cellBitValueTop", 20)); // top of text for regFieldBitValue
+    json.cellNameTop = Number(pget(reg, "cellNameTop", 16)); // top of text for regFieldNameInternal
+  } else {
+    json.rowLabelTop = Number(pget(reg, "rowLabelTop", 20)); // top of text for regLabel
+    json.cellValueTop = Number(pget(reg, "cellValueTop", 28)); // top of text for regFieldValueInternal
+    json.cellBitValueTop = Number(pget(reg, "cellBitValueTop", 28)); // top of text for regFieldBitValue
+    json.cellNameTop = Number(pget(reg, "cellNameTop", 14)); // top of text for regFieldNameInternal
+  }
+
   json.left_to_right = Boolean(pget(reg, "leftToRight", json.isMessage));
   json.forceFit = Boolean(pget(reg, "forceFit", (json.isMessage || json.isMemoryBlock)));
-  json.figLeft = Number(pget(reg, "figLeft", json.left_to_right ? 80 : 40));
+  json.figLeft = Number(pget(reg, "figLeft", json.left_to_right ? 96 : 40));
 
   json.fields = pget(reg, "fields", {}); // default to empty register
   let temp;
@@ -356,6 +366,7 @@ function draw_regpict(divsvg, svg, reg) {
   let cellWidth = reg2.cellWidth;
   let cellHeight = reg2.cellHeight;
   let cellInternalHeight = reg2.cellInternalHeight;
+  let rowLabelTop = reg2.rowLabelTop;
   let cellValueTop = reg2.cellValueTop;
   let cellBitValueTop = reg2.cellBitValueTop;
   let cellNameTop = reg2.cellNameTop;
@@ -564,7 +575,7 @@ function draw_regpict(divsvg, svg, reg) {
   let g, p, f, text;
   let nextBitLine = cellTop + cellHeight + 20; //76;
   let bitLineCount = 0;
-  let max_text_width = 0;
+  let max_text_width = 12 * 8;       // allow for 12 characters at 8px each
 
   if (isMemoryBlock) {
     // create header for memory block (31..0)
@@ -591,7 +602,7 @@ function draw_regpict(divsvg, svg, reg) {
       pos, cellTop - text_height,
       {"class_": "regBitNumLine"});
     svg.text(g, (rightOf(-1.5) - 6),
-      cellTop -4,
+      cellTop - 4,
       svg.createText().string("Byte Offset"),
       {"class_": "regRowTagRight rowTagByteOffset"});
   } else if (isMessage) {
@@ -785,29 +796,96 @@ function draw_regpict(divsvg, svg, reg) {
           if (f.isUnused) {
             gAddClass.push("regFieldUnused");
           }
-          let wid;
-          let pos;
-          let row;
-          if (left_to_right) {
-            pos = leftOf(f.lsb);
-            wid = rightOf(f.msb) - pos;
-            row = rowOf(f.lsb);
-          } else {
-            pos = leftOf(f.msb);
-            wid = rightOf(f.lsb) - pos;
-            row = rowOf(f.msb);
-          }
-          svg.rect(g, pos, cellTop + cellHeight * row, wid, cellHeight, 0, 0,
-            {"class_": "regFieldBox"});
-          for (j = f.lsb + 1; j <= f.msb; j++) {
-            if ((j >= visibleLSB) && (j <= visibleMSB)) {
+
+          let startRow, endRow;
+          startRow = rowOf(f.lsb);
+          endRow = rowOf(f.msb);
+
+          if (isMultiRow && startRow !== endRow) {
+            let leftCol1, rightCol1;
+            let leftCol2, rightCol2;
+            let rightEdge;
+            let leftEdge;
+            if (left_to_right) { // if (isMessage)
+              leftCol1 = leftOf(f.lsb);
+              rightCol2 = rightOf(f.msb);
+
+              leftCol2 = leftOf(0);
+              rightCol1 = rightOf(wordWidth - 1);
+
+              leftEdge = leftOf(0);
+              rightEdge = rightOf(wordWidth - 1);
+            } else { // if (isMemoryBlock)
+              leftCol1 = leftOf(wordWidth - 1);
+              rightCol2 = rightOf(0);
+
+              leftCol2 = leftOf(f.msb);
+              rightCol1 = rightOf(f.lsb);
+
+              leftEdge = leftOf(wordWidth - 1);
+              rightEdge = rightOf(0);
+            }
+            if (debug)
+              console.log(`+++ field="${f.name}" leftCol1=${leftCol1} leftCol2=${leftCol2} leftEdge=${leftEdge} rightCol1=${rightCol1} rightCol2=${rightCol2} rightEdge=${rightEdge} startRow=${startRow} endRow=${endRow}`);
+            let p = svg.createPath();
+            p.move(leftCol1, cellTop + cellHeight * startRow);
+            if (rightCol1 !== leftCol1)
+              p.line(rightCol1 - leftCol1, 0, true);
+            p.line(0, cellHeight, true);            // move down 1 row
+            if ((startRow + 1) !== endRow) {
+              if (rightEdge !== rightCol1)
+                p.line(rightEdge - rightCol1, 0, true);
+              p.line(0, cellHeight * (endRow - startRow - 1), true);
+              if (rightCol2 !== rightEdge)
+                p.line(rightCol2 - rightEdge, 0, true);
+            } else {
+              if (rightCol2 !== rightCol1)
+                p.line(rightCol2 - rightCol1, 0, true);
+            }
+            p.line(0, cellHeight, true);
+            p.line(leftCol2 - rightCol2, 0, true);
+            p.line(0, -cellHeight, true);
+            if ((startRow + 1) !== endRow) {
+              if (leftEdge !== leftCol2)
+                p.line(leftEdge - leftCol2, 0, true);
+              p.line(0, -cellHeight * (endRow - startRow - 1), true);
+              if (leftCol1 !== leftEdge)
+                p.line(leftCol1 - leftEdge, 0, true);
+            } else {
+              if (leftCol1 !== leftCol2)
+                p.line(leftCol1 - leftCol2, 0, true);
+            }
+            p.line(0, -cellHeight, true);   // move back to start col
+            svg.path(g, p, {"class_": "regFieldBox"});
+            svg.rect(g, leftCol1, cellTop + cellHeight * startRow, rightCol1 - leftCol1, cellHeight, 0, 0,
+              {"class_": "regFieldBox", "style": "display: none"});
+            svg.rect(g, leftCol2, cellTop + cellHeight * endRow, rightCol2 - leftCol2, cellHeight, 0, 0,
+              {"class_": "regFieldBox", "style": "display: none"});
+            for (j = 1; j <= (f.msb % wordWidth); j++) {
               let pos = (left_to_right ? leftOf(j) : rightOf(j));
               svg.line(g,
-                pos, cellTop + cellHeight - cellInternalHeight + cellHeight * row,
-                pos, cellTop + cellHeight + cellHeight * row,
+                pos, cellTop + cellHeight - cellInternalHeight + cellHeight * endRow,
+                pos, cellTop + cellHeight + cellHeight * endRow,
                 {"class_": "regFieldBox"});
             }
+          } else {
+            let leftCol;
+            let rightCol;
+            leftCol = left_to_right ? leftOf(f.lsb) : leftOf(f.msb);
+            rightCol = left_to_right ? rightOf(f.msb) : rightOf(f.lsb);
+            svg.rect(g, leftCol, cellTop + cellHeight * startRow, rightCol - leftCol, cellHeight, 0, 0,
+              {"class_": "regFieldBox"});
+            for (j = f.lsb + 1; j <= f.msb; j++) {
+              if ((j >= visibleLSB) && (j <= visibleMSB)) {
+                let pos = (left_to_right ? leftOf(j) : rightOf(j));
+                svg.line(g,
+                  pos, cellTop + cellHeight - cellInternalHeight + cellHeight * startRow,
+                  pos, cellTop + cellHeight + cellHeight * startRow,
+                  {"class_": "regFieldBox"});
+              }
+            }
           }
+
           if (isRegister) {
             text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop - bitWidthPos,
               svg.createText().string((f.msb === f.lsb)
@@ -815,7 +893,7 @@ function draw_regpict(divsvg, svg, reg) {
                 : (f.msb - f.lsb + 1) + " bits"),
               {"class_": "regBitWidth"});
           }
-          text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop + cellHeight * row,
+          text = svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellNameTop + cellHeight * (startRow + (endRow - startRow) / 2),
             svg.createText().string(f.name),
             {"class_": "regFieldName"});
           if ((!f.isUnused) && (f.lsb <= visibleMSB) && (f.msb >= visibleLSB)) {
@@ -825,12 +903,12 @@ function draw_regpict(divsvg, svg, reg) {
             svg.change(g, {id: unique_id});
           }
           let hasValue = false;
-          if (isRegister && ("value" in f)) {
-            hasValue = true;
+          if ("value" in f) {
             if (Array.isArray(f.value) && f.value.length === (f.msb - f.lsb + 1)) {
+              hasValue = true;
               for (i = 0; i < f.value.length; ++i) {
                 svg.text(g, (leftOf(f.lsb + i) + rightOf(f.lsb + i)) / 2,
-                  cellTop + cellBitValueTop + cellHeight * row,
+                  cellTop + cellBitValueTop + cellHeight * startRow,
                   svg.createText().string(f.value[i]),
                   {
                     "class_": ("regFieldValue regFieldBitValue" +
@@ -840,12 +918,15 @@ function draw_regpict(divsvg, svg, reg) {
                   });
               }
             } else if ((typeof(f.value) === "string") || (f.value instanceof String)) {
-              svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
-                cellTop + (f.msb === f.lsb ? cellBitValueTop : cellValueTop) + cellHeight * row,
-                svg.createText().string(f.value),
-                {"class_": "regFieldValue"});
+              if (f.value.length > 0) {
+                hasValue = true;
+                svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2,
+                  cellTop + (f.msb === f.lsb ? cellBitValueTop : cellValueTop) + cellHeight * startRow,
+                  svg.createText().string(f.value),
+                  {"class_": "regFieldValue"});
+              }
             } else {
-              svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellValueTop + cellHeight * row,
+              svg.text(g, (leftOf(f.msb) + rightOf(f.lsb)) / 2, cellTop + cellValueTop + cellHeight * startRow,
                 svg.createText().string("INVALID VALUE"),
                 {"class_": "svg_error"});
             }
@@ -855,9 +936,6 @@ function draw_regpict(divsvg, svg, reg) {
             // bogus fix to guess width when clientWidth is 0 (e.g. IE10)
             text_width = f.name.length * 8; // Assume 8px per character on average for 15px height chars
           }
-          if (text_width > max_text_width) {
-            max_text_width = text_width;
-          }
           let text_height = text.clientHeight;
           if (text_height === 0) {
             // bogus fix to guess width when clientHeight is 0 (e.g. IE10)
@@ -865,7 +943,7 @@ function draw_regpict(divsvg, svg, reg) {
           }
           let boxLeft = leftOf(left_to_right ? max(visibleLSB, f.lsb) : min(visibleMSB, f.msb));
           let boxRight = rightOf(left_to_right ? min(visibleMSB, f.msb) : max(visibleLSB, f.lsb));
-          let boxTop = cellTop + cellHeight * row;
+          let boxTop = cellTop + cellHeight * startRow;
           if (debug) {
             console.log("field " + f.name +
               " msb=" + f.msb +
@@ -892,6 +970,9 @@ function draw_regpict(divsvg, svg, reg) {
             if (!(forceFit || f.forceFit) && (hasValue ||
               ((text_width + 2) > (boxRight - boxLeft)) ||
               ((text_height + 2) > (cellHeight - cellInternalHeight)))) {
+              if (text_width > max_text_width) {
+                max_text_width = text_width;
+              }
               svg.change(text,
                 {
                   x: rightOf(-0.5),
@@ -899,16 +980,16 @@ function draw_regpict(divsvg, svg, reg) {
                   "class_": "regFieldName"
                 });
               p = svg.createPath();
-              p.move(boxLeft, cellTop + cellHeight * (row + 1));
+              p.move(boxLeft, cellTop + cellHeight * (startRow + 1));
               p.line(((boxRight - boxLeft) / 2), bracketHeight, true);
-              p.line(boxRight, cellTop + cellHeight * (row + 1));
+              p.line(boxRight, cellTop + cellHeight * (startRow + 1));
               svg.path(g, p,
                 {
                   "class_": "regBitBracket",
                   fill: "none"
                 });
               p = svg.createPath();
-              p.move((boxLeft + (boxRight - boxLeft) / 2), cellTop + cellHeight * (row + 1) + bracketHeight);
+              p.move((boxLeft + (boxRight - boxLeft) / 2), cellTop + cellHeight * (startRow + 1) + bracketHeight);
               p.vert(nextBitLine - text_height / 4);
               p.horiz(rightOf(-0.4));
               svg.path(g, p,
@@ -924,22 +1005,22 @@ function draw_regpict(divsvg, svg, reg) {
           }
           if ((f.msb > visibleLSB) && (f.lsb < visibleLSB)) {
             if (left_to_right) {
-              svg.text(g, leftOf(0) - 2, cellTop + cellNameTop + cellHeight * row,
+              svg.text(g, leftOf(0) - 2, cellTop + cellNameTop + cellHeight * startRow,
                 svg.createText().string("..."),
                 {"class_": "regFieldExtendsLeft"});
             } else {
-              svg.text(g, rightOf(0) + 2, cellTop + cellNameTop + cellHeight * row,
+              svg.text(g, rightOf(0) + 2, cellTop + cellNameTop + cellHeight * startRow,
                 svg.createText().string("..."),
                 {"class_": "regFieldExtendsRight"});
             }
           }
           if ((f.msb > visibleMSB) && (f.lsb < visibleMSB)) {
             if (left_to_right) {
-              svg.text(g, rightOf(f.msb) + 2, cellTop + cellNameTop + cellHeight * row,
+              svg.text(g, rightOf(f.msb) + 2, cellTop + cellNameTop + cellHeight * startRow,
                 svg.createText().string("..."),
                 {"class_": "regFieldExtendsRight"});
             } else {
-              svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop + cellHeight * row,
+              svg.text(g, leftOf(f.msb) - 2, cellTop + cellNameTop + cellHeight * startRow,
                 svg.createText().string("..."),
                 {"class_": "regFieldExtendsLeft"});
             }
@@ -951,13 +1032,14 @@ function draw_regpict(divsvg, svg, reg) {
   }
 
   if (isMultiRow) {
+    let g2 = svg.group();
     for (let i = 0; i < width; i += wordWidth) {
       let rowLabel = isMemoryBlock ? ("+" + Math.floor(i / 8).hex(3, "0") + "h") :
         ("Byte " + (i / 8) + " → ");
-      svg.text(g, left_to_right ? (leftOf(0) - 8) : (rightOf(-1.5) + 2),
-        cellTop + cellValueTop + cellHeight * (i / wordWidth),
+      svg.text(g2, left_to_right ? (leftOf(0) - 8) : (rightOf(-1.5) + 2),
+        cellTop + rowLabelTop + cellHeight * (i / wordWidth),
         svg.createText().string(rowLabel),
-          {"class_": left_to_right ? "regRowTagLeft" : "regRowTagRight"});
+        {"class_": left_to_right ? "regRowTagLeft" : "regRowTagRight"});
     }
   }
 

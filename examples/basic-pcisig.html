@@ -313,40 +313,41 @@
       <pre class="json">
            { "debug": false,
              "preClass": "hide",
-             "width" : 64,
+             "width" : 128,
              "isMemoryBlock": true,
               "defaultUnused" : "C",
+              "xxcellBitValueTop": 28,
               "fields": [
                 {   "msb": 4,
                     "lsb": 0,
-                    "name": "field 4:0",
+                    "name": "bits 4:0",
                     "attr": "ro"
                 }, {
                     "msb": 7,
                     "lsb": 6,
-                    "name": "Very long name that will never fit"
+                    "name": "A"
                 }, {
                     "msb": 9,
-                    "name": "bit9"
+                    "name": "B"
                 }, {
                     "lsb": 10,
-                    "name": "bit10",
+                    "name": "D",
                     "addClass": "svg_error"
                 }, {
                     "lsb": 11,
-                    "name": "bit11"
+                    "name": "E"
                 }, {
                     "lsb": 12,
-                    "name": "bit12",
+                    "name": "F",
                     "value": "1"
                 }, {
                     "lsb": 13,
-                    "name": "bit13",
+                    "name": "G",
                     "href": "field-bit13"
                 }, {
                     "lsb": 14,
                     "msb": 20,
-                    "name": "bit 20:14",
+                    "name": "H",
                     "value": "value"
                 }, {
                     "lsb": 24,
@@ -354,8 +355,8 @@
                     "name": "byte",
                     "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
                 }, {
-                    "lsb": 32,
-                    "msb": 47,
+                    "lsb": 34,
+                    "msb": 121,
                     "name": "word"
                 }] }
         </pre>
@@ -370,39 +371,39 @@
               "preClass": "hide",
               "wordWidth": 32,
               "isMessage": true,
-              "width" : 64,
+              "width" : 128,
               "defaultUnused" : "M",
               "fields": [
                 {   "msb": 4,
                     "lsb": 0,
-                    "name": "field 4:0",
+                    "name": "bits 4:0",
                     "attr": "ro"
                 }, {
                     "msb": 7,
                     "lsb": 6,
-                    "name": "Very long name that will never fit"
+                    "name": "A"
                 }, {
                     "msb": 9,
-                    "name": "bit9"
+                    "name": "B"
                 }, {
                     "lsb": 10,
-                    "name": "bit10",
+                    "name": "D",
                     "addClass": "svg_error"
                 }, {
                     "lsb": 11,
-                    "name": "bit11"
+                    "name": "E"
                 }, {
                     "lsb": 12,
-                    "name": "bit12",
+                    "name": "F",
                     "value": "1"
                 }, {
                     "lsb": 13,
-                    "name": "bit13",
+                    "name": "G",
                     "href": "field-bit13"
                 }, {
                     "lsb": 14,
                     "msb": 20,
-                    "name": "bit 20:14",
+                    "name": "H",
                     "value": "value"
                 }, {
                     "lsb": 24,
@@ -410,8 +411,8 @@
                     "name": "byte",
                     "value": [ "A", "B", "C", "D", "E", "F", "G", "H"]
                 }, {
-                    "lsb": 32,
-                    "msb": 47,
+                    "lsb": 34,
+                    "msb": 121,
                     "name": "word"
                 } ] }
         </pre>
@@ -430,7 +431,7 @@
               "fields": [
                 {   "msb": 4,
                     "lsb": 0,
-                    "name": "field 4:0",
+                    "name": "bits 4:0",
                     "attr": "ro"
                 }, {
                     "msb": 7,
@@ -472,7 +473,7 @@
     </figcaption>
   </figure>
   <table class="pcisig_reg register"
-         data-json='{"debug": false, "preClass": "hide"}'
+         data-json='{"debug": true, "preClass": "hide"}'
          data-width="24"
          id="tbl-pcisig-style-register-1">
     <caption>

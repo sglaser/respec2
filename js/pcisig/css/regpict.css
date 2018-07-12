@@ -59,7 +59,8 @@ g line.regBitNumLine_Hide {
     stroke-width: 1px;
 }
 
-g rect.regFieldBox {
+g rect.regFieldBox,
+g path.regFieldBox {
 	fill: white;
 	stroke: black;
 	stroke-width: 1.5px;
@@ -69,7 +70,12 @@ g.regAttr_rsvd rect.regFieldBox,
 g.regAttr_rsvdp rect.regFieldBox,
 g.regAttr_rsvdz rect.regFieldBox,
 g.regAttr_reserved rect.regFieldBox,
-g.regAttr_unused rect.regFieldBox {
+g.regAttr_unused rect.regFieldBox,
+g.regAttr_rsvd path.regFieldBox,
+g.regAttr_rsvdp path.regFieldBox,
+g.regAttr_rsvdz path.regFieldBox,
+g.regAttr_reserved path.regFieldBox,
+g.regAttr_unused path.regFieldBox {
 	fill: white;
 }
 
@@ -93,6 +99,7 @@ g.regFieldHidden path.regBitLine,
 g.regFieldHidden path.regBitBracket,
 g.regFieldHidden line.regFieldBox,
 g.regFieldHidden rect.regFieldBox,
+g.regFieldHidden path.regFieldBox,
 g.regFieldHidden line.regBitNumLine,
 g.regFieldHidden line.regBitNumLine_Hide,
 g.regFieldHidden text.regBitNumStart,
@@ -167,8 +174,12 @@ figure pre.json {
 
 @media screen {
     g.regLink:hover rect.regFieldBox,
-    g.regLink:focus rect.regFieldBox {
-        fill: #ffa; stroke: blue;
+    g.regLink:focus rect.regFieldBox,
+    g.regLink:hover path.regFieldBox,
+    g.regLink:focus path.regFieldBox {
+        fill: #ffa;
+        stroke: blue;
+        stroke-width: 2.5px;
     }
 
     g.regLink:hover line.regBitNumLine,
@@ -188,7 +199,8 @@ figure pre.json {
     g.regLink:focus text.regFieldName,
     g.regLink.regFieldExternal:hover text.regFieldValue,
     g.regLink.regFieldExternal:focus text.regFieldValue {
-        fill: blue; font-weight: bold;
+        fill: blue;
+        font-weight: bold;
     }
 
     g.regLink:hover text.regBitNumMiddle,
@@ -197,7 +209,9 @@ figure pre.json {
     g.regLink:focus text.regBitNumStart,
     g.regLink:hover text.regBitNumEnd,
     g.regLink:focus text.regBitNumEnd {
-        fill: blue; font-weight: bold; font-size: 9pt;
+        fill: blue;
+        font-weight: bold;
+        font-size: 9pt;
     }
 
     g.regLink:hover text.regBitWidth,
