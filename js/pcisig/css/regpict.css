@@ -67,16 +67,18 @@ g path.regFieldBox {
 }
 
 g.regAttr_rsvd rect.regFieldBox,
-g.regAttr_rsvdp rect.regFieldBox,
-g.regAttr_rsvdz rect.regFieldBox,
-g.regAttr_reserved rect.regFieldBox,
-g.regAttr_unused rect.regFieldBox,
 g.regAttr_rsvd path.regFieldBox,
+g.regAttr_rsvdp rect.regFieldBox,
 g.regAttr_rsvdp path.regFieldBox,
+g.regAttr_rsvdz rect.regFieldBox,
 g.regAttr_rsvdz path.regFieldBox,
+g.regAttr_reserved rect.regFieldBox,
 g.regAttr_reserved path.regFieldBox,
-g.regAttr_unused path.regFieldBox {
-	fill: white;
+g.regAttr_unused rect.regFieldBox,
+g.regAttr_unused path.regFieldBox,
+g.regFieldUnused rect.regFieldBox,
+g.regFieldUnused path.regFieldBox {
+  fill: #e8e8e8;
 }
 
 g.regFieldExternal line.regFieldBox,
@@ -85,7 +87,8 @@ g.regFieldInternal line.regFieldBox {
 }
 
 g.regFieldUnused line.regFieldBox,
-g.regFieldUnused path.regFieldBox {
+g.regFieldUnused rect.regFieldBox,
+g.regFieldUnused path.regFieldBox{
 	stroke: grey;
 }
 
