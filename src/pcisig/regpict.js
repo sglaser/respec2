@@ -856,6 +856,7 @@ function draw_regpict(divsvg, svg, reg) {
                 p.line(leftCol1 - leftCol2, 0, true);
             }
             p.line(0, -cellHeight, true);   // move back to start col
+            p.close();
             svg.path(g, p, {"class_": "regFieldBox"});
             svg.rect(g, leftCol1, cellTop + cellHeight * startRow, rightCol1 - leftCol1, cellHeight, 0, 0,
               {"class_": "regFieldBox", "style": "display: none"});
@@ -983,6 +984,7 @@ function draw_regpict(divsvg, svg, reg) {
               p.move(boxLeft, cellTop + cellHeight * (startRow + 1));
               p.line(((boxRight - boxLeft) / 2), bracketHeight, true);
               p.line(boxRight, cellTop + cellHeight * (startRow + 1));
+              p.close();
               svg.path(g, p,
                 {
                   "class_": "regBitBracket",
@@ -992,6 +994,7 @@ function draw_regpict(divsvg, svg, reg) {
               p.move((boxLeft + (boxRight - boxLeft) / 2), cellTop + cellHeight * (startRow + 1) + bracketHeight);
               p.vert(nextBitLine - text_height / 4);
               p.horiz(rightOf(-0.4));
+              p.close();
               svg.path(g, p,
                 {
                   "class_": "regBitLine",

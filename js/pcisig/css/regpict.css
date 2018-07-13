@@ -84,7 +84,8 @@ g.regFieldInternal line.regFieldBox {
 	stroke: black;
 }
 
-g.regFieldUnused line.regFieldBox {
+g.regFieldUnused line.regFieldBox,
+g.regFieldUnused path.regFieldBox {
 	stroke: grey;
 }
 
@@ -188,6 +189,8 @@ figure pre.json {
     g.regLink:focus line.regBitNumLine_Hide,
     g.regLink:hover line.regFieldBox,
     g.regLink:focus line.regFieldBox,
+    g.regLink:hover path.regFieldBox,
+    g.regLink:focus path.regFieldBox,
     g.regLink:hover path.regBitLine,
     g.regLink:focus path.regBitLine,
     g.regLink.regFieldExternal:hover path.regBitBracket,
