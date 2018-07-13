@@ -965,6 +965,22 @@ g line.regBitNumLine_Hide {
   stroke-width: 1px;
 }
 
+g.regFieldSmallText text.regFieldName {
+  font-size: 8pt;
+  font-weight: light;
+}
+
+g.regFieldReservedText rect.regFieldBox,
+g.regFieldReservedText path.regFieldBox {
+  fill: #e8e8e8;
+  font-size: 8pt;
+  font-weight: light;
+}
+
+g.regFieldReservedText text.regFieldName {
+  font-style: italic;
+}
+
 g rect.regFieldBox,
 g path.regFieldBox {
   fill: white;
